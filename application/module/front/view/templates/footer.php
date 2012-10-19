@@ -13,6 +13,7 @@
             ?>
             <li><a href="<?php echo HTML_ROOT . 'about-us.php'; ?>">About Us</a></li>
             <li><a href="<?php echo HTML_ROOT . 'contact-us.php'; ?>">Contact Us</a></li>
+            <li><a href="<?php echo HTML_ROOT . 'sitemap.php'; ?>">Sitemap</a></li>
         </ul>
     </nav>            
 </div>

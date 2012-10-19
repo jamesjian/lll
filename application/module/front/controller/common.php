@@ -17,6 +17,14 @@ class Common extends Front {
         parent::init();
     }
 
+    public function sitemap() {
+        $cats = Model_Articlecategory::get_all_active_cats();
+        $articles = Model_Article::get_all_active_articles();
+        View::set_view_file($this->view_path . 'sitemap.php');
+        View::set_action_var('cats', $cats);
+        View::set_action_var('articles', $articles);
+    }
+
     public function contact_us() {
 //\Zx\Test\Test::object_log('$arr', '22222', __FILE__, __LINE__, __CLASS__, __METHOD__);
 
@@ -46,7 +54,7 @@ class Common extends Front {
         $direction = 'DESC';
         $articles = Model_Article::get_active_articles_by_page_num($current_page, $order_by, $direction);
         $related_articles = Model_Article::get_10_active_related_articles(1);
-        $num_of_articles = Model_Article::get_num_of_active_articles();        
+        $num_of_articles = Model_Article::get_num_of_active_articles();
         $num_of_pages = ceil($num_of_articles / NUM_OF_ARTICLES_IN_CAT_PAGE);
         View::set_view_file($this->view_path . 'home.php');
         View::set_action_var('articles', $articles);
