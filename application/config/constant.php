@@ -11,7 +11,7 @@ if (PHP_SAPI === 'cgi-fcgi') {
 include 'constant_db.php';
 
 define('HTML_ROOT', 'http://' . SERVER_NAME . URL_PREFIX);
-define('LIBRARY_PATH', PHP_ROOT . 'library' . DIRECTORY_SEPARATOR);
+define('LIBRARY_PATH', dirname(PHP_ROOT) . DIRECTORY_SEPARATOR . 'library' . DIRECTORY_SEPARATOR);
 define('SYSTEM_PATH', LIBRARY_PATH . 'zx' . DIRECTORY_SEPARATOR);
 define('APPLICATION_PATH', PHP_ROOT . 'application' . DIRECTORY_SEPARATOR);
 

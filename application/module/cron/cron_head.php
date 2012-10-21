@@ -18,6 +18,6 @@ include PHP_ROOT . 'application/config/constant.php';
  */
 include SYSTEM_PATH . 'test/test_no_namespace.php';
 include SYSTEM_PATH . 'model/mysql_no_namespace.php';
+require LIBRARY_PATH . 'Swift-4.2.1/lib/swift_required.php';
 include APPLICATION_PATH . 'transaction/article_no_namespace.php';
 include APPLICATION_PATH . 'transaction/swiftmail_no_namespace.php';
-require LIBRARY_PATH . 'Swift-4.2.1/lib/swift_required.php';

@@ -18,6 +18,9 @@ class Common extends Front {
     }
 
     public function sitemap() {
+        Transaction_Html::set_title('网站地图');
+        Transaction_Html::set_keyword('澳洲保险常识, 澳洲保险法律,澳洲保险机构,澳洲保险公司,澳洲保险学习,澳洲保险教育,澳洲保险信息');
+        Transaction_Html::set_description('澳洲保险常识, 澳洲保险法律,澳洲保险机构,澳洲保险公司,澳洲保险学习,澳洲保险教育,澳洲保险信息');
         $cats = Model_Articlecategory::get_all_active_cats();
         $articles = Model_Article::get_all_active_articles();
         View::set_view_file($this->view_path . 'sitemap.php');
