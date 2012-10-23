@@ -50,6 +50,7 @@
         //related articles
         if ($related_articles) {
             ?>
+        <span class="zx-front-related-article">相关文章：</span> 
             <nav>
                 <ul>
                     <?php
@@ -58,7 +59,7 @@
                         if (!($article['id'] == $current_article_id)) {
                             $read_more_link = HTML_ROOT . 'front/article/show/' . $article['id'];
                             ?>		
-                            <li><?php echo "<a href='$read_more_link'>" . $article['title'] . "</a>";
+                            <li><?php echo "<a href='$read_more_link' class='zx-front-related-article'>" . $article['title'] . "</a>";
                             ?>
                             </li>
                             <?php

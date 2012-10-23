@@ -15,13 +15,13 @@ class Article extends Base_Article {
             foreach ($r as $record) {
                 $arr_keyword = explode(',', $record['keyword']);
                 foreach ($arr_keyword as $keyword) {
-                    if (!in_array($keyword, $arr)) {
+                    if (trim($keyword) != '' && !in_array($keyword, $arr)) {
                         $arr[] = $keyword;
                     }
                 }
                 $arr_keyword = explode(',', $record['keyword_en']);
                 foreach ($arr_keyword as $keyword) {
-                    if (!in_array($keyword, $arr)) {
+                    if (trim($keyword) != '' && !in_array($keyword, $arr)) {
                         $arr[] = $keyword;
                     }
                 }                

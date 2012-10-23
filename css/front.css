@@ -1,7 +1,5 @@
 body.zx-front-body{
-    background-color: white;
-    width: 1200px;
-    hzx-frontght: auto;
+
 }
 div.zx-front-clear-both{
     clear: both;
@@ -21,9 +19,8 @@ mark{
 }
 
 div.zx-front-header{
-    hzx-frontght:100px;
     background-color: white;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #F2F2F3;
 }
 div.zx-front-header1{
     width: 30%;
@@ -54,8 +51,17 @@ div.zx-front-header2{
     color: black;
     text-decoration: none;
 }
+a.zx-front-read-more {
+    background: none repeat scroll 0 0 #F7941E;
+    border-radius: 10px 10px 10px 10px;
+    color: white;
+    float: right;
+    font-size: 13px;
+    padding: 1px 2px 1px 6px;
+    text-decoration: none;
+}
 nav.zx-front-top-menu{
-    width: 800px;
+    width: 900px;
     float: right;
 
 }
@@ -65,7 +71,6 @@ nav.zx-front-top-menu li.zx-front-top-active-menu {
 }
 nav.zx-front-top-menu li{
     list-style-type: none;
-    background-color: #777;
     display: block;
     float: left;
     margin-right: 7px;
@@ -76,73 +81,111 @@ nav.zx-front-top-menu li a{
     font-weight: bold;
     padding: 6px 12px 6px 12px;
     text-decoration: none;   
+    background: none repeat scroll 0 0 #F7941E;
+        border: 6px solid #F2F2F3;
+    border-radius: 20px 20px 20px 20px;
+    cursor: pointer;
 }
 .zx-front-main{
+    margin-top:20px;
 }
 div.zx-front-left{
     width: 70%;
     float: left;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #F2F2F3;
 }
 div.zx-front-left1{
-    hzx-frontght: 100px;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #F2F2F3;
 }
 div.zx-front-left2{
-    hzx-frontght: 100px;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #F2F2F3;
 }
 div.zx-front-right{
     width: 25%;
     float: left;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #F2F2F3;
 }
 
 div.zx-front-right1{
-    hzx-frontght: 100px;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #F2F2F3;
+    padding: 10px;
 }
 div.zx-front-right2{
-    hzx-frontght: 100px;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #F2F2F3;
 }
 div.zx-front-right3{
-    hzx-frontght: 100px;
+    padding-top: 10px;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #F2F2F3;
 }
 div.zx-front-right4{
-    hzx-frontght: 100px;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #F2F2F3;
 }
 div.zx-front-right5{
-    hzx-frontght: 100px;
     background-color: white;
-    border: 1px solid black;
+    border: 2px solid #F2F2F3;
+}
+.zx-front-tag-title{
+    color: #766666;
+    font-size: 16px;
+    font-weight: 800;
+}
+a.zx-front-tag1{
+    text-decoration: none;
+    color:#F7941E;
+    font-weight:700;
+    font-size:15px;
+}
+a.zx-front-tag2{
+    text-decoration: none;
+    color:#766666;
+    font-weight:700;
+    font-size: 15px;
+}
+.zx-front-article-title{
+    color: #766666;
+    font-size: 16px;
+    font-weight: 900;
+}
+.zx-front-hottest-article{
+        text-decoration: none;
+    color:#332828;
+    font-weight:700;
+    font-size: 15px;
+}
+.zx-front-latest-article{
+        text-decoration: none;
+    color:#332828;
+    font-weight:700;
+    font-size: 15px;
+}
+.zx-front-related-article{
+        text-decoration: none;
+    color:#332828;
+    font-weight:700;
+    font-size: 15px;
 }
 div.zx-front-footer{
-    color: #444;
-    background: #777;
-    border-top: 7px solid black;
+    border-top: 8px solid #F2F2F3;
     padding: 15px;
-    margin-top: 30px;        
+    margin-top: 30px;    
+    margin-bottom: 50px;
 }
 nav.zx-front-bottom-menu{
-    width: 800px;
-    float: right;
+    width: 900px;
     font-size: 12px;
+    margin:auto;
 }
 
 nav.zx-front-bottom-menu li{
     list-style-type: none;
-    background-color: #777;
     display: block;
     float: left;
     margin-right: 7px;
@@ -153,9 +196,21 @@ nav.zx-front-bottom-menu li a{
     font-weight: bold;
     padding: 6px 12px 6px 12px;
     text-decoration: none;   
+    background: none repeat scroll 0 0 #F7941E;
+    border-radius: 5px;
+    cursor: pointer;    
+}
+.zx-front-left2 nav ul li{
+    margin: 10px;
+}
+.zx-front-right3 li{
+    margin-top: 5px;
 }
 .zx-front-article-title{
     
+}
+.zx-front-article-abstract{
+    margin-top:5px;
 }
 .zx-front-article-content{
     
@@ -165,6 +220,12 @@ nav.zx-front-bottom-menu li a{
     color: red;    
 }
 
+.zx-front-breadcrumb{
+    margin: 10px;
+}
 .zx-front-breadcrumb-item{
-    color: red;
+    color: #F7941E;
+    text-decoration: none;
+    font-size:13px;
+    font-weight: 800;
 }

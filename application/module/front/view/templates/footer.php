@@ -11,9 +11,9 @@
                 }
             }
             ?>
-            <li><a href="<?php echo HTML_ROOT . 'about-us.php'; ?>">About Us</a></li>
-            <li><a href="<?php echo HTML_ROOT . 'contact-us.php'; ?>">Contact Us</a></li>
-            <li><a href="<?php echo HTML_ROOT . 'sitemap.php'; ?>">Sitemap</a></li>
+            <li><a href="<?php echo HTML_ROOT . 'about-us.php'; ?>">关于我们</a></li>
+            <li><a href="<?php echo HTML_ROOT . 'contact-us.php'; ?>">联系我们</a></li>
+            <li><a href="<?php echo HTML_ROOT . 'sitemap.php'; ?>">网站地图</a></li>
         </ul>
     </nav>            
 </div>

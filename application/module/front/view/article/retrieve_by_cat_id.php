@@ -15,11 +15,10 @@
                     foreach ($articles as $article) {
                         $read_more_link = HTML_ROOT . 'front/article/content/' . $article['url'];
                         ?>		
-                        <li><?php
-                echo $article['title'], BR;
-                echo $article['abstract'];
-                echo "<a href='$read_more_link'>阅读全文...</a>";
-                        ?>
+                        <li><div class="zx-front-article-title"><?php echo $article['title']; ?></div>
+                            <div class="zx-front-article-abstract"><?php echo $article['abstract']; ?>
+                                <a href='<?php echo $read_more_link; ?>'  title='<?php echo $article['title']; ?>'  class='zx-front-read-more'>阅读全文</a>
+                            </div>
                         </li>
                         <?php
                     }//foreach
@@ -53,9 +52,5 @@
     </div>        
     <div class='zx-front-right4'>
         <?php include FRONT_VIEW_PATH . 'templates/hottest_articles.php'; ?>
-        <?php
-        $all_hottest = HTML_ROOT . 'article/hottest/';
-        ?>
-        <a href="<?php echo $all_hottest; ?>">All</a>
     </div>
 </div>
