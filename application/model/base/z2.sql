@@ -3,18 +3,12 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 12, 2012 at 05:14 AM
+-- Generation Time: Oct 23, 2012 at 10:00 PM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.4.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `z2`
@@ -47,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `article` (
 --
 
 INSERT INTO `article` (`id`, `title`, `title_en`, `cat_id`, `keyword`, `keyword_en`, `abstract`, `url`, `content`, `rank`, `status`, `date_created`) VALUES
-(1, 'niba   national insurance broker', '1', 4, 'niba,多伦多', 'niba, insurance, organization', 'national insurance broker', 'niba', '<h1>\r\n	<span style="color: rgb(153, 153, 153); font-family: Verdana, Helvetica, sans-serif; line-height: 18px; ">NIBA is the national trade association for licensed life and general insurance brokers in Australia. It is a not for profit organisation and neither sells insurance products or represents insurance companies. NIBA is the national voice of insurance brokers and an advocate for insurance consumers. Our website provides information for consumers, insurance and risk professionals throughout the industry and NIBA members.</span></h1>', 9, 1, NULL),
+(1, 'niba   national insurance broker', '1', 4, 'niba,多伦多', 'niba, insurance, organization', 'national insurance broker', 'niba', '<h1>\r\n	<span style="color: rgb(153, 153, 153); font-family: Verdana, Helvetica, sans-serif; line-height: 18px; ">NIBA is the national trade association for licensed life and general insurance brokers in Australia. It is a not for profit organisation and neither sells insurance products or represents insurance companies. NIBA is the national voice of insurance brokers and an advocate for insurance consumers. Our website provides information for consumers, insurance and risk professionals throughout the industry and NIBA members.</span></h1>', 13, 1, NULL),
 (2, 'c1', 'c1', 1, '中国', '', 'eeeeeeeeeeeeeee', '', '', 0, 1, NULL),
 (3, 'c2', 'c2', 1, '中国', '', 'fffffffffffffff', '', '<p>\r\n	<img alt="" src="http://localhost/pree/upload/5074f3431c50bcfalogo.png" style="width: 360px; height: 60px; " /></p>', 0, 1, NULL),
 (4, 'c3', 'c3', 2, '', '', 'ggggggggggggg', '', '<p>\r\n	<img alt="" src="http://localhost/pree/upload/5074f35d0ec91Acupuncturist.jpg" style="width: 141px; height: 116px; " /></p>', 0, 1, NULL),
@@ -76,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `article_category` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `date_created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `article_category`
@@ -163,10 +157,16 @@ INSERT INTO `session` (`session_id`, `session_data`, `expires`) VALUES
 ('8qgiafjnqtpj784h76tp81q552', 'success_message|s:0:"";error_message|s:0:"";current_admin_page|s:39:"/pree/admin/article/retrieve/1/title/DESC/";staff|a:1:{s:10:"staff_name";s:5:"admin";}CK_UPLOAD_PATH|s:4:"article";', 1349758365),
 ('a3dvcsvihq47955hqiahboc3h7', 'success_message|s:0:"";error_message|s:0:"";CK_UPLOAD_PATH|s:4:"article";staff|a:1:{s:10:"staff_name";s:5:"admin";}current_admin_page|s:47:"/pree/public/admin/page/retrieve/1/title/ASC";', 1349421479),
 ('afcfqusd14ld9bg16o2k95dcu7', 'success_message|s:0:"";error_message|s:0:"";staff|a:1:{s:10:"staff_name";s:5:"admin";}', 1348367053),
+('bpuhaaofu554idd3n68ba3pfo6', '', 1350611484),
+('bu6omi10o54vr3vcqmn0lbrt64', 'breadcrumb|a:2:{i:0;a:2:{s:4:"link";s:22:"http://localhost/pree/";s:5:"title";s:6:"首页";}i:1;a:2:{s:4:"link";s:84:"http://localhost/pree/front/article/category/æ¾³æ´²ä¿é™©æ³•è§„";s:5:"title";s:39:"æ¾³æ´²ä¿é™©æ³•è§„";}}', 1350351574),
+('ck0lo6snh8dg1s74l5n8q4e026', '', 1351030464),
 ('dgi7245a9tf0p13pvfo2umbfq1', 'success_message|s:0:"";error_message|s:0:"";', 1349292453),
+('e3ndh7beuujd0bslrapni941h3', 'success_message|s:0:"";error_message|s:0:"";', 1350255432),
 ('h62n9bhjb3od85pp19a8m9vt54', 'pk|s:4:"ppkk";', 1348173507),
+('iurqomnlbj1mbavtsmstq9i554', '', 1350970293),
 ('lt10ov83re123edgijkm80gih4', 'success_message|s:0:"";error_message|s:0:"";staff|a:1:{s:10:"staff_name";s:5:"admin";}', 1349744146),
 ('msesqvck2b499cjbod3n7ua8j3', 'success_message|s:0:"";error_message|s:0:"";staff|a:1:{s:10:"staff_name";s:5:"admin";}', 1349394425),
+('p1laeda9s6p90ilac46l4g66g0', 'success_message|s:0:"";error_message|s:0:"";staff|a:1:{s:10:"staff_name";s:5:"admin";}', 1350859891),
 ('q8qtotc22lg2ftqi29f9h0e1h3', 'success_message|s:0:"";error_message|s:0:"";staff|a:1:{s:10:"staff_name";s:5:"admin";}CK_UPLOAD_PATH|s:7:"article";current_admin_page|s:36:"/pree/admin/articlecategory/retrieve";l1_menu|s:7:"Article";', 1349932218),
 ('rrm27pvi8s4p4gchb1adoc3p36', 'success_message|s:0:"";error_message|s:0:"";staff|a:1:{s:10:"staff_name";s:5:"admin";}', 1349319984);
 
@@ -192,7 +192,3 @@ CREATE TABLE IF NOT EXISTS `staff` (
 
 INSERT INTO `staff` (`name`, `password`, `group_id`, `email`, `date_created`) VALUES
 ('admin', '21232f297a57a5a743894a0e4a801fc3', 1, 'admin@site.com', NULL);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
