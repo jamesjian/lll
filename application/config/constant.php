@@ -2,7 +2,7 @@
 
 //general 
 if (PHP_SAPI === 'cgi-fcgi') {
-    define('SERVER_NAME', 'baoxian.com.au');
+    define('SERVER_NAME', 'lll.com.au');
 } elseif (PHP_SAPI == 'cli') {
     define('SERVER_NAME', 'localhost');
 } else {
