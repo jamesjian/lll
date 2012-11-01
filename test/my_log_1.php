@@ -151,3 +151,30 @@ $q = substr($q, 0, -1);
 $dbh->exec($q);
 
 
+
+mem
+1. user
+register/login/forgotten password/activate/reactivate
+2. company
+crud (only one for each user)
+3. info (at most 3 levels)
+crud  use radio to choose cat, keyword use @k1@k2@k3@k4@k5@
+4. article (only 2 levels)
+crud
+5. message
+crud
+front
+6. home
+7. l1 cat/l2 cat/l3 cat, sort on time or rank
+8. detail/comment
+9. article
+10. tag cloud
+11. filter (region, keyword)
+admin
+1. login
+2. user: crud   status
+3. category: crud (at most 3 levels)
+4. info: crud
+5. comment: crud
+6. article: crud
+7. message: crud 
