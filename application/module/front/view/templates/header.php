@@ -21,25 +21,9 @@
 
             </div>
             <nav class='zx-front-top-menu'>
-                <ul>
-                    <li><a href="<?php echo HTML_ROOT; ?>" title="homepage">Home</a></li>
-                    <?php
-                    if ($article_cats) {
-                        $current_l1_menu = \App\Transaction\Session::get_front_current_l1_menu();
-                        foreach ($article_cats as $cat) {
-                            $link = HTML_ROOT . 'front/article/category/' . $cat['title'];
-                            if ($current_l1_menu == $cat['title']) {
-                                $active_class = ' class="zx-front-active-menu"';
-                            } else {
-                                $active_class = '';
-                            }
-                            ?>
-                            <li <?php echo $active_class; ?>><a href="<?php echo $link; ?>" title="<?php echo $cat['title']; ?>"><?php echo $cat['title']; ?></a></li>
-                            <?php
-                        }
-                    }
-                    ?>
-                </ul>
+                <?php 
+                include 'menu.php';
+                ?>
             </nav>
         </div>
         <div class="zx-front-clear-both"></div>

@@ -12,42 +12,8 @@
         <link rel="shortcut icon" href="<?php echo HTML_ROOT . 'image/icon/favicon.ico?v3'; ?>" />
     </head>
     <body>
-        <?php
-        if (\App\Transaction\Staff::staff_has_loggedin()) {
-            ?>
-            <a href="<?php echo ADMIN_HTML_ROOT . 'staff/logout'; ?>">Logout</a>
-            <?php
-            $menu_arr = array('Article' => 'article',
-                'Article Category' => 'articlecategory',
-                'Page' => 'page',
-                'Page Category' => 'pagecategory',
-            );
-            ?>
-            <nav>
-                <ul>
-                    <?php
-                    $current_l1_menu = \App\Transaction\Session::get_admin_current_l1_menu();
-                    foreach ($menu_arr as $menu_name => $controller_name) {
-                        if ($current_l1_menu == $menu_name) {
-                            $active_class= ' class="zx-admin-active-menu"';
-                        } else {
-                            $active_class = '';
-                        }
-                        ?>
-                        <li>
-                            <?php $link = ADMIN_HTML_ROOT . $controller_name . '/retrieve'; ?>
-                            <a href="<?php echo $link; ?>" <?php echo $active_class;?>><?php echo $menu_name; ?></a>	
-                        </li>
-                        <?php
-                    }
-                    ?>
-                        <li><a href="<?php echo ADMIN_HTML_ROOT . 'tool/sitemap';?>">Sitemap</a></li>
-                </ul>
-            </nav>
-            <?php
-        } //if logged in
-        ?>
-        <?php
+               <?php
+        include ADMIN_VIEW_PATH . 'templates/menu.php';
         echo $content;
         ?>
 

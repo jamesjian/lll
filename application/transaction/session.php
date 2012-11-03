@@ -122,6 +122,23 @@ class Session {
         else
             return '';
     }
+    /**
+     * category group 
+     * @param string $group such as "服务"
+     */
+    public static function set_front_current_cat_group($group) {
+        $_SESSION['front_cat_group'] = $group;
+    }    
+    /**
+     * 
+     * @return string category group 
+     */
+    public static function get_front_current_cat_group() {
+        if (isset($_SESSION['front_cat_group']))
+            return $_SESSION['front_cat_group'];
+        else
+            return '';
+    }
 
     /**
      * level one menu

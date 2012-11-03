@@ -16,6 +16,7 @@ class Front {
 
     public function init() {
         $this->params = Route::get_params();
+        $cat_groups = Model_Catgroup::get_all_groups();
         $tags = Model_Article::get_all_keywords();
         $top10 = Model_Article::get_top10();
         $latest10 = Model_Article::get_latest10();

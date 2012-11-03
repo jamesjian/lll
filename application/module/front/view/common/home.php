@@ -1,10 +1,7 @@
 <div class='zx-front-left'>			
     <div class='zx-front-left1'>
-        <?php include FRONT_VIEW_PATH . 'templates/left_google_ads.php'; ?>
-    </div>	
-    <div class='zx-front-left2'>
         
-    </div>
+    </div>	
 </div>
 <div class='zx-front-right'>
     <div class='zx-front-right1'>
