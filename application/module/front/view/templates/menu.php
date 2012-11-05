@@ -4,7 +4,7 @@
     if ($cat_groups) {
         $current_cat_group = \App\Transaction\Session::get_front_current_cat_group();
         foreach ($cat_groups as $group) {
-            $link = HTML_ROOT . 'front/catgroup/group' . $group['title'];
+            $link = HTML_ROOT . 'front/catgroup/content/' . $group['title'];
             if ($current_cat_group == $group['title']) {
                 $active_class = ' class="zx-front-active-menu"';
             } else {
@@ -16,13 +16,13 @@
                     <?php
                     //list categories within this group
                     foreach ($group['cat1s'] as $cat1) {
-                        $link = HTML_ROOT . 'front/category/l1' . $cat1['title'];
+                        $link = HTML_ROOT . 'front/category/l1/' . $cat1['title'];
                         ?>
                         <dt><a href="<?php echo $link; ?>" title="<?php echo $cat1['title']; ?>"><?php echo $cat1['title']; ?></a></dt>
                         <dd>
                             <?php
                             foreach ($cat1['cat2s'] as $cat2) {
-                                $link = HTML_ROOT . 'front/category/l1' . $cat1['title'];
+                                $link = HTML_ROOT . 'front/category/l2/' . $cat1['title'];
                                 ?>
 
                                 <a href="<?php echo $link; ?>" title="<?php echo $cat1['title']; ?>"><?php echo $cat1['title']; ?></a>

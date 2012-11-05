@@ -1,118 +1,51 @@
 <?php
 
-namespace App\Model\Base;
+namespace App\Module\Front\Controller;
 
-use \Zx\Model\Mysql;
+use \Zx\Controller\Route;
+use \Zx\View\View;
+use App\Transaction\Session as Transaction_Session;
+use App\Transaction\Html as Transaction_Html;
+use \App\Model\Catgroup as Model_Catgroup;
+class Catgroup {
+    public $view_path;
 
-/*
-  CREATE TABLE article (id int(11) AUTO_INCREMENT PRIMARY KEY,
-  title varchar(255) NOT NULL DEFAULT '',
-  cat_id int(11) NOT NULL DEFAULT 1,
-  keyword varchar(255) not null default '',
-  content text,
-  rank int(11) default 0,
-  status tinyint(1) not null default 1,
-  date_created datetime) engine=innodb default charset=utf8
- */
+    public function init() {
+        $this->view_path = APPLICATION_PATH . 'module/front/view/catgroup/';
+        parent::init();
+    }
 
-class Article {
-    public static $fields = array('id','title','title_en', 'cat_id',
-        'keyword','keyword_en','abstract', 'url',
-        'content', 'rank', 'status', 'date_created');
-    public static $table = 'article';
-    /**
-     *
-     * @param int $id
-     * @return 1D array or boolean when false 
+    /*     * one article
+     * /front/article/content/niba
+     * use url rather than id in the query string
      */
-    public static function get_one($id) {
-        $sql = "SELECT b.*, bc.title as cat_name
-            FROM article b
-            LEFT JOIN article_category bc ON b.cat_id=bc.id
-            WHERE b.id=:id
-        ";
-        $params = array(':id' => $id);
 
+    public function content() {
+        $catgroup_url = $this->params[0]; //it's url rather than an id
 
-        return Mysql::select_one($sql, $params);
-    }
-
-    /**
-     *
-     * @param string $where
-     * @return 1D array or boolean when false 
-     */
-    public static function get_one_by_where($where) {
-        $sql = "SELECT b.*, bc.title as cat_name,
-            FROM article b
-            LEFT JOIN article_category bc ON b.cat_id=bc.id
-            WHERE $where
-        ";
-        return Mysql::select_one($sql);
-    }
-
-    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'b.date_created', $direction = 'DESC') {
-        $sql = "SELECT b.*, bc.title as cat_name
-            FROM article b
-            LEFT JOIN article_category bc ON b.cat_id=bc.id
-            WHERE $where
-            ORDER BY $order_by $direction
-            LIMIT $offset, $row_count
-        ";
-//\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
-        return Mysql::select_all($sql);
-    }
-
-    public static function get_num($where = '1') {
-        $sql = "SELECT COUNT(id) AS num
-            FROM article 
-            WHERE $where
-        ";
-        $result = Mysql::select_one($sql);
-        if ($result) {
-            return $result['num'];
+        $group = Model_Catgroup::get_one_by_url($catgroup_url);
+        //\Zx\Test\Test::object_log('$article', $article, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        if ($group) {
+            
+            $group_id = $group['id'];
+            $home_url = HTML_ROOT;
+            $group_url = FRONT_HTML_ROOT . 'catgroup/content/' . $group['title']; 
+            Transaction_Session::set_breadcrumb(0, $home_url,  '首页');
+            Transaction_Session::set_breadcrumb(1, $group_url,  $group['title']);
+            Transaction_Html::set_title($group['title']);
+            Transaction_Html::set_keyword($group['keyword']);
+            Transaction_Html::set_description($group['title']);
+            Model_Catgroup::increase_rank($group_id);
+            $cats = Model_Category::get_cats_by_catgroup_id($group_id);
+            $infos = Model_Info::get_infos_by_catgroup_id($group_id);
+            View::set_view_file($this->view_path . 'one_catgroup.php');
+            View::set_action_var('cats', $cats);
+            View::set_action_var('group', $group);
+            View::set_action_var('infos', $infos);
         } else {
-            return false;
+            //if no article, goto homepage
+            Transaction_Html::goto_home_page();
         }
-    }
-
-    public static function create($arr) {
-        $insert_arr = array(); $params = array();
-        foreach (self::$fields as $field) {
-            if (array_key_exists($field, $arr)) {
-                $insert_arr[] = "$field=:$field";
-                $params[":$field"] = $arr[$field];
-            }
-        }
-        $insert_str = implode(',', $insert_arr);
-        $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
-        return Mysql::insert($sql, $params);
-    }
-
-    public static function update($id, $arr) {
-        $update_arr = array();$params = array();
-        foreach (self::$fields as $field) {
-            if (array_key_exists($field, $arr)) {
-                $update_arr[] = "$field=:$field";
-                $params[":$field"] = $arr[$field];
-            }
-        }        
-        
-        $update_str = implode(',', $update_arr);
-        $sql = 'UPDATE ' .self::$table . ' SET '. $update_str . ' WHERE id=:id';
-        //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $params[':id'] = $id;
-        //$query = Mysql::interpolateQuery($sql, $params);
-        //\Zx\Test\Test::object_log('query', $query, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
-        return Mysql::exec($sql, $params);
-    }
-
-    public static function delete($id) {
-        $sql = "Delete FROM article WHERE id=:id";
-        $params = array(':id' => $id);
-        return Mysql::exec($sql, $params);
     }
 
 }
