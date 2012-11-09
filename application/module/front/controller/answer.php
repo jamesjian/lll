@@ -19,7 +19,7 @@ use \App\Model\Question as Model_Question;
  * one: /front/answer/content/$id/$answer_url
  * keyword: /front/answer/keyword/$keyword_3
  */
-class Answer extends Front {
+class Answer extends Base {
 
     public $view_path;
 

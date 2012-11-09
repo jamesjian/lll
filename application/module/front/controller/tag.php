@@ -16,7 +16,7 @@ use \App\Model\Tag as Model_Tag;
  * one: /front/tag/content/$id/$tag_url
  * keyword: /front/tag/keyword/$keyword_3
  */
-class Tag extends Front {
+class Tag extends Base {
 
     public $view_path;
 

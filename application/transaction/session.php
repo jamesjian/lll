@@ -81,8 +81,8 @@ class Session {
         //App_Test::objectLog('$breadcrumb_arr',$breadcrumb_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $breadcrumb_arr[$level] = array('link' => $link, 'title' => $title);
         //App_Test::objectLog('$breadcrumb_arr',$breadcrumb_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $_SESSION['breadcrumb'] =  $breadcrumb_arr;
-        }
+        $_SESSION['breadcrumb'] = $breadcrumb_arr;
+    }
 
     /*
      * get breadcrumb
@@ -97,7 +97,7 @@ class Session {
             //$breadcrumb_array = $_SESSION['breadcrumb'];
             ksort($breadcrumb_array);
             foreach ($breadcrumb_array as $breadcrumb) {
-                $str .= "<a href='" . $breadcrumb['link'] . "' title='" .  $breadcrumb['title'] . "' class='zx-front-breadcrumb-item'>" . $breadcrumb['title'] .  '</a>->';
+                $str .= "<a href='" . $breadcrumb['link'] . "' title='" . $breadcrumb['title'] . "' class='zx-front-breadcrumb-item'>" . $breadcrumb['title'] . '</a>->';
             }
         }
         $str = substr($str, 0, -2);  //remove the trailing '->';
@@ -122,13 +122,15 @@ class Session {
         else
             return '';
     }
+
     /**
      * category group 
      * @param string $group such as "服务"
      */
     public static function set_front_current_cat_group($group) {
         $_SESSION['front_cat_group'] = $group;
-    }    
+    }
+
     /**
      * 
      * @return string category group 
@@ -159,4 +161,5 @@ class Session {
             return '';
     }
 
+    
 }

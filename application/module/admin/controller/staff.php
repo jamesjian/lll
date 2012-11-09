@@ -4,7 +4,7 @@ namespace App\Module\Admin\Controller;
 use \Zx\View\View;
 use \Zx\Test\Test;
 use \App\Transaction\Staff as Transaction_Staff;
-class Staff extends Admin {
+class Staff extends Base {
 
     public $view_path;
 

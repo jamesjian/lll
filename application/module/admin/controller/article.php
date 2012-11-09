@@ -8,7 +8,7 @@ use \App\Transaction\Article as Transaction_Article;
 use \Zx\View\View;
 use \Zx\Test\Test;
 
-class Article extends Admin {
+class Article extends Base {
 
     public $list_page = '';
     public function init() {

@@ -6,7 +6,7 @@ use \Zx\Model\Articlecategory as Model_Articlecategory;
 use \Zx\Model\Article as Model_Article;
 use \App\Transaction\Html as Transaction_Html;
 
-class Articlecategory extends Front {
+class Articlecategory extends Base {
 
     public $view_path;
 

@@ -8,7 +8,7 @@ use \App\Transaction\Tool as Transaction_Tool;
 use \Zx\View\View;
 use \Zx\Test\Test;
 
-class Tool extends Admin {
+class Tool extends Base {
 
     public function init() {
         $this->view_path = APPLICATION_PATH . 'module/admin/view/tool/';

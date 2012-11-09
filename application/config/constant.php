@@ -16,8 +16,10 @@ define('SYSTEM_PATH', LIBRARY_PATH . 'zx' . DIRECTORY_SEPARATOR);
 define('APPLICATION_PATH', PHP_ROOT . 'application' . DIRECTORY_SEPARATOR);
 
 define('FRONT_VIEW_PATH', APPLICATION_PATH . 'module/front/view' . DIRECTORY_SEPARATOR);
+define('USER_VIEW_PATH', APPLICATION_PATH . 'module/user/view' . DIRECTORY_SEPARATOR);
 define('ADMIN_VIEW_PATH', APPLICATION_PATH . 'module/admin/view' . DIRECTORY_SEPARATOR);
 define('FRONT_HTML_ROOT', HTML_ROOT . 'front/');
+define('USER_HTML_ROOT', HTML_ROOT . 'user/');
 define('ADMIN_HTML_ROOT', HTML_ROOT . 'admin/');
 
 

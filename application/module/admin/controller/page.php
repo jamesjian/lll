@@ -8,7 +8,7 @@ use \App\Transaction\Page as Transaction_Page;
 use \Zx\View\View;
 use \Zx\Test\Test;
 
-class Page extends Admin {
+class Page extends Base {
 
     public function init() {
         $this->view_path = APPLICATION_PATH . 'module/admin/view/page/';

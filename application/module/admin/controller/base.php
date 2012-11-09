@@ -5,7 +5,7 @@ namespace App\Module\Admin\Controller;
 use \Zx\Controller\Route;
 use \Zx\View\View;
 use \App\Transaction\Staff as Transaction_Staff;
-class Admin {
+class Base {
     public $template_path;
 	public $view_path = '';
 	public $params = array();

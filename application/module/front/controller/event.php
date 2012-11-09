@@ -17,7 +17,7 @@ use \App\Model\Articlecategory as Model_Articlecategory;
  * one: /front/article/content/$id/$article_url
  * keyword: /front/article/keyword/$keyword_3
  */
-class Article extends Front {
+class Article extends Base {
 
     public $view_path;
 

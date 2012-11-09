@@ -1,46 +1,18 @@
 <?php
 
-/*
- */
+namespace App\Model;
 
-class Model_User extends Model_Base_User {
+use \App\Model\Base\User as Base_User;
+use \Zx\Model\Mysql;
 
-    public static function get_num_of_previous_records($date) {
-        $where = " date_created<='$date'";
-        return parent::get_num_of_records($where);
-    }
+class User extends Base_User {
 
-    public static function increase_num_of_blog($user_id) {
-        $user = Model_User::get_record($user_id);
-        $user->num_of_blog = $user->num_of_blog + 1;
-        $user->save();
-    }
-
-    public static function decrease_num_of_blog($user_id) {
-        $user = Model_User::get_record($user_id);
-        if ($user->num_of_blog > 0) {
-            $user->num_of_blog = $user->num_of_blog - 1;
-            $user->save();
-        }
-    }
-
-    public static function increase_num_of_message($user_id) {
-        $user = Model_User::get_record($user_id);
-        $user->num_of_message = $user->num_of_message + 1;
-        $user->save();
-    }
-
-    public static function decrease_num_of_message($user_id) {
-        $user = Model_User::get_record($user_id);
-        if ($user->num_of_message > 0) {
-            $user->num_of_message = $user->num_of_message - 1;
-            $user->save();
-        }
-    }
+    
 
     public static function disable_user($user_id) {
-        $arr = array('status' => 'disable');
-        return parent::update_record($user_id, $arr);
+        $sql = 'UPDATE '. parent::$table . ' SET status=0 WHERE id=:id';
+        $params = array(':id' => $user_id);
+        return Mysql::exec($sql, $params);        
     }
 
     /**
@@ -186,17 +158,23 @@ class Model_User extends Model_Base_User {
 
     /**
      * check if user name matches password and enabled in user table
-     * @param <string> $user_name
+     * @param <string> $user_name  can be an email
      * 
      * @param <string> $password
      * @return <boolean> if valid in user table, return true; otherwise return false;
      */
     public static function valid_user($user_name, $password) {
-        $user = ORM::factory(parent::$model_class, array('user_name' => $user_name, 'password' => md5($password), 'status' => 'enable'));
-        if ($user->loaded())
+        $sql = "SELECT *
+            FROM user
+            WHERE (user_name=:name OR email=:name) AND password=:password AND status=1";
+		$params = array(':name'=>$user_name, ':password'=>$password);
+        //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        $user = Mysql::select_one($sql, $params);
+        if ($user) {
             return $user;
-        else
+        } else {
             return false;
+        }
     }
 
     /**

@@ -7,7 +7,7 @@ use \App\Transaction\Pagecategory as Transaction_Pagecategory;
 use \Zx\View\View;
 use \Zx\Test\Test;
 
-class Pagecategory extends Admin {
+class Pagecategory extends Base {
 
     public function init() {
         $this->view_path = APPLICATION_PATH . 'module/admin/view/pagecategory/';

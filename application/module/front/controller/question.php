@@ -1,5 +1,5 @@
 <?php
-
+defined('SYSPATH') or die('No direct script access.');
 namespace App\Module\Front\Controller;
 
 use \Zx\Controller\Route;
@@ -18,7 +18,7 @@ use \App\Model\Tag as Model_Tag;
  * one: /front/question/content/$id/$question_url
  * keyword: /front/question/keyword/$keyword_3
  */
-class Question extends Front {
+class Question extends Base {
 
     public $view_path;
 

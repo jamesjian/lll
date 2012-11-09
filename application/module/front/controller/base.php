@@ -8,7 +8,7 @@ use \Zx\View\View;
 use \App\Model\Article as Model_Article;
 use \App\Model\Articlecategory as Model_Articlecategory;
 
-class Front {
+class Base {
 
     public $template_path = '';
     public $view_path = '';

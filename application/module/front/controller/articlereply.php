@@ -6,7 +6,7 @@ use \Zx\Controller\Route;
 use \Zx\View\View;
 use \Zx\Model\Article as Model_Article;
 
-class Article extends Front {
+class Article extends Base {
 
     public $view_path;
 

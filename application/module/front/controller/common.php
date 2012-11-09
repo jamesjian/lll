@@ -8,7 +8,7 @@ use \App\Model\Articlecategory as Model_Articlecategory;
 use App\Transaction\Html as Transaction_Html;
 use \Zx\View\View;
 
-class Common extends Front {
+class Common extends Base {
 
     public $view_path;
 

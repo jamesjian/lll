@@ -7,7 +7,7 @@ use \App\Transaction\Articlecategory as Transaction_Articlecategory;
 use \Zx\View\View;
 use \Zx\Test\Test;
 
-class Articlecategory extends Admin {
+class Articlecategory extends Base {
 
     public $list_page = '';
 

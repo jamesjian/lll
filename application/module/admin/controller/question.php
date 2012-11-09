@@ -8,7 +8,7 @@ use \App\Transaction\Question as Transaction_Question;
 use \Zx\View\View;
 use \Zx\Test\Test;
 
-class Question extends Admin {
+class Question extends Base {
 
     public $list_page = '';
 

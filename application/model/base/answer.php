@@ -6,13 +6,13 @@ use \Zx\Model\Mysql;
 
 /*
   CREATE TABLE answer (
-  id int(11) AUTO_INCREMENT PRIMARY KEY,
+  id unsigned MEDIUMINT(8) AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
-  user_id int(11) not null 0,
-    user_name varchar(255) not null '',  #user name is fixed
+  user_id unsigned MEDIUMINT(8) not null default 0,
+    user_name varchar(30) not null '',  #user name is fixed
   content text,
-  rank int(11) default 0,
-  status tinyint(1) not null default 1,
+  rank unsigned MEDIUMINT(8) not null default 0,
+  status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */
 
