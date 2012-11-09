@@ -168,20 +168,18 @@ class Tag extends Base_Tag {
         $page_num = ($page_num > 0) ? $page_num : 1;
         switch ($order_by) {
             case 'id':
-            case 'title':
+            case 'name':
             case 'rank':
-            case 'display_order':
             case 'date_created':
-            case 'cat_id':
-                $order_by = 'b.' . $order_by;
+                $order_by = $order_by;
                 break;
             default:
-                $order_by = 'b.date_created';
+                $order_by = 'name';
         }
         $direction = ($direction == 'ASC') ? 'ASC' : 'DESC';
         //$where = '1';
-        $start = ($page_num - 1) * NUM_OF_RECORDS_IN_ADMIN_PAGE;
-        return parent::get_all($where, $start, NUM_OF_RECORDS_IN_ADMIN_PAGE, $order_by, $direction);
+        $start = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
+        return parent::get_all($where, $start, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_tags($where = '1') {

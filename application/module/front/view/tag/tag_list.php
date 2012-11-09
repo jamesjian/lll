@@ -17,7 +17,7 @@
     <div class='zx-front-left2'>
         <?php //find tag ?>
         <form>
-            查找问题类别<input name="tag_name" size="50" />
+            查找问题类别<input name="search" size="50" />
             <input type="submit" value="查找" />
         </form>
         <?php
