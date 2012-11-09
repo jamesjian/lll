@@ -5,36 +5,58 @@ namespace App\Model\Base;
 use \Zx\Model\Mysql;
 
 /*
-  CREATE TABLE article_category (id int(11) AUTO_INCREMENT PRIMARY KEY,
-  title varchar(255) NOT NULL DEFAULT '',
-  description text,
+ * if a tag is disabled, they will be removed from tag_ids and tag_names field in question table  
+  CREATE TABLE tag (
+  id int(11) AUTO_INCREMENT PRIMARY KEY,
+  name varchar(255) NOT NULL DEFAULT '',
+  num_of_questions mediumint(6) default 0,
+  rank int(11) default 0,
   status tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */
 
-class Articlecategory {
-    public static $fields = array('id','title','title_en', 'cat_id',
-        'keyword','keyword_en', 'url',
-        'description', 'display_order', 'status', 'date_created');
-    public static $table = 'article_category';
-    
+class Tag {
+    public static $fields = array('id','name','num_of_questions','rank', 'status', 'date_created');
+    public static $table = 'tag';
+    /**
+     *
+     * @param int $id
+     * @return 1D array or boolean when false 
+     */
     public static function get_one($id) {
         $sql = "SELECT *
-            FROM article_category
-            WHERE id=$id
+            FROM tag 
+            WHERE id=:id
+        ";
+        $params = array(':id' => $id);
+
+
+        return Mysql::select_one($sql, $params);
+    }
+
+    /**
+     *
+     * @param string $where
+     * @return 1D array or boolean when false 
+     */
+    public static function get_one_by_where($where) {
+        $sql = "SELECT *
+            FROM tag 
+            WHERE $where
         ";
         return Mysql::select_one($sql);
     }
 
-    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'title', $direction = 'ASC') {
+    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'b.date_created', $direction = 'DESC') {
         $sql = "SELECT *
-            FROM article_category
+            FROM tag 
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-        $r = Mysql::select_all($sql);
-        return $r;
+//\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
+        return Mysql::select_all($sql);
     }
 
     public static function get_num($where = '1') {
@@ -68,9 +90,14 @@ class Articlecategory {
                 $params[":$field"] = $arr[$field];
             }
         }        
+        
         $update_str = implode(',', $update_arr);
         $sql = 'UPDATE ' .self::$table . ' SET '. $update_str . ' WHERE id=:id';
+        //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $params[':id'] = $id;
+        //$query = Mysql::interpolateQuery($sql, $params);
+        //\Zx\Test\Test::object_log('query', $query, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
         return Mysql::exec($sql, $params);
     }
 

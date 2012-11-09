@@ -18,10 +18,14 @@
         <div class='zx-front-header'>
             <div class='zx-front-logo'>
                 <a href='<?php echo HTML_ROOT; ?>' title='baoxian.com.au'>BAOXIAN.com.au</a>
-
+            </div>
+            <div class="zx-front-search">
+                <form>
+                    <input name="question" size="50" /><input type="submit" value="查找问题" />
+                </form>
             </div>
             <nav class='zx-front-top-menu'>
-                <?php 
+                <?php
                 include 'menu.php';
                 ?>
             </nav>
