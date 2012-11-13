@@ -1,5 +1,5 @@
 <?php
-defined('SYSPATH') or die('No direct script access.');
+defined('SYSTEM_PATH') or die('No direct script access.');
 namespace App\Model\Base;
 
 use \Zx\Model\Mysql;

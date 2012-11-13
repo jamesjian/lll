@@ -1,6 +1,6 @@
 <form action="<?php echo ADMIN_HTML_ROOT . 'page/update'; ?>" method="post">
     <fieldset>
-        <legend>Create a page category</legend>
+        <legend>Create a page </legend>
         <dl>      
             <dt>Title:</dt><dd><input type="text" name="title" size="50" value="<?php echo $page['title']; ?>"/></dd>
             <dt>Content: </dt><dd><textarea cols="10" rows="30" name="content"><?php echo $page['content']; ?></textarea></dd>

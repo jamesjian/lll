@@ -9,6 +9,12 @@ use \Zx\Model\Mysql;
 
 class Question {
 
+    /**
+     * add new tags into tag table 
+     * put tag ids into question table
+     * @param int $arr
+     * @return boolean
+     */
     public static function create_question($arr = array()) {
         if (count($arr) > 0 && 
                 isset($arr['title']) && trim($arr['title'])!='' &&
@@ -17,6 +23,8 @@ class Question {
             if (!isset($arr['rank']))
                 $arr['rank'] = 0; //initialize
             if (Model_Question::create($arr)) {
+                $tags = explode('@', $arr['tag_names']);
+                
                 Message::set_success_message('success');
                 return true;
             } else {

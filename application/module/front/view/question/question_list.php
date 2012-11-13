@@ -1,5 +1,6 @@
 <?php
 /**
+ * this may be our homepage
  * left ads                     tag cloud
  *  article                        right ads
  * related articles                latest

@@ -1,6 +1,8 @@
 <div class='zx-front-left'>			
     <div class='zx-front-left1'>
-        
+        <?php 
+            
+        ?>
     </div>	
 </div>
 <div class='zx-front-right'>

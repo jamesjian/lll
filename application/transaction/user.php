@@ -74,7 +74,7 @@ class User {
             }
         } else {
             if (!empty($image['name'])) {
-                Zx_Message::set_error_message("Image is not valid (not image or too big), contact administrator.");
+                Zx_Message::set_error_message("图片文件过大或不是有效图片，请重新上传。");
             }
         }
         Zx_Message::set_success_message("信息已成功更新.");
@@ -147,18 +147,18 @@ class User {
     }
 
     /**
-     * if has order or thread or fund, cannot delete it
+     * if has question or answer or company, cannot delete it
      * usually a user cannot be deleted
      * @param int $user_id 
      */
     public static function delete_user($user_id) {
-        $user = Model_User::get_one($user_id);
-        if ($user['num_of_questions'] > 0) {
+       
+        if ($Model_User::can_be_deleted($user_id)) {
             Model_User::delete($user_id);
-            Zx_Message::set_success_message("user is deleted successfully.");
+            Zx_Message::set_success_message("删除用户成功.");
             return true;
         } else {
-            Zx_Message::set_success_message("this user has records in the system, cannot delete it.");
+            Zx_Message::set_success_message("用户有相关记录， 不能删除.");
             return false;
         }
     }
@@ -276,28 +276,26 @@ class User {
       2. generate a password automatically
       3. insert a record into user table
       4. send email to user to show password
-      5. update cache tables
      * @param array  $arr =array('user_name'=>$user_name,
       'password'=>$password,
-      'group_id'=>$group_id,
-      'email'=>$email,)
+      'email'=>$email,....)
      */
-    public static function create_registered_user($user_arr) {
+    public static function create_user($user_arr) {
         if (!Model_User::exist_user_name_or_email($user_arr['user_name']) &&
                 !Model_User::exist_user_name_or_email($user_arr['email'])) {
             $user_arr['password'] = App_Tool::generatePassword();
-            if ($user_id = Model_User::create_record($user_arr)) {
-                $user = Model_User::get_record($user_id);
-                App_Swiftmailer::send_new_password($user, $user_arr['password']);
-                //Todo: update cache tables
-                App_Session::set_success_message("user is created successfully.");
+            if ($user_id = Model_User::create($user_arr)) {
+                //$user = Model_User::get_one($user_id);
+                self::change_image($user_id);
+                //App_Swiftmailer::send_new_password($user, $user_arr['password']);
+                Zx_Message::set_success_message("创建用户成功.");
                 return true;
             } else {
-                App_Session::set_error_message("fail to create new user.");
+                Zx_Message::set_error_message("创建用户不成功.");
                 return false;
             }
         } else {
-            App_Session::set_error_message("user name or email has been registered , try again or contact administrator.");
+            Zx_Message::set_error_message("用户名或邮箱已在本网站注册。");
             return false;
         }
     }
@@ -308,10 +306,10 @@ class User {
      * @param array $user_arr
      * @return boolean 
      */
-    public static function update_registered_user($user_id, $user_arr) {
+    public static function update_user($user_id, $user_arr) {
         if (!Model_User::duplicate_user_name_or_email($user_id, $user_arr['user_name']) AND
                 !Model_User::duplicate_user_name_or_email($user_id, $user_arr['email'])) {
-            if (Model_User::update_record($user_id, $user_arr)) {
+            if (Model_User::update($user_id, $user_arr)) {
                 App_Session::set_success_message("用户信息已更新.");
                 return true;
             } else {
@@ -319,7 +317,7 @@ class User {
                 return false;
             }
         } else {
-            App_Session::set_error_message("user name/email is duplicate, try again or contact administrator.");
+            App_Session::set_error_message("用户名或邮箱已在本网站注册。");
             return false;
         }
     }

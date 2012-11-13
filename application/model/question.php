@@ -6,29 +6,7 @@ use \App\Model\Base\Question as Base_Question;
 use \Zx\Model\Mysql;
 
 class Question extends Base_Question {
-    public static function get_all_keywords()
-    {
-        $sql = "SELECT keyword, keyword_en FROM question WHERE status=1";
-        $r = Mysql::select_all($sql);
-        $arr = array();
-        if ($r) {
-            foreach ($r as $record) {
-                $arr_keyword = explode(',', $record['keyword']);
-                foreach ($arr_keyword as $keyword) {
-                    if (trim($keyword) != '' && !in_array($keyword, $arr)) {
-                        $arr[] = $keyword;
-                    }
-                }
-                $arr_keyword = explode(',', $record['keyword_en']);
-                foreach ($arr_keyword as $keyword) {
-                    if (trim($keyword) != '' && !in_array($keyword, $arr)) {
-                        $arr[] = $keyword;
-                    }
-                }                
-            }
-        }
-        return $arr;
-    }
+    
     /**
      * 
      * @param string $url is a unique column in question table
@@ -105,36 +83,36 @@ class Question extends Base_Question {
 
     /**
      */
-    public static function get_active_questions_by_cat_id_and_page_num($cat_id, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = ' b.status=1 AND b.cat_id=' . $cat_id;
+    public static function get_active_questions_by_user_id_and_page_num($user_id, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = ' status=1 AND user_id=' . $user_id;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
-    public static function get_questions_by_cat_id_and_page_num($cat_id, $where = '1', $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = ' (b.status=1 AND b.cat_id=' . $cat_id . ')  AND (' . $where . ')';
-        $offset = ($page_num - 1) * NUM_OF_ARTICLES_IN_CAT_PAGE;
-        return parent::get_all($where, $offset, NUM_OF_ARTICLES_IN_CAT_PAGE, $order_by, $direction);
+    public static function get_questions_by_user_id_and_page_num($user_id, $where = '1', $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = ' (user_id=' . $user_id . ')  AND (' . $where . ')';
+        $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
-    public static function get_num_of_questions_by_cat_id($cat_id, $where = '1') {
-        $where = ' (b.cat_id=' . $cat_id . ')  AND (' . $where . ')';
+    public static function get_num_of_questions_by_user_id($user_id, $where = '1') {
+        $where = ' (user_id=' . $user_id . ')  AND (' . $where . ')';
         return parent::get_num($where);
     }
 
-    public static function get_num_of_active_questions_by_cat_id($cat_id) {
-        $where = ' b.status=1 AND b.cat_id=' . $cat_id;
+    public static function get_num_of_active_questions_by_user_id($user_id) {
+        $where = ' status=1 AND user_id=' . $user_id;
         return parent::get_num($where);
     }
  /**
      */
-    public static function get_active_questions_by_keyword_and_page_num($keyword, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = " b.status=1 AND (b.keyword LIKE '%$keyword%' OR  b.keyword_en LIKE '%$keyword%')" ;
+    public static function get_active_questions_by_tag_and_page_num($tag, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = " status=1 AND tag_names LIKE '%$tag%'" ;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
     public static function get_num_of_active_questions_by_keyword($keyword) {
-        $where = " b.status=1 AND (b.keyword LIKE '%$keyword%' OR  b.keyword_en LIKE '%$keyword%')" ;
+        $where = " status=1 AND  tag_names LIKE '%$tag%'" ;
         return parent::get_num($where);
     }    
     
@@ -163,35 +141,15 @@ class Question extends Base_Question {
         return parent::get_num($where);
     }
 
-    /**
-     * get active cats order by category name
-     */
-    public static function get_all_questions() {
-        return parent::get_all();
-    }
-
-    /**
-     * get active cats order by category name
-     */
-    public static function get_all_active_questions() {
-        $where = 'b.status=1';
-        return parent::get_all($where);
-    }
-
     public static function increase_rank($question_id) {
         $sql = 'UPDATE question SET rank=rank+1 WHERE id=:id';
         $params = array(':id' => $question_id);
         return Mysql::exec($sql, $params);
     }
 
-    public static function get_top10() {
-        $where = ' b.status=1';
-        return parent::get_all($where, 0, 10, 'b.rank', 'DESC');
-    }
-
     public static function get_latest10() {
-        $where = ' b.status=1';
-        return parent::get_all($where, 0, 10, 'b.date_created', 'DESC');
+        $where = ' status=1';
+        return parent::get_all($where, 0, 10, 'date_created', 'DESC');
     }
 
 }
