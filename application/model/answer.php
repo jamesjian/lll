@@ -139,31 +139,28 @@ class Answer extends Base_Answer {
     }
  /**
      */
-    public static function get_active_answers_by_keyword_and_page_num($keyword, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = " b.status=1 AND (b.keyword LIKE '%$keyword%' OR  b.keyword_en LIKE '%$keyword%')" ;
+    public static function get_active_answers_by_user_id_and_page_num($user_id, $where=1, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = " a.status=1 AND a.user_id=$user_id AND ($where)" ;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
-    public static function get_num_of_active_answers_by_keyword($keyword) {
-        $where = " b.status=1 AND (b.keyword LIKE '%$keyword%' OR  b.keyword_en LIKE '%$keyword%')" ;
+    public static function get_num_of_active_answers_by_user_id($user_id, $where=1) {
+        $where = " a.status=1 AND a.user_id=$user_id AND ($where)" ;
+        return parent::get_num($where);
+    }    
+    public static function get_active_answers_by_question_id_and_page_num($question_id, $where=1, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = " a.status=1 AND a.question_id=$question_id AND ($where)" ;
+        $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
+    }
+    public static function get_num_of_active_answers_by_question_id($question_id, $where=1) {
+        $where = " a.status=1 AND a.question_id=$question_id AND ($where)" ;
         return parent::get_num($where);
     }    
     
     public static function get_answers_by_page_num($where = '1', $page_num = 1, $order_by = 'id', $direction = 'ASC') {
         $page_num = intval($page_num);
         $page_num = ($page_num > 0) ? $page_num : 1;
-        switch ($order_by) {
-            case 'id':
-            case 'title':
-            case 'rank':
-            case 'display_order':
-            case 'date_created':
-            case 'cat_id':
-                $order_by = 'b.' . $order_by;
-                break;
-            default:
-                $order_by = 'b.date_created';
-        }
         $direction = ($direction == 'ASC') ? 'ASC' : 'DESC';
         //$where = '1';
         $start = ($page_num - 1) * NUM_OF_RECORDS_IN_ADMIN_PAGE;

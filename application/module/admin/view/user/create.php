@@ -1,6 +1,6 @@
 <?php
 use \Zx\Message\Message as Zx_Message;
-Zx_Message_Message::show_message();
+Zx_Message::show_message();
 ?>
 <form action="<?php echo ADMIN_HTML_ROOT . 'user/create'; ?>" method="post">
     <fieldset>

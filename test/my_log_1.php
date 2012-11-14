@@ -227,6 +227,54 @@ admin
         answer question
     3.     
         
+        
+        
+        
+        
+        1. create question user
+        2. create question under this user id (enter user id)
+        3. create answer user
+        4. create answer under this question id and answer user id  (enter question id and user id)
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
        
     
     

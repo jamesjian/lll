@@ -34,8 +34,6 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
     foreach ($question_list as $question) {
 	$question_id = $question['id'];
 	$link_delete = ADMIN_HTML_ROOT . 'question/delete/' . $question_id;
-	$link_answers = ADMIN_HTML_ROOT . 'answer/retrive_by_question_id/' . $question_id;
-	$link_new_answer = ADMIN_HTML_ROOT . 'answer/create/' . $question_id;
 	$link_update = ADMIN_HTML_ROOT . 'question/update/' . $question_id;
 ?>
 <tr>
@@ -46,8 +44,6 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	<td><?php echo $question['user_name'];?></td>
         <td><?php echo $question['status'];?></td>
 	<td><a href='<?php echo $link_delete;?>' class="delete_question">delete</a></td>
-	<td><a href='<?php echo $link_answers;?>'>Answers</a></td>
-	<td><a href='<?php echo $link_new_answer;?>'>New Answer</a></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
 </tr>
 <?php

@@ -267,6 +267,16 @@ class User extends Base_User {
     public static function get_num_of_pages() {
         return parent::get_num();
     }
+ public static function get_active_users_by_page_num($page_num = 1, $order_by = 'rank', $direction = 'ASC') {
+        $where = ' status=1 ';
+        $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
+    }
+
+    public static function get_num_of_active_users($where = '1') {
+        $where = " status=1  AND ($where)";
+        return parent::get_num();
+    }
 
 }
 

@@ -23,10 +23,10 @@
             ?>
             <ul>
                 <?php
-                foreach ($questions as $question) {
-                    $link = FRONT_HTML_ROOT . 'question/detail/' . $question['id'];
+                foreach ($answers as $answer) {
+                    $link = FRONT_HTML_ROOT . 'question/detail/' . $answer['question_id'];
                     ?>
-                        <li><a href='<?php echo $link;?>'><?php echo $question['title'];?></a></li>
+                        <li><a href='<?php echo $link;?>'><?php echo $answer['title'];?></a></li>
                         <?php
                 }//foreach
                 ?>

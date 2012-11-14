@@ -25,6 +25,9 @@ $link_email = $link_prefix . 'email' . $link_postfix;
     foreach ($user_list as $user) {
 	$user_id = $user['id'];
 	$link_delete = ADMIN_HTML_ROOT . 'user/delete/' . $user_id;
+	$link_questions = ADMIN_HTML_ROOT . 'question/retrieve_by_user_id/' . $user_id; 
+	$link_answers = ADMIN_HTML_ROOT . 'question/retrieve_by_user_id/' . $user_id;  
+	$link_new_question = ADMIN_HTML_ROOT . 'question/create/' . $user_id;  //create a create by user id
 	$link_update = ADMIN_HTML_ROOT . 'user/update/' . $user_id;
 ?>
 <tr>
@@ -32,6 +35,9 @@ $link_email = $link_prefix . 'email' . $link_postfix;
 	<td><?php echo $user['user_name'];?></td>
 	<td><?php echo $user['email'];?></td>
 	<td><a href='<?php echo $link_delete;?>' class="delete_user">delete</a></td>
+	<td><a href='<?php echo $link_questions;?>'>questions</a></td>
+	<td><a href='<?php echo $link_answers;?>'>answers</a></td>
+	<td><a href='<?php echo $link_new_question;?>'>new question</a></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
 </tr>
 <?php

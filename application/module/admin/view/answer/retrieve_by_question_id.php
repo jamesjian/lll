@@ -1,11 +1,11 @@
 <?php
-\Zx\Message\Message::show_message();
 include 'search.php';
-//no create link in this page, create link is in retrieve_by_user_id page, must have valid user id
+$create_link = ADMIN_HTML_ROOT . 'answer/create/' . $question_id;
 ?>
+<a href="<?php echo $create_link;?>">Create</a>
 <?php
-if ($question_list) {
-$link_prefix = ADMIN_HTML_ROOT . "question/retrieve/$current_page/";
+if ($answer_list) {
+$link_prefix = ADMIN_HTML_ROOT . "answer/retrieve_by_question_id/$question_id/$current_page/";
 $next_direction = ($direction == 'ASC') ? 'DESC' : 'ASC';  //change direction
 $link_postfix =  "/$next_direction/$search";
 $link_id = $link_prefix . 'id' . $link_postfix;
@@ -23,31 +23,29 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <th><a href='<?php echo $link_id;?>'>id</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_title;?>'>title</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_tag_names;?>'>tags</a><img src="<?php echo $direction_img;?>" /></th>
+<th>Content</th>
 <th><a href='<?php echo $link_rank;?>'>rank</a><img src="<?php echo $direction_img;?>" /></th>
-<th><a href='<?php echo $link_user_name;?>'>category</a><img src="<?php echo $direction_img;?>" /></th>
+<th><a href='<?php echo $link_user_name;?>'>user</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_status;?>'>status</a><img src="<?php echo $direction_img;?>" /></th>
 <th>delete</th>
 <th>update</th>
 </tr>
 
 <?php
-    foreach ($question_list as $question) {
-	$question_id = $question['id'];
-	$link_delete = ADMIN_HTML_ROOT . 'question/delete/' . $question_id;
-	$link_answers = ADMIN_HTML_ROOT . 'answer/retrive_by_question_id/' . $question_id;
-	$link_new_answer = ADMIN_HTML_ROOT . 'answer/create/' . $question_id;
-	$link_update = ADMIN_HTML_ROOT . 'question/update/' . $question_id;
+    foreach ($answer_list as $answer) {
+	$answer_id = $answer['id'];
+	$link_delete = ADMIN_HTML_ROOT . 'answer/delete/' . $answer_id;
+	$link_update = ADMIN_HTML_ROOT . 'answer/update/' . $answer_id;
 ?>
 <tr>
-	<td><?php echo $question['id'];?></td>
-	<td><?php echo $question['title'];?></td>
-	<td><?php echo $question['tag_names'];?></td>
-	<td><?php echo $question['rank'];?></td>
-	<td><?php echo $question['user_name'];?></td>
-        <td><?php echo $question['status'];?></td>
-	<td><a href='<?php echo $link_delete;?>' class="delete_question">delete</a></td>
-	<td><a href='<?php echo $link_answers;?>'>Answers</a></td>
-	<td><a href='<?php echo $link_new_answer;?>'>New Answer</a></td>
+	<td><?php echo $answer['id'];?></td>
+	<td><?php echo $answer['title'];?></td>
+	<td><?php echo $answer['tag_names'];?></td>
+	<td><?php echo mb_substr($answer['content'], 0, 50, 'UTF-8');?></td>
+	<td><?php echo $answer['rank'];?></td>
+	<td><?php echo $answer['user_name'];?></td>
+        <td><?php echo $answer['status'];?></td>
+	<td><a href='<?php echo $link_delete;?>' class="delete_answer">delete</a></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
 </tr>
 <?php
@@ -55,7 +53,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	?>
 	</table>
 <?php
-$link_prefix = ADMIN_HTML_ROOT . 'question/retrieve/';	
+$link_prefix = ADMIN_HTML_ROOT . 'answer/retrieve_by_question_id/' . $question_id;	
 $link_postfix = "/$order_by/$direction/$search";
 include ADMIN_VIEW_PATH . 'templates/pagination.php';
 } else {

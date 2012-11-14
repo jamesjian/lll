@@ -5,8 +5,6 @@ use \Zx\Controller\Route;
 use \Zx\View\View;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
-use \App\Model\Answer as Model_Answer;
-use \App\Transaction\Answer as Transaction_Answer;
 use \App\Model\Question as Model_Question;
 
 
@@ -23,7 +21,15 @@ class Question extends User {
     public $view_path;
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/front/view/answer/';
+        $this->view_path = APPLICATION_PATH . 'module/user/view/question/';
         parent::init();
     }
+    /**
+     * only my questions
+     * pagination
+     */
+    public function my_questions()
+    {
+        
+    }    
 }

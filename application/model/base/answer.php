@@ -7,7 +7,7 @@ use \Zx\Model\Mysql;
 /*
   CREATE TABLE answer (
   id unsigned MEDIUMINT(8) AUTO_INCREMENT PRIMARY KEY,
-  title varchar(255) NOT NULL DEFAULT '',
+  question_id unsigned MEDIUMINT(8) not null default 0,
   user_id unsigned MEDIUMINT(8) not null default 0,
     user_name varchar(30) not null '',  #user name is fixed
   content text,
@@ -17,7 +17,7 @@ use \Zx\Model\Mysql;
  */
 
 class Answer {
-    public static $fields = array('id','title','user_id', 'user_name',
+    public static $fields = array('id','user_id', 'user_name',
         'content', 'rank', 'status', 'date_created');
     public static $table = 'answer';
     /**
@@ -26,8 +26,9 @@ class Answer {
      * @return 1D array or boolean when false 
      */
     public static function get_one($id) {
-        $sql = "SELECT *
-            FROM answer 
+        $sql = "SELECT a.*, q.title, q.tag_names
+            FROM answer a
+            LEFT JOIN question q ON q.id=a.question_id
             WHERE id=:id
         ";
         $params = array(':id' => $id);
@@ -42,16 +43,18 @@ class Answer {
      * @return 1D array or boolean when false 
      */
     public static function get_one_by_where($where) {
-        $sql = "SELECT *
-            FROM answer 
+        $sql = "SELECT a.*, q.title, q.tag_names
+            FROM answer a
+            LEFT JOIN question q ON q.id=a.question_id
             WHERE $where
         ";
         return Mysql::select_one($sql);
     }
 
-    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'b.date_created', $direction = 'DESC') {
-        $sql = "SELECT *
-            FROM answer 
+    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
+        $sql = "SELECT a.*, q.title, q.tag_names
+            FROM answer a
+            LEFT JOIN question q ON q.id=a.question_id
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
