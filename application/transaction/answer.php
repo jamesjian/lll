@@ -15,7 +15,9 @@ class Answer {
                 ) {
             if (!isset($arr['rank']))
                 $arr['rank'] = 0; //initialize
+            
             if (Model_Answer::create($arr)) {
+                Model_User::increase_num_of_answers($arr['user_id']);
                 Message::set_success_message('success');
                 return true;
             } else {
@@ -27,7 +29,13 @@ class Answer {
             return false;
         }
     }
-
+    /**
+     * user id is not from session, it's from form
+     */
+    public static function create_answer_by_admin($arr = array())
+    {
+        
+    }
     public static function update_answer($id, $arr) {
         //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 

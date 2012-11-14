@@ -8,7 +8,16 @@ use \Zx\Test\Test;
 
 class User extends Base_User {
 
-
+    public static function increase_num_of_questions($user_id) {
+        $sql = 'UPDATE user SET num_of_questions=num_of_questions+1 WHERE id=:id';
+        $params = array(':id' => $user_id);
+        return Mysql::exec($sql, $params);
+    }
+    public static function increase_num_of_answers($user_id) {
+        $sql = 'UPDATE user SET num_of_answers=num_of_answers+1 WHERE id=:id';
+        $params = array(':id' => $user_id);
+        return Mysql::exec($sql, $params);
+    }
 
     public static function disable_user($user_id) {
         $arr['status'] = 0;

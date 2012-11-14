@@ -66,6 +66,7 @@ class Question extends Base {
         }
     }
 
+    /** only admin has permission to delete or update the questions */
     public function delete() {
         $id = $this->params[0];
         Transaction_Question::delete_question($id);

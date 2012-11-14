@@ -37,6 +37,7 @@ class Question {
             $arr['tag_ids'] = $tag_ids;
             if (Model_Question::create($arr)) {
                 Message::set_success_message('success');
+                Model_User::increase_num_of_questions($arr['user_id']);
                 return true;
             } else {
                 Message::set_error_message('fail');
@@ -47,7 +48,7 @@ class Question {
             return false;
         }
     }
-
+    
     /**
      *      * for admin to create a question, an answer, question user and answer user in one step
       1. create question user if user name not exists

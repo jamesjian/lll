@@ -147,6 +147,7 @@ class Question extends Base_Question {
         return Mysql::exec($sql, $params);
     }
 
+
     public static function get_latest10() {
         $where = ' status=1';
         return parent::get_all($where, 0, 10, 'date_created', 'DESC');

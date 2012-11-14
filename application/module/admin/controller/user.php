@@ -17,7 +17,26 @@ class User extends Base {
         \App\Transaction\Session::set_ck_upload_path('user');
         parent::init();
     }
-
+    /**
+     * for ajax
+     */
+    public function change_user_status() {
+        //App_Test::objectLog('pp_product',$_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        
+        $changed = false;
+        if ($valid) {
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+            $status = isset($_POST['status']) ? trim($_POST['status']) : '';
+            if ($user_id > 0 AND ($status == 'enable' OR $status == 'disable')) {
+                if (App_Registereduser::change_status($user_id, $status)) {
+                    $changed = true;
+                }
+            }
+        }
+        $view = View::factory($this->view_path . 'change_status');
+        $view->set('changed', $changed);
+        $this->ajax_view($view);
+    }
     /**
      * for admin to create a user, an answer, user user and answer user in one step
      */

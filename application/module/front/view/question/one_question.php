@@ -63,6 +63,16 @@ foreach ($answers as $answer) {
 }
 ?>
     </div>
+    <div class="zx-front-left4">
+        <?php
+        if (Transaction_User::get_user_id()>0) {
+            //must have permission to answer a question
+            include FRONT_VIEW_PATH . 'answer/create.php';
+        } else {
+            include FRONT_VIEW_PATH . 'user/popup_login_link.php';
+        }
+        ?>
+    </div>
 </div>
 <div class='zx-front-right'>
     <div class='zx-front-right1'>

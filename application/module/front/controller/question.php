@@ -40,7 +40,7 @@ class Question extends Base {
         if ($question) {
             
             $home_url = HTML_ROOT;
-            
+            Transaction_Session::remember_current_page();  //after reply this question, return back to this page
             Transaction_Html::set_title($question['title']);
             Transaction_Html::set_keyword($question['keyword'] . ',' . $question['title'] . str_replace('#',',', $question['tag_names']));
             Transaction_Html::set_description($question['title']);
@@ -194,6 +194,50 @@ class Question extends Base {
         View::set_action_var('questions', $questions);
         View::set_action_var('current_page', $current_page);
         View::set_action_var('num_of_pages', $num_of_pages);
+    }
+ /**
+     * must have user id, title, content and tag
+     */
+    public function create() {
+        $success = false;
+        if (isset($_POST['submit']) && 
+                isset($_POST['user_id']) && 
+                isset($_POST['title']) && 
+                isset($_POST['content']) && 
+                isset($_POST['tag_names'])) {
+            $title = isset($_POST['title']) ? trim($_POST['title']) : '';
+            $tag_names = isset($_POST['tag_names']) ? trim($_POST['tag_names']) : '';
+            $content = isset($_POST['content']) ? trim($_POST['content']) : '';
+            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 1;
+            $rank = isset($_POST['rank']) ? intval($_POST['rank']) : 0;
+            $status = isset($_POST['status']) ? intval($_POST['status']) : 1;
+
+            if ($title <> '') {
+                $arr = array('title' => $title,
+                    'tag_names' => $tag_names,
+                    'content' => $content,
+                    'rank' => $rank,
+                    'status' => $status,
+                    'user_id' => $user_id);
+                if (Transaction_Question::create_question($arr)) {
+                    $success = true;
+                }
+            }
+        } else {
+            $user_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
+            if (!Model_User::exist_user_id($user_id)){
+                Message::set_error_message('无效用户ID。');
+                header('Location: ' . $this->list_page);
+            } else {
+                Message::set_error_message('user id, title, content, tag can not be empty。');
+            }
+        }
+        if ($success) {
+            header('Location: ' . $this->list_page);
+        } else {
+            View::set_view_file($this->view_path . 'create.php');
+            View::set_action_var('user_id', $user_id);
+        }
     }
 
 }
