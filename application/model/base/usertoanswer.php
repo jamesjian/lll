@@ -1,56 +1,52 @@
 <?php
-
 namespace App\Model\Base;
 
 use \Zx\Model\Mysql;
 
 /*
- * if a tag is disabled, they will be removed from tag_ids and tag_names field in question table  
-  CREATE TABLE tag (
-  id int(11) AUTO_INCREMENT PRIMARY KEY,
-  name varchar(255) NOT NULL DEFAULT '',
-  num_of_questions mediumint(6) default 0,
-  num_of_ads mediumint(6) default 0,
-  rank int(11) default 0,
-  status tinyint(1) not null default 1,
-  date_created datetime) engine=innodb default charset=utf8
- */
-
-class Tag {
-    public static $fields = array('id','name','num_of_questions','num_of_ads','rank', 'status', 'date_created');
-    public static $table = 'tag';
-    /**
+this one is for user vote answer, when user vote answer, it will be recorded here
+prevent one user vote one answer multiple times
+  CREATE TABLE usertoanswer (
+  user_id int(11) not null 0,
+  answer_id int(11) not null 0
+   primary key (user_id, answer_id)
+ } engine=innodb default charset=utf8
+*/
+class Usertoanswer {
+    public static $fields = array('user_id','answer_id');
+    public static $table = 'user_to_answer';
+     /**
      *
-     * @param int $id
+     * @param int $user_id and $answer_id is a composite primary key
      * @return 1D array or boolean when false 
      */
-    public static function get_one($id) {
+    public static function get_one($user_id, $answer_id) {
         $sql = "SELECT *
-            FROM tag 
-            WHERE id=:id
+            FROM user_to_answer 
+            WHERE user_id=:user_id AND answer_id=:answer_id
         ";
-        $params = array(':id' => $id);
-
-
+        $params = array(':user_id' => $user_id,
+            ':answer_id'=> $answer_id
+            );
         return Mysql::select_one($sql, $params);
     }
 
     /**
-     *
+     
      * @param string $where
      * @return 1D array or boolean when false 
      */
     public static function get_one_by_where($where) {
         $sql = "SELECT *
-            FROM tag 
+            FROM user_to_answer 
             WHERE $where
         ";
         return Mysql::select_one($sql);
     }
 
-    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'b.date_created', $direction = 'DESC') {
+    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
         $sql = "SELECT *
-            FROM tag 
+            FROM ad 
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count

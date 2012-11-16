@@ -44,6 +44,8 @@ class Tag extends Base_Tag {
         return $arr;
     }
     /**
+
+     * 
      * 
      * @param string $url is a unique column in tag table
      */
@@ -169,12 +171,14 @@ class Tag extends Base_Tag {
         switch ($order_by) {
             case 'id':
             case 'name':
+            case 'num_of_questions':
+            case 'num_of_ads':
             case 'rank':
             case 'date_created':
                 $order_by = $order_by;
                 break;
             default:
-                $order_by = 'name';
+                $order_by = 'id';
         }
         $direction = ($direction == 'ASC') ? 'ASC' : 'DESC';
         //$where = '1';
