@@ -11,7 +11,7 @@ use App\Transaction\Html as Transaction_Html;
 use App\Transaction\User as Transaction_User;
 use \App\Model\Answer as Model_Answer;
 
-/**
+/** 
  * homepage: /=>/front/question/latest/page/1
  * latest: /front/question/latest/page/3
  * most popular:/front/question/most_popular/page/3

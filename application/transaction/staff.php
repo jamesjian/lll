@@ -16,7 +16,7 @@ class Staff {
         }
     }
     /**
-     * only for staff group id=1
+     * only for staff 
      * @param string $staff_name
      * @param string $staff_password
      * @return  boolean

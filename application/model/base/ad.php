@@ -18,7 +18,7 @@ use \Zx\Model\Mysql;
   status tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
 */
-class Page {
+class Ad {
     public static $fields = array('id','title','user_id','user_name',
         'tag_ids','tag_names','content', 'num_of_displays','num_of_clicks',
           'status', 'date_created');

@@ -6,11 +6,11 @@ use \Zx\Model\Mysql;
 /*
 CREATE TABLE staff (name varchar(255) PRIMARY KEY,
 password varchar(32) NOT NULL DEFAULT '',
-group_id int(11) NOT NULL DEFAULT 1
 ) engine=innodb default charset=utf8
 */
 class Staff {
-
+    public static $fields = array('name','password');
+    public static $table = 'staff';
     public static function get_one($id) {
         $sql = "SELECT *
             FROM staff
