@@ -9,6 +9,11 @@ if (PHP_SAPI === 'cgi-fcgi') {
     define('SERVER_NAME', $_SERVER['SERVER_NAME']);
 }
 include 'constant_db.php';
+//session table is controlled by library, it's without TABLE_PREFIX
+$tables = array('ad','answer', 'article', 'article_category', 'cache', 'question', 'staff', 'user_to_answer');
+foreach ($tables as $table) {
+    define('TABLE_' . strtoupper($table), TABLE_PREFIX . $table);  //TABLE_PREFIX is defined in constant_db.php
+}
 
 define('HTML_ROOT', 'http://' . SERVER_NAME . URL_PREFIX);
 define('LIBRARY_PATH', dirname(PHP_ROOT) . DIRECTORY_SEPARATOR . 'library' . DIRECTORY_SEPARATOR);
