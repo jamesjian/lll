@@ -22,7 +22,8 @@ class Ad {
     public static $fields = array('id','title','user_id','user_name',
         'tag_ids','tag_names','content', 'num_of_displays','num_of_clicks',
           'status', 'date_created');
-    public static $table = 'ad';
+    public static $table = TABLE_AD;
+    
      /**
      *
      * @param int $id
@@ -30,9 +31,8 @@ class Ad {
      */
     public static function get_one($id) {
         $sql = "SELECT *
-            FROM ad 
-            WHERE id=:id
-        ";
+            FROM " . self::$table .  
+           " WHERE id=:id";
         $params = array(':id' => $id);
 
 
@@ -46,16 +46,16 @@ class Ad {
      */
     public static function get_one_by_where($where) {
         $sql = "SELECT *
-            FROM ad 
-            WHERE $where
+            FROM " . self::$table .  
+           " WHERE $where
         ";
         return Mysql::select_one($sql);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
         $sql = "SELECT *
-            FROM ad 
-            WHERE $where
+            FROM " . self::$table .  
+           " WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
