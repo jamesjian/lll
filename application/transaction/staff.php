@@ -28,9 +28,13 @@ class Staff {
             $_SESSION['staff'] = array(
                 'staff_name' => $staff_name,
             );
+//
+//             \Zx\Test\Test::object_log('$_SESSION', $_SESSION, __FILE__, __LINE__, __CLASS__, __METHOD__);
             return true;
         } else {
             //error message
+        //                 \Zx\Test\Test::object_log('verify', 'false', __FILE__, __LINE__, __CLASS__, __METHOD__);
+
             Message::set_error_message('staff name or password is wrong');
             return false;
         }

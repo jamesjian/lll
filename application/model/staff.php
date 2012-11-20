@@ -14,15 +14,19 @@ class Staff extends Base_Staff {
      */
     public static function verify_staff($staff_name, $staff_password) {
 
-        $sql = "SELECT *
-            FROM staff
-            WHERE name=:name AND password=:password AND group_id=1";
+        $sql = "SELECT * FROM " . parent::$table . 
+            " WHERE name=:name AND password=:password";
 		$params = array(':name'=>$staff_name, ':password'=>$staff_password);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+ //$query = Mysql::interpolateQuery($sql, $params);
+   //     \Zx\Test\Test::object_log('query', $query, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                
         $staff = Mysql::select_one($sql, $params);
         if ($staff) {
+     //       \Zx\Test\Test::object_log('query', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
             return $staff['name'];
         } else {
+       //     \Zx\Test\Test::object_log('query', 'false', __FILE__, __LINE__, __CLASS__, __METHOD__);
             return false;
         }
     }

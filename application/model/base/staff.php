@@ -10,7 +10,7 @@ password varchar(32) NOT NULL DEFAULT '',
 */
 class Staff {
     public static $fields = array('name','password');
-    public static $table = 'staff';
+    public static $table = TABLE_STAFF;
     public static function get_one($id) {
         $sql = "SELECT *
             FROM staff

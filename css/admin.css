@@ -25,10 +25,17 @@ nav ul{
     list-style-type: none;
 }
 nav ul li{
-    display: inline;
     text-decoration: none;
+    float: left;
 }
 nav ul li a{
     color: black;
-    background-color: white;
+    text-decoration: none;
+}
+
+nav#zx-admin-top-menu1 li{
+    border: 1px black solid;
+    margin: 5px 1px 1px 5px;
+    color: black;
+    background-color: silver;
 }

@@ -15,7 +15,7 @@ class Staff extends Base {
   
     public function login()
     {
-        //Test::object_log('$_POST', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        Test::object_log('$_POST', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $login = false;
         if (Transaction_Staff::staff_has_loggedin()) {
             $login = true;
@@ -25,6 +25,7 @@ class Staff extends Base {
             $staff_name = (isset($_POST['staff_name'])) ?  trim($_POST['staff_name']) : '';
             $staff_password = (isset($_POST['staff_password'])) ?  trim($_POST['staff_password']) : '';
             if (Transaction_Staff::verify_staff($staff_name, $staff_password)) {
+                           //  \Zx\Test\Test::object_log('login', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
                 $login = true;
             }
         }
@@ -33,6 +34,7 @@ class Staff extends Base {
                 //redirect to admin home page
             header('Location: '.HTML_ROOT . 'admin/staff/home');
         } else {
+                         //\Zx\Test\Test::object_log('login', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
             View::set_view_file($this->view_path . 'login.php');
         }
     }
