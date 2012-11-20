@@ -3,9 +3,9 @@
 namespace App\Transaction;
 
 class Html {
-    static $title = ' -- 帮助您全面了解澳大利亚保险行业';
-    static $keyword = '澳大利亚保险, 澳洲保险';
-    static $description = '澳大利亚保险 澳洲保险';
+    static $title = ' -- 问答';
+    static $keyword = '问答';
+    static $description = '问答';
     public static function set_title($title)
     {
         self::$title = $title . self::$title;

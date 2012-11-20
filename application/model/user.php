@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Model;
+defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\User as Base_User;
 use \Zx\Model\Mysql;
@@ -160,7 +160,7 @@ class User extends Base_User {
      * @param <string> $password is md5 value
      * @return <boolean> if valid in user table, return true; otherwise return false;
      */
-    public static function valid_user($user_name, $password) {
+    public static function verify_user($user_name, $password) {
         
         $sql = "SELECT *
             FROM user

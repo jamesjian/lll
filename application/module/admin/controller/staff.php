@@ -1,6 +1,6 @@
 <?php
 namespace App\Module\Admin\Controller;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\View\View;
 use \Zx\Test\Test;
 use \App\Transaction\Staff as Transaction_Staff;

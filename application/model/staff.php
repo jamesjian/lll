@@ -1,5 +1,7 @@
 <?php
 namespace App\Model;
+defined('SYSTEM_PATH') or die('No direct script access.');
+
 use \Zx\Test\Test;
 use \App\Model\Base\Staff as Base_Staff;
 use \Zx\Model\Mysql;

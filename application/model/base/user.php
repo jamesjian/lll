@@ -22,7 +22,7 @@ class User {
 
     public static $fields = array('id', 'user_name', 'password', 'email',
         'image', 'rank', 'status', 'date_created');
-    public static $table = 'user';
+    public static $table = TABLE_USER;
 
     public static function get_one($id) {
         $sql = "SELECT *

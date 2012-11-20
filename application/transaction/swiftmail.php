@@ -48,10 +48,10 @@ class Swiftmail {
         mail('james.hang@amtek.com.au', 'My Subject', $message);
         //simplest mail ends
         //pdf starts
-        defined('APPLICATION_PATH')
-                || define('APPLICATION_PATH', realpath(dirname(__FILE__)) . '/vcgr3/application/vendor/');
+        defined('APPLICATION_PATH1')
+                || define('APPLICATION_PATH1', realpath(dirname(__FILE__)) . '//application/vendor/');
         set_include_path(implode(PATH_SEPARATOR, array(
-                    APPLICATION_PATH, get_include_path(),
+                    APPLICATION_PATH1, get_include_path(),
                 )));
         require_once 'Zend/Loader/Autoloader.php';
         Zend_Loader_Autoloader::getInstance();

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Module\Front\Controller;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Controller\Route;
 use \Zx\View\View;
 use App\Transaction\Session as Transaction_Session;

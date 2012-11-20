@@ -1,5 +1,6 @@
 <?php
-defined('SYSPATH') or die('No direct script access.');
+namespace App\Transaction;
+defined('SYSTEM_PATH') or die('No direct script access.');
 /**
  * cache, can use file or database 
  *CREATE TABLE IF NOT EXISTS `cache` (
@@ -30,7 +31,7 @@ defined('SYSPATH') or die('No direct script access.');
  * exists and it is "false"
  */
 
-class App_Cache
+class Cache
 {
     
     /**

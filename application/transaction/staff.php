@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Transaction;
+defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Staff as Model_Staff;
 use \Zx\Message\Message;

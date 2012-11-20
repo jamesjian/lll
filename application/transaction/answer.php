@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Transaction;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Answer as Model_Answer;
 use \Zx\Message\Message;
 use \Zx\Model\Mysql;
