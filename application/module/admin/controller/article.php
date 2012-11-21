@@ -67,7 +67,7 @@ class Article extends Base {
         $success = false;
         if (isset($_POST['submit']) && isset($_POST['id'])) {
             $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-            \Zx\Test\Test::object_log('id', $id, __FILE__, __LINE__, __CLASS__, __METHOD__);
+            //\Zx\Test\Test::object_log('id', $id, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $arr = array();
             if ($id <> 0) {
                 if (isset($_POST['title']))

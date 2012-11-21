@@ -1,10 +1,12 @@
 <?php
-namespace App\Transaction;
-defined('SYSTEM_PATH') or die('No direct script access.');
 
+namespace App\Transaction;
+
+defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\User as Model_User;
 use \App\Transaction\Swiftmail as Transaction_Swiftmail;
+use \App\Transaction\Tool as Transaction_Tool;
 use \Zx\Message\Message as Zx_Message;
 use \Zx\Tool\Upload as Zx_Upload;
 
@@ -150,7 +152,7 @@ class User {
      * @param int $user_id 
      */
     public static function delete_user($user_id) {
-       
+
         if ($Model_User::can_be_deleted($user_id)) {
             Model_User::delete($user_id);
             Zx_Message::set_success_message("删除用户成功.");
@@ -167,22 +169,22 @@ class User {
      * @return type 
      */
     public static function register_user($user_arr) {
-        if (!Model_User::exist_user_name($user_arr['user_name']) AND
-                !Model_User::exist_email($user_arr['email'])
+        if (Model_User::exist_user_name($user_arr['user_name']) ||
+                Model_User::exist_email($user_arr['email'])
         ) {
-            $user_arr['status'] = 2; //registered status is 2
+            Zx_Message::set_error_message("用户名或电子邮箱已经被注册， 请用其他用户名或电子邮箱注册。");
+            return false;
+        } else {
+            $user_arr['status'] = 1; //activated status is 1, registered status is 2, currently set it to 1 to avoid activate (no email now)
             if ($user_id = Model_User::create($user_arr)) {
                 $user_arr['id'] = $user_id;
                 //App_Swiftmailer::send_activation_link($user_arr);
                 //App_Session::set_success_message("感谢您在fengyunlist.com.au注册， 我们已经发送邮件到您的电子邮箱， 请查看邮件并激活您的账户。 您很快就可以在fengyunlist.com.au上建立生意、 发布广告、 上传产品及发布需求。");
                 return true;
             } else {
-               Zx_Message::set_error_message("您的账户未注册成功， 请重新注册。");
+                Zx_Message::set_error_message("您的账户未注册成功， 请重新注册。");
                 return false;
             }
-        } else {
-            Zx_Message::set_error_message("用户名或电子邮箱已经被注册， 请用其他用户名或电子邮箱注册。");
-            return false;
         }
     }
 
@@ -236,7 +238,7 @@ class User {
             $user_id = Model_User::exist_user_name($name);
         }
         if ($user_id) {
-            $user = Model_User::get_ONE($user_id);
+            $user = Model_User::get_one($user_id);
             if ($user->status == '2') {
 //App_Test::objectLog('success','2', __FILE__, __LINE__, __CLASS__, __METHOD__);
                 //if inactivated, send activation link
@@ -258,6 +260,7 @@ class User {
     }
 
     /**
+     * for admin to create a user
      * when create a user in backend
       1. check user name, email are unique in database
       2. generate a password automatically
@@ -270,7 +273,7 @@ class User {
     public static function create_user($user_arr) {
         if (!Model_User::exist_user_name_or_email($user_arr['user_name']) &&
                 !Model_User::exist_user_name_or_email($user_arr['email'])) {
-            $user_arr['password'] = App_Tool::generatePassword();
+            $user_arr['password'] = Transaction_Tool::generatePassword();
             if ($user_id = Model_User::create($user_arr)) {
                 //$user = Model_User::get_one($user_id);
                 self::change_image($user_id);

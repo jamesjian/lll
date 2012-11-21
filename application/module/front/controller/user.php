@@ -6,7 +6,9 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \Zx\View\View;
 use \Zx\Test\Test;
+use \App\Model\User as Model_User;
 use \App\Transaction\User as Transaction_User;
+use \App\Transaction\Html as Transaction_Html;
 use \Zx\Message\Message as Zx_Message;
 
 class User extends Base {
@@ -14,7 +16,7 @@ class User extends Base {
     public $view_path;
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/user/view/user/';
+        $this->view_path = APPLICATION_PATH . 'module/front/view/user/';
         parent::init();
     }
 
@@ -41,8 +43,10 @@ class User extends Base {
     }
 
     public function logout() {
-        Transaction_User::user_logout();
-        header('Location: ' . FRONT_HTML_ROOT . 'question/latest');
+        if (Transaction_User::has_loggedin()) {
+            Transaction_User::logout();
+        }
+        Transaction_Html::goto_home_page();
     }
 
     public function test() {
@@ -57,30 +61,31 @@ class User extends Base {
         $result = false;
         $message = '';
         $user_name = (isset($_POST['user_name'])) ? trim($_POST['user_name']) : '';
-        \Zx\Test\Test::object_log('$user_name', $user_name, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        $email = (isset($_POST['email'])) ? trim($_POST['email']) : '';
+        //\Zx\Test\Test::object_log('$user_name', $user_name, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if (\Zx\Tool\Valid::alpha_numeric($user_name, true)) {
-            \Zx\Test\Test::object_log('$user_name', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
-
-            //true is utf8
-            if (Model_User::exist_user_name($user_name) || Model_User::exist_email($user_name)) {
+          //  \Zx\Test\Test::object_log('$user_name', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
+            if (Model_User::exist_user_name_or_email($user_name) || Model_User::exist_user_name_or_email($email)) {
+            //                \Zx\Test\Test::object_log('$user_name', '1111', __FILE__, __LINE__, __CLASS__, __METHOD__);
                 $message = "该账户已被注册, 请输入不同的账户名称";
             } else {
+              //              \Zx\Test\Test::object_log('$user_name', '2222', __FILE__, __LINE__, __CLASS__, __METHOD__);
                 $result = true;
                 $message = "该账户未被注册，";
             }
         } else {
             $message = "账户中含有无效字符， 请重新输入";
         }
-        \Zx\Test\Test::object_log('$message', $message, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        View::set_view_file($this->view_path . 'check_account_result');
+        //\Zx\Test\Test::object_log('$message', $message, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        View::set_view_file($this->view_path . 'check_account_result.php');
         View::set_action_var('result', $result);
         View::set_action_var('message', $message);
         View::do_not_use_template(); //ajax
     }
 
     public function register() {
-        \Zx\Test\Test::object_log('$user_name', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
-        \Zx\Test\Test::object_log('$user_name', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('$user_name', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('$user_name', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
         //$user name, $password1, $password2, $email 
         $success = false;
         $errors = array();
@@ -109,14 +114,14 @@ class User extends Base {
             if (Transaction_User::register_user($posted)) {
                 $success = true;
                 $message = "感谢您在" . SITENAME . "注册， 我们已经发送邮件到您的电子邮箱，请查看邮件并激活您的账户。 您很快就可以在fengyunlist.com.au上建立生意、 发布广告、 上传产品及发布需求或进行其他网络推广活动。";
-                View::set_view_file($this->view_path . 'validation_message');
+                View::set_view_file($this->view_path . 'validation_message.php');
                 View::set_action_var('message', $message);
             }
         } elseif (isset($_POST['vcode'])) {
             Zx_Message::set_error_message('您未输入验证码或输入的验证码不正确， 请重新输入');
         }
         if (!$success) {
-            View::set_view_file($this->view_path . 'register');
+            View::set_view_file($this->view_path . 'register.php');
             View::set_action_var('posted', $posted);
             View::set_action_var('errors', $errors);
         }
@@ -131,11 +136,10 @@ class User extends Base {
         $user_id = intval($this->request->param('id', 0));
         $code = $this->request->param('stuff', '');
         if (Transaction_User::activate_user($user_id, $code)) {
-
-            header('Location: ' . HTML_ROOT . 'user/user/home');
+            Transaction_Html::goto_user_home_page();
         } else {
             Zx_Message::set_error_message("对不起， 您的账户未激活成功， 请重新激活， 或点击链接获取新的激活邮件， 或注册一个新账户");
-            View::set_view_file($this->view_path . 'activation_error');
+            View::set_view_file($this->view_path . 'activation_error.php');
         }
     }
 
@@ -147,31 +151,21 @@ class User extends Base {
         $success = false;
         $errors = array();
         $posted = array();
-        if (isset($_POST['name'])) {
-            //AND $_POST['sess'] == App_Session::get_new_form_session()) {
-            $post = Validation::factory($_POST);
-            $post->rule('name', 'not_empty');
-            //name might be email or user name
-            if ($post->check()) {
-                $name = trim($_POST['name']);
-                if (Transaction_User::send_another_activation_link($name)) {
-                    $success = true;
-                    $message = Session::instance()->get('successmessage', '');
-                }
-            } else {
-                $errors = $post->errors('user');
+        if (isset($_POST['name']) && !empty($_POST['name'])) {
+            $name = trim($_POST['name']);
+            if (Transaction_User::send_another_activation_link($name)) {
+                $success = true;
             }
+        } else {
+            Zx_Message::set_error_message('name cannot be empty');
         }
         if (!$success) {
-            //$channel_id = App_Channel::get_current_channel_id();
             //$right_ads = Model_Servicecatrightad::get_right_ads($channel_id); //for right vertical ads
-            $view = View::factory($this->view_path . 'activation_link_form');
-            //$view->set('right_ads', $right_ads);
-            $view->set('posted', $posted);
-            $view->set('errors', $errors);
-            $this->view($view);
+            View::set_view_file($this->view_path . 'activation_link_form.php');
+            View::set_action_var('posted', $posted);
+            View::set_action_var('errors', $errors);
         } else {
-            View::set_view_file($this->view_path . 'validation_message');
+            View::set_view_file($this->view_path . 'validation_message.php');
             View::set_action_var('message', $message);
         }
     }
@@ -183,9 +177,9 @@ class User extends Base {
      */
     public function login_form_ajax() {
         Zx_Message::set_new_SESSID();
-            View::set_view_file($this->view_path . 'login_ajax');
+        View::set_view_file($this->view_path . 'login_ajax');
 
-       View::do_not_use_template(); //ajax
+        View::do_not_use_template(); //ajax
     }
 
     /**
@@ -199,103 +193,73 @@ class User extends Base {
         $posted = array();
 
         //App_Test::objectLog('Session',  App_Session::get_all_session(), __FILE__, __LINE__, __CLASS__, __METHOD__);        
-        if (Transaction_User::has_loggedin()) {
+        if (Transaction_User::user_has_loggedin()) {
             App_Http::goto_my_account_page();
         } else {
             //if not logged in
-            if (isset($_POST['user_name'])) {
-                $post = Validation::factory($_POST);
-                $post->rule('user_name', 'not_empty')
-                        ->rule('password', 'not_empty');
-                if ($post->check()) {
-                    $user_name = $_POST['user_name'];
-                    $password = $_POST['password'];
+            if (isset($_POST['user_name']) && !empty($_POST['user_name']) &&
+                    isset($_POST['password']) && !empty($_POST['password'])
+            ) {
+                $user_name = $_POST['user_name'];
+                $password = $_POST['password'];
 
-                    if (Transaction_User::valid_user($user_name, $password)) {
-                        App_Http::goto_previous_page();
-                    } else {
-                        //if not valid, display form again
-                        //maybe disabled by administrator
-                        Zx_Message::set_error_message("您没有登录成功. 请检查您的用户名和密码, 如果您输入的用户名尚未激活， 请检查您的邮箱并激活用户后， 重新登录。");
-                    }
+                if (Transaction_User::verify_user($user_name, $password)) {
+                    Transaction_Html::goto_user_home_page();
                 } else {
-                    $errors = $post->errors('user');
+                    //if not valid, display form again
+                    //maybe disabled by administrator
+                    Zx_Message::set_error_message("登录失败. 请检查您的用户名和密码, 如果您输入的用户名尚未激活， 请检查您的邮箱并激活用户后， 重新登录。");
                 }
+            } else {
+                $errors = array();
             }
         }
         if (!$success) {
             //if invalid form or have not displayed, display form 
-            $channel_id = App_Channel::get_current_channel_id();
-            $right_ads = Model_Servicecatrightad::get_right_ads($channel_id); //for right vertical ads
-            $view = View::factory($this->view_path . 'login');
-            $view->set('posted', $posted);
-            $view->set('errors', $errors);
-            $view->set('right_ads', $right_ads);
-            $view->set('sess', Zx_Message::set_new_form_session());
-            $this->view($view);
+//            $right_ads = Model_Servicecatrightad::get_right_ads($channel_id); //for right vertical ads
+            View::set_view_file($this->view_path . 'login.php');
+            View::set_action_var('posted', $posted);
+            View::set_action_var('errors', $errors);
         }
-    }
-
-    public function logout() {
-        if (Transaction_User::has_loggedin()) {
-            Transaction_User::logout();
-        }
-        App_Http::goto_home_page();
     }
 
     public function forgotten_password() {
         //App_Test::objectLog('$_POST',$_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        App_Test::allSessionLog(__FILE__, __LINE__, __CLASS__, __METHOD__);
         $success = false;
         $errors = array();
         $posted = array();
-        if (isset($_POST['sess']) AND $_POST['sess'] == App_Session::get_new_form_session()) {
-            $post = Validation::factory($_POST);
-            $post->rule('email', 'not_empty');
-
-            // App_Test::objectLog('$posted',$posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            if ($post->check()) {
-                $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-                $posted = array(
-                    'email' => $email,
-                );
-                if (Transaction_User::generate_new_password($email)) {
-                    App_Http::goto_password_sent_page(); // back to login page
-                }
-            } else {
-                $errors = $post->errors('user');
+        if (isset($_POST['email']) && !empty($_POST['email'])) {
+            $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+            $posted = array(
+                'email' => $email,
+            );
+            if (Transaction_User::generate_new_password($email)) {
+                Transaction_Html::goto_password_sent_page(); // back to login page
             }
-        }//else CSRF
+        } else {
+            $errors = array();
+        }
         //$right_ads = Model_Homepagerightad::get_right_ads();  //for right vertical ads
-        $view = View::factory($this->view_path . 'forgotten_password');
-        $view->set('posted', $posted);
-        $view->set('errors', $errors);
-        //$view->set('right_ads', $right_ads);
-        $view->set('sess', Zx_Message::set_new_form_session());
-        $this->view($view);
+        View::set_view_file($this->view_path . 'forgotten_password.php');
+        View::set_action_var('posted', $posted);
+        View::set_action_var('errors', $errors);
     }
 
     public function password_sent() {
-        $right_ads = Model_Homepagerightad::get_right_ads();  //for right vertical ads
-        $view = View::factory($this->view_path . 'password_sent');
-        $view->set('right_ads', $right_ads);
-        $this->view($view);
+        //$right_ads = Model_Homepagerightad::get_right_ads();  //for right vertical ads
+        View::set_view_file($this->view_path . 'password_sent.php');
     }
 
     public function no_permission() {
-        $view = View::factory('templates/no_permission');
-        $view->set('homepage', 'home/index');
-        $view->set('logout', 'user/logout');
-        $this->view($view);
+        View::set_view_file($this->view_path . 'templates/no_permission');
+        View::set_action_var('homepage', 'home/index');
+        View::set_action_var('logout', 'user/logout');
     }
 
     public function error_404() {
-        $view = View::factory('templates/404');
-
-        $view->set('homepage', '/public/index');
-        $view->set('logout', 'user/logout');
-
-        $this->view($view);
+        View::set_view_file($this->view_path . 'templates/404');
+        View::set_action_var('homepage', 'home/index');
+        View::set_action_var('logout', 'user/logout');
     }
 
     /**
@@ -303,16 +267,13 @@ class User extends Base {
      * 
      */
     public function vcode() {
-        $this->auto_render = false;
-        $view = View::factory($this->view_path . 'vcode');
-        $this->response->body($view);
+        View::set_view_file($this->view_path . 'vcode.php');
+        View::do_not_use_template(); //ajax
     }
 
     public function vcode_ajax() {
-        $this->auto_render = false;
-        $view = View::factory($this->view_path . 'vcode');
-        //$this->response->body($view);
-        $this->ajax_view($view);
+        View::set_view_file($this->view_path . 'vcode.php');
+        View::do_not_use_template(); //ajax
     }
 
     /**
@@ -329,9 +290,9 @@ class User extends Base {
                 $message = '';
             }
         }
-        $view = View::factory($this->view_path . 'suburb_name_exist_ajax');
-        $view->set('message', $message);
-        $this->ajax_view($view);
+        View::set_view_file($this->view_path . 'suburb_name_exist_ajax.php');
+        View::set_action_var('message', $message);
+        View::do_not_use_template(); //ajax        
     }
 
     /**

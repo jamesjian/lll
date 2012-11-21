@@ -17,7 +17,7 @@
     <body class='zx-front-body'>	
         <div class='zx-front-header'>
             <div class='zx-front-logo'>
-                <a href='<?php echo HTML_ROOT; ?>' title='baoxian.com.au'>BAOXIAN.com.au</a>
+                <a href='<?php echo HTML_ROOT; ?>' title='<?php echo SITENAME;?>'><?php echo SITENAME;?></a>
             </div>
             <div class="zx-front-search">
                 <form>

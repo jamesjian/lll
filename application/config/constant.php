@@ -10,7 +10,7 @@ if (PHP_SAPI === 'cgi-fcgi') {
 }
 include 'constant_db.php';
 //session table is controlled by library, it's without TABLE_PREFIX
-$tables = array('ad','answer', 'article', 'article_category', 'cache', 'question', 'staff', 'user_to_answer');
+$tables = array('ad','answer', 'article', 'article_category', 'cache', 'question', 'staff', 'user', 'user_to_answer');
 foreach ($tables as $table) {
     define('TABLE_' . strtoupper($table), TABLE_PREFIX . $table);  //TABLE_PREFIX is defined in constant_db.php
 }
@@ -26,6 +26,7 @@ define('ADMIN_VIEW_PATH', APPLICATION_PATH . 'module/admin/view' . DIRECTORY_SEP
 define('FRONT_HTML_ROOT', HTML_ROOT . 'front/');
 define('USER_HTML_ROOT', HTML_ROOT . 'user/');
 define('ADMIN_HTML_ROOT', HTML_ROOT . 'admin/');
+define('HTML_IMAGE_ROOT', HTML_ROOT . 'image/');
 
 
 define('PHP_PUBLIC_PATH', PHP_ROOT); //for file upload

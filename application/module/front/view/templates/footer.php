@@ -2,6 +2,7 @@
     <nav class='zx-front-bottom-menu'>
         <ul>
             <?php
+            /*
             if ($article_cats) {
                 foreach ($article_cats as $cat) {
                     $link = HTML_ROOT . 'front/article/category/' . $cat['title'];
@@ -10,6 +11,8 @@
                     <?php
                 }
             }
+             * 
+             */
             ?>
             <li><a href="<?php echo HTML_ROOT . 'about-us.php'; ?>">关于我们</a></li>
             <li><a href="<?php echo HTML_ROOT . 'contact-us.php'; ?>">联系我们</a></li>

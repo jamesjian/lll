@@ -1,6 +1,7 @@
 <ul>
     <li><a href="<?php echo HTML_ROOT; ?>" title="homepage">Home</a></li>
     <?php
+    /*
     if ($cat_groups) {
         $current_cat_group = \App\Transaction\Session::get_front_current_cat_group();
         foreach ($cat_groups as $group) {
@@ -39,6 +40,8 @@
         <?php
     }//groups
 }//if cat_groups
+     * 
+     */
 ?>
 
 </ul>

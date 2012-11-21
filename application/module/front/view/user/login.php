@@ -8,9 +8,9 @@ if (isset($errors)) {
     }
     echo "</div>";
 }
-App_Session::display_message();
+\Zx\Message\Message::show_message();
 ?>
-<form id="login_form" name="login_form" method="post" action="<?php echo HTMLROOT; ?>user/login">
+<form id="login_form" name="login_form" method="post" action="<?php echo FRONT_HTML_ROOT; ?>user/login">
     <fieldset class="fyl_fieldset">
         <table>
             <tr>
@@ -24,14 +24,14 @@ App_Session::display_message();
             <tr>     
                 <td></td>
                 <td id="login_link">
-                    <a href="<?php echo HTMLROOT; ?>user/forgotten_password">忘记密码？</a> | 
-                    <a href="<?php echo HTMLROOT; ?>user/register">注册新用户</a> |
-                    <a href="<?php echo HTMLROOT; ?>user/activation_link">重发激活邮件</a>
+                    <a href="<?php echo FRONT_HTML_ROOT; ?>user/forgotten_password">忘记密码？</a> | 
+                    <a href="<?php echo FRONT_HTML_ROOT; ?>user/register">注册新用户</a> |
+                    <a href="<?php echo FRONT_HTML_ROOT; ?>user/activation_link">重发激活邮件</a>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <input type='hidden' name='sess' value="<?php echo $sess; ?>" />
+                    <input type='hidden' name='sess' value="<?php //echo $sess; ?>" />
                 </td>
                 <td>
                     <button type='submit' name='submit' value="submit">登 录</button>

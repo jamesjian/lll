@@ -1,3 +1,4 @@
 <?php
-        App_Tool::generateVerificationCode(150, 50, 6, 18,
+
+        \App\Transaction\Tool::generateVerificationCode(200, 80, 6, 20,
                                array('red' => 30, 'green' => 10, 'blue' => 20));

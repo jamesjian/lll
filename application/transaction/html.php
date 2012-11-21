@@ -48,6 +48,10 @@ class Html {
     {
         header('Location: '. HTML_ROOT);
     }
+    public static function goto_user_home_page()
+    {
+        header('Location: '. USER_HTML_ROOT . 'user/home');
+    }
 
 }
 

@@ -9,12 +9,12 @@ use \Zx\Test\Test;
 class User extends Base_User {
 
     public static function increase_num_of_questions($user_id) {
-        $sql = 'UPDATE user SET num_of_questions=num_of_questions+1 WHERE id=:id';
+        $sql = "UPDATE " . parent::$table . " SET num_of_questions=num_of_questions+1 WHERE id=:id";
         $params = array(':id' => $user_id);
         return Mysql::exec($sql, $params);
     }
     public static function increase_num_of_answers($user_id) {
-        $sql = 'UPDATE user SET num_of_answers=num_of_answers+1 WHERE id=:id';
+        $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers+1 WHERE id=:id";
         $params = array(':id' => $user_id);
         return Mysql::exec($sql, $params);
     }
@@ -44,7 +44,7 @@ class User extends Base_User {
      * @return $user object or false
      */
     public static function get_user_by_user_name($user_name) {
-        $sql = "SELECT * FROM user WHERE name=:name";
+        $sql = "SELECT * FROM " . parent::$table . " WHERE name=:name";
         $params = array(':name' => $user_name);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $user = Mysql::select_one($sql, $params);
@@ -59,7 +59,7 @@ class User extends Base_User {
      * @return $user object or false
      */
     public static function get_user_by_email($email) {
-        $sql = "SELECT * FROM user WHERE email=:email";
+        $sql = "SELECT * FROM " . parent::$table . " WHERE email=:email";
         $params = array(':email' => $email);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $user = Mysql::select_one($sql, $params);
@@ -85,14 +85,14 @@ class User extends Base_User {
 
     /**
      * @param $user_name 
-     * @return boolean if user_name exists in users table, return true, else false
+     * @return boolean if user_name exists in users table, return user id, else false
      */
     public static function exist_user_name($user_name) {
-        $sql = "SELECT * FROM user WHERE name=:name";
+        $sql = "SELECT * FROM " . parent::$table . " WHERE user_name=:name";
         $params = array(':name' => $user_name);
         $user = Mysql::select_one($sql, $params);
         if ($user) {
-            return true;
+            return $user['id'];
         } else {
             return false;
         }
@@ -100,14 +100,14 @@ class User extends Base_User {
 
     /**
      * @param $email
-     * @return boolean if email exists in users table, return true, else false
+     * @return boolean if email exists in users table, return user id, else false
      */
     public static function exist_email($email) {
-        $sql = "SELECT * FROM user WHERE email=:email";
+        $sql = "SELECT * FROM " . parent::$table . " WHERE email=:email";
         $params = array(':email' => $email);
         $user = Mysql::select_one($sql, $params);
         if ($user) {
-            return true;
+            return $user['id'];
         } else {
             return false;
         }
@@ -115,14 +115,14 @@ class User extends Base_User {
 
     /**
      * @param $name might be user name or email
-     * @return boolean if name exists in email or user_name fields in user table, return true, else false
+     * @return boolean if name exists in email or user_name fields in user table, return user id, else false
      */
     public static function exist_user_name_or_email($name) {
-        $sql = "SELECT * FROM user WHERE user_name=:name OR email=:email";
+        $sql = "SELECT * FROM " . parent::$table . " WHERE user_name=:name OR email=:email";
         $params = array(':name' => $name, ':email' => $name);
         $user = Mysql::select_one($sql, $params);
         if ($user) {
-            return true;
+            return $user['id'];
         } else {
             return false;
         }
@@ -162,8 +162,7 @@ class User extends Base_User {
      */
     public static function verify_user($user_name, $password) {
         
-        $sql = "SELECT *
-            FROM user
+        $sql = "SELECT *  FROM " . parent::$table . " 
             WHERE (user_name=:name OR email=:name) AND password=:password AND status=1";
         $params = array(':name' => $user_name, ':password' => $password);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -213,7 +212,7 @@ class User extends Base_User {
      */
     public static function duplicate_user_name_or_email($user_id, $name) {
         $sql = "SELECT *
-            FROM user
+            FROM " . parent::$table . " 
             WHERE (user_name=:name OR email=:email) ";
         $params = array(':name' => $name, ':email' => $name);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
