@@ -2,23 +2,23 @@
 
 //general 
 if (PHP_SAPI === 'cgi-fcgi') {
-    define('SERVER_NAME', 'lll.com.au');
+    define('SERVER_NAME', 'huarendian.com');
 } elseif (PHP_SAPI == 'cli') {
     define('SERVER_NAME', 'localhost');
 } else {
     define('SERVER_NAME', $_SERVER['SERVER_NAME']);
 }
 include 'constant_db.php';
+define('HTML_ROOT', 'http://' . SERVER_NAME . URL_PREFIX);
+define('LIBRARY_PATH', dirname(PHP_ROOT) . DIRECTORY_SEPARATOR . 'library' . DIRECTORY_SEPARATOR);
+define('SYSTEM_PATH', LIBRARY_PATH . 'zx' . DIRECTORY_SEPARATOR);
+define('APPLICATION_PATH', PHP_ROOT . 'application' . DIRECTORY_SEPARATOR);
 //session table is controlled by library, it's without TABLE_PREFIX
 $tables = array('ad','answer', 'article', 'article_category', 'cache', 'question', 'staff', 'user', 'user_to_answer');
 foreach ($tables as $table) {
     define('TABLE_' . strtoupper($table), TABLE_PREFIX . $table);  //TABLE_PREFIX is defined in constant_db.php
 }
 
-define('HTML_ROOT', 'http://' . SERVER_NAME . URL_PREFIX);
-define('LIBRARY_PATH', dirname(PHP_ROOT) . DIRECTORY_SEPARATOR . 'library' . DIRECTORY_SEPARATOR);
-define('SYSTEM_PATH', LIBRARY_PATH . 'zx' . DIRECTORY_SEPARATOR);
-define('APPLICATION_PATH', PHP_ROOT . 'application' . DIRECTORY_SEPARATOR);
 
 define('FRONT_VIEW_PATH', APPLICATION_PATH . 'module/front/view' . DIRECTORY_SEPARATOR);
 define('USER_VIEW_PATH', APPLICATION_PATH . 'module/user/view' . DIRECTORY_SEPARATOR);

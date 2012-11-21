@@ -28,7 +28,7 @@
                         <td>
                         </td>
                         <td>
-                           <a href="<?php echo FRONT_HTML_ROOT . "user/check_account"; ?>" id="check_account" title="点击此链接检查输入的账户是否可用">查查账户是否可用</a>
+                           <a href="<?php echo FRONT_HTML_ROOT . "user/check_account"; ?>" id="check_account" title="查查这个账户可以用吗？">我能用这个账户或邮箱吗？</a>
                     <span id="account_message"></span> 
                         </td>
                     </tr>
@@ -54,7 +54,7 @@
                 <div id="vcode">
                     <input type="text" name="vcode"  size="20" id="vcode" /><img src="<?php echo FRONT_HTML_ROOT;?>user/vcode" id="vcode_img"/> 
                     <a href="<?php echo FRONT_HTML_ROOT . "user/vcode"; ?>" id="refresh_vcode" title="换一个验证码">
-                        <img src="<?php echo HTML_IMAGE_ROOT . 'icon/Button-Refresh-icon.png'; ?>" alt="换一个验证码"/><span id="not_clear">看不清楚? 刷新一下</span></a>
+                        <img src="<?php echo HTML_IMAGE_ROOT . 'icon/Button-Refresh-icon.png'; ?>" alt="换一个验证码"/><span id="not_clear">不够清晰? 另给一个验证码</span></a>
                 </div>
                     </td>
                 </tr>

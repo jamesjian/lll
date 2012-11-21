@@ -1,4 +1,11 @@
-HTML_ROOT = '/lll/';
+
+var hostname = window.location.hostname;
+
+if (hostname == 'www.huarendian.com' || hostname =='huarendian.com') {
+    HTML_ROOT = 'http://'+hostname+'/lll/';
+} else {
+    HTML_ROOT = '/lll/';
+}
 site = {
     
     test: function(){
