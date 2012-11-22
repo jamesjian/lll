@@ -4,6 +4,7 @@ drop table ts8wl_answer;
 drop table ts8wl_question;
 drop table ts8wl_user;
 drop table ts8wl_staff;
+drop table ts8wl_tag;
 drop table ts8wl_article;
 drop table ts8wl_article_category;
 drop table ts8wl_user_to_answer;
@@ -123,3 +124,17 @@ CREATE TABLE IF NOT EXISTS `session` (
   `expires` int(11) NOT NULL,
   PRIMARY KEY (`session_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE ts8wl_tag (
+  id int(11) AUTO_INCREMENT PRIMARY KEY,
+  name varchar(255) NOT NULL DEFAULT '',
+  num_of_questions mediumint(6) default 0,
+  num_of_ads mediumint(6) default 0,
+  rank int(11) default 0,
+  status tinyint(1) not null default 1,
+  date_created datetime) engine=innodb default charset=utf8;
+
+
+INSERT INTO `ts8wl_user` (`id`, `user_name`, `password`, `email`, `image`, `num_of_questions`, `num_of_answers`, `rank`, `status`, `date_created`) VALUES
+(1, '匿名提问用户', 'aaa', 'aaa@aaa.com', '', 0, 0, 0, 1, NULL),
+(2, '匿名回答用户', 'aaa', 'aaa@aaa1.com', '', 0, 0, 0, 1, NULL);

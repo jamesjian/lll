@@ -18,17 +18,14 @@ use \Zx\Model\Mysql;
 
 class Tag {
     public static $fields = array('id','name','num_of_questions','num_of_ads','rank', 'status', 'date_created');
-    public static $table = 'tag';
+    public static $table = TABLE_TAG;
     /**
      *
      * @param int $id
      * @return 1D array or boolean when false 
      */
     public static function get_one($id) {
-        $sql = "SELECT *
-            FROM tag 
-            WHERE id=:id
-        ";
+        $sql = "SELECT * FROM "  . self::$table . " WHERE id=:id";
         $params = array(':id' => $id);
 
 
@@ -42,7 +39,7 @@ class Tag {
      */
     public static function get_one_by_where($where) {
         $sql = "SELECT *
-            FROM tag 
+            FROM "  . self::$table . " 
             WHERE $where
         ";
         return Mysql::select_one($sql);
@@ -50,7 +47,7 @@ class Tag {
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'b.date_created', $direction = 'DESC') {
         $sql = "SELECT *
-            FROM tag 
+            FROM "  . self::$table . " 
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count

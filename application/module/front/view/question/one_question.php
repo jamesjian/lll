@@ -38,78 +38,85 @@
 
                 </section>
             </article>
-    <?php
-}
-?>
+            <?php
+        }
+        ?>
     </div>
     <div class="zx-front-left3">
-<?php
-foreach ($answers as $answer) {
-    ?>
+        <?php
+        foreach ($answers as $answer) {
+            ?>
             <article>
                 <section>
                     <div class="zx-front-question-content">
-    <?php
-    echo $answer['content'];
-    ?>
+                        <?php
+                        echo $answer['content'];
+                        ?>
                     </div>
                     <div>
-    <?php echo $answer['user_name']; ?>
+                        <?php echo $answer['user_name']; ?>
 
                     </div>
                 </section>
             </article>
-    <?php
-}
-?>
+            <?php
+        }
+        //pagination of answers
+        if ($num_of_answers > NUM_OF_ITEMS_IN_ONE_PAGE) {
+            $link_prefix = HTML_ROOT . 'front/question/content/' . $question['id'] . '/page/';
+            $link_postfix = "/$order_by/$direction";
+            include FRONT_VIEW_PATH . 'templates/pagination.php';
+        }
+        ?>
     </div>
     <div class="zx-front-left4">
         <?php
-        if (Transaction_User::get_user_id()>0) {
+        //now we don't ask for login to answer a question
+        //if (Transaction_User::get_user_id() > 0) {
             //must have permission to answer a question
             include FRONT_VIEW_PATH . 'answer/create.php';
-        } else {
-            include FRONT_VIEW_PATH . 'user/popup_login_link.php';
-        }
+        //} else {
+        //    include FRONT_VIEW_PATH . 'user/popup_login_link.php';
+        //}
         ?>
     </div>
 </div>
 <div class='zx-front-right'>
     <div class='zx-front-right1'>
-<?php include FRONT_VIEW_PATH . 'templates/tag_cloud.php'; ?>
+        <?php //include FRONT_VIEW_PATH . 'templates/tag_cloud.php'; ?>
     </div>	
     <div class="zx-front-right2">
-<?php
+        <?php
 //related articles
-if ($related_questions) {
-    ?>
+        if ($related_questions) {
+            ?>
             <span class="zx-front-related-article">相关问题：</span> 
             <nav>
                 <ul>
-    <?php
-    $current_question_id = $question['id'];
-    foreach ($related_questions as $question) {
-        if (!($question['id'] == $current_question_id)) {
-            $read_more_link = HTML_ROOT . 'front/question/content/' . $question['id'];
-            ?>		
+                    <?php
+                    $current_question_id = $question['id'];
+                    foreach ($related_questions as $question) {
+                        if (!($question['id'] == $current_question_id)) {
+                            $read_more_link = HTML_ROOT . 'front/question/content/' . $question['id'];
+                            ?>		
                             <li><?php echo "<a href='$read_more_link' class='zx-front-related-question'>" . $question['title'] . "</a>";
-            ?>
+                            ?>
                             </li>
-                                <?php
-                            }
-                        }//foreach
-                        ?>
+                            <?php
+                        }
+                    }//foreach
+                    ?>
                 </ul>
             </nav>	
-    <?php
-}//if ($related_articles)
-?>        
+            <?php
+        }//if ($related_articles)
+        ?>        
     </div>    
     <div class='zx-front-right3'>
-<?php include FRONT_VIEW_PATH . 'templates/right_google_ads.php'; ?>
+        <?php include FRONT_VIEW_PATH . 'templates/right_google_ads.php'; ?>
     </div>
     <div class='zx-front-right4'>
-<?php include FRONT_VIEW_PATH . 'templates/latest_questions.php'; ?>
+        <?php include FRONT_VIEW_PATH . 'templates/latest_questions.php'; ?>
     </div>
 
 </div>

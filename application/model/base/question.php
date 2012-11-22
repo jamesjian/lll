@@ -24,17 +24,14 @@ class Question {
     public static $fields = array('id','title','user_id','user_name',
         'tag_ids','tag_names','num_of_answers',
         'content', 'rank', 'status', 'date_created');
-    public static $table = 'question';
+    public static $table = TABLE_QUESTION;
     /**
      *
      * @param int $id
      * @return 1D array or boolean when false 
      */
     public static function get_one($id) {
-        $sql = "SELECT *
-            FROM question 
-            WHERE id=:id
-        ";
+        $sql = "SELECT * FROM " . self::$table .  " WHERE id=:id";
         $params = array(':id' => $id);
 
 
@@ -47,17 +44,14 @@ class Question {
      * @return 1D array or boolean when false 
      */
     public static function get_one_by_where($where) {
-        $sql = "SELECT *
-            FROM question 
-            WHERE $where
+        $sql = "SELECT *  FROM " . self::$table .  " WHERE $where
         ";
         return Mysql::select_one($sql);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
         $sql = "SELECT *
-            FROM question 
-            WHERE $where
+            FROM " . self::$table .  " WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";

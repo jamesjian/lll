@@ -3,6 +3,7 @@
 namespace App\Model\Base;
 
 use \Zx\Model\Mysql;
+use App\Model\Question as Model_Question;
 
 /*
   CREATE TABLE answer (
@@ -19,7 +20,7 @@ use \Zx\Model\Mysql;
 class Answer {
     public static $fields = array('id','user_id', 'user_name',
         'content', 'rank', 'status', 'date_created');
-    public static $table = 'answer';
+    public static $table = TABLE_ANSWER;
     /**
      *
      * @param int $id
@@ -27,8 +28,8 @@ class Answer {
      */
     public static function get_one($id) {
         $sql = "SELECT a.*, q.title, q.tag_names
-            FROM answer a
-            LEFT JOIN question q ON q.id=a.question_id
+            FROM  " . self::$table .  " a
+            LEFT JOIN " . Model_Question::$table . " q ON q.id=a.question_id
             WHERE id=:id
         ";
         $params = array(':id' => $id);
@@ -44,8 +45,8 @@ class Answer {
      */
     public static function get_one_by_where($where) {
         $sql = "SELECT a.*, q.title, q.tag_names
-            FROM answer a
-            LEFT JOIN question q ON q.id=a.question_id
+            FROM  " . self::$table .  " a
+            LEFT JOIN " . Model_Question::$table . " q ON q.id=a.question_id
             WHERE $where
         ";
         return Mysql::select_one($sql);
@@ -53,8 +54,8 @@ class Answer {
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
         $sql = "SELECT a.*, q.title, q.tag_names
-            FROM answer a
-            LEFT JOIN question q ON q.id=a.question_id
+            FROM " . self::$table .  "  a
+            LEFT JOIN " . Model_Question::$table . "  q ON q.id=a.question_id
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count

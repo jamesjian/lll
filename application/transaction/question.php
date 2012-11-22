@@ -3,12 +3,46 @@
 namespace App\Transaction;
 
 use \App\Model\Question as Model_Question;
+use \App\Model\User as Model_User;
+use \App\Model\Tag as Model_Tag;
 use \Zx\Message\Message;
 use \Zx\Model\Mysql;
 
 //use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Question {
+
+    /**
+     * in controller, it must have title, content and tag_names
+     * if user has logged in, fill the user id and status=1 (active)
+     * otherwise, fill the user id with default question user id and status=0 (inactive)
+     * @param type $arr
+     */
+    public static function create($arr = array()) {
+        if (isset($_SESSION['user'])) {
+            $user_id = $_SESSION['user']['user_id'];
+            $status = 1;
+        } else {
+            $user_id = Model_User::get_default_question_user_id();
+            $status = 0;
+        }
+        //prepare tag ids
+        $tags = explode('@', $arr['tag_names']);
+        foreach ($tags as $tag) {
+            if ($tag_id = Model_Tag::exist_tag_by_tag_name($tag)) {
+                $tag_ids .= $tag_id . '@';
+            } else {
+                $tag_arr = array('name' => $tag, 'num_of_questions' => 1);
+                $tag_id = Model_Tag::create($tag_arr);
+                $tag_ids .= $tag_id . '@';
+            }
+        }
+        $arr['tag_ids'] = $tag_ids;
+        $arr['user_id'] = $user_id;
+        $arr['status'] = $status;
+        Model_Question::create($arr);
+        return true;
+    }
 
     /**
      * add new tags into tag table 
@@ -23,7 +57,8 @@ class Question {
         ) {
             if (!isset($arr['rank']))
                 $arr['rank'] = 0; //initialize
-            //prepare tag ids
+                
+//prepare tag ids
             $tags = explode('@', $arr['tag_names']);
             foreach ($tags as $tag) {
                 if ($tag_id = Model_Tag::exist($tag)) {
@@ -48,7 +83,7 @@ class Question {
             return false;
         }
     }
-    
+
     /**
      *      * for admin to create a question, an answer, question user and answer user in one step
       1. create question user if user name not exists

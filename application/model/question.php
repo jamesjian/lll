@@ -14,8 +14,7 @@ class Question extends Base_Question {
     public static function get_one_by_url($url)
     {
         $sql = "SELECT b.*, bc.title as cat_name
-            FROM question b
-            LEFT JOIN question_category bc ON b.cat_id=bc.id
+            FROM question " . self::$table .  " LEFT JOIN question_category bc ON b.cat_id=bc.id
             WHERE b.url='$url'
         ";
         //$params = array(':url'=>$url);
@@ -72,8 +71,8 @@ class Question extends Base_Question {
      */
     public static function get_active_questions_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
         $where = ' b.status=1 ';
-        $offset = ($page_num - 1) * NUM_OF_ARTICLES_IN_CAT_PAGE;
-        return parent::get_all($where, $offset, NUM_OF_ARTICLES_IN_CAT_PAGE, $order_by, $direction);
+        $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_active_questions($where = '1') {
@@ -133,8 +132,8 @@ class Question extends Base_Question {
         }
         $direction = ($direction == 'ASC') ? 'ASC' : 'DESC';
         //$where = '1';
-        $start = ($page_num - 1) * NUM_OF_RECORDS_IN_ADMIN_PAGE;
-        return parent::get_all($where, $start, NUM_OF_RECORDS_IN_ADMIN_PAGE, $order_by, $direction);
+        $start = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
+        return parent::get_all($where, $start, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_questions($where = '1') {
@@ -142,7 +141,7 @@ class Question extends Base_Question {
     }
 
     public static function increase_rank($question_id) {
-        $sql = 'UPDATE question SET rank=rank+1 WHERE id=:id';
+        $sql = 'UPDATE ' . self::$table .  ' SET rank=rank+1 WHERE id=:id';
         $params = array(':id' => $question_id);
         return Mysql::exec($sql, $params);
     }

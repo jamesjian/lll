@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Model;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\User as Base_User;
@@ -8,11 +10,28 @@ use \Zx\Test\Test;
 
 class User extends Base_User {
 
+    /**
+     * 
+     * @return int default user id for anonymous user
+     */
+    public static function get_default_question_user_id() {
+        return 1; //匿名提问用户
+    }
+
+    /**
+     * 
+     * @return int default user id for anonymous user
+     */
+    public static function get_default_answer_user_id() {
+        return 2; //匿名回答用户
+    }
+
     public static function increase_num_of_questions($user_id) {
         $sql = "UPDATE " . parent::$table . " SET num_of_questions=num_of_questions+1 WHERE id=:id";
         $params = array(':id' => $user_id);
         return Mysql::exec($sql, $params);
     }
+
     public static function increase_num_of_answers($user_id) {
         $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers+1 WHERE id=:id";
         $params = array(':id' => $user_id);
@@ -54,6 +73,7 @@ class User extends Base_User {
             return false;
         }
     }
+
     /**
      * @param string $email
      * @return $user object or false
@@ -128,7 +148,6 @@ class User extends Base_User {
         }
     }
 
-    
     /**
      *
      * @param string $user_name
@@ -141,6 +160,7 @@ class User extends Base_User {
             return false;
         }
     }
+
     /**
      *
      * @param string $user_name
@@ -153,7 +173,8 @@ class User extends Base_User {
             return false;
         }
     }
-       /**
+
+    /**
      * check if user name matches password and enabled in user table
      * @param <string> $user_name  can be an email
      * 
@@ -161,7 +182,7 @@ class User extends Base_User {
      * @return <boolean> if valid in user table, return true; otherwise return false;
      */
     public static function verify_user($user_name, $password) {
-        
+
         $sql = "SELECT *  FROM " . parent::$table . " 
             WHERE (user_name=:name OR email=:name) AND password=:password AND status=1";
         $params = array(':name' => $user_name, ':password' => $password);
@@ -182,7 +203,7 @@ class User extends Base_User {
      */
     public static function duplicate_user_name($user_id, $user_name) {
         $user = self::get_user_by_user_name($user_name);
-        if ($user && $user['id']<>$user_id) {
+        if ($user && $user['id'] <> $user_id) {
             return true;
         } else {
             return false;
@@ -197,7 +218,7 @@ class User extends Base_User {
      */
     public static function duplicate_email($user_id, $email) {
         $user = self::get_user_by_email($email);
-        if ($user && $user['id']<>$user_id) {
+        if ($user && $user['id'] <> $user_id) {
             return true;
         } else {
             return false;
@@ -217,7 +238,7 @@ class User extends Base_User {
         $params = array(':name' => $name, ':email' => $name);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $user = Mysql::select_one($sql, $params);
-        if ($user && $user['id']<>$user_id) {
+        if ($user && $user['id'] <> $user_id) {
             return true;
         } else {
             return false;
@@ -236,6 +257,7 @@ class User extends Base_User {
         else
             return false;
     }
+
     /**
      * check if a user has company
      * @param type $user_id
@@ -275,7 +297,8 @@ class User extends Base_User {
     public static function get_num_of_pages() {
         return parent::get_num();
     }
- public static function get_active_users_by_page_num($page_num = 1, $order_by = 'rank', $direction = 'ASC') {
+
+    public static function get_active_users_by_page_num($page_num = 1, $order_by = 'rank', $direction = 'ASC') {
         $where = ' status=1 ';
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);

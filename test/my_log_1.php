@@ -1,10 +1,15 @@
-drop table article;
-drop table article_category;
-drop table page;
-drop table page_category;
-drop table staff;
+
+drop table ts8wl_ad;
+drop table ts8wl_answer;
+drop table ts8wl_question;
+drop table ts8wl_user;
+drop table ts8wl_staff;
+drop table ts8wl_article;
+drop table ts8wl_article_category;
+drop table ts8wl_user_to_answer;
+drop table ts8wl_page;
+drop table ts8wl_page_category;
 drop table session;
-drop table cache;
 
 房产
     房地产
@@ -239,8 +244,18 @@ admin
         
         
         
-        
-        
+/*        
+user:
+ * status: 1: active, 2: registered, 0: inactive
+questions: 
+ * status: 1: active, 0: inactive 2. disalbed
+ * 
+ * 
+ * 
+ * 
+ */
+    
+
         
         
         

@@ -220,5 +220,13 @@ class Tag extends Base_Tag {
         $where = ' b.status=1';
         return parent::get_all($where, 0, 10, 'b.date_created', 'DESC');
     }
-
+    public static function exist_tag_by_tag_name($tag_name){
+        $tag_name = strtolower($tag_name);
+        $where = " name=$tag_name";
+        if ($tag  = parent::get_one_by_where($where)) {
+            return $tag_id;
+        } else {
+            return false;
+        }
+    }
 }

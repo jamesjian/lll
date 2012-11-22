@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Module\Front\Controller;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
+
 use \Zx\Controller\Route;
 use \Zx\View\View;
 use App\Transaction\Session as Transaction_Session;
@@ -9,7 +11,6 @@ use App\Transaction\Html as Transaction_Html;
 use \App\Model\Answer as Model_Answer;
 use \App\Transaction\Answer as Transaction_Answer;
 use \App\Model\Question as Model_Question;
-
 
 /**
  * homepage: /=>/front/answer/latest/page/1
@@ -39,16 +40,16 @@ class Answer extends Base {
         $answer = Model_Answer::get_one_by_url($answer_url);
         //\Zx\Test\Test::object_log('$answer', $answer, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($answer) {
-            
+
             $answer_id = $answer['id'];
             $home_url = HTML_ROOT;
-            $category_url = FRONT_HTML_ROOT . 'answer/category/' . $answer['cat_name']; 
-            Transaction_Session::set_breadcrumb(0, $home_url,  '首页');
-            Transaction_Session::set_breadcrumb(1, $category_url,  $answer['cat_name']);
-            Transaction_Session::set_breadcrumb(2, Route::$url,  $answer['title']);
+            $category_url = FRONT_HTML_ROOT . 'answer/category/' . $answer['cat_name'];
+            Transaction_Session::set_breadcrumb(0, $home_url, '首页');
+            Transaction_Session::set_breadcrumb(1, $category_url, $answer['cat_name']);
+            Transaction_Session::set_breadcrumb(2, Route::$url, $answer['title']);
             Transaction_Html::set_title($answer['title']);
             Transaction_Html::set_keyword($answer['keyword'] . ',' . $answer['keyword_en']);
-            Transaction_Html::set_description($answer['title']. ' ' . $answer['title_en']);
+            Transaction_Html::set_description($answer['title'] . ' ' . $answer['title_en']);
             Model_Answer::increase_rank($answer_id);
 
             View::set_view_file($this->view_path . 'one_answer.php');
@@ -98,8 +99,8 @@ class Answer extends Base {
         if ($user_id != 0 && $user = Model_User::get_one($user_id)) {
             $home_url = HTML_ROOT;
             //$tag_url = FRONT_HTML_ROOT . 'question/tag/' . $tag['id']; 
-            Transaction_Session::set_breadcrumb(0, $home_url,  '首页');
-            Transaction_Session::set_breadcrumb(1, $category_url,  $tag['name']);
+            Transaction_Session::set_breadcrumb(0, $home_url, '首页');
+            Transaction_Session::set_breadcrumb(1, $category_url, $tag['name']);
             //$cat = Model_Questioncategory::get_one($cat_id);
             Transaction_Html::set_title($tag['name']);
             Transaction_Html::set_keyword($tag['name']);
@@ -167,6 +168,52 @@ class Answer extends Base {
         View::set_action_var('answers', $answers);
         View::set_action_var('current_page', $current_page);
         View::set_action_var('num_of_pages', $num_of_pages);
+    }
+
+    /**
+     * must have  title, content and tag
+     * this create() is in front module, in the transaction, it will check if a user has logged in, 
+     * if yes, status is 1(active), if not, status is 0 (inactive), user is default questiong user, waiting for approval
+     */
+    public function reply() {
+        $success = false;
+        $posted = array();
+        $errors = array();
+        if (isset($_POST['submit']) && isset($_POST['question_id']) &&
+                isset($_POST['content']) && !empty($_POST['content']) 
+        ) {
+            $question_id = intval($_POST['question_id']);
+            if (Model_Question::exist_question($question_id)) {
+                $content = trim($_POST['content']);
+
+                $arr = array(
+                    'content' => $content,
+                    'question_id'=>$question_id,
+                );
+                if (Transaction_Answer::reply_question($arr)) {
+                    $success = true;
+                }
+            } else {
+                 Zx_Message::set_error_message('无效问题');
+                 //goto previous valid page
+                 Transaction_Html::get_previous_page();
+            }
+        } else {
+            Zx_Message::set_error_message(' content can not be empty。');
+        }
+        header('Location: ' . FRONT_HTML_ROOT . 'questiong/content/' . $question_id);
+        //always go to question or question list page
+        
+            /**
+        if ($success) {
+            header('Location: ' . $this->list_page);
+        } else {
+            View::set_view_file($this->view_path . 'create.php');
+            View::set_action_var('posted', $posted);
+            View::set_action_var('errors', $errors);
+             * 
+        }
+             */
     }
 
 }

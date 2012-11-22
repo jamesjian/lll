@@ -6,36 +6,7 @@ use \Zx\Controller\Route;
 
 class Session {
 
-    public static function remember_current_page() {
-        $_SESSION['current_page'] = Route::get_url();
-    }
-
-    /**
-      if has current page in SESSION, return it, otherwise return false
-     */
-    public static function get_previous_page() {
-        if (isset($_SESSION['current_page'])) {
-            return $_SESSION['current_page'];
-        } else {
-            return false;
-        }
-    }
-
-    //for admin
-    public static function remember_current_admin_page() {
-        $_SESSION['current_admin_page'] = Route::get_url();
-    }
-
-    /**
-      if has current admin page in SESSION, return it, otherwise return false
-     */
-    public static function get_previous_admin_page() {
-        if (isset($_SESSION['current_admin_page'])) {
-            return $_SESSION['current_admin_page'];
-        } else {
-            return false;
-        }
-    }
+   
 
     /**
       @param $path_name such as 'article'
@@ -164,51 +135,5 @@ class Session {
     
 //generateVerificationCode
 
-    /**
-      To avoid generating passwords containing offensive words,
-      vowels are excluded from the list of possible characters.
-      To avoid confusing users, pairs of characters which look similar
-      (letter O and number 0, letter S and number 5, lower-case letter L and number 1)
-      have also been left out.
-     */
-    public static function generatePassword($length = 8) {
-
-        // start with a blank password
-        $password = "";
-
-        // define possible characters - any character in this string can be
-        // picked for use in the password, so if you want to put vowels back in
-        // or add special characters such as exclamation marks, this is where
-        // you should do it
-        $possible = "!*#+$%&34789cdfghjkmnpqrtwxyBCDFGHJKLMNPQRTWXY";
-
-        // we refer to the length of $possible a few times, so let's grab it now
-        $maxlength = strlen($possible);
-
-        // check for length overflow and truncate if necessary
-        if ($length > $maxlength) {
-            $length = $maxlength;
-        }
-
-        // set up a counter for how many characters are in the password so far
-        $i = 0;
-
-        // add random characters to $password until $length is reached
-        while ($i < $length) {
-
-            // pick a random character from the possible ones
-            $char = substr($possible, mt_rand(0, $maxlength - 1), 1);
-
-            // have we already used this character in $password?
-            if (!strstr($password, $char)) {
-                // no, so it's OK to add it onto the end of whatever we've already got...
-                $password .= $char;
-                // ... and increase the counter by one
-                $i++;
-            }
-        }
-
-        // done!
-        return $password;
-    }
+    
 }
