@@ -1,7 +1,6 @@
 <?php
-
 namespace App\Model\Base;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 use App\Model\Question as Model_Question;
 
@@ -18,7 +17,7 @@ use App\Model\Question as Model_Question;
  */
 
 class Answer {
-    public static $fields = array('id','user_id', 'user_name',
+    public static $fields = array('id','question_id', 'user_id', 'user_name',
         'content', 'rank', 'status', 'date_created');
     public static $table = TABLE_ANSWER;
     /**
@@ -60,7 +59,7 @@ class Answer {
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-//\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         return Mysql::select_all($sql);
     }
@@ -76,6 +75,8 @@ class Answer {
     }
 
     public static function create($arr) {
+              \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);        
+
         $insert_arr = array(); $params = array();
         foreach (self::$fields as $field) {
             if (array_key_exists($field, $arr)) {

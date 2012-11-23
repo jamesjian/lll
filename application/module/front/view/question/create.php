@@ -20,6 +20,22 @@ if (isset($errors)) {
                            value="<?php if (isset($posted['title'])) echo $posted['title']; ?>"/>
                 </td>
             </tr>
+            <tr>    <td class="table_title required"> State:</td>
+                <td class="table_input"> <select name='state'>
+                        <?php
+                        foreach ($states as $state) {
+                            echo "<option value='" . $state . "'";
+                            if ($state == $posted['state']) {
+                                echo " selected";
+                            } elseif ($state == 'NSW') {
+                                echo " selected";
+                            }
+                            echo ">" . $state . '</option>';
+                        }
+                        ?>
+                    </select>
+                </td>               
+            </tr>
             <tr>
                 <td class="table_title required">关键词:</td>
                 <td class="table_input">  
@@ -38,10 +54,10 @@ if (isset($errors)) {
                 </td>
                 <td>
                     <button type='submit' name='submit' value="submit">发布</button>
-                        (如果你已登录， 新问题将会立即被发布， 如果你尚未登录， 新问题审核通过后才会显示。）
-                        <a href="<?php echo FRONT_HTML_ROOT; ?>user/login">现在登录</a>或
-                        <a href="<?php echo FRONT_HTML_ROOT; ?>user/register">注册新用户</a>
-                    
+                    (如果你已登录， 新问题将会立即被发布， 如果你尚未登录， 新问题审核通过后才会显示。）
+                    <a href="<?php echo FRONT_HTML_ROOT; ?>user/login">现在登录</a>或
+                    <a href="<?php echo FRONT_HTML_ROOT; ?>user/register">注册新用户</a>
+
                 </td>
             </tr>
         </table>

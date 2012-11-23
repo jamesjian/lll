@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Transaction;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
+use \Zx\Controller\Route;
 class Html {
     static $title = ' -- 问答';
     static $keyword = '问答';
@@ -31,7 +31,7 @@ class Html {
         return self::$keyword;
     }
     /**
-     * generate a snag URL such as this-is-a-snag-url
+     * generate a snag URL such as this-is-a-slug-url
      * remove all invalid characters for an URL, such as all punctuation
      * @param string $title
      * currently generate it manually to avoid duplicate
@@ -46,7 +46,7 @@ class Html {
     }
     public static function goto_home_page()
     {
-        header('Location: '. HTML_ROOT);
+        header('Location: '. FRONT_HTML_ROOT . 'question/all');
     }
     public static function goto_user_home_page()
     {
@@ -66,7 +66,16 @@ class Html {
             return false;
         }
     }
-
+    /**
+      if has current page in SESSION, return it, otherwise return false
+     */
+    public static function goto_previous_page() {
+        if (isset($_SESSION['current_page'])) {
+            header('Location: '. $_SESSION['current_page']);
+        } else {
+            self::goto_home_page();
+        }
+    }
     //for admin
     public static function remember_current_admin_page() {
         $_SESSION['current_admin_page'] = Route::get_url();

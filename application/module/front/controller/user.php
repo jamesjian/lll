@@ -43,8 +43,8 @@ class User extends Base {
     }
 
     public function logout() {
-        if (Transaction_User::has_loggedin()) {
-            Transaction_User::logout();
+        if (Transaction_User::user_has_loggedin()) {
+            Transaction_User::user_logout();
         }
         Transaction_Html::goto_home_page();
     }

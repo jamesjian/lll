@@ -1,6 +1,6 @@
 <?php
-defined('SYSTEM_PATH') or die('No direct script access.');
 namespace App\Model;
+defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\Answer as Base_Answer;
 use \Zx\Model\Mysql;
@@ -148,7 +148,7 @@ class Answer extends Base_Answer {
         $where = " a.status=1 AND a.user_id=$user_id AND ($where)" ;
         return parent::get_num($where);
     }    
-    public static function get_active_answers_by_question_id_and_page_num($question_id, $where=1, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+    public static function get_active_answers_by_question_id_and_page_num($question_id, $where=1, $page_num = 1, $order_by = 'a.date_created', $direction = 'ASC') {
         $where = " a.status=1 AND a.question_id=$question_id AND ($where)" ;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);

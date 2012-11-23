@@ -73,6 +73,9 @@ class Question extends Base {
         header('Location: ' . $this->list_page);
     }
 
+    /**
+     * 
+     */
     public function update() {
         $success = false;
         if (isset($_POST['submit']) && isset($_POST['id'])) {
@@ -82,20 +85,10 @@ class Question extends Base {
             if ($id <> 0) {
                 if (isset($_POST['title']))
                     $arr['title'] = trim($_POST['title']);
-                if (isset($_POST['title_en']))
-                    $arr['title_en'] = trim($_POST['title_en']);
                 if (isset($_POST['content']))
                     $arr['content'] = trim($_POST['content']);
-                if (isset($_POST['keyword']))
-                    $arr['keyword'] = trim($_POST['keyword']);
-                if (isset($_POST['keyword_en']))
-                    $arr['keyword_en'] = trim($_POST['keyword_en']);
-                if (isset($_POST['abstract']))
-                    $arr['abstract'] = trim($_POST['abstract']);
-                if (isset($_POST['url']))
-                    $arr['url'] = trim($_POST['url']);
-                if (isset($_POST['cat_id']))
-                    $arr['cat_id'] = intval($_POST['cat_id']);
+                if (isset($_POST['tag_names']))
+                    $arr['tag_names'] = trim($_POST['tag_names']);
                 if (isset($_POST['rank']))
                     $arr['rank'] = intval($_POST['rank']);
                 if (isset($_POST['status']))
@@ -104,21 +97,16 @@ class Question extends Base {
                     $success = true;
                 }
             }
+        } else {
+            $id = $this->params[0];
         }
         if ($success) {
             header('Location: ' . $this->list_page);
         } else {
-            if (!isset($id)) {
-                $id = $this->params[0];
-            }
             $question = Model_Question::get_one($id);
-
-            $cats = Model_Questioncategory::get_cats();
             //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
             View::set_view_file($this->view_path . 'update.php');
             View::set_action_var('question', $question);
-            View::set_action_var('cats', $cats);
         }
     }
 
@@ -136,7 +124,7 @@ class Question extends Base {
      * page, orderby, direction, search can be empty
      */
     public function retrieve() {
-        \App\Transaction\Session::remember_current_admin_page();
+        \App\Transaction\Html::remember_current_admin_page();
         \App\Transaction\Session::set_admin_current_l1_menu('Question');
         $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
         $order_by = isset($this->params[1]) ? $this->params[1] : 'id';

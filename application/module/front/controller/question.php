@@ -43,20 +43,23 @@ class Question extends Base {
         if ($question) {
             
             $home_url = HTML_ROOT;
-            Transaction_Session::remember_current_page();  //after reply this question, return back to this page
+            Transaction_Html::remember_current_page();  //after reply this question, return back to this page
             Transaction_Html::set_title($question['title']);
-            Transaction_Html::set_keyword($question['keyword'] . ',' . $question['title'] . str_replace('#',',', $question['tag_names']));
+            Transaction_Html::set_keyword($question['title'] . str_replace('#',',', $question['tag_names']));
             Transaction_Html::set_description($question['title']);
             Model_Question::increase_rank($question_id);
             
             View::set_view_file($this->view_path . 'one_question.php');
             $answers = Model_Answer::get_active_answers_by_question_id_and_page_num($question_id, $current_page_num);
-            $num_of_answers = Model_Question::get_num_of_active_answers_by_question_id($question_id);
-            $related_questions = Model_Question::get_10_active_related_questions($question_id);
+            $num_of_answers = Model_Answer::get_num_of_active_answers_by_question_id($question_id);
+            //$related_questions = Model_Question::get_10_active_related_questions($question_id);
+            $related_questions = array();
+            $latest_questions = array();
             View::set_action_var('question', $question);
             View::set_action_var('answers', $answers);
             View::set_action_var('num_of_answers', $num_of_answers);
             View::set_action_var('related_questions', $related_questions);
+            View::set_action_var('latest10', $latest_questions);
         } else {
             //if no question, goto homepage
             Transaction_Html::goto_home_page();
@@ -215,6 +218,7 @@ class Question extends Base {
                 isset($_POST['tag_names']) && !empty($_POST['tag_names'])
                 ) {
             $title = trim($_POST['title']);
+            $state = trim($_POST['state']);
             $tag_names = trim($_POST['tag_names']);
             $content = trim($_POST['content']);
 

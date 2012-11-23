@@ -3,13 +3,27 @@
 namespace App\Transaction;
 defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Answer as Model_Answer;
+use \App\Model\Question as Model_Question;
+use \App\Model\User as Model_User;
 use \Zx\Message\Message;
 use \Zx\Model\Mysql;
 //use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Answer {
 
-    public static function create_answer($arr = array()) {
+    public static function reply_question($arr = array()) {
+        if (isset($_SESSION['user'])) {
+            $user_id = $_SESSION['user']['user_id'];
+            $user_name = $_SESSION['user']['user_name'];
+            $status = 1;
+        } else {
+            $user_id = Model_User::get_default_question_user_id();
+            $user_name = '匿名回答用户';
+            $status = 0;
+        }        
+        $arr['user_id'] = $user_id;
+        $arr['user_name'] = $user_name;
+        $status = $status;
         if (count($arr) > 0 && 
                 isset($arr['content']) && trim($arr['content'])!='' 
                 ) {
@@ -17,6 +31,7 @@ class Answer {
                 $arr['rank'] = 0; //initialize
             
             if (Model_Answer::create($arr)) {
+                Model_Question::increase_num_of_answers($arr['question_id']);
                 Model_User::increase_num_of_answers($arr['user_id']);
                 Message::set_success_message('success');
                 return true;
@@ -25,7 +40,7 @@ class Answer {
                 return false;
             }
         } else {
-            Message::set_error_message('请填写完整标题和内容。');
+            Message::set_error_message('请填写内容。');
             return false;
         }
     }

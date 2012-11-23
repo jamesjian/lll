@@ -9,10 +9,11 @@ use \Zx\Model\Mysql;
   CREATE TABLE question (
  id int(11) AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
+ state varchar(3) not null default 'AU', #AU means australia
   user_id int(11) not null 0,
   user_name varchar(255) not null '',  #user name is fixed
   tag_ids varchar(255) NOT NULL DEFAULT '',
-  tag_names varchar(255) not null default '', #tag names are fixed
+  tag_names varchar(255) not null default '', #tag names are fixed  
   content text,
   num_of_answers smallint(4) default 0,
   rank int(11) default 0,
@@ -21,7 +22,7 @@ use \Zx\Model\Mysql;
  */
 
 class Question {
-    public static $fields = array('id','title','user_id','user_name',
+    public static $fields = array('id','title','state', 'user_id','user_name',
         'tag_ids','tag_names','num_of_answers',
         'content', 'rank', 'status', 'date_created');
     public static $table = TABLE_QUESTION;

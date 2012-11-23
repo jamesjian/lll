@@ -322,14 +322,14 @@ class User {
      */
     public static function verify_user($user_name, $password) {
         $user = Model_User::verify_user($user_name, $password);
-        //App_Test::objectLog('last query',ORM::factory('base_user')->last_query(), __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($user) {
             $session_array = array(
-                'user_id' => $user->id,
+                'user_id' => $user['id'],
                 'user_name' => $user_name,
             );
             session_regenerate_id();
             $_SESSION['user'] = $session_array;
+            \Zx\Test\Test::object_log('$_SESSION',$_SESSION, __FILE__, __LINE__, __CLASS__, __METHOD__);
             Zx_Message::set_success_message("您已登录成功， 可以开始操作您的账户。");
             return true;
         } else {
@@ -362,7 +362,7 @@ class User {
     }
 
     public static function user_logout() {
-        Zx_Message::clear_message();
+        Zx_Message::init_message();
         if (isset($_SESSION['user']))
             unset($_SESSION['user']);
         return true;

@@ -24,7 +24,7 @@
                     <?php
                     foreach ($questions as $question) {
                         $id = $question['id'];
-                        $link = FRONT_HTML_ROOT . 'question/' . $id;
+                        $link = FRONT_HTML_ROOT . 'question/content/' . $id;
                         ?>		
                         <li><a href='<?php echo $link; ?>'><?php echo $question['title']; ?></a> </li>
                         <?php

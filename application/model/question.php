@@ -6,7 +6,15 @@ use \App\Model\Base\Question as Base_Question;
 use \Zx\Model\Mysql;
 
 class Question extends Base_Question {
-    
+    public static function exist_question($id){
+         $question = parent::get_one($id);
+         if ($question) {
+             return true;
+         } else {
+             return false;
+         }
+         
+    }
     /**
      * 
      * @param string $url is a unique column in question table
@@ -25,27 +33,29 @@ class Question extends Base_Question {
 
     /**
       according to category or keyword
-      keywords are seperated by '^'
+      keywords are seperated by '@'
+     * 
+     * tag_ids like '1@2@3', tag_names like 'x1@x2@x3'
+     * use id to find related questions
      */
     public static function get_10_active_related_questions($question_id) {
+        $questions = array();
         $question = parent::get_one($question_id);
         if ($question) {
-            $cat_id = $question['cat_id'];
-            $keywords = $question['keyword'];
-            $keyword_arr = array();
-            if ($keywords <> '') {
-                $keyword_arr = explode('^', $keywords);
+            $tag_ids = $question['tag_ids'];
+            
+            $tag_id_arr = array();
+            if ($tag_ids <> '') {
+                $tag_id_arr = explode('@', $keywords);
             }
-
-            $where = "b.status=1 AND (b.cat_id=$cat_id";
-            if (count($keyword_arr) > 0) {
-                foreach ($keyword_arr as $keyword) {
-                    $where .= " OR b.keyword LIKE '%$keyword%'";
+            if (count($tag_id_arr) > 0) {
+                foreach ($tag_id_arr as $tag_id) {
+                    $where .= " OR b.keyword LIKE '%$tag_id@%'";
                 }
                 $where .= ')';
                 $offset = 0;
                 $row_count = 10;
-                $order_by = 'b.date_created';
+                $order_by = 'date_created';
                 $direction = 'DESC';
                 $questions = parent::get_all($where, $offset, $row_count, $order_by, $direction);
                 return $questions;
@@ -53,6 +63,7 @@ class Question extends Base_Question {
                 return false;
             }
         }
+        return $questions;
     }
     /**
      * 
@@ -70,13 +81,13 @@ class Question extends Base_Question {
      * get active cats order by category name
      */
     public static function get_active_questions_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = ' b.status=1 ';
+        $where = ' status=1 ';
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_active_questions($where = '1') {
-        $where = ' (b.status=1' . ')  AND (' . $where . ')';
+        $where = ' (status=1' . ')  AND (' . $where . ')';
         return parent::get_num();
     }
 
@@ -124,11 +135,11 @@ class Question extends Base_Question {
             case 'rank':
             case 'display_order':
             case 'date_created':
-            case 'cat_id':
-                $order_by = 'b.' . $order_by;
+            
+                $order_by = '' . $order_by;
                 break;
             default:
-                $order_by = 'b.date_created';
+                $order_by = 'date_created';
         }
         $direction = ($direction == 'ASC') ? 'ASC' : 'DESC';
         //$where = '1';
@@ -146,7 +157,11 @@ class Question extends Base_Question {
         return Mysql::exec($sql, $params);
     }
 
-
+    public static function increase_num_of_answers($question_id) {
+        $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers+1 WHERE id=:id";
+        $params = array(':id' => $question_id);
+        return Mysql::exec($sql, $params);
+    }
     public static function get_latest10() {
         $where = ' status=1';
         return parent::get_all($where, 0, 10, 'date_created', 'DESC');

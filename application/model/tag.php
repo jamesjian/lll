@@ -210,6 +210,11 @@ class Tag extends Base_Tag {
         $params = array(':id' => $tag_id);
         return Mysql::exec($sql, $params);
     }
+    public static function increase_num_of_questions($tag_id) {
+        $sql = 'UPDATE tag SET num_of_questions=num_of_questions+1 WHERE id=:id';
+        $params = array(':id' => $tag_id);
+        return Mysql::exec($sql, $params);
+    }
 
     public static function get_top10() {
         $where = ' b.status=1';
