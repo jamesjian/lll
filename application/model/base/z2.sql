@@ -11,8 +11,19 @@ drop table ts8wl_user_to_answer;
 drop table ts8wl_page;
 drop table ts8wl_page_category;
 drop table session;
+  CREATE TABLE ts8wl_ad (
+ id int(11) AUTO_INCREMENT PRIMARY KEY,
+  title varchar(255) NOT NULL DEFAULT '',
+  user_id int(11) not null default 0,
+  user_name varchar(255) not null  default '',  
+  tag_ids varchar(255) NOT NULL DEFAULT '',
+  tag_names varchar(255) not null default '', 
+  content text,
+  num_of_displays int(11) default 0,  
+  num_of_clicks int(11) default 0,      status tinyint(1) not null default 1,
+  date_created datetime) engine=innodb default charset=utf8
 
-
+INSERT INTO `jm3`.`ts8wl_ad` (`id`, `title`, `user_id`, `user_name`, `tag_ids`, `tag_names`, `content`, `num_of_displays`, `num_of_clicks`, `status`, `date_created`) VALUES ('0', 'empty', '0', '', '', '', NULL, '0', '0', '1', NULL);
 
 CREATE TABLE IF NOT EXISTS `ts8wl_answer` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,

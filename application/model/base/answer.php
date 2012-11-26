@@ -10,6 +10,7 @@ use App\Model\Question as Model_Question;
   question_id unsigned MEDIUMINT(8) not null default 0,
   user_id unsigned MEDIUMINT(8) not null default 0,
     user_name varchar(30) not null '',  #user name is fixed
+  ad_id unsigned MEDIUMINT(8) not null default 0,
   content text,
   rank unsigned MEDIUMINT(8) not null default 0,
   status unsigned tinyint(1) not null default 1,
@@ -17,7 +18,7 @@ use App\Model\Question as Model_Question;
  */
 
 class Answer {
-    public static $fields = array('id','question_id', 'user_id', 'user_name',
+    public static $fields = array('id','question_id', 'user_id', 'user_name','ad_id',
         'content', 'rank', 'status', 'date_created');
     public static $table = TABLE_ANSWER;
     /**
