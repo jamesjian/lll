@@ -9,6 +9,7 @@ use \Zx\View\View;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
 use App\Transaction\User as Transaction_User;
+use App\Transaction\Answser as Transaction_Answser;
 use \App\Model\Answer as Model_Answer;
 
 /** 
@@ -102,8 +103,51 @@ class Answer extends Base {
             header('Location: ' . $this->list_page);
         } else {
             View::set_view_file($this->view_path . 'create.php');
+            
         }
         header('Location: ' . Transaction_Session::get_previous_page());
+    }
+    
+    /**
+     * link answer id to ad id
+     * 2 text fields, one for answer, one for ad
+     * 
+     * 
+     */
+    public function link_ad()
+    {
+        $success = false;
+        if (isset($_POST['submit']) &&
+                isset($_POST['answer_ids']) &&
+                isset($_POST['ad_id'])) {
+            $answer_ids = isset($_POST['answer_ids']) ? trim($_POST['answer_ids']) : 0;
+            $ad_id = isset($_POST['ad_id']) ? intval($_POST['ad_id']) : 0;
+
+            if ($answer_ids <> '' &&  $ad_id>0) {
+                $arr = array('answer_ids' => $answer_ids,
+                    'ad_id' => $ad_id,
+                    'ad_id' => $this->user_id,
+                );
+                if (Transaction_Answer::link_ad($arr)) {
+                    $success = true;
+                }
+            }
+        } else {
+            $ad_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
+            if ($ad_id>0 && Model_Ad::ad_belong_to_user($ad_id, $this->user_id)) {
+                //Message::set_error_message('无效问题。');
+                //header('Location: ' . $this->list_page);
+            } else {
+                Message::set_error_message('user id,question_id and content not be empty。');
+            }
+        }
+        if ($success) {
+            header('Location: ' . $this->list_page);
+        } else {
+            View::set_view_file($this->view_path . 'link.php');
+        View::set_action_var('ad_id', $ad_id);
+        }
+        //header('Location: ' . Transaction_Session::get_previous_page());
     }
 
 }

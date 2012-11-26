@@ -3,19 +3,19 @@
 namespace App\Module\Admin\Controller;
 use \Zx\Message\Message;
 use \App\Model\User as Model_User;
-use \App\Model\Question as Model_Question;
-use \App\Transaction\Question as Transaction_Question;
+use \App\Model\Ad as Model_Ad;
+use \App\Transaction\Ad as Transaction_Ad;
 use \Zx\View\View;
 use \Zx\Test\Test;
 
-class Question extends Base {
+class Ad extends Base {
 
     public $list_page = '';
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/question/';
-        $this->list_page = ADMIN_HTML_ROOT . 'question/retrieve/1/title/ASC/';
-        \App\Transaction\Session::set_ck_upload_path('question');
+        $this->view_path = APPLICATION_PATH . 'module/admin/view/ad/';
+        $this->list_page = ADMIN_HTML_ROOT . 'ad/retrieve/1/title/ASC/';
+        \App\Transaction\Session::set_ck_upload_path('ad');
         parent::init();
     }
 
@@ -44,7 +44,7 @@ class Question extends Base {
                     'rank' => $rank,
                     'status' => $status,
                     'user_id' => $user_id);
-                if (Transaction_Question::create_question($arr)) {
+                if (Transaction_Ad::create_ad($arr)) {
                     $success = true;
                 }
             }
@@ -65,10 +65,10 @@ class Question extends Base {
         }
     }
 
-    /** only admin has permission to delete or update the questions */
+    /** only admin has permission to delete or update the ads */
     public function delete() {
         $id = $this->params[0];
-        Transaction_Question::delete_question($id);
+        Transaction_Ad::delete_ad($id);
         header('Location: ' . $this->list_page);
     }
 
@@ -92,7 +92,7 @@ class Question extends Base {
                     $arr['rank'] = intval($_POST['rank']);
                 if (isset($_POST['status']))
                     $arr['status'] = intval($_POST['status']);
-                if (Transaction_Question::update_question($id, $arr)) {
+                if (Transaction_Ad::update_ad($id, $arr)) {
                     $success = true;
                 }
             }
@@ -102,10 +102,10 @@ class Question extends Base {
         if ($success) {
             header('Location: ' . $this->list_page);
         } else {
-            $question = Model_Question::get_one($id);
+            $ad = Model_Ad::get_one($id);
             //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
             View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('question', $question);
+            View::set_action_var('ad', $ad);
         }
     }
 
@@ -124,7 +124,7 @@ class Question extends Base {
      */
     public function retrieve() {
         \App\Transaction\Html::remember_current_admin_page();
-        \App\Transaction\Session::set_admin_current_l1_menu('Question');
+        \App\Transaction\Session::set_admin_current_l1_menu('Ad');
         $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
         $order_by = isset($this->params[1]) ? $this->params[1] : 'id';
         $direction = isset($this->params[2]) ? $this->params[2] : 'ASC';
@@ -134,13 +134,13 @@ class Question extends Base {
         } else {
             $where = '1';
         }
-        $question_list = Model_Question::get_questions_by_page_num($where, $current_page, $order_by, $direction);
-        $num_of_records = Model_Question::get_num_of_questions($where);
+        $ad_list = Model_Ad::get_ads_by_page_num($where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Ad::get_num_of_ads($where);
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
-        //\Zx\Test\Test::object_log('question_list', $question_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         View::set_view_file($this->view_path . 'retrieve.php');
-        View::set_action_var('question_list', $question_list);
+        View::set_action_var('ad_list', $ad_list);
         View::set_action_var('search', $search);
         View::set_action_var('order_by', $order_by);
         View::set_action_var('direction', $direction);
@@ -154,7 +154,7 @@ class Question extends Base {
      */
     public function retrieve_by_user_id() {
         \App\Transaction\Session::remember_current_admin_page();
-        \App\Transaction\Session::set_current_l1_menu('Question');
+        \App\Transaction\Session::set_current_l1_menu('Ad');
         $user_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
         $current_page = isset($this->params[1]) ? intval($this->params[1]) : 1;
         $order_by = isset($this->params[2]) ? $this->params[2] : 'id';
@@ -165,14 +165,14 @@ class Question extends Base {
         } else {
             $where = '1';
         }
-        $question_list = Model_Question::get_questions_by_user_id_and_page_num($user_id, $where, $current_page, $order_by, $direction);
-        $num_of_records = Model_Question::get_num_of_questions($where);
+        $ad_list = Model_Ad::get_ads_by_user_id_and_page_num($user_id, $where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Ad::get_num_of_ads($where);
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
-        //\Zx\Test\Test::object_log('question_list', $question_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         View::set_view_file($this->view_path . 'retrieve_by_user_id.php');
         View::set_action_var('user_id', $user_id);
-        View::set_action_var('question_list', $question_list);
+        View::set_action_var('ad_list', $ad_list);
         View::set_action_var('search', $search);
         View::set_action_var('order_by', $order_by);
         View::set_action_var('direction', $direction);

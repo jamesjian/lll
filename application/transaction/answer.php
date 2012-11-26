@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Transaction;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
+
 use \App\Model\Answer as Model_Answer;
 use \App\Model\Question as Model_Question;
 use \App\Model\User as Model_User;
 use \Zx\Message\Message;
 use \Zx\Model\Mysql;
+
 //use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Answer {
@@ -20,16 +23,16 @@ class Answer {
             $user_id = Model_User::get_default_question_user_id();
             $user_name = '匿名回答用户';
             $status = 0;
-        }        
+        }
         $arr['user_id'] = $user_id;
         $arr['user_name'] = $user_name;
         $status = $status;
-        if (count($arr) > 0 && 
-                isset($arr['content']) && trim($arr['content'])!='' 
-                ) {
+        if (count($arr) > 0 &&
+                isset($arr['content']) && trim($arr['content']) != ''
+        ) {
             if (!isset($arr['rank']))
                 $arr['rank'] = 0; //initialize
-            
+
             if (Model_Answer::create($arr)) {
                 Model_Question::increase_num_of_answers($arr['question_id']);
                 Model_User::increase_num_of_answers($arr['user_id']);
@@ -44,13 +47,14 @@ class Answer {
             return false;
         }
     }
+
     /**
      * user id is not from session, it's from form
      */
-    public static function create_answer_by_admin($arr = array())
-    {
+    public static function create_answer_by_admin($arr = array()) {
         
     }
+
     public static function update_answer($id, $arr) {
         //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
@@ -98,7 +102,39 @@ class Answer {
             $str = substr($str, 0, -1); //remove last ','
             return $str;
             //Transaction_Swiftmail::send_string_to_admin($str);
-        } 
+        }
+    }
+
+    /*
+     * <1000
+     * >10000
+     * 1,3,5,6
+     * ad id must belong to user id (it's judged in controller)
+     */
+
+    public static function link_ad($arr) {
+        $ad_id = $arr['ad_id'];
+        $user_id = $arr['user_id'];
+
+        $answer_ids = $arr['answer_ids'];
+        if (strpos($answer_ids, '<')) {
+            $domain = 'less than';
+            $answer_id = intval(str_replace('<', '', $answer_ids));
+            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE id<=' . $answer_id . ' AND user_id=' . $user_id;
+        } elseif (strpos($answer_ids, '>')) {
+            $domain = 'more than';
+            $answer_id = intval(str_replace('>', '', $answer_ids));
+            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE id<=' . $answer_id . ' AND user_id=' . $user_id;
+        } else {
+            $domain = 'equal';
+            $answer_ids = explode(',', $answer_ids);
+            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE  user_id=' . $user_id . ' AND (';
+            foreach ($answer_ids as $answer_id) {
+                $update .= ' answer_id=' . $answer_id . ' OR ';
+            }
+            $update = substr($update, 0, -4) . ')'; //remove last 'OR', and ')' 
+        }
+        Mysql::exec($update);
     }
 
 }
