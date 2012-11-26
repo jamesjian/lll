@@ -12,10 +12,10 @@ class User extends Base {
     public $list_page = '';
 
     public function init() {
+        parent::init();
         $this->view_path = APPLICATION_PATH . 'module/admin/view/user/';
         $this->list_page = ADMIN_HTML_ROOT . 'user/retrieve/1/user_name/ASC/';
         \App\Transaction\Session::set_ck_upload_path('user');
-        parent::init();
     }
     /**
      * for ajax

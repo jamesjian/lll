@@ -16,10 +16,10 @@ CREATE TABLE IF NOT EXISTS `page_category` (
 class Pagecategory {
     public static $fields = array('id','title',
         'description',  'status', 'date_created');
-    public static $table = 'page_category';
+    public static $table = TABLE_PAGE_CATEGORY;
     public static function get_one($id) {
         $sql = "SELECT *
-            FROM page_category
+            FROM " . self::$table . " 
             WHERE id=$id
         ";
         return Mysql::select_one($sql);
@@ -27,7 +27,7 @@ class Pagecategory {
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'title', $direction = 'ASC') {
         $sql = "SELECT *
-            FROM page_category
+            FROM " . self::$table . " 
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
@@ -38,7 +38,7 @@ class Pagecategory {
     }
   public static function get_num($where = '1') {
         $sql = "SELECT COUNT(id) AS num
-            FROM page_category
+            FROM " . self::$table . " 
             WHERE $where
         ";
         $result = Mysql::select_one($sql);

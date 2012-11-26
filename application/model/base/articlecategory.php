@@ -20,7 +20,7 @@ class Articlecategory {
     
     public static function get_one($id) {
         $sql = "SELECT *
-            FROM article_category
+            FROM " . self::$table . " 
             WHERE id=$id
         ";
         return Mysql::select_one($sql);
@@ -28,7 +28,7 @@ class Articlecategory {
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'title', $direction = 'ASC') {
         $sql = "SELECT *
-            FROM article_category
+            FROM " . self::$table . " 
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
@@ -38,7 +38,7 @@ class Articlecategory {
     }
 
     public static function get_num($where = '1') {
-        $sql = "SELECT COUNT(id) AS num FROM" . self::$table . "WHERE $where";
+        $sql = "SELECT COUNT(id) AS num FROM " . self::$table . " WHERE $where";
         $result = Mysql::select_one($sql);
         if ($result) {
             return $result['num'];

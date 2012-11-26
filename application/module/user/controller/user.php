@@ -1,8 +1,6 @@
 <?php
-
-defined('SYSPATH') or die('No direct script access.');
-
 namespace App\Module\User\Controller;
+defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \Zx\Controller\Route;
 use \Zx\View\View;
@@ -25,15 +23,15 @@ class User extends Base {
     public $view_path;
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/user/view/user/';
         parent::init();
+        $this->view_path = APPLICATION_PATH . 'module/user/view/user/';
     }
     /**
      * it's the splash page of the user
      * show some links, some new messages, some new notifications
      */
     public function home() {
-        Transaction_Session::remember_current_page();
+        Transaction_Html::remember_current_page();
         $num_of_questions = Model_Question::get_num_of_active_questions_by_user_id($this->user_id);
         $num_of_answers = Model_Answer::get_num_of_active_answers_by_user_id($this->user_id);
         $num_of_ads = Model_Ad::get_num_of_active_ads_by_user_id($this->user_id);
@@ -50,9 +48,9 @@ class User extends Base {
      * cannot update user name, email and password from this form
      */
     public function update_profile() {
-        //App_Test::objectLog('$posted', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        App_Http::remember_this_page();
-        $user_id = App_User::get_user_id();
+        //\Zx\Test\Test::object_log('$posted', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        Transaction_Html::remember_current_page();
+        //$user_id = App_User::get_user_id();
         $user = Model_User::get_user($user_id);
         $success = false;
         $errors = array();
@@ -116,7 +114,7 @@ class User extends Base {
      * when email is changed, need to activate again
      */
     public function change_email() {
-        //App_Test::objectLog('settingt',$_SESSION['user'], __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('settingt',$_SESSION['user'], __FILE__, __LINE__, __CLASS__, __METHOD__);
         $success = false;
         $errors = null;
         $posted = array();
@@ -131,7 +129,7 @@ class User extends Base {
                 $posted = array(
                     'email' => $email,
                 );
-                //App_Test::objectLog('$posted',$posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                //\Zx\Test\Test::object_log('$posted',$posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
                 $user_id = App_User::get_user_id();
                 if (App_User::change_email($user_id, $posted)) {
                     $success = true;
@@ -177,7 +175,7 @@ class User extends Base {
      * cannot update user name, email and password from this form
      */
     public function change_profile() {
-        //App_Test::objectLog('$posted', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('$posted', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
         App_Http::remember_this_page();
         $user_id = App_User::get_user_id();
         $user = Model_User::get_user($user_id);
@@ -246,7 +244,7 @@ class User extends Base {
 
 
     public function change_password() {
-        //App_Test::objectLog('settingt',$_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('settingt',$_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if (App_User::has_loggedin()) {
             $success = false;
             $errors = array();
@@ -259,7 +257,7 @@ class User extends Base {
                         ->rule('password1', 'not_empty')
                         ->rule('password1', 'matches', array(':validation', 'password1', 'password2'));
 
-                // App_Test::objectLog('$posted',$posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                // \Zx\Test\Test::object_log('$posted',$posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
                 if ($post->check()) {
                     $old_password = isset($_POST['old_password']) ? trim($_POST['old_password']) : '';
                     $new_password = isset($_POST['password1']) ? trim($_POST['password1']) : '';
@@ -267,7 +265,7 @@ class User extends Base {
                         'old_password' => $old_password,
                         'new_password' => $new_password,
                     );
-                    //App_Test::objectLog('settingt',$posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                    //\Zx\Test\Test::object_log('settingt',$posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
                     $user_id = App_User::get_user_id();
                     if (App_User::change_password(App_User::get_user_id(), $posted)) {
@@ -317,7 +315,7 @@ class User extends Base {
         }
     }
     public function change_portrait() {
-        //App_Test::objectLog('settingt',$_FILES, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('settingt',$_FILES, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         App_Http::remember_this_page();
         $user_id = App_User::get_user_id();

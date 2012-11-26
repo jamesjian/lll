@@ -14,7 +14,7 @@ prevent one user vote one answer multiple times
 */
 class Usertoanswer {
     public static $fields = array('user_id','answer_id');
-    public static $table = 'user_to_answer';
+    public static $table = TABLE_USER_TO_ANSWER;
      /**
      *
      * @param int $user_id and $answer_id is a composite primary key
@@ -22,7 +22,7 @@ class Usertoanswer {
      */
     public static function get_one($user_id, $answer_id) {
         $sql = "SELECT *
-            FROM user_to_answer 
+            FROM " . self::$table . " 
             WHERE user_id=:user_id AND answer_id=:answer_id
         ";
         $params = array(':user_id' => $user_id,
@@ -38,7 +38,7 @@ class Usertoanswer {
      */
     public static function get_one_by_where($where) {
         $sql = "SELECT *
-            FROM user_to_answer 
+            FROM " . self::$table . " 
             WHERE $where
         ";
         return Mysql::select_one($sql);
@@ -46,7 +46,7 @@ class Usertoanswer {
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
         $sql = "SELECT *
-            FROM ad 
+            FROM " . self::$table . " 
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
@@ -57,7 +57,7 @@ class Usertoanswer {
     }
 
     public static function get_num($where = '1') {
-        $sql = "SELECT COUNT(id) AS num FROM" . self::$table . "WHERE $where";
+        $sql = "SELECT COUNT(id) AS num FROM " . self::$table . " WHERE $where";
         $result = Mysql::select_one($sql);
         if ($result) {
             return $result['num'];

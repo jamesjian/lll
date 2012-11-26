@@ -11,8 +11,8 @@ class Article extends Admin {
     public $view_path;
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/article/';
         parent::init();
+        $this->view_path = APPLICATION_PATH . 'module/admin/view/article/';
     }
 
     public function create() {

@@ -10,8 +10,8 @@ use \Zx\Test\Test;
 class Pagecategory extends Base {
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/pagecategory/';
         parent::init();
+        $this->view_path = APPLICATION_PATH . 'module/admin/view/pagecategory/';
     }
 
     public function create() {

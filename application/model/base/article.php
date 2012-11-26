@@ -18,7 +18,7 @@ class Article {
     public static $fields = array('id','title','title_en', 'cat_id',
         'keyword','keyword_en','abstract', 'url',
         'content', 'rank', 'status', 'date_created');
-    public static $table = 'article';
+    public static $table = TABLE_ARTICLE;
     /**
      *
      * @param int $id
@@ -26,7 +26,7 @@ class Article {
      */
     public static function get_one($id) {
         $sql = "SELECT b.*, bc.title as cat_name
-            FROM article b
+            FROM " . self::$table . " b
             LEFT JOIN article_category bc ON b.cat_id=bc.id
             WHERE b.id=:id
         ";
@@ -43,7 +43,7 @@ class Article {
      */
     public static function get_one_by_where($where) {
         $sql = "SELECT b.*, bc.title as cat_name,
-            FROM article b
+            FROM " . self::$table . " b
             LEFT JOIN article_category bc ON b.cat_id=bc.id
             WHERE $where
         ";
@@ -52,7 +52,7 @@ class Article {
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'b.date_created', $direction = 'DESC') {
         $sql = "SELECT b.*, bc.title as cat_name
-            FROM article b
+            FROM " . self::$table . " b
             LEFT JOIN article_category bc ON b.cat_id=bc.id
             WHERE $where
             ORDER BY $order_by $direction
@@ -65,7 +65,7 @@ class Article {
 
     public static function get_num($where = '1') {
         $sql = "SELECT COUNT(id) AS num
-            FROM article 
+            FROM " . self::$table . " 
             WHERE $where
         ";
         $result = Mysql::select_one($sql);

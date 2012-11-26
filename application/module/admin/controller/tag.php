@@ -16,10 +16,10 @@ class Tag extends Base {
     public $list_page = '';
 
     public function init() {
+        parent::init();
         $this->view_path = APPLICATION_PATH . 'module/admin/view/tag/';
         $this->list_page = ADMIN_HTML_ROOT . 'tag/retrieve/1/name/ASC/';
         //\App\Transaction\Session::set_ck_upload_path('tag');
-        parent::init();
     }
 
     /**

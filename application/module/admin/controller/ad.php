@@ -13,10 +13,10 @@ class Ad extends Base {
     public $list_page = '';
 
     public function init() {
+        parent::init();
         $this->view_path = APPLICATION_PATH . 'module/admin/view/ad/';
         $this->list_page = ADMIN_HTML_ROOT . 'ad/retrieve/1/title/ASC/';
         \App\Transaction\Session::set_ck_upload_path('ad');
-        parent::init();
     }
 
    
