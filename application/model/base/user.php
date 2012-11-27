@@ -25,13 +25,8 @@ class User {
     public static $table = TABLE_USER;
 
     public static function get_one($id) {
-        $sql = "SELECT *
-            FROM user 
-            WHERE id=:id
-        ";
+        $sql = "SELECT * FROM " . self::$table . " WHERE id=:id";
         $params = array(':id' => $id);
-
-
         return Mysql::select_one($sql, $params);
     }
 
@@ -41,17 +36,12 @@ class User {
      * @return 1D array or boolean when false 
      */
     public static function get_one_by_where($where) {
-        $sql = "SELECT *
-            FROM user 
-            WHERE $where
-        ";
+        $sql = "SELECT *  FROM " . self::$table . " WHERE $where";
         return Mysql::select_one($sql);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'b.date_created', $direction = 'DESC') {
-        $sql = "SELECT *
-            FROM user 
-            WHERE $where
+        $sql = "SELECT *  FROM " . self::$table . " WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
@@ -61,7 +51,7 @@ class User {
     }
 
     public static function get_num($where = '1') {
-        $sql = "SELECT COUNT(id) AS num FROM" . self::$table . "WHERE $where";
+        $sql = "SELECT COUNT(id) AS num FROM " . self::$table . " WHERE $where";
         $result = Mysql::select_one($sql);
         if ($result) {
             return $result['num'];

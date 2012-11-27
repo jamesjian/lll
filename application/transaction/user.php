@@ -329,7 +329,7 @@ class User {
             );
             session_regenerate_id();
             $_SESSION['user'] = $session_array;
-            \Zx\Test\Test::object_log('$_SESSION',$_SESSION, __FILE__, __LINE__, __CLASS__, __METHOD__);
+            //\Zx\Test\Test::object_log('$_SESSION',$_SESSION, __FILE__, __LINE__, __CLASS__, __METHOD__);
             Zx_Message::set_success_message("您已登录成功， 可以开始操作您的账户。");
             return true;
         } else {

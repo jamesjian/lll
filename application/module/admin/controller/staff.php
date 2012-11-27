@@ -9,8 +9,8 @@ class Staff extends Base {
     public $view_path;
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/staff/';
         parent::init();
+        $this->view_path = APPLICATION_PATH . 'module/admin/view/staff/';
     }
   
     public function login()

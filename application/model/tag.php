@@ -22,7 +22,7 @@ class Tag extends Base_Tag {
     }    
     public static function get_all_keywords()
     {
-        $sql = "SELECT keyword, keyword_en FROM tag WHERE status=1";
+        $sql = "SELECT keyword, keyword_en FROM " . parent::$table . " WHERE status=1";
         $r = Mysql::select_all($sql);
         $arr = array();
         if ($r) {
@@ -52,7 +52,7 @@ class Tag extends Base_Tag {
     public static function get_one_by_url($url)
     {
         $sql = "SELECT b.*, bc.title as cat_name
-            FROM tag b
+            FROM " . parent::$table . " b
             LEFT JOIN tag_category bc ON b.cat_id=bc.id
             WHERE b.url='$url'
         ";

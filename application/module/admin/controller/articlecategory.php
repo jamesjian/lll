@@ -12,9 +12,9 @@ class Articlecategory extends Base {
     public $list_page = '';
 
     public function init() {
+        parent::init();
         $this->view_path = APPLICATION_PATH . 'module/admin/view/articlecategory/';
         $this->list_page = ADMIN_HTML_ROOT . 'articlecategory/retrieve/1/title/ASC/';
-        parent::init();
     }
 
     public function create() {

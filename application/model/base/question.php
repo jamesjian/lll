@@ -62,7 +62,9 @@ class Question {
     }
 
     public static function get_num($where = '1') {
-        $sql = "SELECT COUNT(id) AS num FROM" . self::$table . "WHERE $where";
+        $sql = "SELECT COUNT(id) AS num FROM " . self::$table . " WHERE $where";
+        //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
         $result = Mysql::select_one($sql);
         if ($result) {
             return $result['num'];

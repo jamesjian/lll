@@ -11,8 +11,8 @@ use \Zx\Test\Test;
 class Page extends Base {
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/page/';
         parent::init();
+        $this->view_path = APPLICATION_PATH . 'module/admin/view/page/';
     }
 
     public function create() {

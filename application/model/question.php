@@ -22,7 +22,7 @@ class Question extends Base_Question {
     public static function get_one_by_url($url)
     {
         $sql = "SELECT b.*, bc.title as cat_name
-            FROM question " . self::$table .  " LEFT JOIN question_category bc ON b.cat_id=bc.id
+            FROM " . self::$table .  " b LEFT JOIN question_category bc ON b.cat_id=bc.id
             WHERE b.url='$url'
         ";
         //$params = array(':url'=>$url);

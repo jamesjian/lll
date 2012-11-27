@@ -1,4 +1,4 @@
 ;it is an ini file
 module[] = 'front';
-module[] = 'mem';
+module[] = 'user';
 module[] = 'admin';

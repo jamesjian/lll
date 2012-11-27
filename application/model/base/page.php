@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `page` (
 class Page {
     public static $fields = array('id','title', 'cat_id',
         'content', 'status', 'date_created');
-    public static $table = 'page';
+    public static $table = TABLE_PAGE;
     /**
      *
      * @param int $id
@@ -26,7 +26,7 @@ class Page {
      */
     public static function get_one($id) {
         $sql = "SELECT a.*, ac.title as cat_name
-            FROM page a
+            FROM " . self::$table . " a
             LEFT JOIN page_category ac ON a.cat_id=ac.id
             WHERE a.id=:id
         ";
@@ -40,7 +40,7 @@ class Page {
      */
     public static function get_one_by_where($where) {
         $sql = "SELECT a.*, ac.title as cat_name
-            FROM page a
+            FROM " . self::$table . " a
             LEFT JOIN page_category ac ON a.cat_id=ac.id
             WHERE $where
         ";
@@ -51,7 +51,7 @@ class Page {
 	
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'a.display_order', $direction = 'ASC') {
         $sql = "SELECT a.*, ac.title as cat_name
-            FROM page a
+            FROM " . self::$table . " a
             LEFT JOIN page_category ac ON a.cat_id=ac.id
             WHERE $where
             ORDER BY $order_by $direction
@@ -61,7 +61,7 @@ class Page {
     }
     public static function get_num($where = '1') {
         $sql = "SELECT COUNT(id) AS num
-            FROM page 
+            FROM " . self::$table . " 
             WHERE $where
         ";
         $result = Mysql::select_one($sql);

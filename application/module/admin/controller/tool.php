@@ -11,8 +11,8 @@ use \Zx\Test\Test;
 class Tool extends Base {
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/tool/';
         parent::init();
+        $this->view_path = APPLICATION_PATH . 'module/admin/view/tool/';
     }
 
     public function sitemap() {

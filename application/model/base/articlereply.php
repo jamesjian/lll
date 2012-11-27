@@ -13,7 +13,7 @@ class Blogreply {
      */
     public static function get_one($id) {
         $sql = "SELECT a.*, ac.title as cat_name,
-            FROM article a
+            FROM " . self::$table . " a
             LEFT JOIN article_category ac ON a.cat_id=ac.id
             WHERE a.id=:id
         ";
@@ -27,7 +27,7 @@ class Blogreply {
      */
     public static function get_one_by_where($where) {
         $sql = "SELECT a.*, ac.title as cat_name,
-            FROM article a
+            FROM " . self::$table . " a
             LEFT JOIN article_category ac ON a.cat_id=ac.id
             WHERE :where
         ";
@@ -38,7 +38,7 @@ class Blogreply {
 	
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'a.display_order', $direction = 'ASC') {
         $sql = "SELECT a.*, ac.title as cat_name,
-            FROM article a
+            FROM " . self::$table . " a
             LEFT JOIN article_category ac ON a.cat_id=ac.id
             WHERE $where
             ORDER BY $order_by $direction

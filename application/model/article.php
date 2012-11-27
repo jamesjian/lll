@@ -8,7 +8,7 @@ use \Zx\Model\Mysql;
 class Article extends Base_Article {
     public static function get_all_keywords()
     {
-        $sql = "SELECT keyword, keyword_en FROM article WHERE status=1";
+        $sql = "SELECT keyword, keyword_en FROM " . parent::$table . " WHERE status=1";
         $r = Mysql::select_all($sql);
         $arr = array();
         if ($r) {
@@ -36,7 +36,7 @@ class Article extends Base_Article {
     public static function get_one_by_url($url)
     {
         $sql = "SELECT b.*, bc.title as cat_name
-            FROM article b
+            FROM " . parent::$table . " b
             LEFT JOIN article_category bc ON b.cat_id=bc.id
             WHERE b.url='$url'
         ";

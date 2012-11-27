@@ -134,18 +134,18 @@ class Answer extends Base_Answer {
     }
 
     public static function get_num_of_active_answers_by_cat_id($cat_id) {
-        $where = ' b.status=1 AND b.cat_id=' . $cat_id;
+        $where = ' status=1 AND cat_id=' . $cat_id;
         return parent::get_num($where);
     }
  /**
      */
     public static function get_active_answers_by_user_id_and_page_num($user_id, $where=1, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = " a.status=1 AND a.user_id=$user_id AND ($where)" ;
+        $where = " status=1 AND user_id=$user_id AND ($where)" ;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
     public static function get_num_of_active_answers_by_user_id($user_id, $where=1) {
-        $where = " a.status=1 AND a.user_id=$user_id AND ($where)" ;
+        $where = " status=1 AND user_id=$user_id AND ($where)" ;
         return parent::get_num($where);
     }    
     public static function get_active_answers_by_question_id_and_page_num($question_id, $where=1, $page_num = 1, $order_by = 'a.date_created', $direction = 'ASC') {
