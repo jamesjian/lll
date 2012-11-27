@@ -249,8 +249,40 @@ user:
  * status: 1: active, 2: registered, 0: inactive
 questions: 
  * status: 1: active, 0: inactive 2. disalbed
+ * start before XMas
+ * week 1 all code
+ * week 2 test
+ * week 3 deploy
+ * week 4 integration test, add data
+ * ad/answer exchange after one year.
+ * front end:
+ * 1. home
+ * 2. user register, activation, forgotten password, 
+ * 3. question list, create question, mark useful, report abuse
+ * 4. one question and answer list, vote answer, report abuse
+ * 5. answer a question
+ * 6. user list
+ * 7. tag list
+ * 8. search
+ * 9. region
+ * 10.ad list of one user, of one tag, of one region, of one question, 
+ *    and one ad
  * 
  * 
+ * user end:
+ * 1. user profile, change password
+ * 2. question list, create question
+ * 3. answer list of one question, of one ad, all answers
+ * 4. ad list, crud ad, link ad to answer
+ * 
+ * back end:
+ * 1. user list, change status
+ *    num of question, answer, ad
+ * 2. question list, change status, edit question(title, content and tags)
+ * 3. answer list, change status, edit answer(content)
+ * 4. ad list, edit ad
+ * 5. tag list, create tag, edit tag, move tag
+ * 6. region
  * 
  * 
  */
