@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Model;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Base\Tag as Base_Tag;
 use \Zx\Model\Mysql;
 

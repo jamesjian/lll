@@ -258,7 +258,9 @@ questions:
  * front end:
  * 1. home
  * 2. user register, activation, forgotten password, 
- * 3. question list, create question, mark useful, report abuse
+ * 3. question list, (newest, unanswered, most popular), 
+ *    create question, 
+ * mark useful, report abuse
  * 4. one question and answer list, vote answer, report abuse
  * 5. answer a question
  * 6. user list
@@ -266,6 +268,7 @@ questions:
  * 8. search
  * 9. region
  * 10.ad list of one user, of one tag, of one region, of one question, 
+ *    of one user and one tag
  *    and one ad
  * 
  * 
@@ -279,8 +282,11 @@ questions:
  * 1. user list, change status
  *    num of question, answer, ad
  * 2. question list, change status, edit question(title, content and tags)
+ *    examine if anonymous
  * 3. answer list, change status, edit answer(content)
+ *     examine if anonymous
  * 4. ad list, edit ad
+ * 
  * 5. tag list, create tag, edit tag, move tag
  * 6. region
  * 

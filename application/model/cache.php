@@ -1,4 +1,7 @@
 <?php
+namespace App\Model;
+defined('SYSTEM_PATH') or die('No direct script access.');
+use \App\Model\Base\Cache as Base_Cache;
 /**
  * Description of cache
 CREATE TABLE IF NOT EXISTS `cache` (
@@ -17,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `cache` (
 //in case 'empty' or 'false' is the value of the cache, use NO_CACHE_DATA as the value
 //when there is no value for a particular cache id
 
-class Model_Cache extends Model_Base_Cache
+class Cache extends Base_Cache
 {
    /**
      * @param <string> $cache_id

@@ -1,15 +1,16 @@
 <?php
 namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
-use \App\Model\Base\Articlecategory as Base_Articlecategory;
+use \App\Model\Base\Abcategory as Base_Abusecategory;
 use \Zx\Model\Mysql;
-class Articlecategory extends Base_Articlecategory{
+class Abusecategory extends Base_Abusecategory{
     /**
      * get active cats order by category name
      */
     public static function get_cats()
     {
-        return parent::get_all();
+        return array('1'=>'造谣诽谤', '2'=>'种族歧视', '3'=>'色情暴力', 
+            '4'=>'违禁物品（毒品， 武器等）', '5'=>'误导欺诈');
     }    
     /**
      * get all cats order by category name
@@ -60,7 +61,7 @@ class Articlecategory extends Base_Articlecategory{
      * @return array or false if not exists
      */
     public static function exist_cat_title($title) {
-        $sql = "SELECT * FROM article_category WHERE title='$title'";
+        $sql = "SELECT * FROM abuse_category WHERE title='$title'";
                 \Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         return Mysql::select_one($sql);

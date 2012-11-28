@@ -21,9 +21,9 @@ class Tag extends Base {
     public $view_path;
 
     public function init() {
+        parent::init();
         $this->view_path = APPLICATION_PATH . 'module/front/view/tag/';
         $this->list_page =  FRONT_HTML_ROOT . 'tag/retrieve/1';
-        parent::init();
     }
 
     /*     * one tag

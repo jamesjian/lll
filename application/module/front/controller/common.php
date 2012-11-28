@@ -13,8 +13,8 @@ class Common extends Base {
     public $view_path;
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/front/view/common/';
         parent::init();
+        $this->view_path = APPLICATION_PATH . 'module/front/view/common/';
     }
 
     public function sitemap() {

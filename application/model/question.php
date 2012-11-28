@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Model;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Base\Question as Base_Question;
 use \Zx\Model\Mysql;
 

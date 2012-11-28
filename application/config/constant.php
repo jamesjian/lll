@@ -14,7 +14,7 @@ define('LIBRARY_PATH', dirname(PHP_ROOT) . DIRECTORY_SEPARATOR . 'library' . DIR
 define('SYSTEM_PATH', LIBRARY_PATH . 'zx' . DIRECTORY_SEPARATOR);
 define('APPLICATION_PATH', PHP_ROOT . 'application' . DIRECTORY_SEPARATOR);
 //session table is controlled by library, it's without TABLE_PREFIX
-$tables = array('ad','answer', 'article', 'article_category', 'cache', 'question', 'staff','tag', 'user', 'user_to_answer');
+$tables = array('abuse','abuse_category','ad','answer', 'article', 'article_category', 'cache', 'question', 'region', 'staff','tag', 'user', 'user_to_answer');
 foreach ($tables as $table) {
     define('TABLE_' . strtoupper($table), TABLE_PREFIX . $table);  //TABLE_PREFIX is defined in constant_db.php
 }

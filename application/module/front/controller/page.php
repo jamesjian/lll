@@ -11,8 +11,8 @@ class Page extends Base {
     public $view_path;
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/front/view/page/';
         parent::init();
+        $this->view_path = APPLICATION_PATH . 'module/front/view/page/';
     }
 
     //one page

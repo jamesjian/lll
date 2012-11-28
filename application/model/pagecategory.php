@@ -1,6 +1,6 @@
 <?php
 namespace App\Model;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Base\Pagecategory as Base_Pagecategory;
 use \Zx\Model\Mysql;
 class Pagecategory extends Base_Pagecategory{

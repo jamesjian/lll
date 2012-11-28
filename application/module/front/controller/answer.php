@@ -25,8 +25,8 @@ class Answer extends Base {
     public $view_path;
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/front/view/answer/';
         parent::init();
+        $this->view_path = APPLICATION_PATH . 'module/front/view/answer/';
     }
 
     /*     * one answer

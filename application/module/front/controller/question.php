@@ -25,9 +25,9 @@ class Question extends Base {
     public $view_path;
 
     public function init() {
+        parent::init();
         $this->view_path = APPLICATION_PATH . 'module/front/view/question/';
         $this->list_page =  FRONT_HTML_ROOT . 'question/all/';
-        parent::init();
     }
 
     /*     * one question
@@ -225,6 +225,7 @@ class Question extends Base {
                 $arr = array('title' => $title,
                     'tag_names' => $tag_names,
                     'content' => $content,
+                    'state'=>$state,
                     );
                 if (Transaction_Question::create($arr)) {
                     $success = true;

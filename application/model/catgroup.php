@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Model;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Base\Catgroup as Base_Catgroup;
 use \Zx\Model\Mysql;
 
