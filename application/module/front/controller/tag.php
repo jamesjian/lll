@@ -136,7 +136,7 @@ class Tag extends Base {
      * search is a search keyword
      * including home page
      */
-    public function retrieve() {
+    public function question() {
         //\Zx\Test\Test::object_log('lob', 'aaaa', __FILE__, __LINE__, __CLASS__, __METHOD__);
         Transaction_Html::set_title('所有问题类别');
         Transaction_Html::set_keyword('问题类别');
@@ -152,7 +152,31 @@ class Tag extends Base {
         }        
         $order_by = 'num_of_questions';
         $direction = 'DESC';
-        $tags = Model_Tag::get_active_tags_by_page_num($where, $current_page, $order_by, $direction);
+        $tags = Model_Tag::get_active_question_tags_by_page_num($where, $current_page, $order_by, $direction);
+        $num_of_tags = Model_Tag::get_num_of_active_tags();
+        $num_of_pages = ceil($num_of_tags / NUM_OF_ITEMS_IN_ONE_PAGE);
+        View::set_view_file($this->view_path . 'tag_list.php');
+        View::set_action_var('tags', $tags);
+        View::set_action_var('current_page', $current_page);
+        View::set_action_var('num_of_pages', $num_of_pages);
+    }
+    public function ad() {
+        //\Zx\Test\Test::object_log('lob', 'aaaa', __FILE__, __LINE__, __CLASS__, __METHOD__);
+        Transaction_Html::set_title('所有信息类别');
+        Transaction_Html::set_keyword('信息类别');
+        Transaction_Html::set_description('信息类别');
+        $current_page = (isset($params[0])) ? intval($params[0]) : 1;
+        $search = (isset($params[1])) ? intval($params[1]) : '';
+        if ($current_page < 1)
+            $current_page = 1;
+        if ($search != '') {
+            $where = " name LIKE '%$search%'";
+        } else {
+            $where = '1';
+        }        
+        $order_by = 'num_of_questions';
+        $direction = 'DESC';
+        $tags = Model_Tag::get_active_ad_tags_by_page_num($where, $current_page, $order_by, $direction);
         $num_of_tags = Model_Tag::get_num_of_active_tags();
         $num_of_pages = ceil($num_of_tags / NUM_OF_ITEMS_IN_ONE_PAGE);
         View::set_view_file($this->view_path . 'tag_list.php');
@@ -181,5 +205,7 @@ class Tag extends Base {
         View::set_action_var('current_page', $current_page);
         View::set_action_var('num_of_pages', $num_of_pages);
     }
+    
+    
 
 }

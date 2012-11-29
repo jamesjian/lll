@@ -13,14 +13,14 @@ use \Zx\Model\Mysql;
   tag_ids varchar(255) NOT NULL DEFAULT '',
   tag_names varchar(255) not null default '', #tag names are fixed
   content text,
-  num_of_displays int(11) default 0,  #the times of displays
-  num_of_clicks int(11) default 0,    #the times of clicks
+  num_of_displays int(11) default 0,  #the times of displays for random display
+  num_of_views int(11) default 0,    #the times of clicks
   status tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
 */
 class Ad {
     public static $fields = array('id','title','user_id','user_name',
-        'tag_ids','tag_names','content', 'num_of_displays','num_of_clicks',
+        'tag_ids','tag_names','content', 'num_of_displays','num_of_views',
           'status', 'date_created');
     public static $table = TABLE_AD;
     

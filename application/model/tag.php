@@ -119,14 +119,23 @@ class Tag extends Base_Tag {
     /**
      * get active cats order by category name
      */
-    public static function get_active_tags_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = ' b.status=1 ';
-        $offset = ($page_num - 1) * NUM_OF_ARTICLES_IN_CAT_PAGE;
-        return parent::get_all($where, $offset, NUM_OF_ARTICLES_IN_CAT_PAGE, $order_by, $direction);
+    public static function get_active_question_tags_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = ' status=1 AND num_of_questions>0';
+        $offset = ($page_num - 1) * NUM_OF_TAG_ITEMS_IN_ONE_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_TAG_ITEMS_IN_ONE_PAGE, $order_by, $direction);
+    }
+    public static function get_active_ad_tags_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = ' status=1 AND num_of_ads>0';
+        $offset = ($page_num - 1) * NUM_OF_TAG_ITEMS_IN_ONE_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_TAG_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
-    public static function get_num_of_active_tags($where = '1') {
-        $where = ' (b.status=1' . ')  AND (' . $where . ')';
+    public static function get_num_of_active_question_tags($where = '1') {
+        $where = ' status=1 AND num_of_questions>0 AND (' . $where . ')';
+        return parent::get_num();
+    }
+    public static function get_num_of_active_ad_tags($where = '1') {
+        $where = ' status=1 AND num_of_ads>0 AND (' . $where . ')';
         return parent::get_num();
     }
 
@@ -222,9 +231,19 @@ class Tag extends Base_Tag {
      * according to num_of_questions
      * @return records
      */
-    public static function get_most_popular_tags() {
+    public static function get_most_popular_question_tags() {
         $where = ' status=1';
         return parent::get_all($where, 0, 20, 'num_of_questions', 'DESC');
+    }
+    /**
+     * currently top 20
+     * in the future, it will be stored into cache
+     * according to num_of_questions
+     * @return records
+     */
+    public static function get_most_popular_ad_tags() {
+        $where = ' status=1';
+        return parent::get_all($where, 0, 20, 'num_of_ads', 'DESC');
     }
 
     public static function get_latest10() {

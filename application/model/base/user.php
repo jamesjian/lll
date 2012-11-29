@@ -13,7 +13,7 @@ use \Zx\Model\Mysql;
   image varchar(255) not null default '' ,
   num_of_questions mediumint(8) not null default 0,
   num_of_answers mediumint(8) not null default 0,
-  rank unsigned MEDIUMINT(8) not null default 0,
+  num_of_ads unsigned MEDIUMINT(8) not null default 0,
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */
@@ -21,7 +21,7 @@ use \Zx\Model\Mysql;
 class User {
 
     public static $fields = array('id', 'user_name', 'password', 'email',
-        'image', 'rank', 'status', 'date_created');
+        'image', 'num_of_questions','num_of_answers','num_of_ads', 'status', 'date_created');
     public static $table = TABLE_USER;
 
     public static function get_one($id) {

@@ -17,7 +17,7 @@ class Base {
     public function init() {
         $this->params = Route::get_params();
         //$cat_groups = Model_Catgroup::get_all_groups();
-        $popular_tags = Model_Tag::get_most_popular_tags();
+        $popular_tags = Model_Tag::get_most_popular_question_tags();
         $latest_ads = Model_Ad::get_latest_ads();
         /*main difference between templates is right column of the pages
          tempalte_tags_ads.php is default one, display most popular tags and latest ads 

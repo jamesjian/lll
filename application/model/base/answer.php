@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Model\Base;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
+
 use \Zx\Model\Mysql;
 use App\Model\Question as Model_Question;
 
@@ -9,18 +12,20 @@ use App\Model\Question as Model_Question;
   id unsigned MEDIUMINT(8) AUTO_INCREMENT PRIMARY KEY,
   question_id unsigned MEDIUMINT(8) not null default 0,
   user_id unsigned MEDIUMINT(8) not null default 0,
-    user_name varchar(30) not null '',  #user name is fixed
+  user_name varchar(30) not null '',  #user name is fixed
   ad_id unsigned MEDIUMINT(8) not null default 0,
   content text,
-  rank unsigned MEDIUMINT(8) not null default 0,
+  num_of_votes int(11) default 0,
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */
 
 class Answer {
-    public static $fields = array('id','question_id', 'user_id', 'user_name','ad_id',
-        'content', 'rank', 'status', 'date_created');
+
+    public static $fields = array('id', 'question_id', 'user_id', 'user_name', 'ad_id',
+        'content', 'num_of_votes', 'status', 'date_created');
     public static $table = TABLE_ANSWER;
+
     /**
      *
      * @param int $id
@@ -28,7 +33,7 @@ class Answer {
      */
     public static function get_one($id) {
         $sql = "SELECT a.*, q.title, q.tag_names
-            FROM  " . self::$table .  " a
+            FROM  " . self::$table . " a
             LEFT JOIN " . Model_Question::$table . " q ON q.id=a.question_id
             WHERE id=:id
         ";
@@ -45,7 +50,7 @@ class Answer {
      */
     public static function get_one_by_where($where) {
         $sql = "SELECT a.*, q.title, q.tag_names
-            FROM  " . self::$table .  " a
+            FROM  " . self::$table . " a
             LEFT JOIN " . Model_Question::$table . " q ON q.id=a.question_id
             WHERE $where
         ";
@@ -54,7 +59,7 @@ class Answer {
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
         $sql = "SELECT a.*, q.title, q.tag_names
-            FROM " . self::$table .  "  a
+            FROM " . self::$table . "  a
             LEFT JOIN " . Model_Question::$table . "  q ON q.id=a.question_id
             WHERE $where
             ORDER BY $order_by $direction
@@ -76,9 +81,10 @@ class Answer {
     }
 
     public static function create($arr) {
-              \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);        
+        \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        $insert_arr = array(); $params = array();
+        $insert_arr = array();
+        $params = array();
         foreach (self::$fields as $field) {
             if (array_key_exists($field, $arr)) {
                 $insert_arr[] = "$field=:$field";
@@ -91,16 +97,17 @@ class Answer {
     }
 
     public static function update($id, $arr) {
-        $update_arr = array();$params = array();
+        $update_arr = array();
+        $params = array();
         foreach (self::$fields as $field) {
             if (array_key_exists($field, $arr)) {
                 $update_arr[] = "$field=:$field";
                 $params[":$field"] = $arr[$field];
             }
-        }        
-        
+        }
+
         $update_str = implode(',', $update_arr);
-        $sql = 'UPDATE ' .self::$table . ' SET '. $update_str . ' WHERE id=:id';
+        $sql = 'UPDATE ' . self::$table . ' SET ' . $update_str . ' WHERE id=:id';
         //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $params[':id'] = $id;
         //$query = Mysql::interpolateQuery($sql, $params);
@@ -110,7 +117,7 @@ class Answer {
     }
 
     public static function delete($id) {
-        $sql = "Delete FROM " . self::$table ." WHERE id=:id";
+        $sql = "Delete FROM " . self::$table . " WHERE id=:id";
         $params = array(':id' => $id);
         return Mysql::exec($sql, $params);
     }

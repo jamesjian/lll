@@ -86,10 +86,11 @@ class Question extends Base {
     }
 
     /**
+     * user id
       retrieve questions under a user
       front/question/retrieve_by_user_id/id/page/3/, 3 is page number
      */
-    public function retrieve_by_user_id() {
+    public function user() {
         $user_id = (isset($this->params[0])) ? $this->params[0] : 0;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
@@ -108,7 +109,7 @@ class Question extends Base {
             //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_questions = Model_Question::get_num_of_active_questions_by_user_id($user_id);
             $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'question_list_by_user_id.php');
+            View::set_view_file($this->view_path . 'question_list_by_user.php');
             View::set_action_var('user', $user);
             View::set_action_var('questions', $questions);
             View::set_action_var('order_by', $order_by);
@@ -122,11 +123,11 @@ class Question extends Base {
             Transaction_Html::goto_home_page();
         }
     }
-    /**
+    /**tag id
       retrieve questions under a user
       front/question/retrieve_by_user_id/id/page/3/, 3 is page number
      */
-    public function retrieve_by_tag_id() {
+    public function tag() {
         $tag_id = (isset($this->params[0])) ? $this->params[0] : 0;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
@@ -145,7 +146,7 @@ class Question extends Base {
             //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_questions = Model_Question::get_num_of_active_questions_by_tat_id($tag_id);
             $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'question_list_by_tag_id.php');
+            View::set_view_file($this->view_path . 'question_list_by_tag.php');
             View::set_action_var('tag', $tag);
             View::set_action_var('questions', $questions);
             View::set_action_var('order_by', $order_by);
