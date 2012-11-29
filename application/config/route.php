@@ -1,5 +1,7 @@
 ;it is an ini file, all routes must be valid module/controller/action format
 route[] = 'about-us.php,front/page/about_us';
+route[] = 'privacy-protection.php,front/page/privacy';
 route[] = 'terms-and-conditions.php,front/page/terms';
-route[] = 'contact-us.php,front/common/contact_us';
+route[] = 'faqs.php,front/page/faqs';
 route[] = 'sitemap.php,front/common/sitemap';
+route[] = 'contact-us.php,front/common/contact_us';

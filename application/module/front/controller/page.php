@@ -1,7 +1,6 @@
 <?php
-
 namespace App\Module\Front\Controller;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Controller\Route;
 use \Zx\View\View;
 use \App\Model\Page as Model_Page;
@@ -26,16 +25,22 @@ class Page extends Base {
     }
 
     //one page
-    public function term_condition() {
-        $term_condition = Model_Page::get_term_condition();
-        View::set_view_file($this->view_path . 'term_condition.php');
+    public function terms() {
+        $term_condition = Model_Page::get_terms();
+        View::set_view_file($this->view_path . 'terms.php');
         View::set_action_var('term_condition', $term_condition);
     }
+    //one page
+    public function privacy() {
+        $privacy = Model_Page::get_privacy();
+        View::set_view_file($this->view_path . 'privacy.php');
+        View::set_action_var('privacy', $privacy);
+    }
 
-    //many pages;
+    //many rows;
     public function faqs() {
         $faqs = Model_Page::get_faqs();
-        View::set_view_file($this->view_path . 'faq.php');
+        View::set_view_file($this->view_path . 'faqs.php');
         View::set_action_var('faqs', $faqs);
     }
 

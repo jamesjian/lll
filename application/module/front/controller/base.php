@@ -5,8 +5,8 @@ namespace App\Module\Front\Controller;
 //this is the base class of front classes
 use \Zx\Controller\Route;
 use \Zx\View\View;
-use \App\Model\Article as Model_Article;
-use \App\Model\Articlecategory as Model_Articlecategory;
+use \App\Model\Tag as Model_Tag;
+use \App\Model\Ad as Model_Ad;
 
 class Base {
 
@@ -17,16 +17,22 @@ class Base {
     public function init() {
         $this->params = Route::get_params();
         //$cat_groups = Model_Catgroup::get_all_groups();
-        //$tags = Model_Article::get_all_keywords();
-        //$top10 = Model_Article::get_top10();
-        //$latest10 = Model_Article::get_latest10();
-        //$article_cats = Model_Articlecategory::get_all_active_cats();
+        $popular_tags = Model_Tag::get_most_popular_tags();
+        $latest_ads = Model_Ad::get_latest_ads();
+        /*main difference between templates is right column of the pages
+         tempalte_tags_ads.php is default one, display most popular tags and latest ads 
+         in the right column
+         if use a different template
+         
+        View::set_template_file($this->template_path . 'another_template.php');
+        View::set_template_var('another_template_variable', $anothe_tempalte_variable);
+         * 
+         */
         $this->template_path = APPLICATION_PATH . 'module/front/view/templates/';
-        View::set_template_file($this->template_path . 'template.php');
-        //View::set_template_var('article_cats', $article_cats);
-        //View::set_action_var('tags', $tags);
-        //View::set_action_var('top10', $top10);
-        //View::set_action_var('latest10', $latest10);
+        View::set_template_file($this->template_path . 'template_tags_ads.php');
+        
+        View::set_action_var('popular_tags', $popular_tags);
+        View::set_action_var('latest_ads', $latest_ads);
     }
 
 }

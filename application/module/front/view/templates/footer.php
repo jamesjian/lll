@@ -14,6 +14,9 @@
              * 
              */
             ?>
+            <li><a href="<?php echo HTML_ROOT . 'terms-and-conditions.php'; ?>">使用条款</a></li>
+            <li><a href="<?php echo HTML_ROOT . 'privacy-protection.php'; ?>">隐私保护</a></li>
+            <li><a href="<?php echo HTML_ROOT . 'faqs.php'; ?>">常见问题</a></li>
             <li><a href="<?php echo HTML_ROOT . 'about-us.php'; ?>">关于我们</a></li>
             <li><a href="<?php echo HTML_ROOT . 'contact-us.php'; ?>">联系我们</a></li>
             <li><a href="<?php echo HTML_ROOT . 'sitemap.php'; ?>">网站地图</a></li>

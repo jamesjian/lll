@@ -21,5 +21,13 @@ class Ad extends Base_Ad {
             return false;
         }
     }
-
+    /**
+     * currently top 10
+     * according to date_created
+     * @return records
+     */
+    public static function get_latest_ads() {
+        $where = ' status=1';
+        return parent::get_all($where, 0, 20, 'date_created', 'DESC');
+    }
 }

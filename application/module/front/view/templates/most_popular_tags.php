@@ -1,8 +1,8 @@
-<span class="zx-front-tag-title">常用关键字：</span> 
+<span class="zx-front-tag-title">常见类别：</span> 
 <?php
 $i = 0;
 foreach ($tags as $tag) {
-    $link = HTML_ROOT . 'front/article/keyword/' . $tag;
+    $link = HTML_ROOT . 'front/question/tag/' . $tag;
     $tag_class = ($i%2 ==0) ? 'zx-front-tag1' : 'zx-front-tag2';
     $i++; 
 ?>

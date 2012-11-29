@@ -216,9 +216,15 @@ class Tag extends Base_Tag {
         return Mysql::exec($sql, $params);
     }
 
-    public static function get_top10() {
-        $where = ' b.status=1';
-        return parent::get_all($where, 0, 10, 'b.rank', 'DESC');
+    /**
+     * currently top 20
+     * in the future, it will be stored into cache
+     * according to num_of_questions
+     * @return records
+     */
+    public static function get_most_popular_tags() {
+        $where = ' status=1';
+        return parent::get_all($where, 0, 20, 'num_of_questions', 'DESC');
     }
 
     public static function get_latest10() {

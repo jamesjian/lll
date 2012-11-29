@@ -17,17 +17,23 @@
     <body class='zx-front-body'>	
         <div class='zx-front-header'>
             <div class='zx-front-logo'>
-                <a href='<?php echo HTML_ROOT; ?>' title='<?php echo SITENAME;?>'><?php echo SITENAME;?></a>
+                <a href='<?php echo FRONT_HTML_ROOT; ?>common/sitemap.php' title='<?php echo SITENAME;?>'><?php echo SITENAME;?></a>
+            </div>
+            <div>
+                <a href="<?php echo FRONT_HTML_ROOT;?>user/register" title="注册用户">注册用户</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>user/login" title="注册用户">登录</a>
             </div>
             <div class="zx-front-search">
-                <form>
+                <form action="<?php echo FRONT_HTML_ROOT;?>question/search" method="post">
                     <input name="question" size="50" /><input type="submit" value="查找问题" />
                 </form>
             </div>
             <nav class='zx-front-top-menu'>
-                <?php
-                include 'menu.php';
-                ?>
+                <a href="<?php echo FRONT_HTML_ROOT;?>question/retrieve" title="最新问题">最新问题</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>qyestion/unanswered" title="待解答问题">待解答问题</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>tag/retrieve" title="所有分类">所有分类</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>user/retrieve" title="用户列表">用户列表</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>ad/retrieve" title="最新信息">最新信息</a>
             </nav>
         </div>
         <div class="zx-front-clear-both"></div>

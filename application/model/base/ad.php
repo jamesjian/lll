@@ -53,8 +53,7 @@ class Ad {
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
-        $sql = "SELECT *
-            FROM " . self::$table .  
+        $sql = "SELECT *  FROM " . self::$table .  
            " WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count

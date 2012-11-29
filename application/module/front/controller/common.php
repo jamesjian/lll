@@ -55,13 +55,11 @@ class Common extends Base {
         $current_page = 1;
         $order_by = 'date_created';
         $direction = 'DESC';
-        $articles = Model_Article::get_active_articles_by_page_num($current_page, $order_by, $direction);
-        $related_articles = Model_Article::get_10_active_related_articles(1);
-        $num_of_articles = Model_Article::get_num_of_active_articles();
-        $num_of_pages = ceil($num_of_articles / NUM_OF_ARTICLES_IN_CAT_PAGE);
+        $questions = Model_Question::get_active_questions_by_page_num($current_page, $order_by, $direction);
+        $num_of_questions = Model_Question::get_num_of_active_questions();
+        $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
         View::set_view_file($this->view_path . 'home.php');
-        View::set_action_var('articles', $articles);
-        View::set_action_var('related_articles', $related_articles);
+        View::set_action_var('questions', $questions);
         View::set_action_var('order_by', $order_by);
         View::set_action_var('direction', $direction);
         View::set_action_var('current_page', $current_page);

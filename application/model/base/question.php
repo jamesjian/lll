@@ -16,7 +16,8 @@ use \Zx\Model\Mysql;
   tag_names varchar(255) not null default '', #tag names are fixed  
   content text,
   num_of_answers smallint(4) default 0,
-  rank int(11) default 0,
+  num_of_views int(11) default 0,
+  num_of_votes int(11) default 0,
   status tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */
@@ -24,7 +25,7 @@ use \Zx\Model\Mysql;
 class Question {
     public static $fields = array('id','title','state', 'user_id','user_name',
         'tag_ids','tag_names','num_of_answers',
-        'content', 'rank', 'status', 'date_created');
+        'content', 'num_of_views','num_of_votes', 'status', 'date_created');
     public static $table = TABLE_QUESTION;
     /**
      *

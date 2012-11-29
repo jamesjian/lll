@@ -1,21 +1,13 @@
-<div class='zx-front-left'>			
-    <div class='zx-front-left1'>
-        <?php 
-            
-        ?>
-    </div>	
-</div>
-<div class='zx-front-right'>
-    <div class='zx-front-right1'>
-        <?php
-        //tag cloud or search
-        include FRONT_VIEW_PATH . 'templates/tag_cloud.php';
-        ?>
-    </div>	
-    <div class='zx-front-right2'>
-        <?php include FRONT_VIEW_PATH . 'templates/right_google_ads.php'; ?>
-    </div>
-    <div class='zx-front-right3'>
-        <?php include FRONT_VIEW_PATH . 'templates/hottest_articles.php'; ?>
-    </div>
+<div class='zx-front-left1'>
+    <?php
+    include FRONT_VIEW_PATH . 'template/question_list.php';
+    /**
+     * define $link_prefix and $link_postfix in main view file
+      $link_prefix = HTML_ROOT . 'front/question/tag/' . $tag;
+      $link_postfix = "/$order_by/$direction";
+     */
+    $link_prefix = HTML_ROOT . 'front/question/retrieve/';
+    $link_postfix = "/$order_by/$direction";
+    include FRONT_VIEW_PATH . 'template/pagination.php';
+    ?>
 </div>
