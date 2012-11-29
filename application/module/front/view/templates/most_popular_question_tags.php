@@ -1,7 +1,12 @@
+<?php
+/**
+ *$popular_tags is an template variable 
+ */
+?>
 <span class="zx-front-tag-title">常见类别：</span> 
 <?php
 $i = 0;
-foreach ($tags as $tag) {
+foreach ($popular_tags as $tag) {
     $link = HTML_ROOT . 'front/question/tag/' . $tag;
     $tag_class = ($i%2 ==0) ? 'zx-front-tag1' : 'zx-front-tag2';
     $i++; 

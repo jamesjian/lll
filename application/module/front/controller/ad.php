@@ -13,12 +13,8 @@ use \App\Model\Answer as Model_Answer;
 use \App\Model\Tag as Model_Tag;
 
 /**
- * homepage: /=>/front/ad/latest/page/1
- * latest: /front/ad/latest/page/3
- * most popular:/front/ad/most_popular/page/3
- * ad under category: /front/adcategory/retrieve/$category_id_3/category_name.php
- * one: /front/ad/content/$id/$ad_url
- * keyword: /front/ad/keyword/$keyword_3
+ * ad pages use ad tags in the right column
+ * they're different from question page
  */
 class Ad extends Base {
 
@@ -28,6 +24,9 @@ class Ad extends Base {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/front/view/ad/';
         $this->list_page =  FRONT_HTML_ROOT . 'ad/all/';
+        View::set_template_file($this->template_path . 'template_ad_tags_ads.php');
+        View::set_action_var('popular_tags', $popular_tags);
+        View::set_action_var('latest_ads', $latest_ads);        
     }
 
     

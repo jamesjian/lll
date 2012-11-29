@@ -1,5 +1,9 @@
-
-<?php include 'header.php'; ?>
+<?php
+/**
+ *  questions tags and latest ads as right column
+ *  
+ */
+ include 'header.php'; ?>
 
 
 <div class='zx-front-main'>
