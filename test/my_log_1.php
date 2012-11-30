@@ -1,6 +1,12 @@
+question, answer, ad, 
+abuse
+user
+
 
 drop table ts8wl_ad;
+drop table ts8wl_abuse;
 drop table ts8wl_answer;
+drop table cache;
 drop table ts8wl_question;
 drop table ts8wl_user;
 drop table ts8wl_staff;
@@ -10,6 +16,33 @@ drop table ts8wl_user_to_answer;
 drop table ts8wl_page;
 drop table ts8wl_page_category;
 drop table session;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 房产
     房地产

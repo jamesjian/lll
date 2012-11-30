@@ -40,6 +40,66 @@ site = {
             }
         }
     },
+    get_vote_dialog : function(e) {
+        // m=m+1; //for checking bind/unbind
+        // console.log('get dialog'+m);
+        var url = $(this).attr('href');
+        // console.log(url);
+        var title = e.data.title;
+        $.ajax({
+            type : "POST",
+            url : url,
+            data : {},
+            dataType : 'html',
+            success : function(data) {
+                site.open_message_dialog(data, title)
+            }
+        });
+        return false;
+    },
+    /*
+         **/
+    open_vote_dialog : function(data, title) {
+        // m=m+1; //for checking bind/unbind
+        // console.log('open dialog'+m);
+        $('#dialog').dialog({
+            title : title
+        });
+        $('#dialog').html(data);
+        $('#dialog').dialog('open');
+        //$('#region_select_state').bind('change', region.region_change_state);
+        return false;
+    },    
+    get_abuse_dialog : function(e) {
+        // m=m+1; //for checking bind/unbind
+        // console.log('get dialog'+m);
+        var url = $(this).attr('href');
+        // console.log(url);
+        var title = e.data.title;
+        $.ajax({
+            type : "POST",
+            url : url,
+            data : {},
+            dataType : 'html',
+            success : function(data) {
+                site.open_message_dialog(data, title)
+            }
+        });
+        return false;
+    },
+    /*
+         **/
+    open_abuse_dialog : function(data, title) {
+        // m=m+1; //for checking bind/unbind
+        // console.log('open dialog'+m);
+        $('#dialog').dialog({
+            title : title
+        });
+        $('#dialog').html(data);
+        $('#dialog').dialog('open');
+        //$('#region_select_state').bind('change', region.region_change_state);
+        return false;
+    },  
     refresh_vcode: function(){
 
         $('#vcode_img').attr('src', HTML_ROOT+'front/user/vcode/' + (new Date().getTime()));
@@ -54,7 +114,8 @@ site = {
                 type: "POST",
                 url: url,
                 data: {
-                    user_name:user_name, email: email
+                    user_name:user_name, 
+                    email: email
                 },
                 dataType:  'json',
                 success: function(data){
@@ -71,7 +132,13 @@ site = {
         $('#test').click(site.test);
         $('ul.mainmenu>li').hover(site.hover_submenu);
         $('#refresh_vcode').click(site.refresh_vcode);
-        $('#check_account').click(site.check_account);          
+        $('#check_account').click(site.check_account);     
+        $('.zx-front-vote-link').bind('click', {
+            title : '值得关注'
+        }, message.get_vote_dialog);        
+        $('.zx-front-abuse-link').bind('click', {
+            title : '举报'
+        }, message.get_abuse_dialog);                  
     },
     unbind_events: function(){
         

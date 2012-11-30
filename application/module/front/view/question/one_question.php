@@ -17,12 +17,18 @@
     <div class='zx-front-left2'>
         <?php
         if ($question) {
+            $regions = \App\Model\Region::get_au_states_abbr();
+            $vote_link = FRONT_HTML_ROOT . 'question/vote/' . $question['id'];
+            $abuse_link = FRONT_HTML_ROOT . 'question/abuse/' . $question['id'];
             ?>
             <article>
                 <header>
                     <h1 class="zx-front-question-title">
+                        <a href="<?php echo $vote_link;?>" class="zx-front-vote-link" title="如果这个问题值得关注， 请投票">关注度</a>
+                        <a href="<?php echo $abuse_link;?>" class="zx-front-abuse-link" title="如果这个问题有违法或违规嫌疑， 请举报。">举报</a>
                         <?php
-                        echo $question['title'], BR;
+                        echo $regions[$question['region']],
+                         $question['title'], BR;
                         ?>
                     </h1>
                 </header>

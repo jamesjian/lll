@@ -21,7 +21,8 @@ if (Transaction_Staff::staff_has_loggedin()) {
         array('menu_name' => 'Question', 'link' => 'question/retrieve'),
         array('menu_name' => 'Answer', 'link' => 'answer/retrieve'),
         array('menu_name' => 'Ad', 'link' => 'ad/retrieve'),
-        array('menu_name' => 'Tag', 'link' => 'tag/retrieve',),
+        array('menu_name' => 'Tag', 'link' => 'tag/retrieve'),
+        array('menu_name' => 'Abuse', 'link' => 'abuse/retrieve'),
         array('menu_name' => 'Sitemap', 'link' => 'tool/sitemap'),
         array('menu_name' => 'Logout', 'link' => 'staff/logout'),
     );
@@ -43,14 +44,11 @@ if (Transaction_Staff::staff_has_loggedin()) {
         <ul>
             <?php
             $menu_arr = array(
-                
-                array('menu_name' => 'Region',
+                array('menu_name' => 'Abuse',
                     'submenu_arr' => array(
-                        array('submenu_name' => '', 'link' => 'region/retrieve_province'),
-                        array('submenu_name' => '', 'link' => 'region/retrieve_manipucility'),
-                        array('submenu_name' => '', 'link' => 'region/retrieve_city'),
-                        array('submenu_name' => '', 'link' => 'region/retrieve_district'),
-                        array('submenu_name' => '', 'link' => 'region/retrieve'),
+                        array('submenu_name' => 'Question', 'link' => 'abuse/retrieve_by_item_type/1'),
+                        array('submenu_name' => 'Answer', 'link' => 'abuse/retrieve_by_item_type/2'),
+                        array('submenu_name' => 'Ad', 'link' => 'abuse/retrieve_by_item_type/3'),
                 )),
                 
             );

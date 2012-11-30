@@ -11,8 +11,10 @@ $link_postfix =  "/$next_direction/$search";
 $link_id = $link_prefix . 'id' . $link_postfix;
 $link_title = $link_prefix . 'title' . $link_postfix;
 $link_tag_names = $link_prefix . 'tag_names' . $link_postfix;
-$link_rank = $link_prefix . 'rank' . $link_postfix;
 $link_user_name = $link_prefix . 'user_name' . $link_postfix;
+$link_num_of_views = $link_prefix . 'num_of_views' . $link_postfix;
+$link_num_of_answers = $link_prefix . 'num_of_answers' . $link_postfix;
+$link_num_of_votes = $link_prefix . 'num_of_votes' . $link_postfix;
 $link_status = $link_prefix . 'status' . $link_postfix;
 $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' : 
                                          HTML_ROOT . 'image/icon/down.png'; 
@@ -23,8 +25,10 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <th><a href='<?php echo $link_id;?>'>id</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_title;?>'>title</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_tag_names;?>'>tags</a><img src="<?php echo $direction_img;?>" /></th>
-<th><a href='<?php echo $link_rank;?>'>rank</a><img src="<?php echo $direction_img;?>" /></th>
-<th><a href='<?php echo $link_user_name;?>'>category</a><img src="<?php echo $direction_img;?>" /></th>
+<th><a href='<?php echo $link_user_name;?>'>user name</a><img src="<?php echo $direction_img;?>" /></th>
+<th><a href='<?php echo $link_num_of_views;?>'>Views</a><img src="<?php echo $direction_img;?>" /></th>
+<th><a href='<?php echo $link_num_of_answers;?>'>Answers</a><img src="<?php echo $direction_img;?>" /></th>
+<th><a href='<?php echo $link_num_of_votes;?>'>Votes</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_status;?>'>status</a><img src="<?php echo $direction_img;?>" /></th>
 <th>delete</th>
 <th>update</th>
@@ -42,8 +46,10 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	<td><?php echo $question['id'];?></td>
 	<td><?php echo $question['title'];?></td>
 	<td><?php echo $question['tag_names'];?></td>
-	<td><?php echo $question['rank'];?></td>
 	<td><?php echo $question['user_name'];?></td>
+	<td><?php echo $question['num_of_views'];?></td>
+	<td><?php echo $question['num_of_answers'];?></td>
+	<td><?php echo $question['num_of_votes'];?></td>
         <td><?php echo $question['status'];?></td>
 	<td><a href='<?php echo $link_delete;?>' class="delete_question">delete</a></td>
 	<td><a href='<?php echo $link_answers;?>'>Answers</a></td>
