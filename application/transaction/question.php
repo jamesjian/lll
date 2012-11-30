@@ -47,6 +47,9 @@ class Question {
         $arr['user_id'] = $user_id;
         $arr['user_name'] = $user_name;
         $arr['status'] = $status;
+        $arr['num_of_answers'] = 0;
+        $arr['num_of_views'] = 0;
+        $arr['num_of_votes'] = 0;
         Model_Question::create($arr);
         Model_User::increase_num_of_questions($arr['user_id']);
         return true;
@@ -63,8 +66,9 @@ class Question {
                 isset($arr['title']) && trim($arr['title']) != '' &&
                 isset($arr['content']) && trim($arr['content']) != ''
         ) {
-            if (!isset($arr['rank']))
-                $arr['rank'] = 0; //initialize
+        $arr['num_of_answers'] = 0;
+        $arr['num_of_views'] = 0;
+        $arr['num_of_votes'] = 0;
 
                 
 //prepare tag ids
@@ -94,35 +98,71 @@ class Question {
     }
 
     /**
-     *      * for admin to create a question, an answer, question user and answer user in one step
-      1. create question user if user name not exists
-      2. create answer user if user name not exists
-      3. create question
-      4. create answer
-      5. create tag if tag is new
-      6. modify some informations in tag or other tables
+     *for admin to create a question, an answer, question user and answer user in one step
+      1. create tag if tag is new,  tag(num_of_question)
+      2. choose question user, num_of_question
+      3. choose answer user,  num_of_answer
+      4. create question, num_of_answer, use tag ids, question user id
+      5. create answer, use question id and answer user id
      * @param int $arr
      * @return boolean
 
       。
      */
-    public static function create_question_and_answer($arr = array()) {
+    public static function create_question_and_answer_by_admin($arr = array()) {
         if (count($arr) > 0 &&
                 isset($arr['title']) && trim($arr['title']) != '' &&
                 isset($arr['q_content']) && trim($arr['q_content']) != ''
         ) {
-            if (!isset($arr['rank']))
-                $arr['rank'] = 0; //initialize
+        //prepare tag ids
+        $tags = explode('@', $arr['tag_names']);
+        foreach ($tags as $tag) {
+            if ($tag_id = Model_Tag::exist_tag_by_tag_name($tag)) {
+                Model_Tag::increase_num_of_questions($tag_id);
+                $tag_ids .= $tag_id . '@';
+            } else {
+                $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
+                $tag_id = Model_Tag::create($tag_arr);
+                $tag_ids .= $tag_id . '@';
+            }
+        }
+        $user_table_length = 10000; //according to user table, must be consecutive
+        $question_user_id = rand(1, $user_table_length);
+        $question_user = Model_User::get_one($question_user_id);
+        $answer_user_id = rand(1, $user_table_length);
+        $answer_user = Model_User::get_one($answer_user_id);
+        $question_arr = array('title'=>$arr['title'], 
+            'content'=>$arr['q_content'],
+            'user_id'=>$question_user_id,
+            'user_name'=>$question_user['user_name'],
+            'tag_ids'=>$tag_ids,
+            'tag_names'=>$arr['tag_names'],
+            'state'=>$arr['state'],
+            'status'=>1,
+            'num_of_answers'=>1,  //must have one now
+            'num_of_views'=>0,
+            'num_of_votes'=>0,
+            );
             if ($qid = Model_Question::create($arr)) {
                 Message::set_success_message('success');
-
+                $answer_arr = array('question_id'=>$qid,
+                    'content'=>$arr['a_content'],
+                    'user_id'=>$answer_user_id,
+                    'user_name'=>$answer_user['user_name'],
+                    'status'=>1,
+                    );
+                Model_Answer::create($answer_arr);
+                $question_user_arr = array('num_of_questions'=>$question_user['num_of_questions']+1);
+                Model_User::update($question_user_id, $question_user_arr);
+                $answer_user_arr = array('num_of_answers'=>$answer_user['num_of_answers']+1);
+                Model_User::update($answer_user_id, $answer_user_arr);
                 return true;
             } else {
                 Message::set_error_message('fail');
                 return false;
             }
         } else {
-            Message::set_error_message('请填写完整标题和内容。');
+            Message::set_error_message('请填写完整各项。');
             return false;
         }
     }

@@ -4,7 +4,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 
 /*
-
+status: 0: created(when report an abuse), 2. confirmed(it's a real abuse), 3. cancelled(it's not an abuse)
   CREATE TABLE abuse (
  id int(11) AUTO_INCREMENT PRIMARY KEY,
  item_type tinyint(3) NOT NULL DEFAULT '1',  //1. question, 2. answer, 3. ad

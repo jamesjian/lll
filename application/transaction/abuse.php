@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Transaction;
 defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Abuse as Model_Abuse;
@@ -9,10 +8,14 @@ use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Abuse {
 
+    /**
+     * 
+     * @param array $arr must have item type, item id and cat id
+     * @return boolean
+     */
     public static function create_abuse($arr = array()) {
-        if (count($arr) > 0 && isset($arr['title'])) {
-            if (!isset($arr['rank']))
-                $arr['rank'] = 0; //initialize
+        if (count($arr) > 0 && isset($arr['item_type']) && isset($arr['item_id']) && isset($arr['cat_id'])) {
+            $arr['status'] = 1; //created
             if (Model_Abuse::create($arr)) {
                 Message::set_success_message('success');
                 return true;
@@ -29,7 +32,7 @@ class Abuse {
     public static function update_abuse($id, $arr) {
         //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        if (count($arr) > 0 && (isset($arr['title']) || isset($arr['content']))) {
+        if (count($arr) > 0 && isset($arr['status']) && $arr['status'] != 1) {
             if (Model_Abuse::update($id, $arr)) {
                 Message::set_success_message('success');
                 return true;
