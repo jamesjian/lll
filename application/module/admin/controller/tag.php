@@ -1,6 +1,7 @@
 <?php
-
 namespace App\Module\Admin\Controller;
+defined('SYSTEM_PATH') or die('No direct script access.');
+
 use \Zx\Message\Message;
 use \App\Model\Tag as Model_Tag;
 use \App\Transaction\Tag as Transaction_Tag;

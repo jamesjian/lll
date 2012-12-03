@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Module\Admin\Controller;
+defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Blog as Model_Blog;
 use \App\Model\Blogcategory as Model_Blogcategory;

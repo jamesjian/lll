@@ -1,8 +1,9 @@
 hostname = window.location.hostname;
-HTMLROOT = '/';
-ADMINHTMLROOT = '/admin/';
+HTMLROOT = '/lll/';
+ADMINHTMLROOT = 'http://localhost/lll/admin/';
 if (hostname == 'www' || hostname =='') {
     HTMLROOT = 'http://www./';
+    ADMINHTMLROOT = '/admin/';
 }
 admin = {
     /**
@@ -34,11 +35,14 @@ admin = {
      * such as blog, company, user, and so on
      */
     change_status: function(event){
-        //console.log('aaaaaa');
-        url = HTMLROOT + 'admin/'+ event.data.table_name + '/change_status';
-        id = $(this) . attr('id');
+        console.log('aaaaaa');
+        url = ADMINHTMLROOT+ event.data.table_name + '/change_status';
+        console.log(url);
+        id = $(this).attr('id');
         id = parseInt(id.substr(7));  //get line number 'status_XXX'
         status = $(this).val();
+        console.log(id);
+        console.log(status);
         $.ajax({
             type: "POST",
             url: url,
@@ -48,7 +52,7 @@ admin = {
             },
             dataType:  'json',
             success: function(data){
-                //console.log(data.changed);
+                console.log(data.changed);
                 if (data.changed == true){
                     //no action
                 } else {
@@ -153,6 +157,9 @@ admin = {
         $('.delete_page').bind('click', {
             name: 'page'
         }, admin.confirm_delete_template);
+        $('.delete_user').bind('click', {
+            name: 'user'
+        }, admin.confirm_delete_template);
     },    
     init_change_status_links: function(){
         $('.category_status').bind('change', {
@@ -160,6 +167,9 @@ admin = {
         },admin.change_status);
         $('.blog_status').bind('change', {
             table_name: 'blog'
+        },admin.change_status);
+        $('.user_status').bind('change', {
+            table_name: 'user'
         },admin.change_status);
     },	
     test: function(){
@@ -180,8 +190,10 @@ admin = {
         admin.unbind_events();  
         //$('#delete_').click(admin.test);
         admin.init_view_links();
+        admin.init_change_status_links();
         //admin.init_clear_image_links();	  
-        admin.init_delete_links();	  
+        admin.init_delete_links();	
+        
     },
     unbind_events: function(){
         

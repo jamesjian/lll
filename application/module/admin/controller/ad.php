@@ -1,6 +1,7 @@
 <?php
-
 namespace App\Module\Admin\Controller;
+defined('SYSTEM_PATH') or die('No direct script access.');
+
 use \Zx\Message\Message;
 use \App\Model\User as Model_User;
 use \App\Model\Ad as Model_Ad;

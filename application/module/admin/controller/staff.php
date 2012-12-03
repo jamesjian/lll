@@ -15,7 +15,7 @@ class Staff extends Base {
   
     public function login()
     {
-        Test::object_log('$_POST', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //Test::object_log('$_POST', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $login = false;
         if (Transaction_Staff::staff_has_loggedin()) {
             $login = true;

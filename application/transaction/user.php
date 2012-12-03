@@ -86,7 +86,7 @@ class User {
      * @param int $status
      * @return boolean 
      */
-    public static function change_registered_user_status($user_id, $status) {
+    public static function change_status($user_id, $status) {
         $user = Model_User::get_one($user_id);
         if ($user) {
             $arr = array('status' => $status);
@@ -273,7 +273,7 @@ class User {
     public static function create_user($user_arr) {
         if (!Model_User::exist_user_name_or_email($user_arr['user_name']) &&
                 !Model_User::exist_user_name_or_email($user_arr['email'])) {
-            $user_arr['password'] = Transaction_Tool::generatePassword();
+            //$user_arr['password'] = Transaction_Tool::generatePassword();
             if ($user_id = Model_User::create($user_arr)) {
                 //$user = Model_User::get_one($user_id);
                 self::change_image($user_id);
@@ -291,23 +291,25 @@ class User {
     }
 
     /**
+     * user name cannot be changed now, otherwise, will update all user name fields in other tables
      * Todo: for status change, something will happen
      * @param int $user_id
      * @param array $user_arr
      * @return boolean 
      */
     public static function update_user($user_id, $user_arr) {
-        if (!Model_User::duplicate_user_name_or_email($user_id, $user_arr['user_name']) AND
+        if (
+                //!Model_User::duplicate_user_name_or_email($user_id, $user_arr['user_name']) AND
                 !Model_User::duplicate_user_name_or_email($user_id, $user_arr['email'])) {
             if (Model_User::update($user_id, $user_arr)) {
-                App_Session::set_success_message("用户信息已更新.");
+                \Zx\Message\Message::set_success_message("用户信息已更新.");
                 return true;
             } else {
-                App_Session::set_error_message("用户信息更新失败.");
+                \Zx\Message\Message::set_error_message("用户信息更新失败.");
                 return false;
             }
         } else {
-            App_Session::set_error_message("用户名或邮箱已在本网站注册。");
+           \Zx\Message\Message::set_error_message("用户名或邮箱已在本网站注册。");
             return false;
         }
     }

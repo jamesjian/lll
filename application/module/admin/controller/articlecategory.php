@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Module\Admin\Controller;
+defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Articlecategory as Model_Articlecategory;
 use \App\Transaction\Articlecategory as Transaction_Articlecategory;

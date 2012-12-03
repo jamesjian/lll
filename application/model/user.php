@@ -283,16 +283,15 @@ class User extends Base_User {
         }
     }
 
-    public static function get_users_by_page_num($page_num = 1, $order_by = 'id', $direction = 'ASC') {
+    public static function get_users_by_page_num($where='1', $page_num = 1, $order_by = 'id', $direction = 'ASC') {
         $page_num = intval($page_num);
         $page_num = ($page_num > 0) ? $page_num : 1;
         $direction = ($direction == 'ASC') ? 'ASC' : 'DESC';
-        $where = '1';
         $start = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $start, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
-    public static function get_num_of_pages() {
+    public static function get_num_of_users() {
         return parent::get_num();
     }
 

@@ -1,6 +1,6 @@
 <?php
-defined('SYSTEM_PATH') or die('No direct script access.');
 namespace App\Module\Admin\Controller;
+defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\User as Model_User;
 use \App\Transaction\User as Transaction_User;
@@ -17,26 +17,26 @@ class User extends Base {
         $this->list_page = ADMIN_HTML_ROOT . 'user/retrieve/1/user_name/ASC/';
         \App\Transaction\Session::set_ck_upload_path('user');
     }
+
     /**
      * for ajax
      */
-    public function change_user_status() {
-        //App_Test::objectLog('pp_product',$_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        
+    public function change_status() {
+        Test::object_log('pp_product', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
         $changed = false;
-        if ($valid) {
-            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
-            $status = isset($_POST['status']) ? trim($_POST['status']) : '';
-            if ($user_id > 0 AND ($status == 'enable' OR $status == 'disable')) {
-                if (App_Registereduser::change_status($user_id, $status)) {
-                    $changed = true;
-                }
+        $user_id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+        $status = isset($_POST['status']) ? intval($_POST['status']) : 0;
+        if ($user_id > 0) {
+            if (Transaction_User::change_status($user_id, $status)) {
+                $changed = true;
             }
         }
-        $view = View::factory($this->view_path . 'change_status');
-        $view->set('changed', $changed);
-        $this->ajax_view($view);
+        View::set_view_file($this->view_path . 'change_status.php');
+        View::set_action_var('changed', $changed);
+        View::do_not_use_template();
     }
+
     /**
      * for admin to create a user, an answer, user user and answer user in one step
      */
@@ -46,21 +46,19 @@ class User extends Base {
             $user_name = isset($_POST['user_name']) ? trim($_POST['user_name']) : '';
             $password = isset($_POST['password']) ? md5(trim($_POST['password'])) : '';
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-            $rank = isset($_POST['rank']) ? intval($_POST['rank']) : 0;
             $status = isset($_POST['status']) ? intval($_POST['status']) : 1;
 
             if ($user_name <> '') {
                 $arr = array('user_name' => $user_name,
                     'password' => $password,
                     'email' => $email,
-                    'rank' => $rank,
                     'status' => $status,
-                    );
+                );
                 if (Transaction_User::create_user($arr)) {
                     $success = true;
                 }
             }
-        } 
+        }
         if ($success) {
             header('Location: ' . $this->list_page);
         } else {
@@ -81,14 +79,19 @@ class User extends Base {
             \Zx\Test\Test::object_log('id', $id, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $arr = array();
             if ($id <> 0) {
-                if (isset($_POST['user_name']))
-                    $arr['user_name'] = trim($_POST['user_name']);
-                if (isset($_POST['password']))
+                //user name cannot be updated at this time, otherwise, will update all user name fields in other tables
+                //if (isset($_POST['user_name']))
+                //    $arr['user_name'] = trim($_POST['user_name']);
+                if (!empty($_POST['password']))
                     $arr['password'] = md5(trim($_POST['password']));
                 if (isset($_POST['email']))
                     $arr['email'] = trim($_POST['email']);
-                if (isset($_POST['rank']))
-                    $arr['rank'] = trim($_POST['rank']);
+                if (isset($_POST['num_of_questions']))
+                    $arr['num_of_questions'] = trim($_POST['num_of_questions']);
+                if (isset($_POST['num_of_answers']))
+                    $arr['num_of_answers'] = trim($_POST['num_of_answers']);
+                if (isset($_POST['num_of_ads']))
+                    $arr['num_of_ads'] = trim($_POST['num_of_ads']);
                 if (isset($_POST['status']))
                     $arr['status'] = intval($_POST['status']);
                 if (Transaction_User::update_user($id, $arr)) {
@@ -124,8 +127,8 @@ class User extends Base {
      * page, orderby, direction, search can be empty
      */
     public function retrieve() {
-        \App\Transaction\Session::remember_current_admin_page();
-        \App\Transaction\Session::set_admin_current_l1_menu('User');
+        \App\Transaction\HTML::remember_current_admin_page();
+        //\App\Transaction\HTML::set_admin_current_l1_menu('User');
         $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
         $order_by = isset($this->params[1]) ? $this->params[1] : 'id';
         $direction = isset($this->params[2]) ? $this->params[2] : 'ASC';

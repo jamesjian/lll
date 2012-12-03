@@ -6,7 +6,7 @@ $create_link = ADMIN_HTML_ROOT . 'user/create';
 <a href="<?php echo $create_link;?>">Create</a>
 <?php
 if ($user_list) {
-$link_prefix = ADMIN_HTML_ROOT . "user/retrieve/$current_user/";
+$link_prefix = ADMIN_HTML_ROOT . "user/retrieve/1/";
 $link_postfix = ($direction == 'ASC')? '/DESC' : '/ASC';
 $link_id = $link_prefix . 'id' . $link_postfix;
 $link_user_name = $link_prefix . 'user_name' . $link_postfix;
@@ -14,6 +14,8 @@ $link_email = $link_prefix . 'email' . $link_postfix;
 $link_status = $link_prefix . 'status' . $link_postfix;
 $link_num_of_questions = $link_prefix . 'num_of_questions' . $link_postfix;
 $link_num_of_answers = $link_prefix . 'num_of_answers' . $link_postfix;
+$link_num_of_ads = $link_prefix . 'num_of_ads' . $link_postfix;
+$link_date_created = $link_prefix . 'date_created' . $link_postfix;
 ?>
 <table>
 <tr>
@@ -24,17 +26,20 @@ $link_num_of_answers = $link_prefix . 'num_of_answers' . $link_postfix;
 <th>delete</th>
 <th><a href='<?php echo $link_num_of_questions;?>'>Questions</a></th>
 <th><a href='<?php echo $link_num_of_answers;?>'>Answers</a></th>
+<th><a href='<?php echo $link_num_of_ads;?>'>Ads</a></th>
+<th><a href='<?php echo $link_date_created;?>'>Date</a></th>
 <th>update</th>
 </tr>
 
 <?php
     foreach ($user_list as $user) {
-	$user_id = $user['id'];
-	$link_delete = ADMIN_HTML_ROOT . 'user/delete/' . $user_id;
-	$link_questions = ADMIN_HTML_ROOT . 'question/retrieve_by_user_id/' . $user_id; 
-	$link_answers = ADMIN_HTML_ROOT . 'question/retrieve_by_user_id/' . $user_id;  
-	$link_new_question = ADMIN_HTML_ROOT . 'question/create/' . $user_id;  //create a create by user id
-	$link_update = ADMIN_HTML_ROOT . 'user/update/' . $user_id;
+	$uid = $user['id'];
+	$link_delete = ADMIN_HTML_ROOT . 'user/delete/' . $uid;
+	$link_questions = ADMIN_HTML_ROOT . 'question/retrieve_by_uid/' . $uid; 
+	$link_answers = ADMIN_HTML_ROOT . 'answer/retrieve_by_uid/' . $uid;  
+	$link_ads = ADMIN_HTML_ROOT . 'ad/retrieve_by_uid/' . $uid;  
+	//$link_new_question = ADMIN_HTML_ROOT . 'question/createb_by_uid/' . $uid;  //create a create by user id
+	$link_update = ADMIN_HTML_ROOT . 'user/update/' . $uid;
 ?>
 <tr>
 	<td><?php echo $user['id'];?></td>
@@ -45,7 +50,7 @@ $link_num_of_answers = $link_prefix . 'num_of_answers' . $link_postfix;
     $active_check = '';
     $inactive_check = '';
     $registered_check = '';
-    $status = intval($user->status);
+    $status = intval($user['status']);
     if ($status == 1)
         $active_check = 'selected';
     if ($status == 0)
@@ -53,7 +58,7 @@ $link_num_of_answers = $link_prefix . 'num_of_answers' . $link_postfix;
     if ($status == 2)
         $registered_check = 'selected';
     ?>
-                <select name="status_<?php echo $id; ?>" id="status_<?php echo $id; ?>" class='user_status'>
+                <select name="status_<?php echo $uid; ?>" id="status_<?php echo $uid; ?>" class='user_status'>
                     <option value="1" <?php echo $active_check; ?>/>正常</option>
                     <option value="0" <?php echo $inactive_check; ?>/>禁用</option>
                     <option value="2" <?php echo $registered_check; ?>/>未激活</option>
@@ -62,7 +67,8 @@ $link_num_of_answers = $link_prefix . 'num_of_answers' . $link_postfix;
 	<td><a href='<?php echo $link_delete;?>' class="delete_user">delete</a></td>
 	<td><a href='<?php echo $link_questions;?>'><?php echo $user['num_of_questions'];?></a></td>
 	<td><a href='<?php echo $link_answers;?>'><?php echo $user['num_of_answers'];?></a></td>
-	<td><a href='<?php echo $link_new_question;?>'>new question</a></td>
+	<td><a href='<?php echo $link_ads;?>'><?php echo $user['num_of_ads'];?></a></td>
+	<td><?php echo $user['date_created'];?></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
 </tr>
 <?php

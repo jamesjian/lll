@@ -1,6 +1,7 @@
 <?php
-
 namespace App\Module\Admin\Controller;
+defined('SYSTEM_PATH') or die('No direct script access.');
+
 //this is the base class of admin classes
 use \Zx\Controller\Route;
 use \Zx\View\View;

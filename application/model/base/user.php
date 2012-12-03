@@ -45,7 +45,7 @@ class User {
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-//\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         return Mysql::select_all($sql);
     }
@@ -63,6 +63,7 @@ class User {
     public static function create($arr) {
         $insert_arr = array();
         $params = array();
+        $arr['date_created'] = date('Y-m-d h:i:s');
         foreach (self::$fields as $field) {
             if (array_key_exists($field, $arr)) {
                 $insert_arr[] = "$field=:$field";

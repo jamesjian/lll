@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Module\Admin\Controller;
+defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answser;
