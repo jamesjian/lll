@@ -1,8 +1,9 @@
 <?php
 \Zx\Message\Message::show_message();
 include 'search.php';
-//no create link in this page, create link is in retrieve_by_user_id page, must have valid user id
+$create_link = ADMIN_HTML_ROOT . 'question/create_by_admin';
 ?>
+<a href="<?php echo $create_link;?>">Create</a>
 <?php
 if ($question_list) {
 $link_prefix = ADMIN_HTML_ROOT . "question/retrieve/$current_page/";
@@ -16,6 +17,7 @@ $link_num_of_views = $link_prefix . 'num_of_views' . $link_postfix;
 $link_num_of_answers = $link_prefix . 'num_of_answers' . $link_postfix;
 $link_num_of_votes = $link_prefix . 'num_of_votes' . $link_postfix;
 $link_status = $link_prefix . 'status' . $link_postfix;
+$link_date_created = $link_prefix . 'date_created' . $link_postfix;
 $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' : 
                                          HTML_ROOT . 'image/icon/down.png'; 
 \Zx\Message\Message::show_message();
@@ -30,8 +32,10 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <th><a href='<?php echo $link_num_of_answers;?>'>Answers</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_num_of_votes;?>'>Votes</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_status;?>'>status</a><img src="<?php echo $direction_img;?>" /></th>
-<th>delete</th>
-<th>update</th>
+<th><a href='<?php echo $link_date_created;?>'>Date</a></th>
+<th>Delete</th>
+<th>Update</th>
+<th>Answer</th>
 </tr>
 
 <?php
@@ -55,6 +59,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	<td><a href='<?php echo $link_answers;?>'>Answers</a></td>
 	<td><a href='<?php echo $link_new_answer;?>'>New Answer</a></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
+        <td><?php echo $question['date_created'];?></td>
 </tr>
 <?php
     }

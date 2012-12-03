@@ -3,6 +3,7 @@
 namespace App\Transaction;
 
 use \App\Model\Question as Model_Question;
+use \App\Model\Answer as Model_Answer;
 use \App\Model\User as Model_User;
 use \App\Model\Tag as Model_Tag;
 use \Zx\Message\Message;
@@ -33,6 +34,7 @@ class Question {
 
         //prepare tag ids
         $tags = explode('@', $arr['tag_names']);
+        $tag_ids = '';
         foreach ($tags as $tag) {
             if ($tag_id = Model_Tag::exist_tag_by_tag_name($tag)) {
                 Model_Tag::increase_num_of_questions($tag_id);
@@ -66,11 +68,11 @@ class Question {
                 isset($arr['title']) && trim($arr['title']) != '' &&
                 isset($arr['content']) && trim($arr['content']) != ''
         ) {
-        $arr['num_of_answers'] = 0;
-        $arr['num_of_views'] = 0;
-        $arr['num_of_votes'] = 0;
+            $arr['num_of_answers'] = 0;
+            $arr['num_of_views'] = 0;
+            $arr['num_of_votes'] = 0;
 
-                
+
 //prepare tag ids
             $tags = explode('@', $arr['tag_names']);
             foreach ($tags as $tag) {
@@ -98,7 +100,7 @@ class Question {
     }
 
     /**
-     *for admin to create a question, an answer, question user and answer user in one step
+     * for admin to create a question, an answer, question user and answer user in one step
       1. create tag if tag is new,  tag(num_of_question)
       2. choose question user, num_of_question
       3. choose answer user,  num_of_answer
@@ -114,48 +116,51 @@ class Question {
                 isset($arr['title']) && trim($arr['title']) != '' &&
                 isset($arr['q_content']) && trim($arr['q_content']) != ''
         ) {
-        //prepare tag ids
-        $tags = explode('@', $arr['tag_names']);
-        foreach ($tags as $tag) {
-            if ($tag_id = Model_Tag::exist_tag_by_tag_name($tag)) {
-                Model_Tag::increase_num_of_questions($tag_id);
-                $tag_ids .= $tag_id . '@';
-            } else {
-                $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
-                $tag_id = Model_Tag::create($tag_arr);
-                $tag_ids .= $tag_id . '@';
+            //prepare tag ids
+            $tags = explode('@', $arr['tag_names']);
+            $tag_ids = '';
+            foreach ($tags as $tag) {
+                if ($tag_id = Model_Tag::exist_tag_by_tag_name($tag)) {
+                    Model_Tag::increase_num_of_questions($tag_id);
+                    $tag_ids .= $tag_id . '@';
+                } else {
+                    $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
+                    $tag_id = Model_Tag::create($tag_arr);
+                    $tag_ids .= $tag_id . '@';
+                }
             }
-        }
-        $user_table_length = 10000; //according to user table, must be consecutive
-        $question_user_id = rand(1, $user_table_length);
-        $question_user = Model_User::get_one($question_user_id);
-        $answer_user_id = rand(1, $user_table_length);
-        $answer_user = Model_User::get_one($answer_user_id);
-        $question_arr = array('title'=>$arr['title'], 
-            'content'=>$arr['q_content'],
-            'user_id'=>$question_user_id,
-            'user_name'=>$question_user['user_name'],
-            'tag_ids'=>$tag_ids,
-            'tag_names'=>$arr['tag_names'],
-            'state'=>$arr['state'],
-            'status'=>1,
-            'num_of_answers'=>1,  //must have one now
-            'num_of_views'=>0,
-            'num_of_votes'=>0,
+            $user_table_length = 10000; //according to user table, must be consecutive
+            $question_user_id = rand(1, $user_table_length);
+            $question_user = Model_User::get_one($question_user_id);
+            $answer_user_id = rand(1, $user_table_length);
+            $answer_user = Model_User::get_one($answer_user_id);
+            $question_arr = array('title' => $arr['title'],
+                'content' => $arr['q_content'],
+                'user_id' => $question_user_id,
+                'user_name' => $question_user['user_name'],
+                'tag_ids' => $tag_ids,
+                'tag_names' => $arr['tag_names'],
+                'state' => $arr['state'],
+                'status' => 1,
+                'num_of_answers' => 1, //must have one now
+                'num_of_views' => 0,
+                'num_of_votes' => 0,
             );
             if ($qid = Model_Question::create($arr)) {
-                Message::set_success_message('success');
-                $answer_arr = array('question_id'=>$qid,
-                    'content'=>$arr['a_content'],
-                    'user_id'=>$answer_user_id,
-                    'user_name'=>$answer_user['user_name'],
-                    'status'=>1,
-                    );
-                Model_Answer::create($answer_arr);
-                $question_user_arr = array('num_of_questions'=>$question_user['num_of_questions']+1);
+                $question_user_arr = array('num_of_questions' => $question_user['num_of_questions'] + 1);
                 Model_User::update($question_user_id, $question_user_arr);
-                $answer_user_arr = array('num_of_answers'=>$answer_user['num_of_answers']+1);
+                //if answer is not empty
+                $answer_arr = array('question_id' => $qid,
+                    'content' => $arr['a_content'],
+                    'user_id' => $answer_user_id,
+                    'user_name' => $answer_user['user_name'],
+                    'status' => 1,
+                );
+
+                Model_Answer::create($answer_arr);
+                $answer_user_arr = array('num_of_answers' => $answer_user['num_of_answers'] + 1);
                 Model_User::update($answer_user_id, $answer_user_arr);
+                Message::set_success_message('success');
                 return true;
             } else {
                 Message::set_error_message('fail');
@@ -178,7 +183,7 @@ class Question {
         //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         if (count($arr) > 0) {
-            /****
+            /*             * **
              * prepare tag ids
              * 1.compare original tags and current tags
              *   if no difference, ignore them
@@ -220,19 +225,19 @@ class Question {
                     if ($tag_id = Model_Tag::exist($tag)) {
                         //must exist
                         Model_Tag::decrease_num_of_questions($tag_id);
-                    } 
+                    }
                 }
-            }            
-             if (count($new_difference) > 0 || count($old_difference) > 0) {
-                 //means different from the original, update tag ids column
-                 foreach ($new_tags as $tag) {
-                if ($tag_id = Model_Tag::exist($tag)) {
-                    //must exist
-                    $tag_ids .= $tag_id . '@';
-                    $arr['tag_ids'] = $tag_ids;
-                }             
             }
-             }
+            if (count($new_difference) > 0 || count($old_difference) > 0) {
+                //means different from the original, update tag ids column
+                foreach ($new_tags as $tag) {
+                    if ($tag_id = Model_Tag::exist($tag)) {
+                        //must exist
+                        $tag_ids .= $tag_id . '@';
+                        $arr['tag_ids'] = $tag_ids;
+                    }
+                }
+            }
             if (Model_Question::update($id, $arr)) {
                 Message::set_success_message('success');
                 return true;

@@ -93,24 +93,24 @@ class Question extends Base_Question {
 
     /**
      */
-    public static function get_active_questions_by_user_id_and_page_num($user_id, $where=1,$page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+    public static function get_active_questions_by_uid_and_page_num($user_id, $where=1,$page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
         $where = ' status=1 AND user_id=' . $user_id;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
-    public static function get_questions_by_user_id_and_page_num($user_id, $where = '1', $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+    public static function get_questions_by_uid_and_page_num($user_id, $where = '1', $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
         $where = ' (user_id=' . $user_id . ')  AND (' . $where . ')';
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
-    public static function get_num_of_questions_by_user_id($user_id, $where = '1') {
+    public static function get_num_of_questions_by_uid($user_id, $where = '1') {
         $where = ' (user_id=' . $user_id . ')  AND (' . $where . ')';
         return parent::get_num($where);
     }
 
-    public static function get_num_of_active_questions_by_user_id($user_id) {
+    public static function get_num_of_active_questions_by_uid($user_id) {
         $where = ' status=1 AND user_id=' . $user_id;
         return parent::get_num($where);
     }

@@ -153,7 +153,7 @@ class User {
      */
     public static function delete_user($user_id) {
 
-        if ($Model_User::can_be_deleted($user_id)) {
+        if (Model_User::can_be_deleted($user_id)) {
             Model_User::delete($user_id);
             Zx_Message::set_success_message("删除用户成功.");
             return true;
