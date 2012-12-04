@@ -81,8 +81,8 @@ class Answer {
     }
 
     public static function create($arr) {
-        \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
+        //\Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        $arr['date_created'] = date('Y-m-d h:i:s');
         $insert_arr = array();
         $params = array();
         foreach (self::$fields as $field) {

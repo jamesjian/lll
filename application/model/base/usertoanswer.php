@@ -5,7 +5,7 @@ use \Zx\Model\Mysql;
 
 /*
 this one is for user vote answer, when user vote answer, it will be recorded here
-prevent one user vote one answer multiple times
+prevent one user from voting one answer multiple times
   CREATE TABLE usertoanswer (
   user_id int(11) not null 0,
   answer_id int(11) not null 0
@@ -68,6 +68,7 @@ class Usertoanswer {
 
     public static function create($arr) {
         $insert_arr = array(); $params = array();
+        $arr['date_created'] = date('Y-m-d h:i:s');
         foreach (self::$fields as $field) {
             if (array_key_exists($field, $arr)) {
                 $insert_arr[] = "$field=:$field";

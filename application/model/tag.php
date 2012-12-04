@@ -215,12 +215,12 @@ class Tag extends Base_Tag {
     }
 
     public static function increase_rank($tag_id) {
-        $sql = 'UPDATE tag SET rank=rank+1 WHERE id=:id';
+        $sql = 'UPDATE ' . parent::$table . ' SET rank=rank+1 WHERE id=:id';
         $params = array(':id' => $tag_id);
         return Mysql::exec($sql, $params);
     }
     public static function increase_num_of_questions($tag_id) {
-        $sql = 'UPDATE tag SET num_of_questions=num_of_questions+1 WHERE id=:id';
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions+1 WHERE id=:id';
         $params = array(':id' => $tag_id);
         return Mysql::exec($sql, $params);
     }
@@ -252,9 +252,9 @@ class Tag extends Base_Tag {
     }
     public static function exist_tag_by_tag_name($tag_name){
         $tag_name = strtolower($tag_name);
-        $where = " name=$tag_name";
+        $where = " name='$tag_name'";
         if ($tag  = parent::get_one_by_where($where)) {
-            return $tag_id;
+            return $tag;
         } else {
             return false;
         }

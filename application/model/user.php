@@ -7,7 +7,17 @@ use \Zx\Model\Mysql;
 use \Zx\Test\Test;
 
 class User extends Base_User {
-
+    /**
+     * the id of user table are not consecutive, so use limit to get one record
+     * @return array
+     */
+    public static function get_random_user()
+    {
+        $n = rand(4, 30000); //the maximum must be less than the lenth of user table
+        $q = "SELECT * FROM " . parent::$table . " WHERE 1 LIMIT $n , 1";
+        $user = Mysql::select_one($q);
+        return $user;
+    }
     /**
      * 
      * @return int default user id for anonymous user

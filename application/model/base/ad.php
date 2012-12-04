@@ -75,6 +75,7 @@ class Ad {
 
     public static function create($arr) {
         $insert_arr = array(); $params = array();
+        $arr['date_created'] = date('Y-m-d h:i:s');
         foreach (self::$fields as $field) {
             if (array_key_exists($field, $arr)) {
                 $insert_arr[] = "$field=:$field";

@@ -11,7 +11,7 @@ Zx_Message::show_message();
             <dt> Tags:</dt><dd><input type="text" name="tag_names" size="50"  value="<?php
             if (isset($_POST['tag_names'])) echo $_POST['tag_names'];?>"/></dd>
             <dt>Region</dt>
-            <dd><select id="region_id" name="region_id">
+            <dd><select id="region" name="region">
 <?php $regions = \App\Model\Region::get_au_states_abbr();            
 foreach ($regions as $region) {
     ?>
@@ -41,4 +41,5 @@ foreach ($regions as $region) {
 <?php
 include_once(PHP_CKEDITOR_PATH . 'j_ckedit.class.php');
 echo CKEDITOR::ckHeader();
-echo CKEDITOR::ckReplaceEditor_Full('content');
+echo CKEDITOR::ckReplaceEditor_Full('q_content');
+echo CKEDITOR::ckReplaceEditor_Full('a_content');

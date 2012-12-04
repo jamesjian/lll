@@ -118,47 +118,59 @@ class Question {
         ) {
             //prepare tag ids
             $tags = explode('@', $arr['tag_names']);
+        //\Zx\Test\Test::object_log('$tags', $tags, __FILE__, __LINE__, __CLASS__, __METHOD__);
+            
             $tag_ids = '';
+            
             foreach ($tags as $tag) {
-                if ($tag_id = Model_Tag::exist_tag_by_tag_name($tag)) {
-                    Model_Tag::increase_num_of_questions($tag_id);
-                    $tag_ids .= $tag_id . '@';
+                if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
+                    Model_Tag::increase_num_of_questions($existing_tag['id']);
+                    $tag_ids .= $existing_tag['id'] . '@';
                 } else {
                     $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
+                    //\Zx\Test\Test::object_log('$tag_arr', $tag_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                    
                     $tag_id = Model_Tag::create($tag_arr);
                     $tag_ids .= $tag_id . '@';
                 }
             }
-            $user_table_length = 10000; //according to user table, must be consecutive
-            $question_user_id = rand(1, $user_table_length);
-            $question_user = Model_User::get_one($question_user_id);
-            $answer_user_id = rand(1, $user_table_length);
-            $answer_user = Model_User::get_one($answer_user_id);
+
+            $question_user = Model_User::get_random_user();
+            //\Zx\Test\Test::object_log('$question_user', $question_user, __FILE__, __LINE__, __CLASS__, __METHOD__);
+            
+            $answer_user = Model_User::get_random_user();
             $question_arr = array('title' => $arr['title'],
                 'content' => $arr['q_content'],
-                'user_id' => $question_user_id,
+                'user_id' => $question_user['id'],
                 'user_name' => $question_user['user_name'],
-                'tag_ids' => $tag_ids,
+                'tag_ids' => substr($tag_ids, -1), //remove last '@'
                 'tag_names' => $arr['tag_names'],
-                'state' => $arr['state'],
+                'region' => $arr['region'],
                 'status' => 1,
                 'num_of_answers' => 1, //must have one now
                 'num_of_views' => 0,
                 'num_of_votes' => 0,
             );
-            if ($qid = Model_Question::create($arr)) {
+            //\Zx\Test\Test::object_log('$question_arr', $question_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+            
+            if ($qid = Model_Question::create($question_arr)) {
                 $question_user_arr = array('num_of_questions' => $question_user['num_of_questions'] + 1);
+                //\Zx\Test\Test::object_log('$question_user_arr', $question_user_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                
                 Model_User::update($question_user_id, $question_user_arr);
                 //if answer is not empty
                 $answer_arr = array('question_id' => $qid,
                     'content' => $arr['a_content'],
-                    'user_id' => $answer_user_id,
+                    'user_id' => $answer_user['id'],
                     'user_name' => $answer_user['user_name'],
                     'status' => 1,
                 );
+                //\Zx\Test\Test::object_log('$answer_arr', $answer_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
                 Model_Answer::create($answer_arr);
                 $answer_user_arr = array('num_of_answers' => $answer_user['num_of_answers'] + 1);
+                //\Zx\Test\Test::object_log('$answer_user_arr', $answer_user_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
                 Model_User::update($answer_user_id, $answer_user_arr);
                 Message::set_success_message('success');
                 return true;

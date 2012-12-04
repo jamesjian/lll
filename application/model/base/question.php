@@ -64,7 +64,6 @@ class Question {
 
     public static function get_num($where = '1') {
         $sql = "SELECT COUNT(id) AS num FROM " . self::$table . " WHERE $where";
-        //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         $result = Mysql::select_one($sql);
         if ($result) {
@@ -76,6 +75,9 @@ class Question {
 
     public static function create($arr) {
         $insert_arr = array(); $params = array();
+        $arr['date_created'] = date('Y-m-d h:i:s');
+                //\Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        
         foreach (self::$fields as $field) {
             if (array_key_exists($field, $arr)) {
                 $insert_arr[] = "$field=:$field";
@@ -84,6 +86,8 @@ class Question {
         }
         $insert_str = implode(',', $insert_arr);
         $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
+        //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
         return Mysql::insert($sql, $params);
     }
 

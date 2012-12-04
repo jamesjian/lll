@@ -72,6 +72,8 @@ class Question extends Base {
  * question user id and answer user id are generately randomly
  *      */
     public function create_by_admin() {
+        //\Zx\Test\Test::object_log('$_POST', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        
         $success = false;
         $posted = array();
         if (isset($_POST['submit']) &&
@@ -80,6 +82,7 @@ class Question extends Base {
                 isset($_POST['tag_names'])) {
             $title = isset($_POST['title']) ? trim($_POST['title']) : '';
             $tag_names = isset($_POST['tag_names']) ? trim($_POST['tag_names']) : '';
+            $region = isset($_POST['region']) ? trim($_POST['region']) : 'AU';
             $q_content = isset($_POST['q_content']) ? trim($_POST['q_content']) : '';
             $a_content = isset($_POST['a_content']) ? trim($_POST['a_content']) : '';
             $status = isset($_POST['status']) ? intval($_POST['status']) : 1;
@@ -87,10 +90,13 @@ class Question extends Base {
             if ($title <> '') {
                 $posted = array('title' => $title,
                     'tag_names' => $tag_names,
+                    'region' => $region,
                     'q_content' => $q_content,
                     'a_content' => $a_content,
                     'status' => $status,
                     );
+        //\Zx\Test\Test::object_log('$posted', $posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                
                 if (Transaction_Question::create_question_and_answer_by_admin($posted)) {
                     $success = true;
                 }

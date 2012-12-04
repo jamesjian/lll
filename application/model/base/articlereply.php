@@ -48,6 +48,7 @@ class Blogreply {
     }
 
     public static function create($arr) {
+        $arr['date_created'] = date('Y-m-d h:i:s');
         $sql = "INSERT INTO article SET " . Mysql::concat_field_name_and_value($arr);
         return Mysql::insert($sql);
     }

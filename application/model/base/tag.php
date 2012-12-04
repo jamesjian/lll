@@ -42,6 +42,8 @@ class Tag {
             FROM "  . self::$table . " 
             WHERE $where
         ";
+            //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        
         return Mysql::select_one($sql);
     }
 
@@ -68,6 +70,7 @@ class Tag {
 
     public static function create($arr) {
         $insert_arr = array(); $params = array();
+        $arr['date_created'] = date('Y-m-d h:i:s');
         foreach (self::$fields as $field) {
             if (array_key_exists($field, $arr)) {
                 $insert_arr[] = "$field=:$field";
@@ -76,6 +79,8 @@ class Tag {
         }
         $insert_str = implode(',', $insert_arr);
         $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
+        //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        
         return Mysql::insert($sql, $params);
     }
 
@@ -90,7 +95,6 @@ class Tag {
         
         $update_str = implode(',', $update_arr);
         $sql = 'UPDATE ' .self::$table . ' SET '. $update_str . ' WHERE id=:id';
-        //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $params[':id'] = $id;
         //$query = Mysql::interpolateQuery($sql, $params);
         //\Zx\Test\Test::object_log('query', $query, __FILE__, __LINE__, __CLASS__, __METHOD__);
