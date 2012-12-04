@@ -20,20 +20,24 @@ if (isset($errors)) {
                            value="<?php if (isset($posted['title'])) echo $posted['title']; ?>"/>
                 </td>
             </tr>
-            <tr>    <td class="table_title required"> State:</td>
-                <td class="table_input"> <select name='state'>
+            <tr>    
+                <td class="table_title required"> State:</td>
+                <td class="table_input">
+                    <select id="region" name="region">
                         <?php
-                        foreach ($states as $state) {
-                            echo "<option value='" . $state . "'";
-                            if ($state == $posted['state']) {
-                                echo " selected";
-                            } elseif ($state == 'NSW') {
-                                echo " selected";
+                        $regions = \App\Model\Region::get_au_states_abbr();
+                        foreach ($regions as $region) {
+                            ?>
+                            <option value="<?php echo $region; ?>"
+                            <?php
+                            if (isset($_POST['region']) && $_POST['region'] == $region) {
+                                echo ' selected';
                             }
-                            echo ">" . $state . '</option>';
+                            ?>><?php echo $region; ?>             
+                            </option>
+                            <?php
                         }
-                        ?>
-                    </select>
+                        ?></select>
                 </td>               
             </tr>
             <tr>

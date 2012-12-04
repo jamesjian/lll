@@ -219,14 +219,14 @@ class Question extends Base {
                 isset($_POST['tag_names']) && !empty($_POST['tag_names'])
                 ) {
             $title = trim($_POST['title']);
-            $state = trim($_POST['state']);
+            $region = isset($_POST['region']) ? trim($_POST['region']) : 'AU';
             $tag_names = trim($_POST['tag_names']);
             $content = trim($_POST['content']);
 
                 $arr = array('title' => $title,
                     'tag_names' => $tag_names,
                     'content' => $content,
-                    'state'=>$state,
+                    'region' => $region,
                     );
                 if (Transaction_Question::create($arr)) {
                     $success = true;

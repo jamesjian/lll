@@ -20,18 +20,18 @@ class User extends Base_User {
     }
     /**
      * 
-     * @return int default user id for anonymous user
+     * @return int default user for anonymous user
      */
-    public static function get_default_question_user_id() {
-        return 1; //匿名提问用户
+    public static function get_default_question_user() {
+        return parent::get_one(1); //匿名提问用户
     }
 
     /**
      * 
-     * @return int default user id for anonymous user
+     * @return int default user for anonymous user
      */
-    public static function get_default_answer_user_id() {
-        return 2; //匿名回答用户
+    public static function get_default_answer_user() {
+        return parent::get_one(2); //匿名回答用户
     }
 
     public static function increase_num_of_questions($user_id) {

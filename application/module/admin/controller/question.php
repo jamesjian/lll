@@ -193,7 +193,9 @@ class Question extends Base {
       retrieve_by_cat_id/cat_id/page/orderby/direction
      */
     public function retrieve_by_uid() {
-        \App\Transaction\Session::remember_current_admin_page();
+       if (!\App\Transaction\Html::previous_page_is_search_page()) {
+            \App\Transaction\Html::remember_current_admin_page();
+        }
         \App\Transaction\Session::set_current_l1_menu('Question');
         $user_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
         $current_page = isset($this->params[1]) ? intval($this->params[1]) : 1;

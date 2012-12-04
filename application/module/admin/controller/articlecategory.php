@@ -98,20 +98,13 @@ class Articlecategory extends Base {
         }
     }
 
-    public function search() {
-        if (isset($_POST['search']) && trim($_POST['search']) != '') {
-            $link = ADMIN_HTML_ROOT . 'articlecategory/retrieve/1/title/ASC/' . trim($_POST['search']);
-        } else {
-            $link = ADMIN_HTML_ROOT . 'articlecategory/retrieve/1/title/ASC/';
-        }
-        header('Location: ' . $link);
-    }
-
-    /**
+   /**
       /page/orderby/direction
      */
     public function retrieve() {
-        \App\Transaction\Session::remember_current_admin_page();
+       if (!\App\Transaction\Html::previous_page_is_search_page()) {
+            \App\Transaction\Html::remember_current_admin_page();
+        }
         \App\Transaction\Session::set_admin_current_l1_menu('Article Category');
         $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
         $order_by = isset($this->params[1]) ? $this->params[1] : 'id';

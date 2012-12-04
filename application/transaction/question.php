@@ -27,24 +27,27 @@ class Question {
             $user_name = $_SESSION['user']['user_name'];
             $status = 1;
         } else {
-            $user_id = Model_User::get_default_question_user_id();
-            $user_name = '匿名提问用户';
+            $user = Model_User::get_default_question_user();
+            $user_id = $user['id'];
+            $user_name = $user['user_name'];
             $status = 0;
         }
 
         //prepare tag ids
         $tags = explode('@', $arr['tag_names']);
         $tag_ids = '';
-        foreach ($tags as $tag) {
-            if ($tag_id = Model_Tag::exist_tag_by_tag_name($tag)) {
-                Model_Tag::increase_num_of_questions($tag_id);
-                $tag_ids .= $tag_id . '@';
-            } else {
-                $tag_arr = array('name' => $tag, 'num_of_questions' => 1);
-                $tag_id = Model_Tag::create($tag_arr);
-                $tag_ids .= $tag_id . '@';
+            foreach ($tags as $tag) {
+                if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
+                    Model_Tag::increase_num_of_questions($existing_tag['id']);
+                    $tag_ids .= $existing_tag['id'] . '@';
+                } else {
+                    $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
+                    //\Zx\Test\Test::object_log('$tag_arr', $tag_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                    
+                    $tag_id = Model_Tag::create($tag_arr);
+                    $tag_ids .= $tag_id . '@';
+                }
             }
-        }
         $arr['tag_ids'] = $tag_ids;
         $arr['user_id'] = $user_id;
         $arr['user_name'] = $user_name;
@@ -53,7 +56,7 @@ class Question {
         $arr['num_of_views'] = 0;
         $arr['num_of_votes'] = 0;
         Model_Question::create($arr);
-        Model_User::increase_num_of_questions($arr['user_id']);
+        Model_User::increase_num_of_questions($user_id);
         return true;
     }
 

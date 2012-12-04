@@ -1,5 +1,5 @@
 <?php
-$link_search = ADMIN_HTML_ROOT . 'article/search';
+$link_search = ADMIN_HTML_ROOT . 'ad/search';
 ?>
 <form action="<?php echo $link_search;?>" method="post">
 Keyword:<input type="text" name="search" value="<?php echo $search;?>" />
