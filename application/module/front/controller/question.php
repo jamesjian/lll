@@ -187,10 +187,10 @@ class Question extends Base {
     /**
       question/hottest/3, 3 is page number, if missing, 1 is default page number
      */
-    public function hottest() {
-        Transaction_Html::set_title('hottest');
-        Transaction_Html::set_keyword('hottest');
-        Transaction_Html::set_description('hottest');
+    public function popular() {
+        Transaction_Html::set_title('popular');
+        Transaction_Html::set_keyword('popular');
+        Transaction_Html::set_description('popular');
         $current_page = (isset($params[0])) ? intval($params[0]) : 1;
         if ($current_page < 1)
             $current_page = 1;

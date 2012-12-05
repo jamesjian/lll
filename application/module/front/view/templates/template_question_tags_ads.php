@@ -14,7 +14,7 @@
         <div class='zx-front-right1'>
             <?php
             //tag cloud or search
-            include 'most_pupular_question_tags.php';
+            include 'most_popular_question_tags.php';
             ?>
         </div>	
         <div class='zx-front-right2'>

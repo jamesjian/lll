@@ -132,9 +132,7 @@ class Tag extends Base {
         header('Location: ' . $link);
     }
     /**
-      tag/retrieve/3/search, 3 is page number, if missing, 1 is default page number
-     * search is a search keyword
-     * including home page
+
      */
     public function question() {
         //\Zx\Test\Test::object_log('lob', 'aaaa', __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -153,9 +151,9 @@ class Tag extends Base {
         $order_by = 'num_of_questions';
         $direction = 'DESC';
         $tags = Model_Tag::get_active_question_tags_by_page_num($where, $current_page, $order_by, $direction);
-        $num_of_tags = Model_Tag::get_num_of_active_tags();
+        $num_of_tags = Model_Tag::get_num_of_active_question_tags();
         $num_of_pages = ceil($num_of_tags / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'tag_list.php');
+        View::set_view_file($this->view_path . 'question_tag_list.php');
         View::set_action_var('tags', $tags);
         View::set_action_var('current_page', $current_page);
         View::set_action_var('num_of_pages', $num_of_pages);
@@ -177,9 +175,9 @@ class Tag extends Base {
         $order_by = 'num_of_questions';
         $direction = 'DESC';
         $tags = Model_Tag::get_active_ad_tags_by_page_num($where, $current_page, $order_by, $direction);
-        $num_of_tags = Model_Tag::get_num_of_active_tags();
+        $num_of_tags = Model_Tag::get_num_of_active_ad_tags();
         $num_of_pages = ceil($num_of_tags / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'tag_list.php');
+        View::set_view_file($this->view_path . 'ad_tag_list.php');
         View::set_action_var('tags', $tags);
         View::set_action_var('current_page', $current_page);
         View::set_action_var('num_of_pages', $num_of_pages);
