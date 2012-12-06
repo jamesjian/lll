@@ -89,11 +89,11 @@ class Ad extends Base {
       retrieve ads under a user
       front/ad/retrieve_by_user_id/id/page/3/, 3 is page number
      */
-    public function retrieve_by_user_id() {
-        $user_id = (isset($this->params[0])) ? $this->params[0] : 0;
+    public function user() {
+        $uid = (isset($this->params[0])) ? $this->params[0] : 0;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
-        if ($user_id != 0 && $user = Model_User::get_one($user_id)) {
+        if ($uid != 0 && $user = Model_User::get_one($uid)) {
             $home_url = HTML_ROOT;
             //$tag_url = FRONT_HTML_ROOT . 'ad/tag/' . $tag['id']; 
             Transaction_Session::set_breadcrumb(0, $home_url,  '首页');
@@ -104,11 +104,11 @@ class Ad extends Base {
             Transaction_Html::set_description($tag['name']);
             $order_by = 'date_created';
             $direction = 'DESC';
-            $ads = Model_Ad::get_active_ads_by_user_id_and_page_num($user_id, $current_page, $order_by, $direction);
+            $ads = Model_Ad::get_active_ads_by_uid_and_page_num($uid, $current_page, $order_by, $direction);
             //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            $num_of_ads = Model_Ad::get_num_of_active_ads_by_user_id($user_id);
+            $num_of_ads = Model_Ad::get_num_of_active_ads_by_uid($uid);
             $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'ad_list_by_user_id.php');
+            View::set_view_file($this->view_path . 'ad_list_by_uid.php');
             View::set_action_var('user', $user);
             View::set_action_var('ads', $ads);
             View::set_action_var('order_by', $order_by);
@@ -119,14 +119,14 @@ class Ad extends Base {
             //if invalid category
             // \Zx\Test\Test::object_log('$cat_title', 'no', __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-            Transaction_Html::goto_home_page();
+            Transaction_Html::goto_ad_home_page();
         }
     }
     /**
       retrieve ads under a user
       front/ad/retrieve_by_user_id/id/page/3/, 3 is page number
      */
-    public function retrieve_by_tag_id() {
+    public function tag() {
         $tag_id = (isset($this->params[0])) ? $this->params[0] : 0;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
@@ -163,7 +163,7 @@ class Ad extends Base {
       retrieve ads under a user
       front/ad/retrieve_by_user_id/id/page/3/, 3 is page number
      */
-    public function retrieve_by_region() {
+    public function region() {
         $tag_id = (isset($this->params[0])) ? $this->params[0] : 0;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1

@@ -31,17 +31,12 @@ class Ad extends Base {
      * pagination
      */
     public function my_ads() {
+        Transaction_Html::remember_user_page();
         $user_id = $this->user_id;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
         $home_url = HTML_ROOT;
         //$tag_url = FRONT_HTML_ROOT . 'ad/tag/' . $tag['id']; 
-        Transaction_Session::set_breadcrumb(0, $home_url, '首页');
-        Transaction_Session::set_breadcrumb(1, $category_url, $tag['name']);
-        //$cat = Model_Adcategory::get_one($cat_id);
-        Transaction_Html::set_title($tag['name']);
-        Transaction_Html::set_keyword($tag['name']);
-        Transaction_Html::set_description($tag['name']);
         $order_by = 'date_created';
         $direction = 'DESC';
         $ads = Model_Ad::get_active_ads_by_user_id_and_page_num($user_id, $current_page, $order_by, $direction);
@@ -81,7 +76,7 @@ class Ad extends Base {
             Zx_Message::set_error_message('title, content, tag can not be empty。');
         }
         if ($success) {
-            header('Location: ' . $this->list_page);
+            Transaction_Html::goto_previous_user_page();
         } else {
             View::set_view_file($this->view_path . 'create.php');
             View::set_action_var('posted', $posted);

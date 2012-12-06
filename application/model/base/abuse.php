@@ -12,6 +12,7 @@ status: 0: created(when report an abuse), 2. confirmed(it's a real abuse), 3. ca
  user_id int(11) not null 0,  //can be empty
  cat_id tinyint(3) not null default '1', //1. 造谣诽谤， 2. 种族歧视， 3.色情暴力 4. 违禁物品（毒品， 武器等） 5. 误导欺诈
   content text,
+  reportable tinyint(1) not null default 1,// if completely valid, 0, else 1
   status tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
 */

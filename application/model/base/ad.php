@@ -15,6 +15,7 @@ use \Zx\Model\Mysql;
   content text,
   num_of_displays int(11) default 0,  #the times of displays for random display
   num_of_views int(11) default 0,    #the times of clicks
+   reportable tinyint(1) not null default 1,// if completely valid, 0, else 1* 
   status tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
 */

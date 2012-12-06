@@ -50,6 +50,12 @@ class Html {
         
     }
 
+    public static function goto_question_home_page() {
+        header('Location: ' . FRONT_HTML_ROOT . 'question/all');
+    }
+    public static function goto_ad_home_page() {
+        header('Location: ' . FRONT_HTML_ROOT . 'ad/all');
+    }
     public static function goto_home_page() {
         header('Location: ' . FRONT_HTML_ROOT . 'question/all');
     }
@@ -93,7 +99,21 @@ class Html {
             self::goto_home_page();
         }
     }
+    /**
+      if has current page in SESSION, return it, otherwise return false
+     */
+    public static function goto_previous_user_page() {
+        if (isset($_SESSION['current_user_page'])) {
+            header('Location: ' . $_SESSION['current_user_page']);
+        } else {
+            self::goto_home_page();
+        }
+    }
 
+    //for user
+    public static function remember_current_user_page() {
+        $_SESSION['current_user_page'] = Route::get_url();
+    }
     //for admin
     public static function remember_current_admin_page() {
         $_SESSION['current_admin_page'] = Route::get_url();
