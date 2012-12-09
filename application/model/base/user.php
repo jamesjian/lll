@@ -60,10 +60,21 @@ class User {
         }
     }
 
+    /**
+     * use crypt to store password, 
+     * $password = crypt('mypassword'); 
+        if (crypt($user_input, $password) == $password) {
+            echo "Password verified!";
+        }
+
+     * @param array $arr
+     * @return false or id
+     */
     public static function create($arr) {
         $insert_arr = array();
         $params = array();
         $arr['date_created'] = date('Y-m-d h:i:s');
+        $arr['password'] = crypt($arr['password']);
         foreach (self::$fields as $field) {
             if (array_key_exists($field, $arr)) {
                 $insert_arr[] = "$field=:$field";

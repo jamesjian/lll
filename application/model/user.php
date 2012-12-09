@@ -184,20 +184,24 @@ class User extends Base_User {
 
     /**
      * check if user name matches password and enabled in user table
+     * crypt see parent::create() method
      * @param <string> $user_name  can be an email
-     * 
      * @param <string> $password is md5 value
      * @return <boolean> if valid in user table, return true; otherwise return false;
      */
     public static function verify_user($user_name, $password) {
 
         $sql = "SELECT *  FROM " . parent::$table . " 
-            WHERE (user_name=:name OR email=:name) AND password=:password AND status=1";
-        $params = array(':name' => $user_name, ':password' => $password);
+            WHERE (user_name=:name OR email=:name)  AND status=1";
+        $params = array(':name' => $user_name);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $user = Mysql::select_one($sql, $params);
         if ($user) {
+          if (crypt($password, $user['password']) == $user['password']) {
             return $user;
+          } else {
+              return false;
+          }
         } else {
             return false;
         }

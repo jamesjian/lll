@@ -30,7 +30,7 @@ class Staff {
     }
 
     public static function create($arr) {
-        $sql = "INSERT INTO staff SET " . Mysql::concat_field_name_and_value($arr);
+        $sql = "INSERT INTO  " . self::$table . " SET " . Mysql::concat_field_name_and_value($arr);
         return Mysql::insert($sql);
     }
 

@@ -22,7 +22,6 @@ class Staff {
      * @return  boolean
      */
     public static function verify_staff($staff_name, $staff_password) {
-        $staff_password = md5($staff_password);
         if ($staff_name = Model_Staff::verify_staff($staff_name, $staff_password)) {
             //session
             $_SESSION['staff'] = array(

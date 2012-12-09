@@ -18,15 +18,15 @@ use \Zx\Model\Mysql;
   num_of_answers smallint(4) default 0,
   num_of_views int(11) default 0,
   num_of_votes int(11) default 0,
-  reportable tinyint(1) not null default 1,// if completely valid, 0, else 1
-  status tinyint(1) not null default 1,
+  valid tinyint(1) not null default 1,
+  status tinyint(1) not null default 1,  //1: active, 2. 
   date_created datetime) engine=innodb default charset=utf8
  */
 
 class Question {
     public static $fields = array('id','title','region', 'user_id','user_name',
         'tag_ids','tag_names','num_of_answers',
-        'content', 'num_of_views','num_of_votes', 'status', 'date_created');
+        'content', 'num_of_views','num_of_votes', 'valid', 'status', 'date_created');
     public static $table = TABLE_QUESTION;
     /**
      *
