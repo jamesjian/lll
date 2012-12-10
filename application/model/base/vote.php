@@ -4,29 +4,31 @@ namespace App\Model\Base;
 use \Zx\Model\Mysql;
 
 /*
-this one is for user vote answer, when user vote answer, it will be recorded here
-prevent one user from voting one answer multiple times
+this one is for user vote question/answer/ad, when user vote them, it will be recorded here
+prevent one user from voting one item multiple times
   CREATE TABLE usertoanswer (
-  user_id int(11) not null 0,
-  answer_id int(11) not null 0
-   primary key (user_id, answer_id)
+  user_id mediumint(8) not null 0,
+ item_type tinyint(1) NOT NULL DEFAULT '1',  //1. question, 2. answer, 3. ad
+ item_id mediumint(8) not null default 0, 
+   primary key (user_id, item_type, item_id)
  } engine=innodb default charset=utf8
 */
-class Usertoanswer {
-    public static $fields = array('user_id','answer_id');
-    public static $table = TABLE_USER_TO_ANSWER;
+class Vote {
+    public static $fields = array('user_id','item_type', 'item_id');
+    public static $table = TABLE_VOTE;
      /**
      *
-     * @param int $user_id and $answer_id is a composite primary key
+     * @param int $user_id, $item_type and $item_id is a composite primary key
      * @return 1D array or boolean when false 
      */
-    public static function get_one($user_id, $answer_id) {
+    public static function get_one($user_id, $item_type, $item_id) {
         $sql = "SELECT *
             FROM " . self::$table . " 
-            WHERE user_id=:user_id AND answer_id=:answer_id
+            WHERE user_id=:user_id AND item_type=:item_type AND item_id=:item_id
         ";
         $params = array(':user_id' => $user_id,
-            ':answer_id'=> $answer_id
+            ':item_type'=> $item_type,
+            ':item_id'=> $item_id
             );
         return Mysql::select_one($sql, $params);
     }
@@ -99,9 +101,14 @@ class Usertoanswer {
         return Mysql::exec($sql, $params);
     }
 
-    public static function delete($id) {
-        $sql = "Delete FROM " . self::$table ." WHERE id=:id";
-        $params = array(':id' => $id);
+    public static function delete($user_id, $item_type, $item_id) {
+        $sql = "Delete FROM " . self::$table ." WHERE 
+            user_id=:user_id AND item_type=:item_type AND item_id=:item_id
+        ";
+        $params = array(':user_id' => $user_id,
+            ':item_type'=> $item_type,
+            ':item_id'=> $item_id
+            );
         return Mysql::exec($sql, $params);
     }
 

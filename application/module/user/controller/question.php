@@ -8,7 +8,7 @@ use App\Transaction\Html as Transaction_Html;
 use \App\Model\Question as Model_Question;
 
 
-/**
+/* * 
  * homepage: /=>/front/question/latest/page/1
  * latest: /front/question/latest/page/3
  * most popular:/front/question/most_popular/page/3

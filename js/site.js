@@ -40,6 +40,51 @@ site = {
             }
         }
     },
+    vote: function() {
+        var url = $(this).attr('href');
+        var title='投票';
+        $.ajax({
+            type : "POST",
+            url : url,
+            data : {},
+            dataType : 'html',
+            success : function(data) {
+                site.open_message_dialog(data, title)
+            }
+        });
+        return false;
+    },
+    /*
+         **/
+    open_message_dialog : function(data, title) {
+        // m=m+1; //for checking bind/unbind
+        // console.log('open dialog'+m);
+        $('#dialog').dialog({
+            title : title
+        });
+        $('#dialog').html(data);
+        $('#dialog').dialog('open');
+        //$('#region_select_state').bind('change', region.region_change_state);
+        return false;
+    },      
+    get_message_dialog : function(e) {
+        // m=m+1; //for checking bind/unbind
+        // console.log('get dialog'+m);
+        var url = $(this).attr('href');
+        // console.log(url);
+        var title = e.data.title;
+        $.ajax({
+            type : "POST",
+            url : url,
+            data : {},
+            dataType : 'html',
+            success : function(data) {
+                message.open_message_dialog(data, title)
+            }
+        });
+        return false;
+    },
+      
     get_vote_dialog : function(e) {
         // m=m+1; //for checking bind/unbind
         // console.log('get dialog'+m);
@@ -138,7 +183,27 @@ site = {
         }, message.get_vote_dialog);        
         $('.zx-front-abuse-link').bind('click', {
             title : '举报'
-        }, message.get_abuse_dialog);                  
+        }, message.get_abuse_dialog);           
+$('#dialog').dialog({
+            autoOpen: false,
+            height: 300,
+            width: 450,
+            position: ['center'],
+            modal: true,
+            /* Scrollbar fix  
+            open: function(event, ui){$('body').css('overflow','hidden');
+                $('.ui-widget-overlay').css('width','100%'); },
+            close: function(event, ui){$('body').css('overflow','auto'); },
+             */
+            buttons:{
+                /*
+                '切换': function(){
+                    $('form.change_region_form').submit();
+                }, */
+                '关闭': function(){$(this).dialog('close');
+                }
+            }
+        })//dialog        
     },
     unbind_events: function(){
         
