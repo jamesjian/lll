@@ -2,24 +2,74 @@
 namespace App\Transaction;
 defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Ad as Model_Ad;
+use \App\Model\User as Model_User;
 use \Zx\Message\Message;
+use App\Transaction\User as Transaction_User;
 use \Zx\Model\Mysql;
 
 class Ad {
 
-    public static function create_ad($arr = array()) {
+    /**
+     * available num of ads>weight>=1
+     * @param int $ad_id
+     * @param int $weight
+     */
+    public static function adjust_score($ad_id, $score)
+    {
+        $success = false;
+        $user = Transaction_User::get_user();
+        //1. valid user
+        if ($user) {
+        //2. valid ad
+        if (Model_Ad::ad_belong_to_user($ad_id)) {
+            $ad = Model_Ad::get_one($ad_id);
+            $score_restored = $user['score']-$user['invalid_score']-$user['ad_score']+$ad['score'];
+            $score_left =  $score_restored - $score;
+            if ($score_left>=0) {
+                $ad_arr = array('score'=>$score);
+                $user_arr = array('ad_score'=>$user['ad_score'] - $ad['score'] + $score);
+                $success = true;
+            } elseif ($score_restored>=0) {
+                $ad_arr = array('score'=>$score_restored);
+                $user_arr = array('ad_score'=>$user['score']-$user['invalid_score']);                
+                $message = "仍有积分， 但积分不足";
+            } else {
+                $message = "可用积分为0";
+            }
+                Model_Ad::update($ad_id, $ad_arr);
+                Model_User::update($user_id, $user_arr);
+        } else {
+            $message = "无效的广告序号";
+        }
+        } else {
+            $message = "用户未登录";
+        }
+        if (!$success) {
+            Message::set_error_message($message);
+            return false;
+        } else {
+            return true;
+        }
+    }
+    /**
+     * in controller, check Model_User::available_score($this->user_id) to make sure score is more than 1
+     * @param array $arr
+     * @return boolean
+     */
+    public static function create_by_user($arr = array()) {
+        $score = $arr['score'];
+        $arr['score'] = 0; //create ad firstly, then adjust score
         if (count($arr) > 0 && isset($arr['title'])) {
-            if (!isset($arr['rank']))
-                $arr['rank'] = 0; //initialize
-            if (Model_Ad::create($arr)) {
-                Message::set_success_message('success');
+            if ($ad_id = Model_Ad::create($arr)) {
+                self::adjust_score($ad_id, $score);
+                Message::set_success_message('新广告添加成功');
                 return true;
             } else {
-                Message::set_error_message('fail');
+                Message::set_error_message('新广告添加失败');
                 return false;
             }
         } else {
-            Message::set_error_message('wrong info');
+            Message::set_error_message('新广告信息不完整');
             return false;
         }
     }

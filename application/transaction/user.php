@@ -341,6 +341,17 @@ class User {
 
     /**
      * for front end user
+     * @return <integer or boolean>  if has user id, return it, otherwise, return false
+     */
+    public static function get_user() {
+        if (isset($_SESSION['user']['user_id'])) {
+            return Model_User::get_one($_SESSION['user']['user_id']);
+        } else {
+            return false;
+        }
+    }
+    /**
+     * for front end user
      * @return <integer>  if has user id, return it, otherwise, return 0
      */
     public static function get_user_id() {

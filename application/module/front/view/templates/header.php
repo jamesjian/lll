@@ -31,6 +31,8 @@
             <nav class='zx-front-top-menu'>
                 <a href="<?php echo FRONT_HTML_ROOT;?>question/retrieve" title="最新问题">最新问题</a>
                 <a href="<?php echo FRONT_HTML_ROOT;?>qyestion/unanswered" title="待解答问题">待解答问题</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>qyestion/answered" title="待解答问题">已解答问题</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>qyestion/answered" title="待解答问题">最受关注问题</a>
                 <?php 
                 /** only has tags for question in main menu, the link of tags for ads is display in tags section in all ad pages */
                 ?>

@@ -7,6 +7,7 @@ use \Zx\View\View;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
 use \App\Model\Ad as Model_Ad;
+use \App\Transaction\Ad as Transaction_Ad;
 
 /**
 
@@ -25,7 +26,36 @@ class Ad extends Base {
         $this->view_path = APPLICATION_PATH . 'module/user/view/ad/';
         parent::init();
     }
+    
+    public function adjust_weight()
+    {
+        $success = false;
+        $posted = array();
+        $errors = array();
+        if (isset($_POST['submit']) &&
+                isset($_POST['ad_id']) && !empty($_POST['ad_id']) &&
+                isset($_POST['weight']) && !empty($_POST['weight'])) {
+            $ad_id = intval($_POST['ad_id']);
+            $weight = intval($_POST['weight']);
 
+            $arr = array('ad_id' => $ad_id,
+                'weight' => $weight,
+            );
+            if (Transaction_Ad::adjust_weight($arr)) {
+                $success = true;
+            }
+        } else {
+            Zx_Message::set_error_message('invalid form。');
+            Transaction_Html::goto_previous_user_page();
+        }
+        if ($success) {
+            Transaction_Html::goto_previous_user_page();
+        } else {
+            View::set_view_file($this->view_path . 'create.php');
+            View::set_action_var('posted', $posted);
+            View::set_action_var('errors', $errors);
+        }
+    }
     /**
      * only my ads
      * pagination
@@ -63,17 +93,20 @@ class Ad extends Base {
         ) {
             $title = trim($_POST['title']);
             $tag_names = trim($_POST['tag_names']);
+            $score = (isset($_POST['score']))?intval($_POST['score']) : 1; //at least 1
             $content = trim($_POST['content']);
 
             $arr = array('title' => $title,
                 'tag_names' => $tag_names,
+                'score' => $score,
                 'content' => $content,
+                'user_id'=>$this->user_id,
             );
-            if (Transaction_Ad::create_by_user($arr)) {
+            if (Model_User::available_score($this->user_id) && Transaction_Ad::create_by_user($arr)) {
                 $success = true;
             }
         } else {
-            Zx_Message::set_error_message('title, content, tag can not be empty。');
+            Zx_Message::set_error_message('请完整填写广告标题， 内容和分类。');
         }
         if ($success) {
             Transaction_Html::goto_previous_user_page();

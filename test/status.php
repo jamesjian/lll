@@ -1,7 +1,6 @@
 <?php
 /**
  *
- * 
  1. user
   inactive: when register a new user, or its email box is changed (need to activate it again)
   active: when activate the email box, or enable it by admin from disable status.
@@ -20,4 +19,133 @@
  * valid 1 valid, 0 invalid
  * status 0: inactive by user, 1: active, 2: disabled by admin (because of invalid)
  * 
+ * 
+ * search question: search title and tag 
+ * homepage:
+ * 
+ * main menu:
+ * 1. home/all/latest questions (最新问题同时也是首页， order on date_created desc）, 
+ * 2. solved questions （已回答） where num_of_answer>0 on vote (of question), date_created） 
+ * 3. unanswered questions （无回答where num_of_answer=0 on vote (of question), date_created）,
+ * 4.most populars questions （最受关注 on vote  desc, num_of_views desc, date_created  desc） 
+ * 5. most popular category (order on num_of_questions)
+ * 6. all category  (order on pinyin asc)
+ * 7. users  (order by answers)
+ * 8. ads displays ad categories (rather than ads), can switch between most popular categories and all categories for ads
+ *     and region
+ *    
+ * num of ads = num of answers, if an invalid ads occurred, num of answers will be substracted by 1
+ * sigma (weight of ads) = num of answers  - num of invalid ads
+ * email and user name cannot be changed
+ * 
+ * 1-4 question pages use same format: question list(50 records), most popular categories(top 20), 
+ * 5-6 category pages use similar format, must have search
+ * 7. ads page always under category, no region options
+ *    order by weight desc, date_created asc
+ * 
+ * ad: region, category, weight, date,  (decided by user, for example number of ads is 1000, an accountant ad can have weight 1000 to make sure it's always in the top of list)
+ * region is always an attribute
+ * order by date_created desc, num_of_view desc, 
+ * when the content of a question/answer/ad changed, statistics will be cleared
+ * but when extend, will not clear statistics
+ * ad validation period: 30 days
+ * if no ad for an answer, use a random ad or other way
+ * 
+ * the above system attract commercial users
+ * exchange system is next step to attract non-commercial users
+ * 
+ * 
+ * user: adjust weight of ads
  */
+
+/**
+ * Displays DUAL lodgment page to user
+ * 
+ * @package broker_sales
+ * @version $Id: page_premium_lodgement.php,v 1.3 2012-10-29 00:59:54 developer Exp $
+ */
+ 
+include_once("generate_page_dual.php");
+include_once("generate_page_summary.php");
+include_once("sequence.php");
+include_once("page_dual.php");
+require_once("class.phpmailer.php");
+
+class page_premium_lodgement extends page_dual {
+   
+   public function get_name()
+   {
+      return "Lodgement";
+   }
+      
+   /**
+   * Display the lodgement page. User can get lodgement PDF
+   *
+   * @param generate_page_base $generate_page  Page maker for the page
+   * @param array $info Associative array holding buttons, form information and controls. $info['form'] is the form start tag, $info['controls'] is the HTML for controls
+   * @param integer $policyid Policy id of the current policy
+   *
+   * @return string
+   * @access public
+   */     
+   public function generate_page(generate_page_base $generate_page, $info, $policyid) 
+   {
+      if (!$info['summary']) {
+         
+         $result=ics_query("SELECT * FROM data_client dcl, data_contact dco,  data_policy dp WHERE  dcl.data_policyid='{$policyid}' AND dco.data_clientid=dcl.data_clientid AND dp.data_policyid='{$policyid}'");
+         $row=ics_fetch_array($result);
+         $lobid=get_lobid_from_sid();
+         if ($row)   {
+
+            $str=$generate_page->get_popup_script();
+            
+            // recorded if is an invoice but confirmed if credit card
+            if ($info['paylater'])
+               $conf='recorded';
+            else
+               $conf='confirmed';
+            $str.="<br/>";
+            $str.="<table width='100%'><td align='center'> ";
+            $str.="<div style='margin: 0 auto; width:700px; padding:20px; iborder:2px solid black; text-align:left; font-weight:bolder'>";
+        
+	            $str.=$generate_page->get_line("<h4 style='line-height:1.5'>Your Premium Funding Application has been emailed to you. As soon as we have received and processed the completed form we will email your Cover Confirmation.</h4><br/>"); 
+                if($lobid==1){
+		            $str.=$generate_page->get_line("<h4 style='line-height:1.5'>As a result of completing your insurance with Express Insurance we will make a donation to the Gutsy Group. To read more about this worthwhile charity click on the icon below.                
+	                <br/><br/><p align='center'><a href='#' onclick='window.open(\"http://www.thegutsygroup.com.au/\")'/><img src='images/gutsygroup.gif'/></a></p>
+	                </h4>");
+                } if($lobid==3){
+	                $str.=$generate_page->get_line("<h4 style='line-height:1.5'>As a result of completing your insurance with Express Insurance we will make a donation to St Vincent's Institute of Medical Research. To read more about this worthwhile charity click on the icon below.
+                <br/><br/><p align='center'><a title=\"St vincent's institute\" href=\"javascript: void(0)\" onclick=\"window.open('http://www.svi.edu.au/', wqbepos_window_name,  wqbepos_appearance); return false;\"><img src=\"images/svi.gif\" alt=\"st vincent's institute\"/></a></p>
+                </h4>");
+                }
+               $str.=$generate_page->get_line("<h4 style='line-height:1.5'>Thank you for using Express Insurance.</h4>
+               		<br/><br/>To make sure that you can receive a reply from Express Insurance, add \"online_sales@expressinsurance.com.au\" contact to your email addressbook.
+If you do not receive a response in your \"inbox\", please check your \"bulk mail\",\"spam\" or \"junk mail\" folders.<br/><br/><br/>");
+         
+            //$str.=$generate_page->get_line("<span style='font-size:15px'>We are pleased to advise that<br/><br/>your insurance cover<br/><br/>is now in place.<br/><br/> Please click below to produce your<br/><br/> certificate of insurance.<br/><br/>All other documentation will <br/><br/>be emailed to you shortly.</span>");
+            //$str.="Your payment has been ".$conf.".<br/> Please click below to produce your certificate of insurance.<br/><br/>All other documentation will be emailed to you shortly.";
+            //$str.=$generate_page->get_line("Your payment has been ".$conf.".<br/> Please click below to produce your certificate of insurance.<br/><br/>All other documentation will be emailed to you shortly.");
+            $str.="</div></td></table><br/><br/><br/> ";
+            //$str.=$generate_page->get_line("Certificate of insurance has been ".$conf.". Documentation will be sent to your email address within 3 working days.<br/><br/>");
+
+           
+           
+           
+            // This is not the place to be sending off the confirmation!
+            $pdfinfo=$info;
+            $pdfinfo['summary']=true;
+            $file= ics_query_item("SELECT confirmation_pdf FROM data_policy  WHERE data_policyid='{$policyid}'");
+                    
+            $str.="<input type='hidden' id='pdffile' value='{$file}'/>";
+            $str.='<script>
+            var wqbepos_screen_height=screen.height-20;
+var wqbepos_screen_width=screen.width-20;
+var wqbepos_window_name="WQBE_POS";
+var wqbepos_appearance = "width=" + wqbepos_screen_width + ",height=" + wqbepos_screen_height + ",top=0,left=10,resizable=yes,";
+wqbepos_appearance += "location=no,scrollbars=1,status=0,menubar=0,toolbar=no,titlebar=1";
+            </script>';
+         }
+      }
+   }
+}
+            

@@ -9,10 +9,11 @@ use \Zx\Model\Mysql;
  id int(11) AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
   user_id int(11) not null 0,
-  user_name varchar(255) not null '',  #user name is fixed
+  user_name varchar(255) not null default '',  #user name is fixed
   tag_ids varchar(255) NOT NULL DEFAULT '',
   tag_names varchar(255) not null default '', #tag names are fixed
   content text,
+  score mediumint(8) not null default 0, #assigned by user according to num of ads
   num_of_displays int(11) default 0,  #the times of displays for random display
   num_of_views int(11) default 0,    #the times of clicks
    reportable tinyint(1) not null default 1,// if completely valid, 0, else 1* 
@@ -21,7 +22,7 @@ use \Zx\Model\Mysql;
 */
 class Ad {
     public static $fields = array('id','title','user_id','user_name',
-        'tag_ids','tag_names','content', 'num_of_displays','num_of_views',
+        'tag_ids','tag_names','score',  'content', 'num_of_displays','num_of_views',
           'status', 'date_created');
     public static $table = TABLE_AD;
     

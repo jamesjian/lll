@@ -7,6 +7,15 @@ use \Zx\Model\Mysql;
 use \Zx\Test\Test;
 
 class User extends Base_User {
+    public static function available_score($user_id)
+    {
+        $user = parent::get_one($user_id);
+        if ($user && $user['score'] - $user['invalid_score'] - $user['ad_score']>0) {
+            return true;
+        } else  {
+            return false;
+        }
+    }
     /**
      * the id of user table are not consecutive, so use limit to get one record
      * @return array
