@@ -23,7 +23,16 @@ class Session {
 
         return $_SESSION['CK_UPLOAD_PATH'];
     }
-
+    /*
+     * sometimes we don't know how many existing levels are, we just append new breadcrum 
+     * 
+     */
+    public static function set_new_level_breadcrumb($link, $title)
+    {
+        $breadcrumb_arr = (isset($_SESSION['breadcrumb'])) ? $_SESSION['breadcrumb'] : array();
+        $level = count($breadcrumb_arr);
+        self::set_breadcrumb($level, $link, $title);
+    }
     /**
       everytime set a breadcrumb, remove all lower level breadcrumbs,
      * for example: previous breadcrumbs are   category->subcategory
@@ -67,8 +76,9 @@ class Session {
         if (count($breadcrumb_array) > 0) {
             //$breadcrumb_array = $_SESSION['breadcrumb'];
             ksort($breadcrumb_array);
-            foreach ($breadcrumb_array as $breadcrumb) {
-                $str .= "<a href='" . $breadcrumb['link'] . "' title='" . $breadcrumb['title'] . "' class='zx-front-breadcrumb-item'>" . $breadcrumb['title'] . '</a>->';
+            foreach ($breadcrumb_array as $level=>$breadcrumb) {
+        $str .= "<a href='{$breadcrumb['link']}' title='{$breadcrumb['title']}'" . 
+                " class='zx-front-breadcrumb-item-$level'>{$breadcrumb['title']}</a>->";
             }
         }
         $str = substr($str, 0, -2);  //remove the trailing '->';

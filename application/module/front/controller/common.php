@@ -50,8 +50,8 @@ class Common extends Base {
     public function home() {
         //\Zx\Test\Test::object_log('lob', 'aaaa', __FILE__, __LINE__, __CLASS__, __METHOD__);
         Transaction_Html::set_title('首页');
-        Transaction_Html::set_keyword('');
-        Transaction_Html::set_description('');
+        Transaction_Html::set_keyword('最新问题');
+        Transaction_Html::set_description('最新问题');
         $current_page = 1;
         $order_by = 'date_created';
         $direction = 'DESC';

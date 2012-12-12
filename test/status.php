@@ -24,16 +24,55 @@
  * homepage:
  * 
  * main menu:
- * 1. home/all/latest questions (最新问题同时也是首页， order on date_created desc）, 
- * 2. solved questions （已回答） where num_of_answer>0 on vote (of question), date_created） 
- * 3. unanswered questions （无回答where num_of_answer=0 on vote (of question), date_created）,
- * 4.most populars questions （最受关注 on vote  desc, num_of_views desc, date_created  desc） 
- * 5. most popular category (order on num_of_questions)
- * 6. all category  (order on pinyin asc)
- * 7. users  (order by answers)
- * 8. ads displays ad categories (rather than ads), can switch between most popular categories and all categories for ads
+ * 1. index.php   home/all/latest questions (最新问题同时也是首页， order on date_created desc）, 
+ *    首页（所有问题时间顺序）
+ *    pagination: front/question/latest/pageid
+ *    one question: front/question/content/questionid
+ *    tag:   front/question/tag/tagid
+ * 2. question/answered/pageid   solved questions （已回答） where num_of_answer>0 on vote (of question), date_created） 
+ *     首页->已回答
+ * 3. question/unanswered/pageid unanswered questions （无回答where num_of_answer=0 on vote (of question), date_created）,
+      首页->未回答
+ * 4. question/popular/pageid most populars questions （最受关注 on vote  desc, num_of_views desc, date_created  desc） 
+ *    首页->最受关注
+ * 5. question/tag/tagid/latest/pageid
+ *   首页->教育(always latest)
+ * 6. question/tag/tagid/unanswered/pageid
+ * 首页->教育(always latest)->未回答
+ * 7. question/tag/tagid/answered/pageid
+ *   首页->教育(always latest)->已回答
+ * 8. question/tag/tagid/popular/pageid
+ *   首页->教育(always latest)->最受关注
+ * 9. tag/qpopular/pageid   most popular category (order on num_of_questions)
+ *    首页->分类(always popular)
+ * 10. tag/qpinyin/pageid all category  (order on pinyin asc)
+       首页->分类(always popular)->拼音顺序
+ * 11. user/all/pageid    user list  (order by answers)
+ *    首页->用户 （always order by num of answers)
+ * 12. user/detail/userid  user page (have links to question, answer and ad)
+ *     首页->用户 （always order by num of answers)->james
+ * 13.   question/user/userid/pageid
+ *     首页->用户 （always order by num of answers)->james->问题
+ * 14.   answer/user/userid/pageid
+ *     首页->用户 （always order by num of answers)->james->回答
+ * 15.   ad/user/userid/pageid
+ *     首页->用户 （always order by num of answers)->james->广告
+ * 16. tag/apopular/pageid
+ *   首页->广告分类(always popular)
+ * 17.    tag/apinyin/pageid
+ *    首页->广告分类(always popular)->拼音顺序
+ * 
+ * 18. ad/tag/tagid/pageid
+ *    首页->教育（广告）(always score)
+ * 19. question/content/questionid
+ *    stack->NIBA是什么？
+ * 20. ad/content/adid
+ *    stack->赶快来报名    
+ * 
+    vote and abuse ajax
+ *  *  displays ad categories (rather than ads), can switch between most popular categories and all categories for ads
  *     and region
- *    
+ * 
  * num of ads = num of answers, if an invalid ads occurred, num of answers will be substracted by 1
  * sigma (weight of ads) = num of answers  - num of invalid ads
  * email and user name cannot be changed

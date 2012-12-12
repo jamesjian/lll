@@ -167,9 +167,9 @@ class Question extends Base {
      */
     public function latest() {
         //\Zx\Test\Test::object_log('lob', 'aaaa', __FILE__, __LINE__, __CLASS__, __METHOD__);
-        Transaction_Html::set_title('latest');
-        Transaction_Html::set_keyword('latest');
-        Transaction_Html::set_description('latest');
+        Transaction_Html::set_title('最新问题');
+        Transaction_Html::set_keyword('最新问题');
+        Transaction_Html::set_description('最新问题');
         $current_page = (isset($params[0])) ? intval($params[0]) : 1;
         if ($current_page < 1)
             $current_page = 1;
