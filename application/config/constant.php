@@ -51,6 +51,11 @@ define('NUM_OF_QUESTIONS_IN_FRONT_PAGE', 100);
 define('NUM_OF_ADS_IN_FRONT_PAGE', 100);
 define('NUM_OF_ANSWERS_IN_FRONT_PAGE', 10);
 define('NUM_OF_TAGS_IN_FRONT_PAGE', 100);
+define('SCORE_OF_QUESTION', 1);
+define('SCORE_OF_ANSWER', 1);
+define('SCORE_OF_AD', 1);
+define('SCORE_OF_ABUSE', 1);
+define('SCORE_OF_VOTE', 1);
 define('NUM_OF_RECORDS_IN_ADMIN_PAGE', 20);
 define('NUM_OF_ARTICLES_IN_CAT_PAGE', 30);
 define('NUM_OF_ITEMS_IN_PAGINATION', 11); //use odd number

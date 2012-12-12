@@ -68,6 +68,27 @@
  *    stack->NIBA是什么？
  * 20. ad/content/adid
  *    stack->赶快来报名    
+ * 21. question/create
+ * 22. answer/create/questionid
+ * 
+ * vote and abuse only by user
+ * 23. user/vote/question/questionid
+ * 24. user/vote/answer/answerid
+ * 25. user/vote/ad/adid
+ * 26. user/abuse/question/questionid
+ * 26. user/abuse/answer/answerid
+ * 26. user/abuse/ad/adid
+ * 
+ * 
+ * 27. question/myquestions
+ * 28. answer/myanswers
+ * 29. ad/myads
+ * 30. ad/create
+ * 31. ad/delete
+ * 32. ad/update
+ * 33. user/change_password
+ * 34. user/home  (name, email, logo, num_of_question/answer/ad, scores)
+ * 35. user/change_logo
  * 
     vote and abuse ajax
  *  *  displays ad categories (rather than ads), can switch between most popular categories and all categories for ads
@@ -77,6 +98,29 @@
  * sigma (weight of ads) = num of answers  - num of invalid ads
  * email and user name cannot be changed
  * 
+ * 
+ * admin:
+ * 1. user/retrieve/cretae/delete/update/change_status/reset_password
+ * 2. question/retrieve/create/delete/update
+ *    question/retrieve_by_uid/uid
+ * 3. answer/retrieve/create/delete/update
+ *    answer/retrieve_by_qid/qid
+ *    answer/retrieve_by_uid/uid
+ * 4. ad/retrieve/create/delete/update
+ *    ad/retrieve_by_uid/uid
+ *    ad/retrieve_by_aid/aid
+ * 5. tag/retrieve/create/delete/update/merge
+ * 
+ * TEST:
+ * 1. all pages
+ * 2. prepare:
+ *   10 users
+ *   100 questions
+ *   200 answers, each question has 3-10 answers
+ *   150 ads to answers
+ * 
+ * 
+ * 10. 
  * 1-4 question pages use same format: question list(50 records), most popular categories(top 20), 
  * 5-6 category pages use similar format, must have search
  * 7. ads page always under category, no region options
