@@ -5,15 +5,17 @@ use \Zx\Model\Mysql;
 
 /*
 status: 0: created(when report an abuse), 2. confirmed(it's a real abuse), 3. cancelled(it's not an abuse)
+ item type //1. question, 2. answer, 3. ad
+ cat id   //1. 造谣诽谤， 2. 种族歧视， 3.色情 4. 暴力， 虐待（人或动物） 5. 违禁物品（毒品， 武器, 人体器官等） 6. 误导欺诈
   CREATE TABLE abuse (
- id int(11) AUTO_INCREMENT PRIMARY KEY,
- item_type tinyint(3) NOT NULL DEFAULT '1',  //1. question, 2. answer, 3. ad
- item_id int(11) not null default 0, 
- user_id int(11) not null 0,  //can be empty
- cat_id tinyint(3) not null default '1', //1. 造谣诽谤， 2. 种族歧视， 3.色情暴力 4. 违禁物品（毒品， 武器等） 5. 误导欺诈
+ id unsigned MEDIUMINT(8)   AUTO_INCREMENT PRIMARY KEY,
+ item_type unsigned tinyint(3) NOT NULL DEFAULT '1',  
+ item_id unsigned MEDIUMINT(8)   not null default 0, 
+ user_id unsigned MEDIUMINT(7)   not null 0,  //can be empty
+ cat_id unsigned tinyint(3) not null default '1',
   content text,
-  reportable tinyint(1) not null default 1,// if completely valid, 0, else 1
-  status tinyint(1) not null default 1,
+  reportable unsigned tinyint(1) not null default 1,// if completely valid, 0, else 1
+  status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
 */
 class Abuse {

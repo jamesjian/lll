@@ -5,10 +5,11 @@ namespace App\Model\Base;
 use \Zx\Model\Mysql;
 
 /*
-  CREATE TABLE abuse_category (id tinyint(3) AUTO_INCREMENT PRIMARY KEY,
+ *  //1. 造谣诽谤， 2. 种族歧视， 3.色情 4. 暴力， 虐待（人或动物） 5. 违禁物品（毒品， 武器, 人体器官等） 6. 误导欺诈
+  CREATE TABLE abuse_category (id unsigned tinyint(3) AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
   description text,
-  status tinyint(1) not null default 1,
+  status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */
 

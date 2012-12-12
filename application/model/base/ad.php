@@ -4,20 +4,18 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 
 /*
-
+ if completely valid, 0, else 1* 
   CREATE TABLE ad (
- id int(11) AUTO_INCREMENT PRIMARY KEY,
+ id unsigned MEDIUMINT(8)  AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
-  user_id int(11) not null 0,
+  user_id unsigned MEDIUMINT(7)  not null default 0,
   user_name varchar(255) not null default '',  #user name is fixed
   tag_ids varchar(255) NOT NULL DEFAULT '',
   tag_names varchar(255) not null default '', #tag names are fixed
   content text,
-  score mediumint(8) not null default 0, #assigned by user according to num of ads
-  num_of_displays int(11) default 0,  #the times of displays for random display
-  num_of_views int(11) default 0,    #the times of clicks
-   reportable tinyint(1) not null default 1,// if completely valid, 0, else 1* 
-  status tinyint(1) not null default 1,
+  score  unsigned MEDIUMINT(6)  not null default 0, #assigned by user according to num of ads
+   reportable unsigned tinyint(1) not null default 1,
+  status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
 */
 class Ad {

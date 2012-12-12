@@ -11,11 +11,11 @@ use App\Model\Question as Model_Question;
   CREATE TABLE answer (
   id unsigned MEDIUMINT(8) AUTO_INCREMENT PRIMARY KEY,
   question_id unsigned MEDIUMINT(8) not null default 0,
-  user_id unsigned MEDIUMINT(8) not null default 0,
+  user_id unsigned MEDIUMINT(7) not null default 0,
   user_name varchar(30) not null '',  #user name is fixed
   ad_id unsigned MEDIUMINT(8) not null default 0,
   content text,
-  num_of_votes int(11) default 0,
+  num_of_votes unsigned smallint(4) default 0,
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */

@@ -6,12 +6,11 @@ use \Zx\Model\Mysql;
 /*
  * if a tag is disabled, they will be removed from tag_ids and tag_names field in question table  
   CREATE TABLE tag (
-  id int(11) AUTO_INCREMENT PRIMARY KEY,
+  id unsigned smallint(4) AUTO_INCREMENT PRIMARY KEY,
   name varchar(255) NOT NULL DEFAULT '',
-  num_of_questions mediumint(6) default 0,
-  num_of_ads mediumint(6) default 0,
-  num_of_views int(11) default 0,
-  status tinyint(1) not null default 1,
+  num_of_questions unsigned mediumint(8) default 0,
+  num_of_ads unsigned mediumint(8) default 0,
+  status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */
 

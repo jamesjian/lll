@@ -5,19 +5,21 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 
 /*
+ * user, question, answer, ad, tag, abuse
+ *  # num_of_questions+num_of_answers+num_of_ads+num_of_question_votes+num_of_answer_votes
+ * #score has been consumed by ad
   CREATE TABLE user (
-  id unsigned mediumint(8) AUTO_INCREMENT primary key,
+  id unsigned mediumint(7) AUTO_INCREMENT primary key,
   user_name varchar(30) not null default '',
-  password varchar(32) NOT NULL DEFAULT '',
+  password varchar(255) NOT NULL DEFAULT '',
   email varchar(255) not null default '' unique ,
   image varchar(255) not null default '' ,
-  num_of_questions unsigned mediumint(8) not null default 0,
-  num_of_answers unsigned mediumint(8) not null default 0,  # =num_of_ads
-  num_of_ads unsigned mediumint(8) not null default 0,  # =num_of_ads
-  score unsigned mediumint(8) not null default 0,  
- # num_of_questions+num_of_answers+num_of_ads+num_of_question_votes+num_of_answer_votes
- invalid_score unsigned MEDIUMINT(8) not null default 0,
- ad_score unsigned MEDIUMINT(8) not null default 0, #score has been consumed by ad
+  num_of_questions unsigned mediumint(6) not null default 0,
+  num_of_answers unsigned mediumint(6) not null default 0, 
+  num_of_ads unsigned mediumint(6) not null default 0, 
+  score unsigned mediumint(6) not null default 0,  
+ invalid_score unsigned MEDIUMINT(6) not null default 0,
+ ad_score unsigned MEDIUMINT(6) not null default 0, 
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */

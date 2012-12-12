@@ -19,6 +19,20 @@ class User extends Base_User {
     /**
      * the id of user table are not consecutive, so use limit to get one record
      * @return array
+      学习使用百度
+      
+      妈妈可以学学如何使用百度搜索想要的东西。 
+      在浏览器的地址栏输入
+      
+     http://www.baidu.com/
+      
+      
+     然后在“百度一下”的左边长条框里输入想要找的内容， 比如说“骨质疏松症”， 然后点击“百度一下”， 就会列出与“骨质疏松症”有关的许多内容的简介， 
+     页面的下部有不同的页数， 表明内容列表有很多页， 可以点击这些页号看其它页。 
+     
+     如果想找复杂一些的内容， 比如如何治疗骨质疏松症， 可以输入“骨质疏松症 治疗”或者“治疗 骨质疏松症”， 词汇之间用空格分开。 
+      
+     网上内容非常丰富， 常常可以发现想不到的东西。 坏处就是不能长时间看电脑， 否则眼睛会疲劳。 
      */
     public static function get_random_user()
     {

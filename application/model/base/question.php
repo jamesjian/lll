@@ -6,20 +6,21 @@ use \Zx\Model\Mysql;
 
 /*
  * if a question is disabled, it will be moved to disabled_question table
+ *  #AU means australia
   CREATE TABLE question (
- id int(11) AUTO_INCREMENT PRIMARY KEY,
+ id unsigned mediumint(8) AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
- region varchar(3) not null default 'AU', #AU means australia
-  user_id int(11) not null 0,
-  user_name varchar(255) not null '',  #user name is fixed
+ region varchar(3) not null default 'AU',
+  user_id unsigned mediumint(7) not null 0,
+  user_name varchar(30) not null '',  #user name is fixed
   tag_ids varchar(255) NOT NULL DEFAULT '',
   tag_names varchar(255) not null default '', #tag names are fixed  
   content text,
   num_of_answers smallint(4) default 0,
   num_of_views int(11) default 0,
   num_of_votes int(11) default 0,
-  valid tinyint(1) not null default 1,
-  status tinyint(1) not null default 1,  //1: active, 2. 
+  valid unsigned tinyint(1) not null default 1,
+  status unsigned tinyint(1) not null default 1,  //1: active, 2. 
   date_created datetime) engine=innodb default charset=utf8
  */
 
