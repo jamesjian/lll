@@ -23,7 +23,7 @@ class Tag extends Base {
     public function init() {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/front/view/tag/';
-        $this->list_page =  FRONT_HTML_ROOT . 'tag/retrieve/1';
+        $this->list_page = FRONT_HTML_ROOT . 'tag/retrieve/1';
     }
 
     /*     * one tag
@@ -37,16 +37,16 @@ class Tag extends Base {
         $tag = Model_Tag::get_one_by_url($tag_url);
         //\Zx\Test\Test::object_log('$tag', $tag, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($tag) {
-            
+
             $tag_id = $tag['id'];
             $home_url = HTML_ROOT;
-            $category_url = FRONT_HTML_ROOT . 'tag/category/' . $tag['cat_name']; 
-            Transaction_Session::set_breadcrumb(0, $home_url,  '首页');
-            Transaction_Session::set_breadcrumb(1, $category_url,  $tag['cat_name']);
-            Transaction_Session::set_breadcrumb(2, Route::$url,  $tag['title']);
+            $category_url = FRONT_HTML_ROOT . 'tag/category/' . $tag['cat_name'];
+            Transaction_Session::set_breadcrumb(0, $home_url, '首页');
+            Transaction_Session::set_breadcrumb(1, $category_url, $tag['cat_name']);
+            Transaction_Session::set_breadcrumb(2, Route::$url, $tag['title']);
             Transaction_Html::set_title($tag['title']);
             Transaction_Html::set_keyword($tag['keyword'] . ',' . $tag['keyword_en']);
-            Transaction_Html::set_description($tag['title']. ' ' . $tag['title_en']);
+            Transaction_Html::set_description($tag['title'] . ' ' . $tag['title_en']);
             Model_Tag::increase_rank($tag_id);
 
             View::set_view_file($this->view_path . 'one_tag.php');
@@ -96,9 +96,9 @@ class Tag extends Base {
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
         if ($cat_title != '' && $cat = Model_Tagcategory::exist_cat_title($cat_title)) {
             $home_url = HTML_ROOT;
-            $category_url = FRONT_HTML_ROOT . 'tag/category/' . $cat['title']; 
-            Transaction_Session::set_breadcrumb(0, $home_url,  '首页');
-            Transaction_Session::set_breadcrumb(1, $category_url,  $cat['title']);
+            $category_url = FRONT_HTML_ROOT . 'tag/category/' . $cat['title'];
+            Transaction_Session::set_breadcrumb(0, $home_url, '首页');
+            Transaction_Session::set_breadcrumb(1, $category_url, $cat['title']);
             //$cat = Model_Tagcategory::get_one($cat_id);
             Transaction_Html::set_title($cat['title']);
             Transaction_Html::set_keyword($cat['keyword'] . ',' . $cat['keyword_en']);
@@ -123,41 +123,94 @@ class Tag extends Base {
             Transaction_Html::goto_home_page();
         }
     }
+
     public function search() {
         if (isset($_POST['search']) && trim($_POST['search']) != '') {
-            $link = $this->list_page .'/'. trim($_POST['search']);
+            $link = $this->list_page . '/' . trim($_POST['search']);
         } else {
             $link = $this->list_page;
         }
         header('Location: ' . $link);
     }
+
+    public function apinyin() {
+        Transaction_Html::set_title('广告类别');
+        Transaction_Html::set_keyword('广告类别');
+        Transaction_Html::set_description('广告类别');
+        $current_page = (isset($params[0])) ? intval($params[0]) : 1;
+        if ($current_page < 1)
+            $current_page = 1;
+        $order_by = 'title';
+        $direction = 'ASC';
+        $tags = Model_Tag::get_active_ad_tags_by_page_num($current_page, $order_by, $direction);
+        $num_of_tags = Model_Tag::get_num_of_active_ad_tags();
+        $num_of_pages = ceil($num_of_tags / NUM_OF_TAGS_IN_FRONT_PAGE);
+        View::set_view_file($this->view_path . 'apinyin_list.php');
+        View::set_action_var('tags', $tags);
+        View::set_action_var('current_page', $current_page);
+        View::set_action_var('num_of_pages', $num_of_pages);        
+    }
+
     /**
 
      */
-    public function question() {
-        //\Zx\Test\Test::object_log('lob', 'aaaa', __FILE__, __LINE__, __CLASS__, __METHOD__);
-        Transaction_Html::set_title('所有问题类别');
-        Transaction_Html::set_keyword('问题类别');
-        Transaction_Html::set_description('问题类别');
+    public function apopular() {
+        Transaction_Html::set_title('最受关注广告类别');
+        Transaction_Html::set_keyword('最受关注广告类别');
+        Transaction_Html::set_description('最受关注广告类别');
         $current_page = (isset($params[0])) ? intval($params[0]) : 1;
-        $search = (isset($params[1])) ? intval($params[1]) : '';
         if ($current_page < 1)
             $current_page = 1;
-        if ($search != '') {
-            $where = " name LIKE '%$search%'";
-        } else {
-            $where = '1';
-        }        
-        $order_by = 'num_of_questions';
+        $order_by = 'num_of_ads';
         $direction = 'DESC';
-        $tags = Model_Tag::get_active_question_tags_by_page_num($where, $current_page, $order_by, $direction);
-        $num_of_tags = Model_Tag::get_num_of_active_question_tags();
-        $num_of_pages = ceil($num_of_tags / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'question_tag_list.php');
+        $tags = Model_Tag::get_active_ad_tags_by_page_num($current_page, $order_by, $direction);
+        $num_of_tags = Model_Tag::get_num_of_active_ad_tags();
+        $num_of_pages = ceil($num_of_tags / NUM_OF_TAGS_IN_FRONT_PAGE);
+        View::set_view_file($this->view_path . 'apopular_list.php');
         View::set_action_var('tags', $tags);
         View::set_action_var('current_page', $current_page);
         View::set_action_var('num_of_pages', $num_of_pages);
     }
+
+    public function qpinyin() {
+                Transaction_Html::set_title('问题类别');
+        Transaction_Html::set_keyword('问题类别');
+        Transaction_Html::set_description('问题类别');
+        $current_page = (isset($params[0])) ? intval($params[0]) : 1;
+        if ($current_page < 1)
+            $current_page = 1;
+        $order_by = 'title';
+        $direction = 'ASC';
+        $tags = Model_Tag::get_active_question_tags_by_page_num($current_page, $order_by, $direction);
+        $num_of_tags = Model_Tag::get_num_of_active_question_tags();
+        $num_of_pages = ceil($num_of_tags / NUM_OF_TAGS_IN_FRONT_PAGE);
+        View::set_view_file($this->view_path . 'qpinyin_list.php');
+        View::set_action_var('tags', $tags);
+        View::set_action_var('current_page', $current_page);
+        View::set_action_var('num_of_pages', $num_of_pages);
+    }
+
+    /**
+
+     */
+    public function qpopular() {
+                Transaction_Html::set_title('最受关注问题类别');
+        Transaction_Html::set_keyword('最受关注问题类别');
+        Transaction_Html::set_description('最受关注问题类别');
+        $current_page = (isset($params[0])) ? intval($params[0]) : 1;
+        if ($current_page < 1)
+            $current_page = 1;
+        $order_by = 'num_of_questions';
+        $direction = 'ASC';
+        $tags = Model_Tag::get_active_question_tags_by_page_num($current_page, $order_by, $direction);
+        $num_of_tags = Model_Tag::get_num_of_active_question_tags();
+        $num_of_pages = ceil($num_of_tags / NUM_OF_TAGS_IN_FRONT_PAGE);
+        View::set_view_file($this->view_path . 'qpopular_list.php');
+        View::set_action_var('tags', $tags);
+        View::set_action_var('current_page', $current_page);
+        View::set_action_var('num_of_pages', $num_of_pages);
+    }
+
     public function ad() {
         //\Zx\Test\Test::object_log('lob', 'aaaa', __FILE__, __LINE__, __CLASS__, __METHOD__);
         Transaction_Html::set_title('所有信息类别');
@@ -171,7 +224,7 @@ class Tag extends Base {
             $where = " name LIKE '%$search%'";
         } else {
             $where = '1';
-        }        
+        }
         $order_by = 'num_of_questions';
         $direction = 'DESC';
         $tags = Model_Tag::get_active_ad_tags_by_page_num($where, $current_page, $order_by, $direction);
@@ -187,23 +240,7 @@ class Tag extends Base {
       tag/hottest/3, 3 is page number, if missing, 1 is default page number
      */
     public function hottest() {
-        Transaction_Html::set_title('hottest');
-        Transaction_Html::set_keyword('hottest');
-        Transaction_Html::set_description('hottest');
-        $current_page = (isset($params[0])) ? intval($params[0]) : 1;
-        if ($current_page < 1)
-            $current_page = 1;
-        $order_by = 'rank';
-        $direction = 'DESC';
-        $tags = Model_Tag::get_active_tags_by_page_num($current_page, $order_by, $direction);
-        $num_of_tags = Model_Tag::get_num_of_active_tags();
-        $num_of_pages = ceil($num_of_tags / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'retrieve_hottest.php');
-        View::set_action_var('tags', $tags);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+
     }
-    
-    
 
 }

@@ -7,7 +7,6 @@
  *                              hottest
  */
 ?>
-
 <div class='zx-front-left'>	
     <div class="zx-front-breadcrumb">
         <?php echo \App\Transaction\Session::get_breadcrumb(); ?>
@@ -17,29 +16,12 @@
     </div>	
     <div class='zx-front-left2'>
         <?php
-        if ($questions) {
-            ?>
-            <nav>
-                <ul>
-                    <?php
-                    foreach ($questions as $question) {
-                        $id = $question['id'];
-                        $link = FRONT_HTML_ROOT . 'question/content/' . $id;
-                        ?>		
-                        <li><a href='<?php echo $link; ?>'><?php echo $question['title']; ?></a> </li>
-                        <?php
-                    }//foreach
-                    ?>
-                </ul>
-            </nav>
-            <?php
-        $link_prefix = HTML_ROOT . 'front/question/all/';
-        $link_postfix = "/$order_by/$direction";
-        include FRONT_VIEW_PATH . 'templates/pagination.php';        
-        }
+        include FRONT_VIEW_PATH . 'template/question_list.php';
+        $link_prefix = HTML_ROOT . 'front/question/unanswered/';
+        $link_postfix = "";  //no need to have order by and direction
+        include FRONT_VIEW_PATH . 'templates/pagination.php';
         ?>
     </div>
-
 </div>
 <div class='zx-front-right'>
     <div class='zx-front-right1'>

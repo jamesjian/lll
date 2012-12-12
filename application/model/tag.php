@@ -116,26 +116,35 @@ class Tag extends Base_Tag {
         $offset = ($page_num - 1) * NUM_OF_ARTICLES_IN_CAT_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ARTICLES_IN_CAT_PAGE, $order_by, $direction);
     }
+    public static function get_active_ad_tags_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = ' status=1 AND num_of_ads>0';
+        $offset = ($page_num - 1) * NUM_OF_TAGS_IN_FRONT_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_TAG_ITEMS_IN_ONE_PAGE, $order_by, $direction);
+    }
+    public static function get_num_of_active_ad_tags() {
+        $where = ' status=1 AND num_of_ads>0';
+        return parent::get_num();
+    }    
+    public static function get_active_question_tags_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = ' status=1 AND num_of_questions>0';
+        $offset = ($page_num - 1) * NUM_OF_TAGS_IN_FRONT_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_TAG_ITEMS_IN_ONE_PAGE, $order_by, $direction);
+    }
+    public static function get_num_of_active_question_tags() {
+        $where = ' status=1 AND num_of_questions>0';
+        return parent::get_num();
+    }    
     /**
      * get active cats order by category name
      */
-    public static function get_active_question_tags_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = ' status=1 AND num_of_questions>0';
-        $offset = ($page_num - 1) * NUM_OF_TAG_ITEMS_IN_ONE_PAGE;
-        return parent::get_all($where, $offset, NUM_OF_TAG_ITEMS_IN_ONE_PAGE, $order_by, $direction);
-    }
-    public static function get_active_ad_tags_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = ' status=1 AND num_of_ads>0';
-        $offset = ($page_num - 1) * NUM_OF_TAG_ITEMS_IN_ONE_PAGE;
+    public static function get_active_tags_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = ' status=1 ';
+        $offset = ($page_num - 1) * NUM_OF_TAGS_IN_FRONT_PAGE;
         return parent::get_all($where, $offset, NUM_OF_TAG_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
-    public static function get_num_of_active_question_tags($where = '1') {
-        $where = ' status=1 AND num_of_questions>0 AND (' . $where . ')';
-        return parent::get_num();
-    }
-    public static function get_num_of_active_ad_tags($where = '1') {
-        $where = ' status=1 AND num_of_ads>0 AND (' . $where . ')';
+    public static function get_num_of_active_tags() {
+        $where = ' status=1 ';
         return parent::get_num();
     }
 

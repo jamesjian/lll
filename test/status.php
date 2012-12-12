@@ -24,9 +24,9 @@
  * homepage:
  * 
  * main menu:
- * 1. index.php   home/all/latest questions (最新问题同时也是首页， order on date_created desc）, 
- *    首页（所有问题时间顺序）
- *    pagination: front/question/latest/pageid
+ * 0. index.php   latest 100 questions, no pagination
+ * 1. question/latest/pageid questions (最新问题， order on date_created desc）, 
+ *    首页->最新
  *    one question: front/question/content/questionid
  *    tag:   front/question/tag/tagid
  * 2. question/answered/pageid   solved questions （已回答） where num_of_answer>0 on vote (of question), date_created） 
@@ -35,13 +35,13 @@
       首页->未回答
  * 4. question/popular/pageid most populars questions （最受关注 on vote  desc, num_of_views desc, date_created  desc） 
  *    首页->最受关注
- * 5. question/tag/tagid/latest/pageid
+ * 5. question/tag/tagid/latest/pageid  order by date_created
  *   首页->教育(always latest)
- * 6. question/tag/tagid/unanswered/pageid
+ * 6. question/tag/tagid/unanswered/pageid  order by date_created where num_of_answers=0
  * 首页->教育(always latest)->未回答
- * 7. question/tag/tagid/answered/pageid
+ * 7. question/tag/tagid/answered/pageid  order by date_created where num_of_answers>0
  *   首页->教育(always latest)->已回答
- * 8. question/tag/tagid/popular/pageid
+ * 8. question/tag/tagid/popular/pageid  order by num_of_votes
  *   首页->教育(always latest)->最受关注
  * 9. tag/qpopular/pageid   most popular category (order on num_of_questions)
  *    首页->分类(always popular)

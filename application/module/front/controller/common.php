@@ -4,6 +4,7 @@ namespace App\Module\Front\Controller;
 
 use \Zx\Controller\Route;
 use \App\Model\Article as Model_Article;
+use \App\Model\Question as Model_Question;
 use \App\Model\Articlecategory as Model_Articlecategory;
 use App\Transaction\Html as Transaction_Html;
 use \Zx\View\View;
@@ -55,15 +56,10 @@ class Common extends Base {
         $current_page = 1;
         $order_by = 'date_created';
         $direction = 'DESC';
-        $questions = Model_Question::get_active_questions_by_page_num($current_page, $order_by, $direction);
-        $num_of_questions = Model_Question::get_num_of_active_questions();
-        $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
+        $where = ' status=1 ';
+        $questions = Model_Question::get_all($where, 0, NUM_OF_QUESTIONS_IN_FRONT_PAGE, $order_by, $direction);
         View::set_view_file($this->view_path . 'home.php');
         View::set_action_var('questions', $questions);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     public function home1() {
