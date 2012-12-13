@@ -8,19 +8,20 @@ use \Zx\Model\Mysql;
   CREATE TABLE ad (
  id unsigned MEDIUMINT(8)  AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
-  user_id unsigned MEDIUMINT(7)  not null default 0,
-  user_name varchar(255) not null default '',  #user name is fixed
-  tag_ids varchar(255) NOT NULL DEFAULT '',
-  tag_names varchar(255) not null default '', #tag names are fixed
+  uid unsigned MEDIUMINT(7)  not null default 0,
+  uname varchar(255) not null default '',  #user name is fixed
+  tids varchar(255) NOT NULL DEFAULT '',
+  tnames varchar(255) not null default '', #tag names are fixed
   content text,
   score  unsigned MEDIUMINT(6)  not null default 0, #assigned by user according to num of ads
-   reportable unsigned tinyint(1) not null default 1,
+  num_of_views unsigned MEDIUMINT(8) not null default 0,
+   valid unsigned tinyint(1) not null default 1,
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
 */
 class Ad {
-    public static $fields = array('id','title','user_id','user_name',
-        'tag_ids','tag_names','score',  'content', 'num_of_displays','num_of_views',
+    public static $fields = array('id','title','uid','uname',
+        'tids','tnames', 'content','score',  'num_of_views','valid',
           'status', 'date_created');
     public static $table = TABLE_AD;
     

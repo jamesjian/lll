@@ -32,9 +32,9 @@ class User extends Base {
      */
     public function home() {
         Transaction_Html::remember_current_page();
-        $num_of_questions = Model_Question::get_num_of_active_questions_by_uid($this->user_id);
-        $num_of_answers = Model_Answer::get_num_of_active_answers_by_uid($this->user_id);
-        $num_of_ads = Model_Ad::get_num_of_active_ads_by_uid($this->user_id);
+        $num_of_questions = Model_Question::get_num_of_active_questions_by_uid($this->uid);
+        $num_of_answers = Model_Answer::get_num_of_active_answers_by_uid($this->uid);
+        $num_of_ads = Model_Ad::get_num_of_active_ads_by_uid($this->uid);
         //some information 
          View::set_view_file($this->view_path . 'home.php');
          View::set_action_var('user', $this->user);
@@ -50,15 +50,15 @@ class User extends Base {
     public function update_profile() {
         //\Zx\Test\Test::object_log('$posted', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
         Transaction_Html::remember_current_page();
-        //$user_id = App_User::get_user_id();
-        $user = Model_User::get_user($user_id);
+        //$uid = App_User::get_uid();
+        $user = Model_User::get_user($uid);
         $success = false;
         $errors = array();
         $posted = array();
         if (isset($_POST['sess']) AND $_POST['sess'] == App_Session::get_new_form_session()) {
             $post = Validation::factory($_POST);
             if ($post->check()) {
-                //$user_name = isset($_POST['user_name']) ?  trim($_POST['user_name']) : '';
+                //$uname = isset($_POST['uname']) ?  trim($_POST['uname']) : '';
                 $first_name = isset($_POST['first_name']) ? trim($_POST['first_name']) : '';
                 $last_name = isset($_POST['last_name']) ? trim($_POST['last_name']) : '';
                 $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
@@ -73,7 +73,7 @@ class User extends Base {
                     'city_id' => $city_id,
                     'state' => $state,
                 );
-                if (App_User::update_profile(App_User::get_user_id(), $posted)) {
+                if (App_User::update_profile(App_User::get_uid(), $posted)) {
                     //App_Http::goto_previous_page();
                     App_Http::goto_my_account_page();
                 }
@@ -130,8 +130,8 @@ class User extends Base {
                     'email' => $email,
                 );
                 //\Zx\Test\Test::object_log('$posted',$posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
-                $user_id = App_User::get_user_id();
-                if (App_User::change_email($user_id, $posted)) {
+                $uid = App_User::get_uid();
+                if (App_User::change_email($uid, $posted)) {
                     $success = true;
                     //App_Http::goto_previous_page();
                     App_Http::goto_logout_page(); // back to my account page
@@ -141,7 +141,7 @@ class User extends Base {
             }
         }
         if (!$success) {
-            $user = Model_User::get_user(App_User::get_user_id());
+            $user = Model_User::get_user(App_User::get_uid());
             $state_list = Model_Region::get_state_only_arr();
             if ($user->state != '') {
                 $current_state = $user->state;
@@ -177,15 +177,15 @@ class User extends Base {
     public function change_profile() {
         //\Zx\Test\Test::object_log('$posted', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
         App_Http::remember_this_page();
-        $user_id = App_User::get_user_id();
-        $user = Model_User::get_user($user_id);
+        $uid = App_User::get_uid();
+        $user = Model_User::get_user($uid);
         $success = false;
         $errors = array();
         $posted = array();
         if (isset($_POST['sess']) AND $_POST['sess'] == App_Session::get_new_form_session()) {
             $post = Validation::factory($_POST);
             if ($post->check()) {
-                //$user_name = isset($_POST['user_name']) ?  trim($_POST['user_name']) : '';
+                //$uname = isset($_POST['uname']) ?  trim($_POST['uname']) : '';
                 $first_name = isset($_POST['first_name']) ? trim($_POST['first_name']) : '';
                 $last_name = isset($_POST['last_name']) ? trim($_POST['last_name']) : '';
                 $phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
@@ -200,7 +200,7 @@ class User extends Base {
                     'city_id' => $city_id,
                     'state' => $state,
                 );
-                if (App_User::update_profile(App_User::get_user_id(), $posted)) {
+                if (App_User::update_profile(App_User::get_uid(), $posted)) {
                     //App_Http::goto_previous_page();
                     App_Http::goto_my_account_page();
                 }
@@ -249,7 +249,7 @@ class User extends Base {
             $success = false;
             $errors = array();
             $posted = array();
-            $user = Model_User::get_user(App_User::get_user_id());
+            $user = Model_User::get_user(App_User::get_uid());
             if (isset($_POST['sess']) AND $_POST['sess'] == App_Session::get_new_form_session()) {
 
                 $post = Validation::factory($_POST);
@@ -267,8 +267,8 @@ class User extends Base {
                     );
                     //\Zx\Test\Test::object_log('settingt',$posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-                    $user_id = App_User::get_user_id();
-                    if (App_User::change_password(App_User::get_user_id(), $posted)) {
+                    $uid = App_User::get_uid();
+                    if (App_User::change_password(App_User::get_uid(), $posted)) {
                         $success = true;
                         //App_Http::goto_previous_page();
                         App_Session::set_success_message('您的新密码已生效。');
@@ -318,10 +318,10 @@ class User extends Base {
         //\Zx\Test\Test::object_log('settingt',$_FILES, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         App_Http::remember_this_page();
-        $user_id = App_User::get_user_id();
-        $user = Model_User::get_user($user_id);
+        $uid = App_User::get_uid();
+        $user = Model_User::get_user($uid);
         if (isset($_POST['sess']) AND $_POST['sess'] == App_Session::get_new_form_session()) {
-            if (App_User::change_portrait($user_id)) {
+            if (App_User::change_portrait($uid)) {
                 //App_Http::goto_previous_page();
 
                 $this->request->redirect(MEMHTMLROOT . 'user/change_portrait');

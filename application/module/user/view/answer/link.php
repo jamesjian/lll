@@ -12,8 +12,8 @@ Zx_Message::show_message();
             2. >1000
             3. 1,3,5,8,9
             
-            </dt><dd><input type="text" name="answer_ids" size="50" value="<?php
-            if (isset($_POST['answer_ids'])) echo $_POST['answer_ids'];?>"/></dd>
+            </dt><dd><input type="text" name="aids" size="50" value="<?php
+            if (isset($_POST['aids'])) echo $_POST['aids'];?>"/></dd>
             <dt> <input type="hidden" name="ad_id" value="<?php if (isset($_POST['ad_id']))
                 echo $_POST['ad_id']; else echo $ad_id;?>" /></dt>
             <dd><input type="submit" name="submit" value="Link" /></dd>

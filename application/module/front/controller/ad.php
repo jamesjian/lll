@@ -87,7 +87,7 @@ class Ad extends Base {
 
     /**
       retrieve ads under a user
-      front/ad/retrieve_by_user_id/id/page/3/, 3 is page number
+      front/ad/retrieve_by_uid/id/page/3/, 3 is page number
      */
     public function user() {
         $uid = (isset($this->params[0])) ? $this->params[0] : 0;
@@ -124,7 +124,7 @@ class Ad extends Base {
     }
     /**
       retrieve ads under a user
-      front/ad/retrieve_by_user_id/id/page/3/, 3 is page number
+      front/ad/retrieve_by_uid/id/page/3/, 3 is page number
      */
     public function tag() {
         $tag_id = (isset($this->params[0])) ? $this->params[0] : 0;
@@ -161,7 +161,7 @@ class Ad extends Base {
     }
     /**
       retrieve ads under a user
-      front/ad/retrieve_by_user_id/id/page/3/, 3 is page number
+      front/ad/retrieve_by_uid/id/page/3/, 3 is page number
      */
     public function region() {
         $tag_id = (isset($this->params[0])) ? $this->params[0] : 0;

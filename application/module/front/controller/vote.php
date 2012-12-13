@@ -36,10 +36,10 @@ class Vote extends Base {
     public function create() {
         $success = false;
         $message = '';
-        if (($user_id = Transaction_User::get_user_id()) > 0) {
+        if (($uid = Transaction_User::get_uid()) > 0) {
             $item_type = (isset($params[0])) ? intval($params[0]) : 0;
-            $question_id = (isset($params[1])) ? intval($params[1]) : 0;
-            if ($item_type > 0 && $question_id > 0)
+            $qid = (isset($params[1])) ? intval($params[1]) : 0;
+            if ($item_type > 0 && $qid > 0)
                 switch ($item_type) {
                     case 1:
                         $active_item = Model_Question::is_active_question($item_id);
@@ -57,7 +57,7 @@ class Vote extends Base {
                         $active_item = false;
                 }
             if ($active_item) {
-                Transaction_Vote::create($user_id, $item_type, $item_id);
+                Transaction_Vote::create($uid, $item_type, $item_id);
                 $message = "您已投票成功， 感谢您的支持。";
                 $success = true;
             } else {

@@ -8,7 +8,7 @@ Zx_Message::show_message();
         <legend>Answer <?php echo $question['title'];?></legend>
         <dl>
             <dt> Content: </dt><dd><textarea cols="10" rows="30" name="content"></textarea></dd>
-            <dt> <input type="hidden" name="question_id" value="<?php echo $question['id'];?>" /></dt>
+            <dt> <input type="hidden" name="qid" value="<?php echo $question['id'];?>" /></dt>
             <dd><input type="submit" name="submit" value="Answer" /></dd>
         </dl>
     </fieldset>    

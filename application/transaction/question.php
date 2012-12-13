@@ -23,13 +23,13 @@ class Question {
         //\Zx\Test\Test::object_log('$_SESSION',$_SESSION, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         if (isset($_SESSION['user'])) {
-            $user_id = $_SESSION['user']['user_id'];
-            $user_name = $_SESSION['user']['user_name'];
+            $uid = $_SESSION['user']['uid'];
+            $uname = $_SESSION['user']['uname'];
             $status = 1;
         } else {
             $user = Model_User::get_default_question_user();
-            $user_id = $user['id'];
-            $user_name = $user['user_name'];
+            $uid = $user['id'];
+            $uname = $user['uname'];
             $status = 0;
         }
 
@@ -49,14 +49,14 @@ class Question {
                 }
             }
         $arr['tag_ids'] = $tag_ids;
-        $arr['user_id'] = $user_id;
-        $arr['user_name'] = $user_name;
+        $arr['uid'] = $uid;
+        $arr['uname'] = $uname;
         $arr['status'] = $status;
         $arr['num_of_answers'] = 0;
         $arr['num_of_views'] = 0;
         $arr['num_of_votes'] = 0;
         Model_Question::create($arr);
-        Model_User::increase_num_of_questions($user_id);
+        Model_User::increase_num_of_questions($uid);
         return true;
     }
 
@@ -90,7 +90,7 @@ class Question {
             $arr['tag_ids'] = $tag_ids;
             if (Model_Question::create($arr)) {
                 Message::set_success_message('success');
-                Model_User::increase_num_of_questions($arr['user_id']);
+                Model_User::increase_num_of_questions($arr['uid']);
                 return true;
             } else {
                 Message::set_error_message('fail');
@@ -144,8 +144,8 @@ class Question {
             $answer_user = Model_User::get_random_user();
             $question_arr = array('title' => $arr['title'],
                 'content' => $arr['q_content'],
-                'user_id' => $question_user['id'],
-                'user_name' => $question_user['user_name'],
+                'uid' => $question_user['id'],
+                'uname' => $question_user['uname'],
                 'tag_ids' => substr($tag_ids, -1), //remove last '@'
                 'tag_names' => $arr['tag_names'],
                 'region' => $arr['region'],
@@ -160,12 +160,12 @@ class Question {
                 $question_user_arr = array('num_of_questions' => $question_user['num_of_questions'] + 1);
                 //\Zx\Test\Test::object_log('$question_user_arr', $question_user_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
                 
-                Model_User::update($question_user_id, $question_user_arr);
+                Model_User::update($question_uid, $question_user_arr);
                 //if answer is not empty
-                $answer_arr = array('question_id' => $qid,
+                $answer_arr = array('qid' => $qid,
                     'content' => $arr['a_content'],
-                    'user_id' => $answer_user['id'],
-                    'user_name' => $answer_user['user_name'],
+                    'uid' => $answer_user['id'],
+                    'uname' => $answer_user['uname'],
                     'status' => 1,
                 );
                 //\Zx\Test\Test::object_log('$answer_arr', $answer_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -174,7 +174,7 @@ class Question {
                 $answer_user_arr = array('num_of_answers' => $answer_user['num_of_answers'] + 1);
                 //\Zx\Test\Test::object_log('$answer_user_arr', $answer_user_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-                Model_User::update($answer_user_id, $answer_user_arr);
+                Model_User::update($answer_uid, $answer_user_arr);
                 Message::set_success_message('success');
                 return true;
             } else {

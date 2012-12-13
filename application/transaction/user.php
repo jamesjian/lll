@@ -13,18 +13,18 @@ use \Zx\Tool\Upload as Zx_Upload;
 class User {
 
     /**
-     * @param type $user_id
+     * @param type $uid
      * @return type
      */
-    public static function clear_image($user_id) {
+    public static function clear_image($uid) {
         //get ad image and save information
-        $company = Model_User::get_one($user_id);
+        $company = Model_User::get_one($uid);
         $image = $user['image'];
         //get image directory
         $dir = PHPUPLOADROOT . 'user/';
         //update image record
         $arr = array('image' => '');
-        Model_User::update($user_id, $arr);
+        Model_User::update($uid, $arr);
         //delete image
         if ($image != '' && file_exists($dir . $image)) {
             unlink($dir . $image);
@@ -33,7 +33,7 @@ class User {
         return true;
     }
 
-    public static function change_image($user_id) {
+    public static function change_image($uid) {
         $this_year = date('Y');
         $dir = PHPUPLOADROOT . 'user/' . $this_year . '/'; //  company/2012/
         /*
@@ -62,12 +62,12 @@ class User {
             $filename = $this_year . '/' . basename($filename);  //use Upload class generated file name, it replaces ' ' with '_'
             // App_Test::objectLog('$filename',$filename, __FILE__, __LINE__, __CLASS__, __METHOD__);
             if ($filename != '') {
-                $user = Model_User::get_one($user_id);
+                $user = Model_User::get_one($uid);
                 $old_image = $user['image'];  //prepare for deletion
                 $image_arr = array('image' => $filename);
                 //App_Test::objectLog('$image_arr', $image_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-                Model_User::update($user_id, $image_arr);
+                Model_User::update($uid, $image_arr);
                 if ($old_image != '' && file_exists($dir . basename($old_image))) {
                     unlink($dir . basename($old_image));
                 }
@@ -82,15 +82,15 @@ class User {
     }
 
     /**
-     * @param int $user_id
+     * @param int $uid
      * @param int $status
      * @return boolean 
      */
-    public static function change_status($user_id, $status) {
-        $user = Model_User::get_one($user_id);
+    public static function change_status($uid, $status) {
+        $user = Model_User::get_one($uid);
         if ($user) {
             $arr = array('status' => $status);
-            Model_User::update($user_id, $arr);
+            Model_User::update($uid, $arr);
             return true;
         } else {
             return false;
@@ -107,17 +107,17 @@ class User {
     public static function generate_new_password($email) {
         if (strpos($email, '@')) {
             //it's email
-            $user_id = Model_User::exist_email($email);
+            $uid = Model_User::exist_email($email);
         } else {
             //it's user name
-            $user_id = Model_User::exist_user_name($email);
+            $uid = Model_User::exist_uname($email);
         }
-        if ($user_id) {
+        if ($uid) {
             $new_password = mt_rand();
             $user_arr = array('password' => $new_password);
-            Model_User::update($user_id, $user_arr);
+            Model_User::update($uid, $user_arr);
             //App_Test::objectLog('$new_password',$new_password, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            $user = Model_User::get_one($user_id);
+            $user = Model_User::get_one($uid);
             Transaction_Swiftmail::send_new_password($user, $new_password);
             Zx_Message::set_success_message("您的新密码已经发送到您的电子邮箱， 请查看。");
             return true;
@@ -129,17 +129,17 @@ class User {
 
     /*     * by admin only
      * admin can reset password, system generate new password
-     * @param int $user_id  
+     * @param int $uid  
      * @return boolean
      */
 
-    public static function reset_password($user_id) {
+    public static function reset_password($uid) {
         if (App_Staff::admin_has_loggedin()) {
             $new_password = mt_rand();
             $user_arr = array('password' => $new_password);
-            Model_User::update($user_id, $user_arr);
+            Model_User::update($uid, $user_arr);
             //App_Test::objectLog('$new_password',$new_password, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            $user = Model_User::get_one($user_id);
+            $user = Model_User::get_one($uid);
             Transaction_Swiftmail::send_new_password($user, $new_password);
             Zx_Message::set_success_message("The password has been reset and sent to user's email box.");
         }
@@ -149,12 +149,12 @@ class User {
     /**
      * if has question or answer or company, cannot delete it
      * usually a user cannot be deleted
-     * @param int $user_id 
+     * @param int $uid 
      */
-    public static function delete_user($user_id) {
+    public static function delete_user($uid) {
 
-        if (Model_User::can_be_deleted($user_id)) {
-            Model_User::delete($user_id);
+        if (Model_User::can_be_deleted($uid)) {
+            Model_User::delete($uid);
             Zx_Message::set_success_message("删除用户成功.");
             return true;
         } else {
@@ -169,17 +169,17 @@ class User {
      * @return type 
      */
     public static function register_user($user_arr) {
-        if (Model_User::exist_user_name($user_arr['user_name']) ||
+        if (Model_User::exist_uname($user_arr['uname']) ||
                 Model_User::exist_email($user_arr['email'])
         ) {
             Zx_Message::set_error_message("用户名或电子邮箱已经被注册， 请用其他用户名或电子邮箱注册。");
             return false;
         } else {
             $user_arr['status'] = 1; //activated status is 1, registered status is 2, currently set it to 1 to avoid activate (no email now)
-            if ($user_id = Model_User::create($user_arr)) {
-                $user_arr['id'] = $user_id;
+            if ($uid = Model_User::create($user_arr)) {
+                $user_arr['id'] = $uid;
                 //App_Swiftmailer::send_activation_link($user_arr);
-                //App_Session::set_success_message("感谢您在fengyunlist.com.au注册， 我们已经发送邮件到您的电子邮箱， 请查看邮件并激活您的账户。 您很快就可以在fengyunlist.com.au上建立生意、 发布广告、 上传产品及发布需求。");
+                //App_Session::set_success_message("感谢您在" . SITENAME . "注册， 我们已经发送邮件到您的电子邮箱， 请查看邮件并激活您的账户。 ");
                 return true;
             } else {
                 Zx_Message::set_error_message("您的账户未注册成功， 请重新注册。");
@@ -190,13 +190,13 @@ class User {
 
     /**
      * after activating the user, go to user account home page (no login)
-     * @param int $user_id
+     * @param int $uid
      * @param hash string $code
      * @return boolean 
      */
-    public static function activate_user($user_id, $code) {
-        $user = Model_User::get_one($user_id);
-        $code1 = substr(md5($user->id), 1, 10) . substr(md5($user->email), 1, 10) . substr(md5($user->user_name), 1, 12);
+    public static function activate_user($uid, $code) {
+        $user = Model_User::get_one($uid);
+        $code1 = substr(md5($user->id), 1, 10) . substr(md5($user->email), 1, 10) . substr(md5($user->uname), 1, 12);
         if ($code == $code1) {
             $arr = array('status' => 1); //active
             Model_User::update($user, $arr);
@@ -204,12 +204,12 @@ class User {
             /** to go to account home page directly, store session data
              * copy from self::valid_user() method
              * start */
-            $user = Model_User::get_one($user_id);
+            $user = Model_User::get_one($uid);
 
             if ($user) {
                 $session_array = array(
-                    'user_id' => $user->id,
-                    'user_name' => $user_name,
+                    'uid' => $user->id,
+                    'uname' => $uname,
                 );
 
                 session_regenerate_id();
@@ -232,17 +232,17 @@ class User {
     public static function send_another_activation_link($name) {
         if (strpos($name, '@')) {
             //it's email
-            $user_id = Model_User::exist_email($name);
+            $uid = Model_User::exist_email($name);
         } else {
             //it's user name
-            $user_id = Model_User::exist_user_name($name);
+            $uid = Model_User::exist_uname($name);
         }
-        if ($user_id) {
-            $user = Model_User::get_one($user_id);
+        if ($uid) {
+            $user = Model_User::get_one($uid);
             if ($user->status == '2') {
 //App_Test::objectLog('success','2', __FILE__, __LINE__, __CLASS__, __METHOD__);
                 //if inactivated, send activation link
-                $user_arr = array('id' => $user_id, 'user_name' => $user->user_name, 'email' => $user->email);
+                $user_arr = array('id' => $uid, 'uname' => $user->uname, 'email' => $user->email);
                 Transaction_Swiftmail::send_activation_link($user_arr);
                 Zx_Message::set_success_message("我们已经发送了激活邮件到您的邮箱， 请您检查邮箱并激活您的账户.");
                 return true;
@@ -266,17 +266,17 @@ class User {
       2. generate a password automatically
       3. insert a record into user table
       4. send email to user to show password
-     * @param array  $arr =array('user_name'=>$user_name,
+     * @param array  $arr =array('uname'=>$uname,
       'password'=>$password,
       'email'=>$email,....)
      */
     public static function create_user($user_arr) {
-        if (!Model_User::exist_user_name_or_email($user_arr['user_name']) &&
-                !Model_User::exist_user_name_or_email($user_arr['email'])) {
+        if (!Model_User::exist_uname_or_email($user_arr['uname']) &&
+                !Model_User::exist_uname_or_email($user_arr['email'])) {
             //$user_arr['password'] = Transaction_Tool::generatePassword();
-            if ($user_id = Model_User::create($user_arr)) {
-                //$user = Model_User::get_one($user_id);
-                self::change_image($user_id);
+            if ($uid = Model_User::create($user_arr)) {
+                //$user = Model_User::get_one($uid);
+                self::change_image($uid);
                 //App_Swiftmailer::send_new_password($user, $user_arr['password']);
                 Zx_Message::set_success_message("创建用户成功.");
                 return true;
@@ -293,15 +293,15 @@ class User {
     /**
      * user name cannot be changed now, otherwise, will update all user name fields in other tables
      * Todo: for status change, something will happen
-     * @param int $user_id
+     * @param int $uid
      * @param array $user_arr
      * @return boolean 
      */
-    public static function update_user($user_id, $user_arr) {
+    public static function update_user($uid, $user_arr) {
         if (
-                //!Model_User::duplicate_user_name_or_email($user_id, $user_arr['user_name']) AND
-                !Model_User::duplicate_user_name_or_email($user_id, $user_arr['email'])) {
-            if (Model_User::update($user_id, $user_arr)) {
+                //!Model_User::duplicate_uname_or_email($uid, $user_arr['uname']) AND
+                !Model_User::duplicate_uname_or_email($uid, $user_arr['email'])) {
+            if (Model_User::update($uid, $user_arr)) {
                 \Zx\Message\Message::set_success_message("用户信息已更新.");
                 return true;
             } else {
@@ -318,16 +318,16 @@ class User {
      * check the user is valid or not, status must be "enable", 
      * group_id must be 3(A) or 4(B)
      * set up 'user' session value
-     * @param <string> $user_name  user name or email
+     * @param <string> $uname  user name or email
      * @param <string> $password
      * @return <boolean> true is the user is valid
      */
-    public static function verify_user($user_name, $password) {
-        $user = Model_User::verify_user($user_name, $password);
+    public static function verify_user($uname, $password) {
+        $user = Model_User::verify_user($uname, $password);
         if ($user) {
             $session_array = array(
-                'user_id' => $user['id'],
-                'user_name' => $user_name,
+                'uid' => $user['id'],
+                'uname' => $uname,
             );
             session_regenerate_id();
             $_SESSION['user'] = $session_array;
@@ -344,8 +344,8 @@ class User {
      * @return <integer or boolean>  if has user id, return it, otherwise, return false
      */
     public static function get_user() {
-        if (isset($_SESSION['user']['user_id'])) {
-            return Model_User::get_one($_SESSION['user']['user_id']);
+        if (isset($_SESSION['user']['uid'])) {
+            return Model_User::get_one($_SESSION['user']['uid']);
         } else {
             return false;
         }
@@ -354,9 +354,9 @@ class User {
      * for front end user
      * @return <integer>  if has user id, return it, otherwise, return 0
      */
-    public static function get_user_id() {
+    public static function get_uid() {
         if (isset($_SESSION['user'])) {
-            return intval($_SESSION['user']['user_id']);
+            return intval($_SESSION['user']['uid']);
         } else {
             return 0;
         }
@@ -366,9 +366,9 @@ class User {
      *
      * @return <string>  if has user name, return it, otherwise, return empty string
      */
-    public static function get_user_name() {
+    public static function get_uname() {
         if (isset($_SESSION['user'])) {
-            return $_SESSION['user']['user_name'];
+            return $_SESSION['user']['uname'];
         } else {
             return '';
         }
@@ -395,7 +395,7 @@ class User {
 
     /**
      * update profile by registered user
-     * @param int $user_id
+     * @param int $uid
      * @param array $arr ( 'first_name' => $first_name,
       'last_name' => $last_name,
       'phone' => $phone,
@@ -403,8 +403,8 @@ class User {
       'city_id' => $city_id,
       'state' => $state,)
      */
-    public static function update_profile($user_id, $arr) {
-        $user = Model_User::get_record($user_id);
+    public static function update_profile($uid, $arr) {
+        $user = Model_User::get_record($uid);
         if (
                 $user->first_name != $arr['first_name'] ||
                 $user->last_name != $arr['last_name'] ||
@@ -412,7 +412,7 @@ class User {
                 $user->city_id != $arr['city_id'] ||
                 $user->suburb_id != $arr['suburb_id'] ||
                 $user->state != $arr['state']) {
-            Model_User::update_record($user_id, $arr);
+            Model_User::update_record($uid, $arr);
         }
         App_Session::set_success_message("您的基本信息已经生效。");
         return true;
@@ -422,11 +422,11 @@ class User {
      * @param int user id
      * @param array $arr = array('old_password', 'new_password'); 
      */
-    public static function change_password($user_id, $arr) {
-        if (Model_User::password_is_correct($user_id, $arr['old_password'])) {
+    public static function change_password($uid, $arr) {
+        if (Model_User::password_is_correct($uid, $arr['old_password'])) {
             $user_arr = array('password' => $arr['new_password']);
-            Model_User::update_record($user_id, $user_arr);
-            //App_Log::create_change_password_log($user_id);
+            Model_User::update_record($uid, $user_arr);
+            //App_Log::create_change_password_log($uid);
             //it's better to send email to remind customer the password is changed.
             App_Session::set_success_message("您的新密码已经生效。");
             return true;

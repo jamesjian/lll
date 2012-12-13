@@ -119,10 +119,10 @@ class Swiftmail {
      * @param string $user_email  string
      * @return type 
      */
-    public static function send_newsletter_to_user($newsletter, $user_email, $user_name) {
+    public static function send_newsletter_to_user($newsletter, $user_email, $uname) {
         $description = $newsletter->description;
         $arr_search = array('company_name');
-        $arr_replace = array($user_name);
+        $arr_replace = array($uname);
         $description = str_replace($arr_search, $arr_replace, $description);
         $message = Swift_Message::newInstance();
         //Give the message a subject
@@ -171,10 +171,10 @@ class Swiftmail {
     }
 
     public static function send_activation_link($user_arr) {
-        $code = substr(md5($user_arr['id']), 1, 10) . substr(md5($user_arr['email']), 1, 10) . substr(md5($user_arr['user_name']), 1, 12); //32 digits
+        $code = substr(md5($user_arr['id']), 1, 10) . substr(md5($user_arr['email']), 1, 10) . substr(md5($user_arr['uname']), 1, 12); //32 digits
         $link = 'http://' . SERVER_NAME . "/user/activate/" . $user_arr['id'] . '/' . $code;
         $contact_link = 'http://' . SERVER_NAME . "message/contact";
-        $description = "???" . $user_arr['user_name'] . ": ??! <br />
+        $description = "???" . $user_arr['uname'] . ": ??! <br />
         ????????list???? <br />??? <a href='$link'>??</a>??????list??,  <br />
         ????????????????????????????list???  <br />" .
                 $link .

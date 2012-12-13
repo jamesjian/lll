@@ -7,9 +7,9 @@ use \Zx\Model\Mysql;
 use \Zx\Test\Test;
 
 class User extends Base_User {
-    public static function available_score($user_id)
+    public static function available_score($uid)
     {
-        $user = parent::get_one($user_id);
+        $user = parent::get_one($uid);
         if ($user && $user['score'] - $user['invalid_score'] - $user['ad_score']>0) {
             return true;
         } else  {
@@ -57,31 +57,31 @@ class User extends Base_User {
         return parent::get_one(2); //匿名回答用户
     }
 
-    public static function increase_num_of_questions($user_id) {
+    public static function increase_num_of_questions($uid) {
         $sql = "UPDATE " . parent::$table . " SET num_of_questions=num_of_questions+1 WHERE id=:id";
-        $params = array(':id' => $user_id);
+        $params = array(':id' => $uid);
         return Mysql::exec($sql, $params);
     }
 
-    public static function increase_num_of_answers($user_id) {
+    public static function increase_num_of_answers($uid) {
         $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers+1 WHERE id=:id";
-        $params = array(':id' => $user_id);
+        $params = array(':id' => $uid);
         return Mysql::exec($sql, $params);
     }
 
-    public static function disable_user($user_id) {
+    public static function disable_user($uid) {
         $arr['status'] = 0;
-        return parent::update($user_id, $arr);
+        return parent::update($uid, $arr);
     }
 
     /**
      *
-     * @param integer $user_id
+     * @param integer $uid
      * @param string $password 
      * @return boolean
      */
-    public static function password_is_correct($user_id, $password) {
-        $user = parent::get_one($user_id);
+    public static function password_is_correct($uid, $password) {
+        $user = parent::get_one($uid);
         if ($user AND $user['password'] == md5($password)) {
             return true;
         } else {
@@ -90,12 +90,12 @@ class User extends Base_User {
     }
 
     /**
-     * @param string $user_name
+     * @param string $uname
      * @return $user object or false
      */
-    public static function get_user_by_user_name($user_name) {
+    public static function get_user_by_uname($uname) {
         $sql = "SELECT * FROM " . parent::$table . " WHERE name=:name";
-        $params = array(':name' => $user_name);
+        $params = array(':name' => $uname);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $user = Mysql::select_one($sql, $params);
         if ($user) {
@@ -122,11 +122,11 @@ class User extends Base_User {
     }
 
     /**
-     * @param $user_id
-     * @return boolean if user_name exists in users table, return true, else false
+     * @param $uid
+     * @return boolean if uname exists in users table, return true, else false
      */
-    public static function exist_user_id($user_id) {
-        $user = parent::get_one($user_id);
+    public static function exist_uid($uid) {
+        $user = parent::get_one($uid);
         if ($user) {
             return true;
         } else {
@@ -135,12 +135,12 @@ class User extends Base_User {
     }
 
     /**
-     * @param $user_name 
-     * @return boolean if user_name exists in users table, return user id, else false
+     * @param $uname 
+     * @return boolean if uname exists in users table, return user id, else false
      */
-    public static function exist_user_name($user_name) {
-        $sql = "SELECT * FROM " . parent::$table . " WHERE user_name=:name";
-        $params = array(':name' => $user_name);
+    public static function exist_uname($uname) {
+        $sql = "SELECT * FROM " . parent::$table . " WHERE uname=:name";
+        $params = array(':name' => $uname);
         $user = Mysql::select_one($sql, $params);
         if ($user) {
             return $user['id'];
@@ -166,10 +166,10 @@ class User extends Base_User {
 
     /**
      * @param $name might be user name or email
-     * @return boolean if name exists in email or user_name fields in user table, return user id, else false
+     * @return boolean if name exists in email or uname fields in user table, return user id, else false
      */
-    public static function exist_user_name_or_email($name) {
-        $sql = "SELECT * FROM " . parent::$table . " WHERE user_name=:name OR email=:email";
+    public static function exist_uname_or_email($name) {
+        $sql = "SELECT * FROM " . parent::$table . " WHERE uname=:name OR email=:email";
         $params = array(':name' => $name, ':email' => $name);
         $user = Mysql::select_one($sql, $params);
         if ($user) {
@@ -181,10 +181,10 @@ class User extends Base_User {
 
     /**
      *
-     * @param string $user_name
+     * @param string $uname
      * @return integer or boolean
      */
-    public static function get_user_id_by_email($email) {
+    public static function get_uid_by_email($email) {
         if ($user = self::get_user_by_email($email)) {
             return $user['id'];
         } else {
@@ -194,11 +194,11 @@ class User extends Base_User {
 
     /**
      *
-     * @param string $user_name
+     * @param string $uname
      * @return integer or boolean
      */
-    public static function get_user_id_by_user_name($user_name) {
-        if ($user = self::get_user_by_user_name($user_name)) {
+    public static function get_uid_by_uname($uname) {
+        if ($user = self::get_user_by_uname($uname)) {
             return $user['id'];
         } else {
             return false;
@@ -208,15 +208,15 @@ class User extends Base_User {
     /**
      * check if user name matches password and enabled in user table
      * crypt see parent::create() method
-     * @param <string> $user_name  can be an email
+     * @param <string> $uname  can be an email
      * @param <string> $password is md5 value
      * @return <boolean> if valid in user table, return true; otherwise return false;
      */
-    public static function verify_user($user_name, $password) {
+    public static function verify_user($uname, $password) {
 
         $sql = "SELECT *  FROM " . parent::$table . " 
-            WHERE (user_name=:name OR email=:name)  AND status=1";
-        $params = array(':name' => $user_name);
+            WHERE (uname=:name OR email=:name)  AND status=1";
+        $params = array(':name' => $uname);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $user = Mysql::select_one($sql, $params);
         if ($user) {
@@ -232,13 +232,13 @@ class User extends Base_User {
 
     /**
      * check if duplicate users exist in user table, for update user
-     * @param <integer> $user_id
-     * @param <string> $user_name
-     * @return <type> if user_name exists and user id is not the same as the particular user in user table, return true; otherwise return false;
+     * @param <integer> $uid
+     * @param <string> $uname
+     * @return <type> if uname exists and user id is not the same as the particular user in user table, return true; otherwise return false;
      */
-    public static function duplicate_user_name($user_id, $user_name) {
-        $user = self::get_user_by_user_name($user_name);
-        if ($user && $user['id'] <> $user_id) {
+    public static function duplicate_uname($uid, $uname) {
+        $user = self::get_user_by_uname($uname);
+        if ($user && $user['id'] <> $uid) {
             return true;
         } else {
             return false;
@@ -247,13 +247,13 @@ class User extends Base_User {
 
     /**
      * check if duplicate users exist in user table, for update user
-     * @param <integer> $user_id
+     * @param <integer> $uid
      * @param <string> $email
      * @return <type> if email exists and user id is not the same as the particular user in user table, return true; otherwise return false;
      */
-    public static function duplicate_email($user_id, $email) {
+    public static function duplicate_email($uid, $email) {
         $user = self::get_user_by_email($email);
-        if ($user && $user['id'] <> $user_id) {
+        if ($user && $user['id'] <> $uid) {
             return true;
         } else {
             return false;
@@ -262,18 +262,18 @@ class User extends Base_User {
 
     /**
      * check if duplicate name or email exist in user table, for update user
-     * @param <integer> $user_id
+     * @param <integer> $uid
      * @param <string> $name
-     * @return <type> if name exists in user_name or email fields and user id is not the same as the particular user in user table, return true; otherwise return false;
+     * @return <type> if name exists in uname or email fields and user id is not the same as the particular user in user table, return true; otherwise return false;
      */
-    public static function duplicate_user_name_or_email($user_id, $name) {
+    public static function duplicate_uname_or_email($uid, $name) {
         $sql = "SELECT *
             FROM " . parent::$table . " 
-            WHERE (user_name=:name OR email=:email) ";
+            WHERE (uname=:name OR email=:email) ";
         $params = array(':name' => $name, ':email' => $name);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $user = Mysql::select_one($sql, $params);
-        if ($user && $user['id'] <> $user_id) {
+        if ($user && $user['id'] <> $uid) {
             return true;
         } else {
             return false;
@@ -282,11 +282,11 @@ class User extends Base_User {
 
     /**
      * check if a user has company
-     * @param type $user_id
+     * @param type $uid
      * @return boolean 
      */
-    public static function user_has_question($user_id) {
-        $user = parent::get_one($user_id);
+    public static function user_has_question($uid) {
+        $user = parent::get_one($uid);
         if ($user && $user->num_of_questions > 0)
             return true;
         else
@@ -295,11 +295,11 @@ class User extends Base_User {
 
     /**
      * check if a user has company
-     * @param type $user_id
+     * @param type $uid
      * @return boolean 
      */
-    public static function user_has_answer($user_id) {
-        $user = parent::get_one($user_id);
+    public static function user_has_answer($uid) {
+        $user = parent::get_one($uid);
         if ($user && $user->num_of_answers > 0)
             return true;
         else
@@ -308,11 +308,11 @@ class User extends Base_User {
 
     /**
      * if has question or answer or others, cannot delete it
-     * @param int $user_id
+     * @param int $uid
      * @return boolean
      */
-    public static function can_be_deleted($user_id) {
-        $user = parent::get_one($user_id);
+    public static function can_be_deleted($uid) {
+        $user = parent::get_one($uid);
         if ($user && ($user['num_of_questions'] > 0 || $user['num_of_answers'] > 0 )) {
             return false;
         } else {

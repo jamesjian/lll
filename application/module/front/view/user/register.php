@@ -21,7 +21,7 @@
                             
                     </td>
                         <td>  
-                            <input type="text" name="user_name" id="user_name" class="form_element" value="<?php if (isset($posted['user_name'])) echo $posted['user_name']; ?>"/>
+                            <input type="text" name="uname" id="uname" class="form_element" value="<?php if (isset($posted['uname'])) echo $posted['uname']; ?>"/>
                         </td>
                     </tr>
                     <tr>

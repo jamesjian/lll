@@ -27,14 +27,14 @@ class Ad extends Base {
     public function create() {
         $success = false;
         if (isset($_POST['submit']) && 
-                isset($_POST['user_id']) && 
+                isset($_POST['uid']) && 
                 isset($_POST['title']) && 
                 isset($_POST['content']) && 
                 isset($_POST['tag_names'])) {
             $title = isset($_POST['title']) ? trim($_POST['title']) : '';
             $tag_names = isset($_POST['tag_names']) ? trim($_POST['tag_names']) : '';
             $content = isset($_POST['content']) ? trim($_POST['content']) : '';
-            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 1;
+            $uid = isset($_POST['uid']) ? intval($_POST['uid']) : 1;
             $rank = isset($_POST['rank']) ? intval($_POST['rank']) : 0;
             $status = isset($_POST['status']) ? intval($_POST['status']) : 1;
 
@@ -44,14 +44,14 @@ class Ad extends Base {
                     'content' => $content,
                     'rank' => $rank,
                     'status' => $status,
-                    'user_id' => $user_id);
+                    'uid' => $uid);
                 if (Transaction_Ad::create_ad($arr)) {
                     $success = true;
                 }
             }
         } else {
-            $user_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
-            if (!Model_User::exist_user_id($user_id)){
+            $uid = isset($this->params[0]) ? intval($this->params[0]) : 0;
+            if (!Model_User::exist_uid($uid)){
                 Message::set_error_message('无效用户ID。');
                 header('Location: ' . $this->list_page);
             } else {
@@ -62,7 +62,7 @@ class Ad extends Base {
             header('Location: ' . $this->list_page);
         } else {
             View::set_view_file($this->view_path . 'create.php');
-            View::set_action_var('user_id', $user_id);
+            View::set_action_var('uid', $uid);
         }
     }
 
@@ -146,10 +146,10 @@ class Ad extends Base {
      * under one category
       retrieve_by_cat_id/cat_id/page/orderby/direction
      */
-    public function retrieve_by_user_id() {
+    public function retrieve_by_uid() {
         \App\Transaction\Session::remember_current_admin_page();
         \App\Transaction\Session::set_current_l1_menu('Ad');
-        $user_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
+        $uid = isset($this->params[0]) ? intval($this->params[0]) : 0;
         $current_page = isset($this->params[1]) ? intval($this->params[1]) : 1;
         $order_by = isset($this->params[2]) ? $this->params[2] : 'id';
         $direction = isset($this->params[3]) ? $this->params[3] : 'ASC';
@@ -159,13 +159,13 @@ class Ad extends Base {
         } else {
             $where = '1';
         }
-        $ad_list = Model_Ad::get_ads_by_user_id_and_page_num($user_id, $where, $current_page, $order_by, $direction);
+        $ad_list = Model_Ad::get_ads_by_uid_and_page_num($uid, $where, $current_page, $order_by, $direction);
         $num_of_records = Model_Ad::get_num_of_ads($where);
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_by_user_id.php');
-        View::set_action_var('user_id', $user_id);
+        View::set_view_file($this->view_path . 'retrieve_by_uid.php');
+        View::set_action_var('uid', $uid);
         View::set_action_var('ad_list', $ad_list);
         View::set_action_var('search', $search);
         View::set_action_var('order_by', $order_by);

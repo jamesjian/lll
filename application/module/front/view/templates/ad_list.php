@@ -30,8 +30,8 @@
                             <?php
                         }
                         ?>
-                    <a href="<?php echo FRONT_HTML_ROOT . 'user/profile' . $ad['user_id']; ?>">
-                        <?php echo $ad['user_name']; ?></a>
+                    <a href="<?php echo FRONT_HTML_ROOT . 'user/profile' . $ad['uid']; ?>">
+                        <?php echo $ad['uname']; ?></a>
                     <?php echo $ad['date_created']; ?>
                 </li>
                 <li><?php echo $ad['num_of_views']; ?></li>

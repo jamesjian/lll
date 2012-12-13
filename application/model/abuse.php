@@ -41,10 +41,10 @@ class Abuse extends Base_Abuse {
              break;
      }
      //use content rather than title, because answer doesn't have a title
-        $sql = "SELECT a.*, i.content as item_content, u.user_name
+        $sql = "SELECT a.*, i.content as item_content, u.uname
             FROM " . parent::$table . " a
             LEFT JOIN " . $table . " i ON i.id=a.item_id
-            LEFT JOIN " . Base_User::$table . " u ON u.id=a.user_id
+            LEFT JOIN " . Base_User::$table . " u ON u.id=a.uid
             WHERE item_type=$item_type AND ($where)
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count

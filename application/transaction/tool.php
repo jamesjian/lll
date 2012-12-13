@@ -7,6 +7,77 @@ use \App\Model\Articlecategory as Model_Articlecategory;
 
 class Tool {
 
+    /**
+     * Validate a credit card number
+     * @param string $card_num Credit card number
+     * @param string $type Either American express, Diners Club, Discover, MasterCard or Visa card
+     * @return boolean
+     */
+    function is_credit_card($card_num, $type) {
+
+        $cc_num = str_replace(' ', '', $card_num);
+        $success = false;
+        switch ($type) {
+            case "American Express":
+                $pattern = "/^([34|37]{2})([0-9]{13})$/";
+                if (preg_match($pattern, $card_num)) {
+                    $success = true;
+                }
+                break;
+            case "Diner's Club":
+                $pattern = "/^([30|36|38]{2})([0-9]{12})$/";
+                if (preg_match($pattern, $card_num)) {
+                    $success = true;
+                }
+                break;
+            case "Discover":
+                $pattern = "/^([6011]{4})([0-9]{12})$/";
+                if (preg_match($pattern, $card_num)) {
+                    $success = true;
+                }
+                break;
+            case "mastercard":
+                $pattern = "/^([51|52|53|54|55]{2})([0-9]{14})$/";
+                if (preg_match($pattern, $card_num)) {
+                    $success = true;
+                }
+                break;
+            case "visa card":
+                $pattern = "/^([4]{1})([0-9]{12,15})$/";
+                if (preg_match($pattern, $card_num)) {
+                    $success = true;
+                }
+                break;
+        }
+        return $success;
+    }
+
+    /**
+     * Checks ABN for validity
+
+     
+     * @return boolean
+     */
+    function is_abn($abn) {
+        // only check digits
+        $abn = preg_replace("/[^\d]/", "", $abn);
+
+        // length should be 11 
+        if (strlen($abn) != 11)
+            return false;
+
+        $weight = array(10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19);
+        $sum = 0;
+        for ($i = 0; $i < 11; $i++) {
+            $digit = $abn[$i] - ($i ? 0 : 1);
+            $sum += $weight[$i] * $digit;
+        }
+        if ($sum % 89) {
+            return false;
+        }
+        return true;
+    }
+
     public static function generate_sitemap() {
         $site = 'http://' . SITENAME;
         $str = '<?xml version="1.0" encoding="UTF-8"?>
@@ -33,7 +104,7 @@ class Tool {
    </url>
 		';
         $cats = Model_Articlecategory::get_all_active_cats();
-        $link_prefix = $site. "/front/article/category/";
+        $link_prefix = $site . "/front/article/category/";
         foreach ($cats as $cat) {
             $cat_str = '<url>
       <loc>' . $link_prefix . $cat['title'] . '</loc>
@@ -47,7 +118,7 @@ class Tool {
         //\Zx\Test\Test::object_log('$articles', $articles, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $link_prefix = $site . "/front/article/content/";
         foreach ($articles as $article) {
-        //\Zx\Test\Test::object_log('$articles',$article['id'], __FILE__, __LINE__, __CLASS__, __METHOD__);
+            //\Zx\Test\Test::object_log('$articles',$article['id'], __FILE__, __LINE__, __CLASS__, __METHOD__);
             $article_str = '<url>
       <loc>' . $link_prefix . $article['url'] . '</loc>
       <lastmod>' . date('Y-m-d') . '</lastmod>
@@ -60,7 +131,8 @@ class Tool {
         file_put_contents(PHP_ROOT . 'sitemap.xml', $str);
         return true;
     }
-/**
+
+    /**
      *
      * @param string $img_s  源文件
      * @param string $watermark 水印文件路径+文件名  must be a png file, otherwise change the function name
@@ -69,45 +141,44 @@ class Tool {
      * if use png, must use imagecopyresampled, if use jpg, we can use imagecopyemerge
      * 
      * 	$watermark = "x/water-mark.png";
-	//$watermark = "x/logo-company.jpg";
-	//$watermark = "x/ad04.jpg";
-	//$img_s = "x/1.jpg";
-	$img_s = "x/middle-ad3.jpg";
-	$img_d = "x/m7.jpg";
-	//$img_d = "x/m2.jpg";
-	add_watermark($img_s, $watermark, $img_d);
+      //$watermark = "x/logo-company.jpg";
+      //$watermark = "x/ad04.jpg";
+      //$img_s = "x/1.jpg";
+      $img_s = "x/middle-ad3.jpg";
+      $img_d = "x/m7.jpg";
+      //$img_d = "x/m2.jpg";
+      add_watermark($img_s, $watermark, $img_d);
      * 
      * 
      * 
      */
-        public static function add_watermark($img_s,$watermark, $img_d) {
+    public static function add_watermark($img_s, $watermark, $img_d) {
         $watermark = imagecreatefrompng($watermark);
         //$watermark = imagecreatefromjpeg($watermark);
         $watermark_width = imagesx($watermark);
         $watermark_height = imagesy($watermark);
-        
+
         //$image_d = imagecreatetruecolor($watermark_width, $watermark_height);
         $image = imagecreatefromjpeg($img_s);
         $size = getimagesize($img_s);
         $dest_x = $size[0] - $watermark_width - 5;
         $dest_y = $size[1] - $watermark_height - 5;
-		//$dest_x = 10;
-		//$dest_y = 10;
-        
+        //$dest_x = 10;
+        //$dest_y = 10;
         //imagecopymerge($image, $watermark, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, 20);
         imagecopyresampled($image, $watermark, $dest_x, $dest_y, 0, 0, $watermark_width, $watermark_height, $watermark_width, $watermark_height);
         //header('content-type: image/png');
         header('content-type: image/jpeg');
-		//imagesavealpha($image,true);
+        //imagesavealpha($image,true);
         //imagepng($image, $img_d, 0);
         imagejpeg($image, $img_d);
         imagedestroy($image);
         imagedestroy($watermark);
-		//var_dump($size);
-		//var_dump($watermark_width);
-		//var_dump($watermark_height);
+        //var_dump($size);
+        //var_dump($watermark_width);
+        //var_dump($watermark_height);
     }
-	
+
     public static function gbk_substr($string, $length, $dot = '  ......', $charset = 'gbk') {
         if (strlen($string) <= $length) {
             return $string;
@@ -174,7 +245,8 @@ class Tool {
             return false;
         }
     }
- /**
+
+    /**
      * @param: int $image_width: dimension of image
      * @param: int $image_height: dimension of image
      * @param: int $digits: the number of digits that will be displayed in the image
@@ -244,7 +316,6 @@ class Tool {
         /**
           $i is for loop, $j is for direction: near/up or far/down
          */
-        
         //App_Test::objectLog('$vcode:',DOCROOT . 'image/icon/arial.ttf',__FILE__, __LINE__, __CLASS__, __METHOD__);	
         for ($i = 1, $j = 1; $i <= $digits; $i++) {
             $remainder = $symbol_array[$rand_number % $symbol_length];  //get the last digit
@@ -263,7 +334,7 @@ class Tool {
             $j *= -1;
             $str_y += rand(1, 10) * $j; //up or down several random pixels between 1 and 20
         }
-            //\Zx\Test\Test::object_log('$vcode', $vcode, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('$vcode', $vcode, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $_SESSION['VCODE'] = $vcode;
         header('Content-type: image/jpeg');
         //$image_file = str_replace(' ','.', microtime()).'.jpeg';
@@ -272,5 +343,5 @@ class Tool {
         imagedestroy($im);
         //return array('rand_number'=>$rand_number, 'image'=>$image_file);
     }
-    
+
 }

@@ -23,23 +23,23 @@ class Answer extends Base {
 
    
     /**
-     * must enter user id, question_id and content 
+     * must enter user id, qid and content 
      */
     public function create() {
         $success = false;
         if (isset($_POST['submit']) && 
-                isset($_POST['user_id']) && 
-                isset($_POST['question_id']) && 
+                isset($_POST['uid']) && 
+                isset($_POST['qid']) && 
                 isset($_POST['content'])) {
-            $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
-            $question_id = isset($_POST['question_id']) ? trim($_POST['question_id']) : 0;
+            $uid = isset($_POST['uid']) ? intval($_POST['uid']) : 0;
+            $qid = isset($_POST['qid']) ? trim($_POST['qid']) : 0;
             $content = isset($_POST['content']) ? trim($_POST['content']) : '';
             $rank = isset($_POST['rank']) ? intval($_POST['rank']) : 0;
             $status = isset($_POST['status']) ? intval($_POST['status']) : 1;
 
-            if ($user_id >0 && $question_id> 0) {
-                $arr = array('user_id' => $user_id,
-                    'question_id' => $question_id,
+            if ($uid >0 && $qid> 0) {
+                $arr = array('uid' => $uid,
+                    'qid' => $qid,
                     'content' => $content,
                     'rank' => $rank,
                     'status' => $status,
@@ -49,12 +49,12 @@ class Answer extends Base {
                 }
             }
         } else {
-            $question_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
-            if (!Model_Question::exist_question_id($question_id)){
+            $qid = isset($this->params[0]) ? intval($this->params[0]) : 0;
+            if (!Model_Question::exist_qid($qid)){
                 Message::set_error_message('无效问题。');
                 header('Location: ' . $this->list_page);
             } else {
-                Message::set_error_message('user id,question_id and content not be empty。');
+                Message::set_error_message('user id,qid and content not be empty。');
             }
         }
         if ($success) {
@@ -154,14 +154,14 @@ class Answer extends Base {
     
     /**
      * answered by one user
-      retrieve_by_user_id/user_id/page/orderby/direction
+      retrieve_by_uid/uid/page/orderby/direction
      * 
      * content is content of answer, title is title of question
      */
-    public function retrieve_by_user_id() {
+    public function retrieve_by_uid() {
         \App\Transaction\Session::remember_current_admin_page();
         \App\Transaction\Session::set_current_l1_menu('Answer');
-        $user_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
+        $uid = isset($this->params[0]) ? intval($this->params[0]) : 0;
         $current_page = isset($this->params[1]) ? intval($this->params[1]) : 1;
         $order_by = isset($this->params[2]) ? $this->params[2] : 'id';
         $direction = isset($this->params[3]) ? $this->params[3] : 'ASC';
@@ -171,13 +171,13 @@ class Answer extends Base {
         } else {
             $where = '1';
         }
-        $answer_list = Model_Answer::get_answers_by_user_id_and_page_num($user_id, $where, $current_page, $order_by, $direction);
-        $num_of_records = Model_Answer::get_num_of_answers_by_user_id($user_id, $where);
+        $answer_list = Model_Answer::get_answers_by_uid_and_page_num($uid, $where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Answer::get_num_of_answers_by_uid($uid, $where);
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('answer_list', $answer_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_by_user_id.php');
-        View::set_action_var('user_id', $user_id);
+        View::set_view_file($this->view_path . 'retrieve_by_uid.php');
+        View::set_action_var('uid', $uid);
         View::set_action_var('answer_list', $answer_list);
         View::set_action_var('search', $search);
         View::set_action_var('order_by', $order_by);
@@ -187,13 +187,13 @@ class Answer extends Base {
     }
     /**
      * under one question
-      retrieve_by_question_id/question_id/page/orderby/direction
+      retrieve_by_qid/qid/page/orderby/direction
       * content is content of answer, title is title of question
      */
-    public function retrieve_by_question_id() {
+    public function retrieve_by_qid() {
         \App\Transaction\Session::remember_current_admin_page();
         \App\Transaction\Session::set_current_l1_menu('Answer');
-        $question_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
+        $qid = isset($this->params[0]) ? intval($this->params[0]) : 0;
         $current_page = isset($this->params[1]) ? intval($this->params[1]) : 1;
         $order_by = isset($this->params[2]) ? $this->params[2] : 'id';
         $direction = isset($this->params[3]) ? $this->params[3] : 'ASC';
@@ -203,13 +203,13 @@ class Answer extends Base {
         } else {
             $where = '1';
         }
-        $answer_list = Model_Answer::get_answers_by_question_id_and_page_num($question_id, $where, $current_page, $order_by, $direction);
-        $num_of_records = Model_Answer::get_num_of_answers_by_question_id($question_id,$where);
+        $answer_list = Model_Answer::get_answers_by_qid_and_page_num($qid, $where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Answer::get_num_of_answers_by_qid($qid,$where);
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('answer_list', $answer_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_by_question_id.php');
-        View::set_action_var('question_id', $question_id);
+        View::set_view_file($this->view_path . 'retrieve_by_qid.php');
+        View::set_action_var('qid', $qid);
         View::set_action_var('answer_list', $answer_list);
         View::set_action_var('search', $search);
         View::set_action_var('order_by', $order_by);

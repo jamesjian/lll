@@ -38,9 +38,9 @@ class Question extends Base {
      */
 
     public function content() {
-        $question_id = $this->params[0]; //it's an id
+        $qid = $this->params[0]; //it's an id
         $current_page_num = isset($this->params[2]) ? $this->params[2] : 1;
-        $question = Model_Question::get_one($question_id);
+        $question = Model_Question::get_one($qid);
         //\Zx\Test\Test::object_log('$question', $question, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($question) {
 
@@ -49,12 +49,12 @@ class Question extends Base {
             Transaction_Html::set_title($question['title']);
             Transaction_Html::set_keyword($question['title'] . str_replace('#', ',', $question['tag_names']));
             Transaction_Html::set_description($question['title']);
-            Model_Question::increase_rank($question_id);
+            Model_Question::increase_rank($qid);
 
             View::set_view_file($this->view_path . 'one_question.php');
-            $answers = Model_Answer::get_active_answers_by_question_id_and_page_num($question_id, $current_page_num);
-            $num_of_answers = Model_Answer::get_num_of_active_answers_by_question_id($question_id);
-            //$related_questions = Model_Question::get_10_active_related_questions($question_id);
+            $answers = Model_Answer::get_active_answers_by_qid_and_page_num($qid, $current_page_num);
+            $num_of_answers = Model_Answer::get_num_of_active_answers_by_qid($qid);
+            //$related_questions = Model_Question::get_10_active_related_questions($qid);
             $related_questions = array();
             $latest_questions = array();
             View::set_action_var('question', $question);
@@ -90,13 +90,13 @@ class Question extends Base {
     /**
      * user id
       retrieve questions under a user
-      front/question/retrieve_by_user_id/id/page/3/, 3 is page number
+      front/question/retrieve_by_uid/id/page/3/, 3 is page number
      */
     public function user() {
-        $user_id = (isset($this->params[0])) ? $this->params[0] : 0;
+        $uid = (isset($this->params[0])) ? $this->params[0] : 0;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
-        if ($user_id != 0 && $user = Model_User::get_one($user_id)) {
+        if ($uid != 0 && $user = Model_User::get_one($uid)) {
             $home_url = HTML_ROOT;
             //$tag_url = FRONT_HTML_ROOT . 'question/tag/' . $tag['id']; 
             Transaction_Session::set_breadcrumb(0, $home_url, '首页');
@@ -107,9 +107,9 @@ class Question extends Base {
             Transaction_Html::set_description($tag['name']);
             $order_by = 'date_created';
             $direction = 'DESC';
-            $questions = Model_Question::get_active_questions_by_user_id_and_page_num($user_id, $current_page, $order_by, $direction);
+            $questions = Model_Question::get_active_questions_by_uid_and_page_num($uid, $current_page, $order_by, $direction);
             //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            $num_of_questions = Model_Question::get_num_of_active_questions_by_user_id($user_id);
+            $num_of_questions = Model_Question::get_num_of_active_questions_by_uid($uid);
             $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
             View::set_view_file($this->view_path . 'question_list_by_user.php');
             View::set_action_var('user', $user);

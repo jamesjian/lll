@@ -6,12 +6,12 @@ include 'search.php';
 <?php
 if ($user_list) {
     foreach ($user_list as $user) {
-	$user_id = $user['id'];
-	$link_user = FRONT_HTML_ROOT . 'user/detail/' . $user_id;
+	$uid = $user['id'];
+	$link_user = FRONT_HTML_ROOT . 'user/detail/' . $uid;
 ?>
 <tr>
 	<td><?php echo $user['id'];?></td>
-	<td><a href='<?php echo $link_user;?>'><?php echo $user['user_name'];?></a></td>
+	<td><a href='<?php echo $link_user;?>'><?php echo $user['uname'];?></a></td>
 </tr>
 <?php
     }

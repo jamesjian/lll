@@ -10,6 +10,7 @@ use \Zx\Model\Mysql;
   name varchar(255) NOT NULL DEFAULT '',
   num_of_questions unsigned mediumint(8) default 0,
   num_of_ads unsigned mediumint(8) default 0,
+  num_of_views unsigned int(11) default 0,
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */

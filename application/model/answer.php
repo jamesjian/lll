@@ -61,8 +61,8 @@ class Answer extends Base_Answer {
       according to category or keyword
       keywords are seperated by '^'
      */
-    public static function get_10_active_related_answers($answer_id) {
-        $answer = parent::get_one($answer_id);
+    public static function get_10_active_related_answers($aid) {
+        $answer = parent::get_one($aid);
         if ($answer) {
             $cat_id = $answer['cat_id'];
             $keywords = $answer['keyword'];
@@ -140,21 +140,21 @@ class Answer extends Base_Answer {
  /**
      */
     public static function get_active_answers_by_uid_and_page_num($uid, $where=1, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = " status=1 AND user_id=$uid AND ($where)" ;
+        $where = " status=1 AND uid=$uid AND ($where)" ;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
     public static function get_num_of_active_answers_by_uid($uid, $where=1) {
-        $where = " status=1 AND user_id=$uid AND ($where)" ;
+        $where = " status=1 AND uid=$uid AND ($where)" ;
         return parent::get_num($where);
     }    
-    public static function get_active_answers_by_question_id_and_page_num($question_id, $where=1, $page_num = 1, $order_by = 'a.date_created', $direction = 'ASC') {
-        $where = " a.status=1 AND a.question_id=$question_id AND ($where)" ;
+    public static function get_active_answers_by_qid_and_page_num($qid, $where=1, $page_num = 1, $order_by = 'a.date_created', $direction = 'ASC') {
+        $where = " a.status=1 AND a.qid=$qid AND ($where)" ;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
-    public static function get_num_of_active_answers_by_question_id($question_id, $where=1) {
-        $where = " a.status=1 AND a.question_id=$question_id AND ($where)" ;
+    public static function get_num_of_active_answers_by_qid($qid, $where=1) {
+        $where = " a.status=1 AND a.qid=$qid AND ($where)" ;
         return parent::get_num($where);
     }    
     
@@ -186,9 +186,9 @@ class Answer extends Base_Answer {
         return parent::get_all($where);
     }
 
-    public static function increase_rank($answer_id) {
+    public static function increase_rank($aid) {
         $sql = 'UPDATE answer SET rank=rank+1 WHERE id=:id';
-        $params = array(':id' => $answer_id);
+        $params = array(':id' => $aid);
         return Mysql::exec($sql, $params);
     }
 

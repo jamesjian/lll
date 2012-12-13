@@ -41,7 +41,7 @@ class Answer extends Base {
         //\Zx\Test\Test::object_log('$answer', $answer, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($answer) {
 
-            $answer_id = $answer['id'];
+            $aid = $answer['id'];
             $home_url = HTML_ROOT;
             $category_url = FRONT_HTML_ROOT . 'answer/category/' . $answer['cat_name'];
             Transaction_Session::set_breadcrumb(0, $home_url, '首页');
@@ -50,10 +50,10 @@ class Answer extends Base {
             Transaction_Html::set_title($answer['title']);
             Transaction_Html::set_keyword($answer['keyword'] . ',' . $answer['keyword_en']);
             Transaction_Html::set_description($answer['title'] . ' ' . $answer['title_en']);
-            Model_Answer::increase_rank($answer_id);
+            Model_Answer::increase_rank($aid);
 
             View::set_view_file($this->view_path . 'one_answer.php');
-            $relate_answers = Model_Answer::get_10_active_related_answers($answer_id);
+            $relate_answers = Model_Answer::get_10_active_related_answers($aid);
             View::set_action_var('answer', $answer);
             View::set_action_var('related_answers', $relate_answers);
         } else {
@@ -90,13 +90,13 @@ class Answer extends Base {
 
     /**
       retrieve questions under a user
-      front/question/retrieve_by_user_id/id/page/3/, 3 is page number
+      front/question/retrieve_by_uid/id/page/3/, 3 is page number
      */
-    public function retrieve_by_user_id() {
-        $user_id = (isset($this->params[0])) ? $this->params[0] : 0;
+    public function retrieve_by_uid() {
+        $uid = (isset($this->params[0])) ? $this->params[0] : 0;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
-        if ($user_id != 0 && $user = Model_User::get_one($user_id)) {
+        if ($uid != 0 && $user = Model_User::get_one($uid)) {
             $home_url = HTML_ROOT;
             //$tag_url = FRONT_HTML_ROOT . 'question/tag/' . $tag['id']; 
             Transaction_Session::set_breadcrumb(0, $home_url, '首页');
@@ -107,11 +107,11 @@ class Answer extends Base {
             Transaction_Html::set_description($tag['name']);
             $order_by = 'date_created';
             $direction = 'DESC';
-            $questions = Model_Answer::get_active_answers_by_user_id_and_page_num($user_id, $current_page, $order_by, $direction);
+            $questions = Model_Answer::get_active_answers_by_uid_and_page_num($uid, $current_page, $order_by, $direction);
             //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            $num_of_questions = Model_Answer::get_num_of_active_answers_by_user_id($user_id);
+            $num_of_questions = Model_Answer::get_num_of_active_answers_by_uid($uid);
             $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'answer_list_by_user_id.php');
+            View::set_view_file($this->view_path . 'answer_list_by_uid.php');
             View::set_action_var('user', $user);
             View::set_action_var('questions', $questions);
             View::set_action_var('order_by', $order_by);
@@ -179,16 +179,16 @@ class Answer extends Base {
         $success = false;
         $posted = array();
         $errors = array();
-        if (isset($_POST['submit']) && isset($_POST['question_id']) &&
+        if (isset($_POST['submit']) && isset($_POST['qid']) &&
                 isset($_POST['content']) && !empty($_POST['content']) 
         ) {
-            $question_id = intval($_POST['question_id']);
-            if (Model_Question::exist_question($question_id)) {
+            $qid = intval($_POST['qid']);
+            if (Model_Question::exist_question($qid)) {
                 $content = trim($_POST['content']);
 
                 $arr = array(
                     'content' => $content,
-                    'question_id'=>$question_id,
+                    'qid'=>$qid,
                 );
                 if (Transaction_Answer::reply_question($arr)) {
                     $success = true;
@@ -201,7 +201,7 @@ class Answer extends Base {
         } else {
             Zx_Message::set_error_message(' content can not be empty。');
         }
-        header('Location: ' . FRONT_HTML_ROOT . 'question/content/' . $question_id);
+        header('Location: ' . FRONT_HTML_ROOT . 'question/content/' . $qid);
         //always go to question or question list page
         
             /**

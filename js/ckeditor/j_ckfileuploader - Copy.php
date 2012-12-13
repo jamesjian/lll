@@ -4,17 +4,17 @@
 //use pdo or mysql or mysqli to fetch session data from database 
 define('DOCROOT', realpath(dirname('../../index.php')).DIRECTORY_SEPARATOR);
 switch ($_SERVER['SERVER_NAME']){
-    case 'fyl':
+    case 'localhost':
         define('PHPFILEROOT', realpath(dirname('../../../application/empty.php')).DIRECTORY_SEPARATOR);
-        include PHPFILEROOT . 'application/config/constant_fyl.php';
+        include PHPFILEROOT . 'application/config/constant_.php';
         break;
-    case 'fengyunlist.com.au':
-    case 'www.fengyunlist.com.au':
+    case 'test.com.au':
+    case 'www.test.com.au':
         define('PHPFILEROOT', '/home/fengyunl/application' . DIRECTORY_SEPARATOR);
-        include PHPFILEROOT . 'application/config/constant_fengyunlist.php';
+        include PHPFILEROOT . 'application/config/constant_test.php';
         break;
-    case 'fyl.preenet.com':
-        define('PHPFILEROOT', '/home/hang2005/public_html/fyl/application' . DIRECTORY_SEPARATOR);
+    case 'test.com':
+        define('PHPFILEROOT', '/home/hang2005/public_html/test/application' . DIRECTORY_SEPARATOR);
         include PHPFILEROOT . 'application/config/constant_preenet.php';
         break;
 }
@@ -72,7 +72,7 @@ define('EXT', '.php');
  * When using a legacy application with PHP >= 5.3, it is recommended to disable
  * deprecated notices. Disable with: E_ALL & ~E_DEPRECATED
  */
-if ($_SERVER['SERVER_NAME'] == 'fyl') {
+if ($_SERVER['SERVER_NAME'] == 'test') {
 	error_reporting(E_ALL | E_STRICT);
 } else {
 	error_reporting(0);

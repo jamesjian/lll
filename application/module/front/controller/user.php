@@ -27,9 +27,9 @@ class User extends Base {
             $login = true;
         } else {
             if (isset($_POST['submit'])) {
-                $user_name = (isset($_POST['user_name'])) ? trim($_POST['user_name']) : '';
+                $uname = (isset($_POST['uname'])) ? trim($_POST['uname']) : '';
                 $password = (isset($_POST['password'])) ? trim($_POST['password']) : '';
-                if (Transaction_User::verify_user($user_name, $password)) {
+                if (Transaction_User::verify_user($uname, $password)) {
                     $login = true;
                 }
             }
@@ -60,16 +60,16 @@ class User extends Base {
     public function check_account() {
         $result = false;
         $message = '';
-        $user_name = (isset($_POST['user_name'])) ? trim($_POST['user_name']) : '';
+        $uname = (isset($_POST['uname'])) ? trim($_POST['uname']) : '';
         $email = (isset($_POST['email'])) ? trim($_POST['email']) : '';
-        //\Zx\Test\Test::object_log('$user_name', $user_name, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        if (\Zx\Tool\Valid::alpha_numeric($user_name, true)) {
-          //  \Zx\Test\Test::object_log('$user_name', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
-            if (Model_User::exist_user_name_or_email($user_name) || Model_User::exist_user_name_or_email($email)) {
-            //                \Zx\Test\Test::object_log('$user_name', '1111', __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('$uname', $uname, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        if (\Zx\Tool\Valid::alpha_numeric($uname, true)) {
+          //  \Zx\Test\Test::object_log('$uname', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
+            if (Model_User::exist_uname_or_email($uname) || Model_User::exist_uname_or_email($email)) {
+            //                \Zx\Test\Test::object_log('$uname', '1111', __FILE__, __LINE__, __CLASS__, __METHOD__);
                 $message = "该账户已被注册, 请输入不同的账户名称";
             } else {
-              //              \Zx\Test\Test::object_log('$user_name', '2222', __FILE__, __LINE__, __CLASS__, __METHOD__);
+              //              \Zx\Test\Test::object_log('$uname', '2222', __FILE__, __LINE__, __CLASS__, __METHOD__);
                 $result = true;
                 $message = "该账户未被注册，";
             }
@@ -84,8 +84,8 @@ class User extends Base {
     }
 
     public function register() {
-        //\Zx\Test\Test::object_log('$user_name', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
-        //\Zx\Test\Test::object_log('$user_name', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('$uname', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('$uname', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
         //$user name, $password1, $password2, $email 
         $success = false;
         $errors = array();
@@ -93,18 +93,18 @@ class User extends Base {
         $vcode = (isset($_SESSION['VCODE'])) ? $_SESSION['VCODE'] : 'INVALID VCODE'; //must have vcode
 //App_Test::objectLog('$vcode', $vcode, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if (isset($_POST['vcode']) && trim($_POST['vcode']) == $vcode &&
-                !empty($_POST['user_name']) &&
+                !empty($_POST['uname']) &&
                 \Zx\Tool\Valid::email($_POST['email']) &&
                 !empty($_POST['password1']) && trim($_POST['password1']) == trim($_POST['password2'])) {
 
 
-            $user_name = trim($_POST['user_name']);
+            $uname = trim($_POST['uname']);
             $email = trim($_POST['email']);
             $vcode = trim($_POST['vcode']);
             $password = trim($_POST['password1']);
 
             $posted = array(
-                'user_name' => $user_name,
+                'uname' => $uname,
                 'email' => $email,
                 'vcode' => $vcode,
                 'password' => $password,
@@ -113,7 +113,7 @@ class User extends Base {
 
             if (Transaction_User::register_user($posted)) {
                 $success = true;
-                $message = "感谢您在" . SITENAME . "注册， 我们已经发送邮件到您的电子邮箱，请查看邮件并激活您的账户。 您很快就可以在fengyunlist.com.au上建立生意、 发布广告、 上传产品及发布需求或进行其他网络推广活动。";
+                $message = "感谢您在" . SITENAME . "注册， 我们已经发送邮件到您的电子邮箱，请查看邮件并激活您的账户。";
                 View::set_view_file($this->view_path . 'validation_message.php');
                 View::set_action_var('message', $message);
             }
@@ -128,14 +128,14 @@ class User extends Base {
     }
 
     /**
-     * activate user by check query string with substr(md5(user_name.email.password), 1, 30)
+     * activate user by check query string with substr(md5(uname.email.password), 1, 30)
      * in this application, after activation, go to account home page directly
      */
     public function activate() {
 
-        $user_id = intval($this->request->param('id', 0));
+        $uid = intval($this->request->param('id', 0));
         $code = $this->request->param('stuff', '');
-        if (Transaction_User::activate_user($user_id, $code)) {
+        if (Transaction_User::activate_user($uid, $code)) {
             Transaction_Html::goto_user_home_page();
         } else {
             Zx_Message::set_error_message("对不起， 您的账户未激活成功， 请重新激活， 或点击链接获取新的激活邮件， 或注册一个新账户");
@@ -197,13 +197,13 @@ class User extends Base {
             App_Http::goto_my_account_page();
         } else {
             //if not logged in
-            if (isset($_POST['user_name']) && !empty($_POST['user_name']) &&
+            if (isset($_POST['uname']) && !empty($_POST['uname']) &&
                     isset($_POST['password']) && !empty($_POST['password'])
             ) {
-                $user_name = $_POST['user_name'];
+                $uname = $_POST['uname'];
                 $password = $_POST['password'];
 
-                if (Transaction_User::verify_user($user_name, $password)) {
+                if (Transaction_User::verify_user($uname, $password)) {
                     Transaction_Html::goto_user_home_page();
                 } else {
                     //if not valid, display form again
@@ -279,7 +279,7 @@ class User extends Base {
     /**
      * ajax for add company form
      */
-    public function exist_user_name_ajax() {
+    public function exist_uname_ajax() {
 
         $suburb_name = isset($_POST['suburb_name']) ? trim($_POST['suburb_name']) : '';
         $message = '';
@@ -322,9 +322,9 @@ class User extends Base {
     }
 
     public function detail() {
-        $user_id = $this->params[0];
+        $uid = $this->params[0];
 
-        $user = Model_User::get_one($user_id);
+        $user = Model_User::get_one($uid);
         //\Zx\Test\Test::object_log('$article', $article, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($user) {
 
@@ -337,8 +337,8 @@ class User extends Base {
             Transaction_Html::set_keyword($user['name']);
             Transaction_Html::set_description($user['name']);
             //Model_Article::increase_rank($article_id);
-            $recent_questions = Model_Question::get_recent_questions_by_user_id($user_id);
-            $recent_answers = Model_Question::get_recent_answers_by_user_id($user_id);
+            $recent_questions = Model_Question::get_recent_questions_by_uid($uid);
+            $recent_answers = Model_Question::get_recent_answers_by_uid($uid);
             View::set_view_file($this->view_path . 'one_user.php');
             View::set_action_var('user', $user);
             View::set_action_var('recent_questions', $recent_questions);

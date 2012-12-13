@@ -38,9 +38,9 @@ class Question extends Base_Question {
      * tag_ids like '1@2@3', tag_names like 'x1@x2@x3'
      * use id to find related questions
      */
-    public static function get_10_active_related_questions($question_id) {
+    public static function get_10_active_related_questions($qid) {
         $questions = array();
-        $question = parent::get_one($question_id);
+        $question = parent::get_one($qid);
         if ($question) {
             $tag_ids = $question['tag_ids'];
             
@@ -130,24 +130,24 @@ class Question extends Base_Question {
     /**
      */
     public static function get_active_questions_by_uid_and_page_num($uid, $where=1,$page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = ' status=1 AND user_id=' . $uid;
+        $where = ' status=1 AND uid=' . $uid;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
     public static function get_questions_by_uid_and_page_num($uid, $where = '1', $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = ' (user_id=' . $uid . ')  AND (' . $where . ')';
+        $where = ' (uid=' . $uid . ')  AND (' . $where . ')';
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_questions_by_uid($uid, $where = '1') {
-        $where = ' (user_id=' . $uid . ')  AND (' . $where . ')';
+        $where = ' (uid=' . $uid . ')  AND (' . $where . ')';
         return parent::get_num($where);
     }
 
     public static function get_num_of_active_questions_by_uid($uid) {
-        $where = ' status=1 AND user_id=' . $uid;
+        $where = ' status=1 AND uid=' . $uid;
         return parent::get_num($where);
     }
  /**
@@ -187,15 +187,15 @@ class Question extends Base_Question {
         return parent::get_num($where);
     }
 
-    public static function increase_rank($question_id) {
+    public static function increase_rank($qid) {
         $sql = 'UPDATE ' . self::$table .  ' SET rank=rank+1 WHERE id=:id';
-        $params = array(':id' => $question_id);
+        $params = array(':id' => $qid);
         return Mysql::exec($sql, $params);
     }
 
-    public static function increase_num_of_answers($question_id) {
+    public static function increase_num_of_answers($qid) {
         $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers+1 WHERE id=:id";
-        $params = array(':id' => $question_id);
+        $params = array(':id' => $qid);
         return Mysql::exec($sql, $params);
     }
     public static function get_latest10() {

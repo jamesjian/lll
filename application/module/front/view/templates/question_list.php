@@ -35,8 +35,8 @@
                             <?php
                         }
                         ?>
-                    <a href="<?php echo FRONT_HTML_ROOT . 'user/detail' . $question['user_id']; ?>">
-                        <?php echo $question['user_name']; ?></a>
+                    <a href="<?php echo FRONT_HTML_ROOT . 'user/detail' . $question['uid']; ?>">
+                        <?php echo $question['uname']; ?></a>
                     <?php echo $question['date_created']; ?>
                 </li>
                 <li><?php echo $regions[$question['region']]; ?></li>

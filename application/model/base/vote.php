@@ -7,26 +7,26 @@ use \Zx\Model\Mysql;
 this one is for user vote question/answer/ad, when user vote them, it will be recorded here
 prevent one user from voting one item multiple times
   CREATE TABLE usertoanswer (
-  user_id mediumint(8) not null 0,
+  uid mediumint(8) not null 0,
  item_type tinyint(1) NOT NULL DEFAULT '1',  //1. question, 2. answer, 3. ad
  item_id mediumint(8) not null default 0, 
-   primary key (user_id, item_type, item_id)
+   primary key (uid, item_type, item_id)
  } engine=innodb default charset=utf8
 */
 class Vote {
-    public static $fields = array('user_id','item_type', 'item_id');
+    public static $fields = array('uid','item_type', 'item_id');
     public static $table = TABLE_VOTE;
      /**
      *
-     * @param int $user_id, $item_type and $item_id is a composite primary key
+     * @param int $uid, $item_type and $item_id is a composite primary key
      * @return 1D array or boolean when false 
      */
-    public static function get_one($user_id, $item_type, $item_id) {
+    public static function get_one($uid, $item_type, $item_id) {
         $sql = "SELECT *
             FROM " . self::$table . " 
-            WHERE user_id=:user_id AND item_type=:item_type AND item_id=:item_id
+            WHERE uid=:uid AND item_type=:item_type AND item_id=:item_id
         ";
-        $params = array(':user_id' => $user_id,
+        $params = array(':uid' => $uid,
             ':item_type'=> $item_type,
             ':item_id'=> $item_id
             );
@@ -101,11 +101,11 @@ class Vote {
         return Mysql::exec($sql, $params);
     }
 
-    public static function delete($user_id, $item_type, $item_id) {
+    public static function delete($uid, $item_type, $item_id) {
         $sql = "Delete FROM " . self::$table ." WHERE 
-            user_id=:user_id AND item_type=:item_type AND item_id=:item_id
+            uid=:uid AND item_type=:item_type AND item_id=:item_id
         ";
-        $params = array(':user_id' => $user_id,
+        $params = array(':uid' => $uid,
             ':item_type'=> $item_type,
             ':item_id'=> $item_id
             );

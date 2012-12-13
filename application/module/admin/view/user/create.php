@@ -6,8 +6,8 @@ Zx_Message::show_message();
     <fieldset>
         <legend>Create a user</legend>
         <dl>      
-            <dt>Name:</dt><dd><input type="text" name="user_name" size="50" value="<?php
-            if (isset($_POST['user_name'])) echo $_POST['user_name'];?>"/></dd>
+            <dt>Name:</dt><dd><input type="text" name="uname" size="50" value="<?php
+            if (isset($_POST['uname'])) echo $_POST['uname'];?>"/></dd>
             <dt> Password: </dt><dd><input type="text" name="password" size="50"  value="<?php
             if (isset($_POST['password'])) echo $_POST['password'];?>"/></dd>
             <dt> Email: </dt><dd><input type="text" name="email" size="50"  value="<?php

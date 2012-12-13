@@ -30,7 +30,7 @@ class Question extends Base {
      */
     public function my_questions()
     {       
-        $user_id = $this->user_id;
+        $uid = $this->uid;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
             $home_url = HTML_ROOT;
@@ -43,9 +43,9 @@ class Question extends Base {
             Transaction_Html::set_description($tag['name']);
             $order_by = 'date_created';
             $direction = 'DESC';
-            $questions = Model_Question::get_active_questions_by_user_id_and_page_num($user_id, $current_page, $order_by, $direction);
+            $questions = Model_Question::get_active_questions_by_uid_and_page_num($uid, $current_page, $order_by, $direction);
             //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            $num_of_questions = Model_Question::get_num_of_active_questions_by_user_id($user_id);
+            $num_of_questions = Model_Question::get_num_of_active_questions_by_uid($uid);
             $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
             View::set_view_file($this->view_path . 'my_questions.php');
             View::set_action_var('user', $this->user);

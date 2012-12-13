@@ -7,17 +7,17 @@
   registered: after registration and before activation
   disabled: by admin, when this user login or do anything, the software will ask it to contact the admin. 
 
- * 
  * difference between inactive an disabled: the former can be activated, the latter is disabled by admin and cannot do anything.
     0. inactive 	//be disabled
     1. active           //after activation
     2. registered       //after registration
     3. deleted  (not implemented)
+
  * 
  * 
  *2. question  when status=2
- * valid 1 valid, 0 invalid
- * status 0: inactive by user, 1: active, 2: disabled by admin (because of invalid)
+ * valid 0 not sure (can be abused, has abuse button), 1 valid(cannot be abused, no abuse button), 2 invalid(has been abused, no display at all)
+ * status 0: inactive by user, 1: active, 2: disabled by admin (because of invalid, valid=2)
  * 
  * 
  * search question: search title and tag 

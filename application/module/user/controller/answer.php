@@ -33,7 +33,7 @@ class Answer extends Base {
      * 
      */
     public function vote() {
-        $user_id =$this->user_id;
+        $uid =$this->uid;
     }
 
     /**
@@ -54,9 +54,9 @@ class Answer extends Base {
         Transaction_Html::set_description($tag['name']);
         $order_by = 'date_created';
         $direction = 'DESC';
-        $questions = Model_Answer::get_active_answers_by_user_id_and_page_num($this->user_id, $current_page, $order_by, $direction);
+        $questions = Model_Answer::get_active_answers_by_uid_and_page_num($this->uid, $current_page, $order_by, $direction);
         //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $num_of_questions = Model_Answer::get_num_of_active_answers_by_user_id($this->user_id);
+        $num_of_questions = Model_Answer::get_num_of_active_answers_by_uid($this->uid);
         $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
         View::set_view_file($this->view_path . 'my_answers.php');
         View::set_action_var('user', $this->user);
@@ -69,19 +69,19 @@ class Answer extends Base {
 
     public function answer() {
         $success = false;
-        $user_id =$this->user_id;
+        $uid =$this->uid;
         if (isset($_POST['submit']) &&
-                isset($_POST['user_id']) &&
-                isset($_POST['question_id']) &&
+                isset($_POST['uid']) &&
+                isset($_POST['qid']) &&
                 isset($_POST['content'])) {
-            $question_id = isset($_POST['question_id']) ? trim($_POST['question_id']) : 0;
+            $qid = isset($_POST['qid']) ? trim($_POST['qid']) : 0;
             $content = isset($_POST['content']) ? trim($_POST['content']) : '';
             $rank = isset($_POST['rank']) ? intval($_POST['rank']) : 0;
             $status = isset($_POST['status']) ? intval($_POST['status']) : 1;
 
-            if ($user_id > 0 && $question_id > 0) {
-                $arr = array('user_id' => $user_id,
-                    'question_id' => $question_id,
+            if ($uid > 0 && $qid > 0) {
+                $arr = array('uid' => $uid,
+                    'qid' => $qid,
                     'content' => $content,
                     'rank' => $rank,
                     'status' => $status,
@@ -91,12 +91,12 @@ class Answer extends Base {
                 }
             }
         } else {
-            $question_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
-            if (!Model_Question::exist_question_id($question_id)) {
+            $qid = isset($this->params[0]) ? intval($this->params[0]) : 0;
+            if (!Model_Question::exist_qid($qid)) {
                 Message::set_error_message('无效问题。');
                 header('Location: ' . $this->list_page);
             } else {
-                Message::set_error_message('user id,question_id and content not be empty。');
+                Message::set_error_message('user id,qid and content not be empty。');
             }
         }
         if ($success) {
@@ -118,15 +118,15 @@ class Answer extends Base {
     {
         $success = false;
         if (isset($_POST['submit']) &&
-                isset($_POST['answer_ids']) &&
+                isset($_POST['aids']) &&
                 isset($_POST['ad_id'])) {
-            $answer_ids = isset($_POST['answer_ids']) ? trim($_POST['answer_ids']) : 0;
+            $aids = isset($_POST['aids']) ? trim($_POST['aids']) : 0;
             $ad_id = isset($_POST['ad_id']) ? intval($_POST['ad_id']) : 0;
 
-            if ($answer_ids <> '' &&  $ad_id>0) {
-                $arr = array('answer_ids' => $answer_ids,
+            if ($aids <> '' &&  $ad_id>0) {
+                $arr = array('aids' => $aids,
                     'ad_id' => $ad_id,
-                    'ad_id' => $this->user_id,
+                    'ad_id' => $this->uid,
                 );
                 if (Transaction_Answer::link_ad($arr)) {
                     $success = true;
@@ -134,11 +134,11 @@ class Answer extends Base {
             }
         } else {
             $ad_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
-            if ($ad_id>0 && Model_Ad::ad_belong_to_user($ad_id, $this->user_id)) {
+            if ($ad_id>0 && Model_Ad::ad_belong_to_user($ad_id, $this->uid)) {
                 //Message::set_error_message('无效问题。');
                 //header('Location: ' . $this->list_page);
             } else {
-                Message::set_error_message('user id,question_id and content not be empty。');
+                Message::set_error_message('user id,qid and content not be empty。');
             }
         }
         if ($success) {

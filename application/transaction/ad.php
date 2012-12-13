@@ -37,7 +37,7 @@ class Ad {
                 $message = "可用积分为0";
             }
                 Model_Ad::update($ad_id, $ad_arr);
-                Model_User::update($user_id, $user_arr);
+                Model_User::update($uid, $user_arr);
         } else {
             $message = "无效的广告序号";
         }
@@ -52,7 +52,7 @@ class Ad {
         }
     }
     /**
-     * in controller, check Model_User::available_score($this->user_id) to make sure score is more than 1
+     * in controller, check Model_User::available_score($this->uid) to make sure score is more than 1
      * @param array $arr
      * @return boolean
      */

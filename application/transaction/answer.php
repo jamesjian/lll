@@ -16,16 +16,16 @@ class Answer {
 
     public static function reply_question($arr = array()) {
         if (isset($_SESSION['user'])) {
-            $user_id = $_SESSION['user']['user_id'];
-            $user_name = $_SESSION['user']['user_name'];
+            $uid = $_SESSION['user']['uid'];
+            $uname = $_SESSION['user']['uname'];
             $status = 1;
         } else {
-            $user_id = Model_User::get_default_question_user_id();
-            $user_name = '匿名回答用户';
+            $uid = Model_User::get_default_question_uid();
+            $uname = '匿名回答用户';
             $status = 0;
         }
-        $arr['user_id'] = $user_id;
-        $arr['user_name'] = $user_name;
+        $arr['uid'] = $uid;
+        $arr['uname'] = $uname;
         $status = $status;
         if (count($arr) > 0 &&
                 isset($arr['content']) && trim($arr['content']) != ''
@@ -34,8 +34,8 @@ class Answer {
                 $arr['rank'] = 0; //initialize
 
             if (Model_Answer::create($arr)) {
-                Model_Question::increase_num_of_answers($arr['question_id']);
-                Model_User::increase_num_of_answers($arr['user_id']);
+                Model_Question::increase_num_of_answers($arr['qid']);
+                Model_User::increase_num_of_answers($arr['uid']);
                 Message::set_success_message('success');
                 return true;
             } else {
@@ -114,23 +114,23 @@ class Answer {
 
     public static function link_ad($arr) {
         $ad_id = $arr['ad_id'];
-        $user_id = $arr['user_id'];
+        $uid = $arr['uid'];
 
-        $answer_ids = $arr['answer_ids'];
-        if (strpos($answer_ids, '<')) {
+        $aids = $arr['aids'];
+        if (strpos($aids, '<')) {
             $domain = 'less than';
-            $answer_id = intval(str_replace('<', '', $answer_ids));
-            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE id<=' . $answer_id . ' AND user_id=' . $user_id;
-        } elseif (strpos($answer_ids, '>')) {
+            $aid = intval(str_replace('<', '', $aids));
+            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE id<=' . $aid . ' AND uid=' . $uid;
+        } elseif (strpos($aids, '>')) {
             $domain = 'more than';
-            $answer_id = intval(str_replace('>', '', $answer_ids));
-            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE id<=' . $answer_id . ' AND user_id=' . $user_id;
+            $aid = intval(str_replace('>', '', $aids));
+            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE id<=' . $aid . ' AND uid=' . $uid;
         } else {
             $domain = 'equal';
-            $answer_ids = explode(',', $answer_ids);
-            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE  user_id=' . $user_id . ' AND (';
-            foreach ($answer_ids as $answer_id) {
-                $update .= ' answer_id=' . $answer_id . ' OR ';
+            $aids = explode(',', $aids);
+            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE  uid=' . $uid . ' AND (';
+            foreach ($aids as $aid) {
+                $update .= ' aid=' . $aid . ' OR ';
             }
             $update = substr($update, 0, -4) . ')'; //remove last 'OR', and ')' 
         }

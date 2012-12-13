@@ -55,7 +55,7 @@ validate_create_form : function() {
         if ($('#register_form').length > 0) {
             $('#register_form').validate({
                 rules: {
-                    user_name: {
+                    uname: {
                         required: true
                     },
                     password1: {
@@ -74,7 +74,7 @@ validate_create_form : function() {
                     }
                 },
                 messages: {
-                    user_name: "请输入用户名",
+                    uname: "请输入用户名",
                     password1: "请输入密码",
                     password2:{ 
                         required: "请确认密码",
@@ -115,7 +115,7 @@ validate_create_form : function() {
         if ($('#login_form').length > 0) {
             $('#login_form').validate({
                 rules: {
-                    user_name: {
+                    uname: {
                         required: true
                     },
                     password: {
@@ -123,7 +123,7 @@ validate_create_form : function() {
                     }
                 },
                 messages: {
-                    user_name: "请输入用户名",
+                    uname: "请输入用户名",
                     password: "请输入密码"
                 }
             });

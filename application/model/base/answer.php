@@ -10,20 +10,21 @@ use App\Model\Question as Model_Question;
 /*
   CREATE TABLE answer (
   id unsigned MEDIUMINT(8) AUTO_INCREMENT PRIMARY KEY,
-  question_id unsigned MEDIUMINT(8) not null default 0,
-  user_id unsigned MEDIUMINT(7) not null default 0,
-  user_name varchar(30) not null '',  #user name is fixed
+  qid unsigned MEDIUMINT(8) not null default 0,
+  uid unsigned MEDIUMINT(7) not null default 0,
+  uname varchar(30) not null '',  #user name is fixed
   ad_id unsigned MEDIUMINT(8) not null default 0,
   content text,
-  num_of_votes unsigned smallint(4) default 0,
+  num_of_votes unsigned mediumint(7) default 0,
+  valid unsigned tinyint(1) not null default 1,
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */
 
 class Answer {
 
-    public static $fields = array('id', 'question_id', 'user_id', 'user_name', 'ad_id',
-        'content', 'num_of_votes', 'status', 'date_created');
+    public static $fields = array('id', 'qid', 'uid', 'uname', 'ad_id',
+        'content', 'num_of_votes','valid', 'status', 'date_created');
     public static $table = TABLE_ANSWER;
 
     /**
@@ -34,7 +35,7 @@ class Answer {
     public static function get_one($id) {
         $sql = "SELECT a.*, q.title, q.tag_names
             FROM  " . self::$table . " a
-            LEFT JOIN " . Model_Question::$table . " q ON q.id=a.question_id
+            LEFT JOIN " . Model_Question::$table . " q ON q.id=a.qid
             WHERE id=:id
         ";
         $params = array(':id' => $id);
@@ -51,7 +52,7 @@ class Answer {
     public static function get_one_by_where($where) {
         $sql = "SELECT a.*, q.title, q.tag_names
             FROM  " . self::$table . " a
-            LEFT JOIN " . Model_Question::$table . " q ON q.id=a.question_id
+            LEFT JOIN " . Model_Question::$table . " q ON q.id=a.qid
             WHERE $where
         ";
         return Mysql::select_one($sql);
@@ -60,7 +61,7 @@ class Answer {
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
         $sql = "SELECT a.*, q.title, q.tag_names
             FROM " . self::$table . "  a
-            LEFT JOIN " . Model_Question::$table . "  q ON q.id=a.question_id
+            LEFT JOIN " . Model_Question::$table . "  q ON q.id=a.qid
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count

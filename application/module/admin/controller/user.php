@@ -14,7 +14,7 @@ class User extends Base {
     public function init() {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/admin/view/user/';
-        $this->list_page = ADMIN_HTML_ROOT . 'user/retrieve/1/user_name/ASC/';
+        $this->list_page = ADMIN_HTML_ROOT . 'user/retrieve/1/uname/ASC/';
         \App\Transaction\Session::set_ck_upload_path('user');
     }
 
@@ -25,10 +25,10 @@ class User extends Base {
         Test::object_log('pp_product', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         $changed = false;
-        $user_id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+        $uid = isset($_POST['id']) ? intval($_POST['id']) : 0;
         $status = isset($_POST['status']) ? intval($_POST['status']) : 0;
-        if ($user_id > 0) {
-            if (Transaction_User::change_status($user_id, $status)) {
+        if ($uid > 0) {
+            if (Transaction_User::change_status($uid, $status)) {
                 $changed = true;
             }
         }
@@ -43,13 +43,13 @@ class User extends Base {
     public function create() {
         $success = false;
         if (isset($_POST['submit'])) {
-            $user_name = isset($_POST['user_name']) ? trim($_POST['user_name']) : '';
+            $uname = isset($_POST['uname']) ? trim($_POST['uname']) : '';
             $password = isset($_POST['password']) ? md5(trim($_POST['password'])) : '';
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
             $status = isset($_POST['status']) ? intval($_POST['status']) : 1;
 
-            if ($user_name <> '') {
-                $arr = array('user_name' => $user_name,
+            if ($uname <> '') {
+                $arr = array('uname' => $uname,
                     'password' => $password,
                     'email' => $email,
                     'status' => $status,
@@ -80,8 +80,8 @@ class User extends Base {
             $arr = array();
             if ($id <> 0) {
                 //user name cannot be updated at this time, otherwise, will update all user name fields in other tables
-                //if (isset($_POST['user_name']))
-                //    $arr['user_name'] = trim($_POST['user_name']);
+                //if (isset($_POST['uname']))
+                //    $arr['uname'] = trim($_POST['uname']);
                 if (!empty($_POST['password']))
                     $arr['password'] = md5(trim($_POST['password']));
                 if (isset($_POST['email']))
@@ -133,7 +133,7 @@ class User extends Base {
         $direction = isset($this->params[2]) ? $this->params[2] : 'ASC';
         $search = isset($this->params[3]) ? $this->params[3] : '';
         if ($search != '') {
-            $where = " user_name LIKE '%$search%' OR email LIKE '%$search%'";
+            $where = " uname LIKE '%$search%' OR email LIKE '%$search%'";
         } else {
             $where = '1';
         }

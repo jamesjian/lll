@@ -13,7 +13,7 @@ class Base {
     public $template_path;
     public $view_path = '';
     public $params = array();
-    public $user_id = 0;
+    public $uid = 0;
     public $user = NULL;
     public function init() {
         $this->params = Route::get_params();
@@ -26,8 +26,8 @@ class Base {
             
         } else {
             if (Transaction_User::user_has_loggedin()) {
-                $this->user_id = Transaction_User::get_user_id(); //it should be valid
-                $this->user = Model_User::get_one($this->user_id); //it should be valid
+                $this->uid = Transaction_User::get_uid(); //it should be valid
+                $this->user = Model_User::get_one($this->uid); //it should be valid
             } else {
                 header('Location: ' . HTML_ROOT . 'user/user/login');
             }

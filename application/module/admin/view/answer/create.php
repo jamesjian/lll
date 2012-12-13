@@ -6,10 +6,10 @@ Zx_Message::show_message();
     <fieldset>
         <legend>Create an Answer </legend>
         <dl>
-            <dt> Question id:</dt><dd><input type="text" name="question_id" size="50"  value="<?php
-            if (isset($_POST['question_id'])) echo $_POST['question_id'];?>"/></dd>
-            <dt> User id:</dt><dd><input type="text" name="user_id" size="50"  value="<?php
-            if (isset($_POST['user_id'])) echo $_POST['user_id'];?>"/></dd>
+            <dt> Question id:</dt><dd><input type="text" name="qid" size="50"  value="<?php
+            if (isset($_POST['qid'])) echo $_POST['qid'];?>"/></dd>
+            <dt> User id:</dt><dd><input type="text" name="uid" size="50"  value="<?php
+            if (isset($_POST['uid'])) echo $_POST['uid'];?>"/></dd>
             
             <dt> Rank:</dt><dd><input type="text" name="rank" size="50"  value="<?php
             if (isset($_POST['rank'])) echo $_POST['rank'];?>"/>    </dd>
@@ -18,8 +18,8 @@ Zx_Message::show_message();
                 <input type="radio" name="status" value="0" />Inactive    </dd>
             <dt> Content: </dt><dd><textarea cols="10" rows="30" name="content"><?php
             if (isset($_POST['content'])) echo $_POST['content'];?></textarea></dd>
-             <dt> <input type="hidden" name="question_id" value="<?php if (isset($_POST['question_id']))
-                echo $_POST['question_id']; else echo $question_id;?>" /></dt>
+             <dt> <input type="hidden" name="qid" value="<?php if (isset($_POST['qid']))
+                echo $_POST['qid']; else echo $qid;?>" /></dt>
             <dd><input type="submit" name="submit" value="create" /></dd>
         </dl>
     </fieldset>    

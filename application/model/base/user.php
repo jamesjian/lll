@@ -10,13 +10,13 @@ use \Zx\Model\Mysql;
  * #score has been consumed by ad
   CREATE TABLE user (
   id unsigned mediumint(7) AUTO_INCREMENT primary key,
-  user_name varchar(30) not null default '',
+  uname varchar(30) not null default '',
   password varchar(255) NOT NULL DEFAULT '',
   email varchar(255) not null default '' unique ,
   image varchar(255) not null default '' ,
   num_of_questions unsigned mediumint(6) not null default 0,
   num_of_answers unsigned mediumint(6) not null default 0, 
-  num_of_ads unsigned mediumint(6) not null default 0, 
+  num_of_ads unsigned 30(6) not null default 0, 
   score unsigned mediumint(6) not null default 0,  
  invalid_score unsigned MEDIUMINT(6) not null default 0,
  ad_score unsigned MEDIUMINT(6) not null default 0, 
@@ -26,7 +26,7 @@ use \Zx\Model\Mysql;
 
 class User {
 
-    public static $fields = array('id', 'user_name', 'password', 'email',
+    public static $fields = array('id', 'uname', 'password', 'email',
         'image', 'num_of_questions','num_of_answers','num_of_ads',
         'score', 'invalid_score','ad_score', 'status', 'date_created');
     public static $table = TABLE_USER;

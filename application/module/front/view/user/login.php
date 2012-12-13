@@ -15,7 +15,7 @@ if (isset($errors)) {
         <table>
             <tr>
                 <td class="table_title required">您的用户名或电子邮箱:</td>
-                <td class="table_input">  <input type="text" name="user_name"  class="form_element"   id="user_name" /></td>
+                <td class="table_input">  <input type="text" name="uname"  class="form_element"   id="uname" /></td>
             </tr>
             <tr>
                 <td class="table_title required">您的用户密码:</td>

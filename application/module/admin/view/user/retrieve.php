@@ -9,7 +9,7 @@ if ($user_list) {
 $link_prefix = ADMIN_HTML_ROOT . "user/retrieve/1/";
 $link_postfix = ($direction == 'ASC')? '/DESC' : '/ASC';
 $link_id = $link_prefix . 'id' . $link_postfix;
-$link_user_name = $link_prefix . 'user_name' . $link_postfix;
+$link_uname = $link_prefix . 'uname' . $link_postfix;
 $link_email = $link_prefix . 'email' . $link_postfix;
 $link_status = $link_prefix . 'status' . $link_postfix;
 $link_num_of_questions = $link_prefix . 'num_of_questions' . $link_postfix;
@@ -20,7 +20,7 @@ $link_date_created = $link_prefix . 'date_created' . $link_postfix;
 <table>
 <tr>
 <th><a href='<?php echo $link_id;?>'>id</a></th>
-<th><a href='<?php echo $link_user_name;?>'>Name</a></th>
+<th><a href='<?php echo $link_uname;?>'>Name</a></th>
 <th><a href='<?php echo $link_email;?>'>Email</a></th>
 <th><a href='<?php echo $link_status;?>'>Status</a></th>
 <th>delete</th>
@@ -43,7 +43,7 @@ $link_date_created = $link_prefix . 'date_created' . $link_postfix;
 ?>
 <tr>
 	<td><?php echo $user['id'];?></td>
-	<td><?php echo $user['user_name'];?></td>
+	<td><?php echo $user['uname'];?></td>
 	<td><?php echo $user['email'];?></td>
   <td>
     <?php

@@ -11,22 +11,22 @@ use \Zx\Model\Mysql;
  id unsigned mediumint(8) AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
  region varchar(3) not null default 'AU',
-  user_id unsigned mediumint(7) not null 0,
-  user_name varchar(30) not null '',  #user name is fixed
-  tag_ids varchar(255) NOT NULL DEFAULT '',
-  tag_names varchar(255) not null default '', #tag names are fixed  
+  uid unsigned mediumint(7) not null 0,
+  uname varchar(30) not null '',  #user name is fixed
+  tids varchar(255) NOT NULL DEFAULT '',
+  tnames varchar(255) not null default '', #tag names are fixed  
   content text,
-  num_of_answers smallint(4) default 0,
-  num_of_views int(11) default 0,
-  num_of_votes int(11) default 0,
+  num_of_answers unsigned smallint(4) default 0,
+  num_of_views unsigned int(11) default 0,
+  num_of_votes unsigned mediumint(7) default 0,
   valid unsigned tinyint(1) not null default 1,
   status unsigned tinyint(1) not null default 1,  //1: active, 2. 
   date_created datetime) engine=innodb default charset=utf8
  */
 
 class Question {
-    public static $fields = array('id','title','region', 'user_id','user_name',
-        'tag_ids','tag_names','num_of_answers',
+    public static $fields = array('id','title','region', 'uid','uname',
+        'tids','tnames','num_of_answers',
         'content', 'num_of_views','num_of_votes', 'valid', 'status', 'date_created');
     public static $table = TABLE_QUESTION;
     /**

@@ -18,13 +18,13 @@
         <?php
         if ($user) {
             echo $use['id'], BR;
-            echo $use['user_name'], BR;
+            echo $use['uname'], BR;
             echo $use['id'], BR;
             ?>
             <ul>
                 <?php
                 foreach ($answers as $answer) {
-                    $link = FRONT_HTML_ROOT . 'question/detail/' . $answer['question_id'];
+                    $link = FRONT_HTML_ROOT . 'question/detail/' . $answer['qid'];
                     ?>
                         <li><a href='<?php echo $link;?>'><?php echo $answer['title'];?></a></li>
                         <?php

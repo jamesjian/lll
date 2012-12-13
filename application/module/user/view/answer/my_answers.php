@@ -18,7 +18,7 @@
         <?php
         if ($user) {
             echo $use['id'], BR;
-            echo $use['user_name'], BR;
+            echo $use['uname'], BR;
             echo $use['id'], BR;
             ?>
             <ul>

@@ -151,15 +151,15 @@ site = {
         return false;
     },
     check_account: function(){
-        var user_name = $.trim($('input[name="user_name"]').val());
+        var uname = $.trim($('input[name="uname"]').val());
         var email = $.trim($('input[name="email"]').val());
-        if (user_name != ''  && email !='') {
+        if (uname != ''  && email !='') {
             url = $(this).attr('href');
             $.ajax({
                 type: "POST",
                 url: url,
                 data: {
-                    user_name:user_name, 
+                    uname:uname, 
                     email: email
                 },
                 dataType:  'json',

@@ -62,16 +62,16 @@ class Ad extends Base {
      */
     public function my_ads() {
         Transaction_Html::remember_user_page();
-        $user_id = $this->user_id;
+        $uid = $this->uid;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
         $home_url = HTML_ROOT;
         //$tag_url = FRONT_HTML_ROOT . 'ad/tag/' . $tag['id']; 
         $order_by = 'date_created';
         $direction = 'DESC';
-        $ads = Model_Ad::get_active_ads_by_user_id_and_page_num($user_id, $current_page, $order_by, $direction);
+        $ads = Model_Ad::get_active_ads_by_uid_and_page_num($uid, $current_page, $order_by, $direction);
         //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $num_of_ads = Model_Ad::get_num_of_active_ads_by_user_id($user_id);
+        $num_of_ads = Model_Ad::get_num_of_active_ads_by_uid($uid);
         $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
         View::set_view_file($this->view_path . 'my_ads.php');
         View::set_action_var('user', $this->user);
@@ -100,9 +100,9 @@ class Ad extends Base {
                 'tag_names' => $tag_names,
                 'score' => $score,
                 'content' => $content,
-                'user_id'=>$this->user_id,
+                'uid'=>$this->uid,
             );
-            if (Model_User::available_score($this->user_id) && Transaction_Ad::create_by_user($arr)) {
+            if (Model_User::available_score($this->uid) && Transaction_Ad::create_by_user($arr)) {
                 $success = true;
             }
         } else {

@@ -11,7 +11,7 @@ status: 0: created(when report an abuse), 2. confirmed(it's a real abuse), 3. ca
  id unsigned MEDIUMINT(8)   AUTO_INCREMENT PRIMARY KEY,
  item_type unsigned tinyint(3) NOT NULL DEFAULT '1',  
  item_id unsigned MEDIUMINT(8)   not null default 0, 
- user_id unsigned MEDIUMINT(7)   not null 0,  //can be empty
+ uid unsigned MEDIUMINT(7)   not null 0,  //can be empty
  cat_id unsigned tinyint(3) not null default '1',
   content text,
   reportable unsigned tinyint(1) not null default 1,// if completely valid, 0, else 1
@@ -19,7 +19,7 @@ status: 0: created(when report an abuse), 2. confirmed(it's a real abuse), 3. ca
   date_created datetime) engine=innodb default charset=utf8
 */
 class Abuse {
-    public static $fields = array('id','item_type','item_id','user_id',
+    public static $fields = array('id','item_type','item_id','uid',
         'cat_id','content','status', 'date_created');
     public static $table = TABLE_ABUSE;
     

@@ -1,18 +1,18 @@
 <?php
 include 'search.php';
-$create_link = ADMIN_HTML_ROOT . 'question/create/' . $user_id;
+$create_link = ADMIN_HTML_ROOT . 'question/create/' . $uid;
 ?>
 <a href="<?php echo $create_link;?>">Create</a>
 <?php
 if ($question_list) {
-$link_prefix = ADMIN_HTML_ROOT . "question/retrieve_by_user_id/$user_id/$current_page/";
+$link_prefix = ADMIN_HTML_ROOT . "question/retrieve_by_uid/$uid/$current_page/";
 $next_direction = ($direction == 'ASC') ? 'DESC' : 'ASC';  //change direction
 $link_postfix =  "/$next_direction/$search";
 $link_id = $link_prefix . 'id' . $link_postfix;
 $link_title = $link_prefix . 'title' . $link_postfix;
 $link_tag_names = $link_prefix . 'tag_names' . $link_postfix;
 $link_rank = $link_prefix . 'rank' . $link_postfix;
-$link_user_name = $link_prefix . 'user_name' . $link_postfix;
+$link_uname = $link_prefix . 'uname' . $link_postfix;
 $link_status = $link_prefix . 'status' . $link_postfix;
 $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' : 
                                          HTML_ROOT . 'image/icon/down.png'; 
@@ -24,7 +24,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <th><a href='<?php echo $link_title;?>'>title</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_tag_names;?>'>tags</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_rank;?>'>rank</a><img src="<?php echo $direction_img;?>" /></th>
-<th><a href='<?php echo $link_user_name;?>'>user</a><img src="<?php echo $direction_img;?>" /></th>
+<th><a href='<?php echo $link_uname;?>'>user</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_status;?>'>status</a><img src="<?php echo $direction_img;?>" /></th>
 <th>delete</th>
 <th>update</th>
@@ -32,16 +32,16 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 
 <?php
     foreach ($question_list as $question) {
-	$question_id = $question['id'];
-	$link_delete = ADMIN_HTML_ROOT . 'question/delete/' . $question_id;
-	$link_update = ADMIN_HTML_ROOT . 'question/update/' . $question_id;
+	$qid = $question['id'];
+	$link_delete = ADMIN_HTML_ROOT . 'question/delete/' . $qid;
+	$link_update = ADMIN_HTML_ROOT . 'question/update/' . $qid;
 ?>
 <tr>
 	<td><?php echo $question['id'];?></td>
 	<td><?php echo $question['title'];?></td>
 	<td><?php echo $question['tag_names'];?></td>
 	<td><?php echo $question['rank'];?></td>
-	<td><?php echo $question['user_name'];?></td>
+	<td><?php echo $question['uname'];?></td>
         <td><?php echo $question['status'];?></td>
 	<td><a href='<?php echo $link_delete;?>' class="delete_question">delete</a></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
@@ -51,7 +51,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	?>
 	</table>
 <?php
-$link_prefix = ADMIN_HTML_ROOT . 'question/retrieve_by_user_id/' . $user_id;	
+$link_prefix = ADMIN_HTML_ROOT . 'question/retrieve_by_uid/' . $uid;	
 $link_postfix = "/$order_by/$direction/$search";
 include ADMIN_VIEW_PATH . 'templates/pagination.php';
 } else {

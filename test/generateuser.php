@@ -39,7 +39,7 @@ $j = 0;
 $en_leng = count($rows_en);
 $cn_leng = count($rows_cn);
 $k = 0;
-$q = "insert into ts8wl_user(user_name, email) values ";
+$q = "insert into ts8wl_user(uname, email) values ";
 //$length=15;
 for ($i = 0; $i < $en_leng; $i++) {
     //echo $i, '<br />';
@@ -55,7 +55,7 @@ for ($i = 0; $i < $en_leng; $i++) {
         $q = substr($q, 0, -1); //remove last ','
         //echo $q;
         $dbh->exec($q);
-        $q = "insert into ts8wl_user(user_name, email) values ";
+        $q = "insert into ts8wl_user(uname, email) values ";
         $k = 0;
     } else {
         $k = $k + 1;

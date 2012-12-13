@@ -39,7 +39,7 @@
                         ?>
                     </div>
                     <div class="zx-front-question-user">
-                        <?php echo $question['user_name']; ?>
+                        <?php echo $question['uname']; ?>
                     </div>
 
                 </section>
@@ -60,7 +60,7 @@
                         ?>
                     </div>
                     <div>
-                        <?php echo $answer['user_name']; ?>
+                        <?php echo $answer['uname']; ?>
 
                     </div>
                 </section>
@@ -78,7 +78,7 @@
     <div class="zx-front-left4">
         <?php
         //now we don't ask for login to answer a question
-        //if (Transaction_User::get_user_id() > 0) {
+        //if (Transaction_User::get_uid() > 0) {
             //must have permission to answer a question
             include FRONT_VIEW_PATH . 'answer/create.php';
         //} else {
@@ -100,9 +100,9 @@
             <nav>
                 <ul>
                     <?php
-                    $current_question_id = $question['id'];
+                    $current_qid = $question['id'];
                     foreach ($related_questions as $question) {
-                        if (!($question['id'] == $current_question_id)) {
+                        if (!($question['id'] == $current_qid)) {
                             $read_more_link = HTML_ROOT . 'front/question/content/' . $question['id'];
                             ?>		
                             <li><?php echo "<a href='$read_more_link' class='zx-front-related-question'>" . $question['title'] . "</a>";
