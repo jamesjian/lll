@@ -167,7 +167,7 @@ class Answer extends Base {
         $direction = isset($this->params[3]) ? $this->params[3] : 'ASC';
         $search = isset($this->params[4]) ? $this->params[4] : '';
         if ($search != '') {
-            $where = " content LIKE '%$search%' OR title LIKE '%$search%' OR tag_names LIKE '%$search%'";
+            $where = " content LIKE '%$search%' OR title LIKE '%$search%' OR tnames LIKE '%$search%'";
         } else {
             $where = '1';
         }
@@ -199,7 +199,7 @@ class Answer extends Base {
         $direction = isset($this->params[3]) ? $this->params[3] : 'ASC';
         $search = isset($this->params[4]) ? $this->params[4] : '';
         if ($search != '') {
-            $where = " content LIKE '%$search%' OR title LIKE '%$search%' OR tag_names LIKE '%$search%'";
+            $where = " content LIKE '%$search%' OR title LIKE '%$search%' OR tnames LIKE '%$search%'";
         } else {
             $where = '1';
         }

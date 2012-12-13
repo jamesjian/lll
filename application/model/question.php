@@ -35,17 +35,17 @@ class Question extends Base_Question {
       according to category or keyword
       keywords are seperated by '@'
      * 
-     * tag_ids like '1@2@3', tag_names like 'x1@x2@x3'
+     * tids like '1@2@3', tnames like 'x1@x2@x3'
      * use id to find related questions
      */
     public static function get_10_active_related_questions($qid) {
         $questions = array();
         $question = parent::get_one($qid);
         if ($question) {
-            $tag_ids = $question['tag_ids'];
+            $tids = $question['tids'];
             
             $tag_id_arr = array();
-            if ($tag_ids <> '') {
+            if ($tids <> '') {
                 $tag_id_arr = explode('@', $keywords);
             }
             if (count($tag_id_arr) > 0) {
@@ -153,12 +153,12 @@ class Question extends Base_Question {
  /**
      */
     public static function get_active_questions_by_tag_and_page_num($tag, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = " status=1 AND tag_names LIKE '%$tag%'" ;
+        $where = " status=1 AND tnames LIKE '%$tag%'" ;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
     public static function get_num_of_active_questions_by_keyword($keyword) {
-        $where = " status=1 AND  tag_names LIKE '%$tag%'" ;
+        $where = " status=1 AND  tnames LIKE '%$tag%'" ;
         return parent::get_num($where);
     }    
     

@@ -16,7 +16,7 @@
                     ?>
                 </select>
             </dd>            
-            <dt>Tags:</dt><dd><input type="text" name="tag_names" size="50" value="<?php if (isset($_POST['title'])) echo $_POST['title']; else echo $question['tag_names']; ?>"/></dd>
+            <dt>Tags:</dt><dd><input type="text" name="tnames" size="50" value="<?php if (isset($_POST['title'])) echo $_POST['title']; else echo $question['tnames']; ?>"/></dd>
             <dt>Rank:</dt><dd><input type="text" name="rank" size="50"  value="<?php if (isset($_POST['rank'])) echo $_POST['rank']; else echo $question['rank']; ?>"/>        </dd>
             <dt>    Content: </dt><dd><textarea cols="10" rows="30" name="content"><?php if (isset($_POST['content'])) echo $_POST['content']; else echo $question['content']; ?></textarea></dd>
             <dt>    Status:</dt>

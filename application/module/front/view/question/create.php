@@ -43,8 +43,8 @@ if (isset($errors)) {
             <tr>
                 <td class="table_title required">关键词:</td>
                 <td class="table_input">  
-                    <input type="text" name="tag_names"  class="form_element" 
-                           value="<?php if (isset($posted['tag_names'])) echo $posted['tag_names']; ?>"/>
+                    <input type="text" name="tnames"  class="form_element" 
+                           value="<?php if (isset($posted['tnames'])) echo $posted['tnames']; ?>"/>
                 </td>
             </tr>
             <tr>

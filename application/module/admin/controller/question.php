@@ -31,9 +31,9 @@ class Question extends Base {
                 isset($_POST['uid']) &&
                 isset($_POST['title']) &&
                 isset($_POST['content']) &&
-                isset($_POST['tag_names'])) {
+                isset($_POST['tnames'])) {
             $title = isset($_POST['title']) ? trim($_POST['title']) : '';
-            $tag_names = isset($_POST['tag_names']) ? trim($_POST['tag_names']) : '';
+            $tnames = isset($_POST['tnames']) ? trim($_POST['tnames']) : '';
             $content = isset($_POST['content']) ? trim($_POST['content']) : '';
             $uid = isset($_POST['uid']) ? intval($_POST['uid']) : 1;
             $rank = isset($_POST['rank']) ? intval($_POST['rank']) : 0;
@@ -41,7 +41,7 @@ class Question extends Base {
 
             if ($title <> '') {
                 $arr = array('title' => $title,
-                    'tag_names' => $tag_names,
+                    'tnames' => $tnames,
                     'content' => $content,
                     'rank' => $rank,
                     'status' => $status,
@@ -79,9 +79,9 @@ class Question extends Base {
         if (isset($_POST['submit']) &&
                 isset($_POST['title']) &&
                 isset($_POST['q_content']) && isset($_POST['a_content']) &&
-                isset($_POST['tag_names'])) {
+                isset($_POST['tnames'])) {
             $title = isset($_POST['title']) ? trim($_POST['title']) : '';
-            $tag_names = isset($_POST['tag_names']) ? trim($_POST['tag_names']) : '';
+            $tnames = isset($_POST['tnames']) ? trim($_POST['tnames']) : '';
             $region = isset($_POST['region']) ? trim($_POST['region']) : 'AU';
             $q_content = isset($_POST['q_content']) ? trim($_POST['q_content']) : '';
             $a_content = isset($_POST['a_content']) ? trim($_POST['a_content']) : '';
@@ -89,7 +89,7 @@ class Question extends Base {
 
             if ($title <> '') {
                 $posted = array('title' => $title,
-                    'tag_names' => $tag_names,
+                    'tnames' => $tnames,
                     'region' => $region,
                     'q_content' => $q_content,
                     'a_content' => $a_content,
@@ -132,8 +132,8 @@ class Question extends Base {
                     $arr['title'] = trim($_POST['title']);
                 if (isset($_POST['content']))
                     $arr['content'] = trim($_POST['content']);
-                if (isset($_POST['tag_names']))
-                    $arr['tag_names'] = trim($_POST['tag_names']);
+                if (isset($_POST['tnames']))
+                    $arr['tnames'] = trim($_POST['tnames']);
                 if (isset($_POST['rank']))
                     $arr['rank'] = intval($_POST['rank']);
                 if (isset($_POST['status']))
@@ -203,7 +203,7 @@ class Question extends Base {
         $direction = isset($this->params[3]) ? $this->params[3] : 'ASC';
         $search = isset($this->params[4]) ? $this->params[4] : '';
         if ($search != '') {
-            $where = " title LIKE '%$search%' OR tag_names LIKE '%$search%'";
+            $where = " title LIKE '%$search%' OR tnames LIKE '%$search%'";
         } else {
             $where = '1';
         }

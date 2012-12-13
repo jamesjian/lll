@@ -10,8 +10,8 @@ Zx_Message::show_message();
             if (isset($_POST['title'])) echo $_POST['title'];?>"/></dd>
             <dt> User id:</dt><dd><input type="text" name="uid" size="50"  value="<?php
             if (isset($_POST['uid'])) echo $_POST['uid'];?>"/></dd>
-            <dt> Tags:</dt><dd><input type="text" name="tag_names" size="50"  value="<?php
-            if (isset($_POST['tag_names'])) echo $_POST['tag_names'];?>"/></dd>
+            <dt> Tags:</dt><dd><input type="text" name="tnames" size="50"  value="<?php
+            if (isset($_POST['tnames'])) echo $_POST['tnames'];?>"/></dd>
             <dt> Rank:</dt><dd><input type="text" name="rank" size="50"  value="<?php
             if (isset($_POST['rank'])) echo $_POST['rank'];?>"/>    </dd>
             <dt> Status:</dt>

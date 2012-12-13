@@ -89,15 +89,15 @@ class Ad extends Base {
         if (isset($_POST['submit']) &&
                 isset($_POST['title']) && !empty($_POST['title']) &&
                 isset($_POST['content']) && !empty($_POST['content']) &&
-                isset($_POST['tag_names']) && !empty($_POST['tag_names'])
+                isset($_POST['tnames']) && !empty($_POST['tnames'])
         ) {
             $title = trim($_POST['title']);
-            $tag_names = trim($_POST['tag_names']);
+            $tnames = trim($_POST['tnames']);
             $score = (isset($_POST['score']))?intval($_POST['score']) : 1; //at least 1
             $content = trim($_POST['content']);
 
             $arr = array('title' => $title,
-                'tag_names' => $tag_names,
+                'tnames' => $tnames,
                 'score' => $score,
                 'content' => $content,
                 'uid'=>$this->uid,
@@ -131,15 +131,15 @@ class Ad extends Base {
             if (isset($_POST['id']) && !empty($_POST['id']) &&
                     isset($_POST['title']) && !empty($_POST['title']) &&
                     isset($_POST['content']) && !empty($_POST['content']) &&
-                    isset($_POST['tag_names']) && !empty($_POST['tag_names'])
+                    isset($_POST['tnames']) && !empty($_POST['tnames'])
             ) {
                 $id = intval($_POST['id']);
                 $title = trim($_POST['title']);
-                $tag_names = trim($_POST['tag_names']);
+                $tnames = trim($_POST['tnames']);
                 $content = trim($_POST['content']);
 
                 $arr = array('title' => $title,
-                    'tag_names' => $tag_names,
+                    'tnames' => $tnames,
                     'content' => $content,
                 );
                 if (Transaction_Ad::update_by_user($id, $arr)) {

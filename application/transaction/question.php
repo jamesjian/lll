@@ -14,7 +14,7 @@ use \Zx\Model\Mysql;
 class Question {
 
     /**
-     * in controller, it must have title, content and tag_names
+     * in controller, it must have title, content and tnames
      * if user has logged in, fill the user id and status=1 (active)
      * otherwise, fill the user id with default question user id and status=0 (inactive)
      * @param type $arr
@@ -34,21 +34,21 @@ class Question {
         }
 
         //prepare tag ids
-        $tags = explode('@', $arr['tag_names']);
-        $tag_ids = '';
+        $tags = explode('@', $arr['tnames']);
+        $tids = '';
             foreach ($tags as $tag) {
                 if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
                     Model_Tag::increase_num_of_questions($existing_tag['id']);
-                    $tag_ids .= $existing_tag['id'] . '@';
+                    $tids .= $existing_tag['id'] . '@';
                 } else {
                     $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
                     //\Zx\Test\Test::object_log('$tag_arr', $tag_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
                     
                     $tag_id = Model_Tag::create($tag_arr);
-                    $tag_ids .= $tag_id . '@';
+                    $tids .= $tag_id . '@';
                 }
             }
-        $arr['tag_ids'] = $tag_ids;
+        $arr['tids'] = $tids;
         $arr['uid'] = $uid;
         $arr['uname'] = $uname;
         $arr['status'] = $status;
@@ -77,17 +77,17 @@ class Question {
 
 
 //prepare tag ids
-            $tags = explode('@', $arr['tag_names']);
+            $tags = explode('@', $arr['tnames']);
             foreach ($tags as $tag) {
                 if ($tag_id = Model_Tag::exist($tag)) {
-                    $tag_ids .= $tag_id . '@';
+                    $tids .= $tag_id . '@';
                 } else {
                     $tag_arr = array('name' => $tag, 'num_of_questions' => 1);
                     $tag_id = Model_Tag::create($tag_arr);
-                    $tag_ids .= $tag_id . '@';
+                    $tids .= $tag_id . '@';
                 }
             }
-            $arr['tag_ids'] = $tag_ids;
+            $arr['tids'] = $tids;
             if (Model_Question::create($arr)) {
                 Message::set_success_message('success');
                 Model_User::increase_num_of_questions($arr['uid']);
@@ -120,21 +120,21 @@ class Question {
                 isset($arr['q_content']) && trim($arr['q_content']) != ''
         ) {
             //prepare tag ids
-            $tags = explode('@', $arr['tag_names']);
+            $tags = explode('@', $arr['tnames']);
         //\Zx\Test\Test::object_log('$tags', $tags, __FILE__, __LINE__, __CLASS__, __METHOD__);
             
-            $tag_ids = '';
+            $tids = '';
             
             foreach ($tags as $tag) {
                 if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
                     Model_Tag::increase_num_of_questions($existing_tag['id']);
-                    $tag_ids .= $existing_tag['id'] . '@';
+                    $tids .= $existing_tag['id'] . '@';
                 } else {
                     $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
                     //\Zx\Test\Test::object_log('$tag_arr', $tag_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
                     
                     $tag_id = Model_Tag::create($tag_arr);
-                    $tag_ids .= $tag_id . '@';
+                    $tids .= $tag_id . '@';
                 }
             }
 
@@ -146,8 +146,8 @@ class Question {
                 'content' => $arr['q_content'],
                 'uid' => $question_user['id'],
                 'uname' => $question_user['uname'],
-                'tag_ids' => substr($tag_ids, -1), //remove last '@'
-                'tag_names' => $arr['tag_names'],
+                'tids' => substr($tids, -1), //remove last '@'
+                'tnames' => $arr['tnames'],
                 'region' => $arr['region'],
                 'status' => 1,
                 'num_of_answers' => 1, //must have one now
@@ -211,10 +211,10 @@ class Question {
              * 
              */
             $question = Model_Question::get_one($id);
-            $old_tags = explode('@', $question['tag_names']);
-            //$new_tag_names = $arr['tag_names'];
+            $old_tags = explode('@', $question['tnames']);
+            //$new_tnames = $arr['tnames'];
 
-            $new_tags = explode('@', $arr['tag_names']);
+            $new_tags = explode('@', $arr['tnames']);
 
             $new_difference = array_diff($new_tags, $old_tags);
             $old_difference = array_diff($old_tags, $new_tags);
@@ -223,13 +223,13 @@ class Question {
                 //has new tags
                 foreach ($new_difference as $tag) {
                     if ($tag_id = Model_Tag::exist($tag)) {
-                        //$tag_ids .= $tag_id . '@';
+                        //$tids .= $tag_id . '@';
                         Model_Tag::increase_num_of_questions($tag_id);
                     } else {
                         //brand new tag will be inserted into tag table
                         $tag_arr = array('name' => $tag, 'num_of_questions' => 1);
                         $tag_id = Model_Tag::create($tag_arr);
-                        //$tag_ids .= $tag_id . '@';
+                        //$tids .= $tag_id . '@';
                     }
                 }
             }
@@ -248,8 +248,8 @@ class Question {
                 foreach ($new_tags as $tag) {
                     if ($tag_id = Model_Tag::exist($tag)) {
                         //must exist
-                        $tag_ids .= $tag_id . '@';
-                        $arr['tag_ids'] = $tag_ids;
+                        $tids .= $tag_id . '@';
+                        $arr['tids'] = $tids;
                     }
                 }
             }

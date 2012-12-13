@@ -31,7 +31,7 @@
             <tr>
                 <td><?php echo $ad_id;?></td>
                 <td><?php echo $ad['title'];?></td>
-                <td><?php echo $ad['tag_names'];?></td>
+                <td><?php echo $ad['tnames'];?></td>
                 <td><?php echo $ad['score'];?></td>
                 <td><?php echo $ad['date_created'];?></td>
                 <td><a href="<?php echo $update_link;?>">更改</a></td>

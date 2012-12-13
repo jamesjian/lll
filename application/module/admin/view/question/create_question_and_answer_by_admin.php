@@ -9,7 +9,7 @@ Zx_Message::show_message();
         <legend>Create question</legend>
         <dl>
             <dt>Title:</dt><dd><input type="text" name="title" size="50" value="<?php if (isset($_POST['title'])) echo $_POST['title']; ?>"/></dd>
-            <dt> Tags:</dt><dd><input type="text" name="tag_names" size="50"  value="<?php if (isset($_POST['tag_names'])) echo $_POST['tag_names']; ?>"/></dd>
+            <dt> Tags:</dt><dd><input type="text" name="tnames" size="50"  value="<?php if (isset($_POST['tnames'])) echo $_POST['tnames']; ?>"/></dd>
             <dt>Region</dt>
             <dd><select id="region" name="region">
                     <?php

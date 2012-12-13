@@ -30,9 +30,9 @@ class Ad extends Base {
                 isset($_POST['uid']) && 
                 isset($_POST['title']) && 
                 isset($_POST['content']) && 
-                isset($_POST['tag_names'])) {
+                isset($_POST['tnames'])) {
             $title = isset($_POST['title']) ? trim($_POST['title']) : '';
-            $tag_names = isset($_POST['tag_names']) ? trim($_POST['tag_names']) : '';
+            $tnames = isset($_POST['tnames']) ? trim($_POST['tnames']) : '';
             $content = isset($_POST['content']) ? trim($_POST['content']) : '';
             $uid = isset($_POST['uid']) ? intval($_POST['uid']) : 1;
             $rank = isset($_POST['rank']) ? intval($_POST['rank']) : 0;
@@ -40,7 +40,7 @@ class Ad extends Base {
 
             if ($title <> '') {
                 $arr = array('title' => $title,
-                    'tag_names' => $tag_names,
+                    'tnames' => $tnames,
                     'content' => $content,
                     'rank' => $rank,
                     'status' => $status,
@@ -87,8 +87,8 @@ class Ad extends Base {
                     $arr['title'] = trim($_POST['title']);
                 if (isset($_POST['content']))
                     $arr['content'] = trim($_POST['content']);
-                if (isset($_POST['tag_names']))
-                    $arr['tag_names'] = trim($_POST['tag_names']);
+                if (isset($_POST['tnames']))
+                    $arr['tnames'] = trim($_POST['tnames']);
                 if (isset($_POST['rank']))
                     $arr['rank'] = intval($_POST['rank']);
                 if (isset($_POST['status']))
@@ -155,7 +155,7 @@ class Ad extends Base {
         $direction = isset($this->params[3]) ? $this->params[3] : 'ASC';
         $search = isset($this->params[4]) ? $this->params[4] : '';
         if ($search != '') {
-            $where = " title LIKE '%$search%' OR tag_names LIKE '%$search%'";
+            $where = " title LIKE '%$search%' OR tnames LIKE '%$search%'";
         } else {
             $where = '1';
         }

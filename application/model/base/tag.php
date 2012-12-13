@@ -4,7 +4,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 
 /*
- * if a tag is disabled, they will be removed from tag_ids and tag_names field in question table  
+ * if a tag is disabled, they will be removed from tids and tnames field in question table  
   CREATE TABLE tag (
   id unsigned smallint(4) AUTO_INCREMENT PRIMARY KEY,
   name varchar(255) NOT NULL DEFAULT '',

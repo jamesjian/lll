@@ -47,7 +47,7 @@ class Question extends Base {
             $home_url = HTML_ROOT;
             Transaction_Html::remember_current_page();  //after reply this question, return back to this page
             Transaction_Html::set_title($question['title']);
-            Transaction_Html::set_keyword($question['title'] . str_replace('#', ',', $question['tag_names']));
+            Transaction_Html::set_keyword($question['title'] . str_replace('#', ',', $question['tnames']));
             Transaction_Html::set_description($question['title']);
             Model_Question::increase_rank($qid);
 
@@ -288,15 +288,15 @@ class Question extends Base {
         if (isset($_POST['submit']) &&
                 isset($_POST['title']) && !empty($_POST['title']) &&
                 isset($_POST['content']) && !empty($_POST['content']) &&
-                isset($_POST['tag_names']) && !empty($_POST['tag_names'])
+                isset($_POST['tnames']) && !empty($_POST['tnames'])
         ) {
             $title = trim($_POST['title']);
             $region = isset($_POST['region']) ? trim($_POST['region']) : 'AU';
-            $tag_names = trim($_POST['tag_names']);
+            $tnames = trim($_POST['tnames']);
             $content = trim($_POST['content']);
 
             $arr = array('title' => $title,
-                'tag_names' => $tag_names,
+                'tnames' => $tnames,
                 'content' => $content,
                 'region' => $region,
             );

@@ -33,7 +33,7 @@ class Answer {
      * @return 1D array or boolean when false 
      */
     public static function get_one($id) {
-        $sql = "SELECT a.*, q.title, q.tag_names
+        $sql = "SELECT a.*, q.title, q.tnames
             FROM  " . self::$table . " a
             LEFT JOIN " . Model_Question::$table . " q ON q.id=a.qid
             WHERE id=:id
@@ -50,7 +50,7 @@ class Answer {
      * @return 1D array or boolean when false 
      */
     public static function get_one_by_where($where) {
-        $sql = "SELECT a.*, q.title, q.tag_names
+        $sql = "SELECT a.*, q.title, q.tnames
             FROM  " . self::$table . " a
             LEFT JOIN " . Model_Question::$table . " q ON q.id=a.qid
             WHERE $where
@@ -59,7 +59,7 @@ class Answer {
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
-        $sql = "SELECT a.*, q.title, q.tag_names
+        $sql = "SELECT a.*, q.title, q.tnames
             FROM " . self::$table . "  a
             LEFT JOIN " . Model_Question::$table . "  q ON q.id=a.qid
             WHERE $where

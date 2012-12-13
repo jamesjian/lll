@@ -45,7 +45,7 @@ class Ad extends Base {
             $home_url = HTML_ROOT;
             Transaction_Html::remember_current_page();  //after reply this ad, return back to this page
             Transaction_Html::set_title($ad['title']);
-            Transaction_Html::set_keyword($ad['title'] . str_replace('#',',', $ad['tag_names']));
+            Transaction_Html::set_keyword($ad['title'] . str_replace('#',',', $ad['tnames']));
             Transaction_Html::set_description($ad['title']);
             Model_Ad::increase_rank($ad_id);
             

@@ -20,13 +20,13 @@
                 <li><a href='<?php echo $read_more_link; ?>' class='zx-front-latest-ad'>
                         <?php echo $ad['title']; ?></a>
                     <?php
-                    $tag_ids = explode(',', $ad['tag_ids']);
-                    $tag_names = explode(',', $ad['tag_names']);
-                    foreach ($tag_ids as $index => $tag_id) {
+                    $tids = explode(',', $ad['tids']);
+                    $tnames = explode(',', $ad['tnames']);
+                    foreach ($tids as $index => $tag_id) {
                         $tag_link = FRONT_HTML_ROOT . 'ad/tag/' . $tag_id;
                         ?>
                         <a href='<?php echo $tag_link; ?>' class='zx-front-tag'>
-                            <?php echo $tag_names[$index]; ?></a>            
+                            <?php echo $tnames[$index]; ?></a>            
                             <?php
                         }
                         ?>

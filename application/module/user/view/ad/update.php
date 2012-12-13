@@ -23,8 +23,8 @@ if (isset($errors)) {
             <tr>
                 <td class="table_title required">关键词:</td>
                 <td class="table_input">  
-                    <input type="text" name="tag_names"  class="form_element" 
-                           value="<?php if (isset($posted['tag_names'])) echo $posted['tag_names'];  else echo $ad['tag_names'];?>"/>
+                    <input type="text" name="tnames"  class="form_element" 
+                           value="<?php if (isset($posted['tnames'])) echo $posted['tnames'];  else echo $ad['tnames'];?>"/>
                 </td>
             </tr>
             <tr>
@@ -32,7 +32,7 @@ if (isset($errors)) {
                 <td class="table_input"> 
                     Content: </dt><dd><textarea cols="10" rows="30" name="content"><?php 
                     if (isset($posted['content'])) echo $posted['content'];
-                      else echo $ad['tag_names'];
+                      else echo $ad['tnames'];
                       ?></textarea>
                 </td>
                 </tr>
