@@ -122,7 +122,7 @@ class User extends Base {
      * page, orderby, direction, search can be empty
      */
     public function retrieve() {
-       if (!\App\Transaction\Html::previous_page_is_search_page()) {
+       if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
             \App\Transaction\Html::remember_current_admin_page();
         }
         \Zx\Test\Test::object_log('cats2222', $_SESSION, __FILE__, __LINE__, __CLASS__, __METHOD__);

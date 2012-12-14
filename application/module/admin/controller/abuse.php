@@ -82,7 +82,7 @@ class Abuse extends Base {
       retrieve_by_item_type/item_type/page/orderby/direction
      */
     public function retrieve_by_item_type() {
-        if (!\App\Transaction\Html::previous_page_is_search_page()) {
+        if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
             \App\Transaction\Html::remember_current_admin_page();
         }
         \App\Transaction\Session::set_current_l1_menu('Abuse');

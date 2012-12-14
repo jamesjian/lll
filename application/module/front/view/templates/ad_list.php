@@ -1,7 +1,9 @@
 <div class="zx-front-ad-list">
     <ul class="zx-front-ad-list-heading">
         <li>标题</li>
-        <li>浏览量</li>
+        <li>发布人</li>
+        <li>区域</li>
+        <li>分值</li>
         <li>发布时间</li>
     </ul>
     <?php
@@ -11,8 +13,7 @@
      * num of views
      */
     if ($ads) {
-        ?>
-        <?php
+        $regions = \App\Model\Region::get_au_states_abbr();
         foreach ($ads as $ad) {
             $read_more_link = FRONT_HTML_ROOT . 'ad/content/' . $ad['id'];
             ?>		
@@ -34,7 +35,8 @@
                         <?php echo $ad['uname']; ?></a>
                     <?php echo $ad['date_created']; ?>
                 </li>
-                <li><?php echo $ad['num_of_views']; ?></li>
+                 <li><?php echo $regions[$question['region']]; ?></li>
+                <li><?php echo $ad['score']; ?></li>
                 <li><?php echo $ad['date_created']; ?></li>
             </ul>  
             <?php

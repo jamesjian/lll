@@ -7,6 +7,7 @@ use \Zx\View\View;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
 use \App\Model\Ad as Model_Ad;
+use \App\Model\User as Model_User;
 use \App\Transaction\Ad as Transaction_Ad;
 
 /**
@@ -61,7 +62,9 @@ class Ad extends Base {
      * pagination
      */
     public function my_ads() {
-        Transaction_Html::remember_user_page();
+       if (!\App\Transaction\Html::previous_user_page_is_search_page()) {
+            \App\Transaction\Html::remember_current_user_page();
+        }        
         $uid = $this->uid;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
@@ -102,7 +105,7 @@ class Ad extends Base {
                 'content' => $content,
                 'uid'=>$this->uid,
             );
-            if (Model_User::available_score($this->uid) && Transaction_Ad::create_by_user($arr)) {
+            if (Model_User::has_score($this->uid) && Transaction_Ad::create_by_user($arr)) {
                 $success = true;
             }
         } else {

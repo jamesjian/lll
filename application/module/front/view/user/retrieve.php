@@ -2,27 +2,41 @@
 \Zx\Message\Message::show_message();
 include 'search.php';
 ?>
-<a href="<?php echo $create_link;?>">Create</a>
 <?php
 if ($user_list) {
-    foreach ($user_list as $user) {
-	$uid = $user['id'];
-	$link_user = FRONT_HTML_ROOT . 'user/detail/' . $uid;
-?>
-<tr>
-	<td><?php echo $user['id'];?></td>
-	<td><a href='<?php echo $link_user;?>'><?php echo $user['uname'];?></a></td>
-</tr>
-<?php
-    }
-	?>
-	</table>
-<?php
-$link_prefix = ADMIN_HTML_ROOT . 'user/retrieve/';	
-$link_postfix = "/$order_by/$direction";
-include ADMIN_VIEW_PATH . 'templates/pagination.php';
+    $columns = 5; //5 users in one line
+    $i = 0;
+    ?>
+    <table>
+        <?php
+        foreach ($user_list as $user) {
+            $uid = $user['id'];
+            $link_user = FRONT_HTML_ROOT . 'user/detail/' . $uid;
+            if ($i == 0) {
+                echo "<tr>";
+            }
+            ?>
+            <td><?php echo $user['id']; ?>
+            <a href='<?php echo $link_user; ?>'><?php echo $user['uname']; ?></a>
+            <?php echo $user['score'];?>
+            </td>
+            <?php
+            $i = $i + 1;
+            if ($i == 5) {
+                echo "</tr>";
+                $i = 0;
+            }
+            ?>
+        <?php
+    }//foreach
+    ?>
+    </table>
+    <?php
+    $link_prefix = ADMIN_HTML_ROOT . 'user/retrieve/';
+    $link_postfix = ""; //always order by score desc
+    include ADMIN_VIEW_PATH . 'templates/pagination.php';
 } else {
-	echo 'No record.';
+    echo 'No record.';
 }
 
 

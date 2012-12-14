@@ -6,9 +6,34 @@ use \App\Model\Base\Question as Base_Question;
 use \Zx\Model\Mysql;
 
 class Question extends Base_Question {
+    /**
+     * @param int $uid
+     * @return array
+     */
+    public static function get_recent_questions_by_uid($uid) {
+        $where = " status=1 AND uid=$uid";
+        $offset = ($page_num - 1) * NUM_OF_RECENT_QUESTIONS_IN_FRONT_PAGE;
+        $order_by = 'date_created';
+        $direction = 'DESC';
+        return parent::get_all($where, $offset, NUM_OF_RECENT_QUESTIONS_IN_FRONT_PAGE, $order_by, $direction);
+    }    
     public static function exist_question($id){
          $question = parent::get_one($id);
          if ($question) {
+             return true;
+         } else {
+             return false;
+         }
+         
+    }
+    /**
+     * if has answer, can not be deleted
+     * @param int $id
+     * @return boolean
+     */
+    public static function can_be_deleted($id){
+         $question = parent::get_one($id);
+         if ($question && $question['num_of_answers']==0) {
              return true;
          } else {
              return false;

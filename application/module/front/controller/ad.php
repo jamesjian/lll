@@ -31,23 +31,21 @@ class Ad extends Base {
 
     
     /*     * one ad
-     * /front/ad/content/id/page/6/slug-url  the page is for pages of answers of this ad
+     * /front/ad/content/id/slug-url  the page is for pages of answers of this ad
      * use url rather than id in the query string
      */
 
     public function content() {
         $ad_id = $this->params[0]; //it's an id
-        $current_page_num = isset($this->params[2]) ?  $this->params[2] : 1;
         $ad = Model_Ad::get_one($ad_id);
         //\Zx\Test\Test::object_log('$ad', $ad, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($ad) {
-            
             $home_url = HTML_ROOT;
             Transaction_Html::remember_current_page();  //after reply this ad, return back to this page
             Transaction_Html::set_title($ad['title']);
             Transaction_Html::set_keyword($ad['title'] . str_replace('#',',', $ad['tnames']));
             Transaction_Html::set_description($ad['title']);
-            Model_Ad::increase_rank($ad_id);
+            Model_Ad::increase_num_of_views($ad_id);
             
             View::set_view_file($this->view_path . 'one_ad.php');
             $answers = Model_Answer::get_active_answers_by_ad_id_and_page_num($ad_id, $current_page_num);
@@ -102,7 +100,7 @@ class Ad extends Base {
             Transaction_Html::set_title($tag['name']);
             Transaction_Html::set_keyword($tag['name']);
             Transaction_Html::set_description($tag['name']);
-            $order_by = 'date_created';
+            $order_by = 'score';
             $direction = 'DESC';
             $ads = Model_Ad::get_active_ads_by_uid_and_page_num($uid, $current_page, $order_by, $direction);
             //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -111,8 +109,8 @@ class Ad extends Base {
             View::set_view_file($this->view_path . 'ad_list_by_uid.php');
             View::set_action_var('user', $user);
             View::set_action_var('ads', $ads);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
+            //View::set_action_var('order_by', $order_by);
+            //View::set_action_var('direction', $direction);
             View::set_action_var('current_page', $current_page);
             View::set_action_var('num_of_pages', $num_of_pages);
         } else {
@@ -124,7 +122,7 @@ class Ad extends Base {
     }
     /**
       retrieve ads under a user
-      front/ad/retrieve_by_uid/id/page/3/, 3 is page number
+      front/ad/tag/id/page/3/, id is tag id, 3 is page number
      */
     public function tag() {
         $tag_id = (isset($this->params[0])) ? $this->params[0] : 0;
@@ -139,17 +137,17 @@ class Ad extends Base {
             Transaction_Html::set_title($tag['name']);
             Transaction_Html::set_keyword($tag['name']);
             Transaction_Html::set_description($tag['name']);
-            $order_by = 'date_created';
+            $order_by = 'score';
             $direction = 'DESC';
             $ads = Model_Ad::get_active_ads_by_tag_id_and_page_num($tag_id, $current_page, $order_by, $direction);
             //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_ads = Model_Ad::get_num_of_active_ads_by_tat_id($tag_id);
             $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'ad_list_by_tag_id.php');
+            View::set_view_file($this->view_path . 'ad_list_by_tid.php');
             View::set_action_var('tag', $tag);
             View::set_action_var('ads', $ads);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
+            //View::set_action_var('order_by', $order_by);
+            //View::set_action_var('direction', $direction);
             View::set_action_var('current_page', $current_page);
             View::set_action_var('num_of_pages', $num_of_pages);
         } else {

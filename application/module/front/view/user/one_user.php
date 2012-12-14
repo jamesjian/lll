@@ -8,10 +8,22 @@ if ($user) {
 
     echo $user['id'];
     echo $user['uname'];
-    ?>
-    <a href='<?php echo $link_questions; ?>'><?php echo $user['num_of_questions']; ?></a>
-    <a href='<?php echo $link_answers; ?>'><?php echo $user['num_of_answers']; ?></a>
-    <?php
+    echo $user['score'];
+    if ($user['num_of_questions'] > 0) {
+        ?>
+        <a href='<?php echo $link_questions; ?>'><?php echo $user['num_of_questions']; ?>问题</a>
+        <?php
+    }
+    if ($user['num_of_answers'] > 0) {
+        ?>
+        <a href='<?php echo $link_answers; ?>'><?php echo $user['num_of_answers']; ?>回答</a>
+        <?php
+    }
+    if ($user['num_of_ads'] > 0) {
+        ?>    
+        <a href='<?php echo $link_answers; ?>'><?php echo $user['num_of_ads']; ?>广告</a>
+        <?php
+    }
     if ($recent_questions) {
         foreach ($recent_questions as $question) {
             $link = FRONT_HTML_ROOT . 'question/content/' . $question['id'];
@@ -30,6 +42,17 @@ if ($user) {
 
             <ul>
                 <li><a href='<?php echo $link; ?>'><?php echo $answer['title']; ?></a></li>
+            </ul>
+            <?php
+        }
+    }
+    if ($recent_ads) {
+        foreach ($recent_ads as $ad) {
+            $link = FRONT_HTML_ROOT . 'ad/content/' . $ad['id'];
+            ?>
+
+            <ul>
+                <li><a href='<?php echo $link; ?>'><?php echo $ad['title']; ?></a></li>
             </ul>
             <?php
         }

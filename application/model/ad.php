@@ -7,7 +7,22 @@ use \App\Model\Base\Ad as Base_Ad;
 use \Zx\Model\Mysql;
 
 class Ad extends Base_Ad {
-
+    /**
+     * @param int $uid
+     * @return array
+     */
+    public static function get_recent_ads_by_uid($uid) {
+        $where = " status=1 AND uid=$uid";
+        $offset = ($page_num - 1) * NUM_OF_RECENT_ADS_IN_FRONT_PAGE;
+        $order_by = 'date_created';
+        $direction = 'DESC';
+        return parent::get_all($where, $offset, NUM_OF_RECENT_ADS_IN_FRONT_PAGE, $order_by, $direction);
+    }   
+    public static function increase_num_of_views($ad_id) {
+        $sql = 'UPDATE article SET increase_num_of_views=increase_num_of_views+1 WHERE id=:id';
+        $params = array(':id' => $ad_id);
+        return Mysql::exec($sql, $params);
+    }
 
     public static function ad_belong_to_user($ad_id, $uid) {
         $ad = parent::get_one($ad_id);

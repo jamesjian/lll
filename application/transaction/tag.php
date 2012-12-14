@@ -31,7 +31,7 @@ class Tag {
         }
     }
 
-    public static function update_article($id, $arr) {
+    public static function update($id, $arr) {
         //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         if (isset($arr['name']) && !Model_Tag::duplicate_tag_name($id, $arr['name'])) {
@@ -108,10 +108,10 @@ class Tag {
     }
 
     function backup_sql() {
-        $sql = "SELECT * FROM article";
+        $sql = "SELECT * FROM tag";
         $r = Mysql::select_all($sql);
         if ($r) {
-            $str = 'INSERT INTO article VALUES ';
+            $str = 'INSERT INTO tag VALUES ';
             foreach ($r as $row) {
                 $fields = '';
                 foreach ($row as $value) {

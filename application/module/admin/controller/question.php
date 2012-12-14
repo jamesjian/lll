@@ -161,7 +161,7 @@ class Question extends Base {
      * page, orderby, direction, search can be empty
      */
     public function retrieve() {
-        if (!\App\Transaction\Html::previous_page_is_search_page()) {
+       if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
             \App\Transaction\Html::remember_current_admin_page();
         }
         \App\Transaction\Session::set_admin_current_l1_menu('Question');
@@ -193,7 +193,7 @@ class Question extends Base {
       retrieve_by_cat_id/cat_id/page/orderby/direction
      */
     public function retrieve_by_uid() {
-       if (!\App\Transaction\Html::previous_page_is_search_page()) {
+       if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
             \App\Transaction\Html::remember_current_admin_page();
         }
         \App\Transaction\Session::set_current_l1_menu('Question');

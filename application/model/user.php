@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Model;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\User as Base_User;
@@ -7,40 +9,36 @@ use \Zx\Model\Mysql;
 use \Zx\Test\Test;
 
 class User extends Base_User {
-    public static function available_score($uid)
-    {
+
+    public static function decrease_one_answer_score($uid, $score) {
+        $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers-1, 
+                    score=score-$score WHERE id=$uid";
+        $params = array();
+        return Mysql::exec($sql, $params);
+    }
+
+    public static function has_score($uid) {
         $user = parent::get_one($uid);
-        if ($user && $user['score'] - $user['invalid_score'] - $user['ad_score']>0) {
+        if ($user && $user['score'] - $user['invalid_score'] - $user['ad_score'] > 0) {
             return true;
-        } else  {
+        } else {
             return false;
         }
     }
+
     /**
      * the id of user table are not consecutive, so use limit to get one record
      * @return array
-      学习使用百度
-      
-      妈妈可以学学如何使用百度搜索想要的东西。 
-      在浏览器的地址栏输入
-      
-     http://www.baidu.com/
-      
-      
-     然后在“百度一下”的左边长条框里输入想要找的内容， 比如说“骨质疏松症”， 然后点击“百度一下”， 就会列出与“骨质疏松症”有关的许多内容的简介， 
-     页面的下部有不同的页数， 表明内容列表有很多页， 可以点击这些页号看其它页。 
-     
-     如果想找复杂一些的内容， 比如如何治疗骨质疏松症， 可以输入“骨质疏松症 治疗”或者“治疗 骨质疏松症”， 词汇之间用空格分开。 
-      
-     网上内容非常丰富， 常常可以发现想不到的东西。 坏处就是不能长时间看电脑， 否则眼睛会疲劳。 
+
+
      */
-    public static function get_random_user()
-    {
+    public static function get_random_user() {
         $n = rand(4, 30000); //the maximum must be less than the lenth of user table
         $q = "SELECT * FROM " . parent::$table . " WHERE 1 LIMIT $n , 1";
         $user = Mysql::select_one($q);
         return $user;
     }
+
     /**
      * 
      * @return int default user for anonymous user
@@ -220,11 +218,11 @@ class User extends Base_User {
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $user = Mysql::select_one($sql, $params);
         if ($user) {
-          if (crypt($password, $user['password']) == $user['password']) {
-            return $user;
-          } else {
-              return false;
-          }
+            if (crypt($password, $user['password']) == $user['password']) {
+                return $user;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -307,20 +305,21 @@ class User extends Base_User {
     }
 
     /**
-     * if has question or answer or others, cannot delete it
+     * if has question or answer or ads, cannot delete it
      * @param int $uid
      * @return boolean
      */
     public static function can_be_deleted($uid) {
         $user = parent::get_one($uid);
-        if ($user && ($user['num_of_questions'] > 0 || $user['num_of_answers'] > 0 )) {
+        if ($user && ($user['num_of_questions'] > 0 || $user['num_of_answers'] > 0
+                || $user['num_of_ads'] > 0)) {
             return false;
         } else {
             return true;
         }
     }
 
-    public static function get_users_by_page_num($where='1', $page_num = 1, $order_by = 'id', $direction = 'ASC') {
+    public static function get_users_by_page_num($where = '1', $page_num = 1, $order_by = 'id', $direction = 'ASC') {
         $page_num = intval($page_num);
         $page_num = ($page_num > 0) ? $page_num : 1;
         $direction = ($direction == 'ASC') ? 'ASC' : 'DESC';
@@ -334,8 +333,8 @@ class User extends Base_User {
 
     public static function get_active_users_by_page_num($page_num = 1, $order_by = 'rank', $direction = 'ASC') {
         $where = ' status=1 ';
-        $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
-        return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
+        $offset = ($page_num - 1) * NUM_OF_USERS_IN_FRONT_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_USERS_IN_FRONT_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_active_users($where = '1') {

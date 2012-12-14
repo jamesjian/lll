@@ -36,18 +36,18 @@ class Question {
         //prepare tag ids
         $tags = explode('@', $arr['tnames']);
         $tids = '';
-            foreach ($tags as $tag) {
-                if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
-                    Model_Tag::increase_num_of_questions($existing_tag['id']);
-                    $tids .= $existing_tag['id'] . '@';
-                } else {
-                    $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
-                    //\Zx\Test\Test::object_log('$tag_arr', $tag_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-                    
-                    $tag_id = Model_Tag::create($tag_arr);
-                    $tids .= $tag_id . '@';
-                }
+        foreach ($tags as $tag) {
+            if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
+                Model_Tag::increase_num_of_questions($existing_tag['id']);
+                $tids .= $existing_tag['id'] . '@';
+            } else {
+                $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
+                //\Zx\Test\Test::object_log('$tag_arr', $tag_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
+                $tag_id = Model_Tag::create($tag_arr);
+                $tids .= $tag_id . '@';
             }
+        }
         $arr['tids'] = $tids;
         $arr['uid'] = $uid;
         $arr['uname'] = $uname;
@@ -121,10 +121,10 @@ class Question {
         ) {
             //prepare tag ids
             $tags = explode('@', $arr['tnames']);
-        //\Zx\Test\Test::object_log('$tags', $tags, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            
+            //\Zx\Test\Test::object_log('$tags', $tags, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
             $tids = '';
-            
+
             foreach ($tags as $tag) {
                 if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
                     Model_Tag::increase_num_of_questions($existing_tag['id']);
@@ -132,7 +132,7 @@ class Question {
                 } else {
                     $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
                     //\Zx\Test\Test::object_log('$tag_arr', $tag_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-                    
+
                     $tag_id = Model_Tag::create($tag_arr);
                     $tids .= $tag_id . '@';
                 }
@@ -140,7 +140,7 @@ class Question {
 
             $question_user = Model_User::get_random_user();
             //\Zx\Test\Test::object_log('$question_user', $question_user, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            
+
             $answer_user = Model_User::get_random_user();
             $question_arr = array('title' => $arr['title'],
                 'content' => $arr['q_content'],
@@ -155,11 +155,11 @@ class Question {
                 'num_of_votes' => 0,
             );
             //\Zx\Test\Test::object_log('$question_arr', $question_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            
+
             if ($qid = Model_Question::create($question_arr)) {
                 $question_user_arr = array('num_of_questions' => $question_user['num_of_questions'] + 1);
                 //\Zx\Test\Test::object_log('$question_user_arr', $question_user_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-                
+
                 Model_User::update($question_uid, $question_user_arr);
                 //if answer is not empty
                 $answer_arr = array('qid' => $qid,
@@ -266,12 +266,24 @@ class Question {
         }
     }
 
+    /**
+     * usually a question cannot be deleted
+     * user who give this question and admin can delete it when no answer connect it
+     * @param type $id
+     * @return boolean
+     */
     public static function delete_question($id) {
-        if (Model_Question::delete($id)) {
-            Message::set_success_message('success');
-            return true;
+
+        if (Model_Question::can_be_deleted()) {
+            if (Model_Question::delete($id)) {
+                Message::set_success_message('success');
+                return true;
+            } else {
+                Message::set_error_message('fail');
+                return false;
+            }
         } else {
-            Message::set_error_message('fail');
+            Message::set_error_message('has answer');
             return false;
         }
     }

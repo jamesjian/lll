@@ -9,6 +9,8 @@ use \App\Model\Question as Model_Question;
 use \App\Model\User as Model_User;
 use \Zx\Message\Message;
 use \Zx\Model\Mysql;
+use \App\Transaction\User as Transaction_User;
+use \App\Transaction\Staff as Transaction_Staff;
 
 //use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
@@ -72,13 +74,35 @@ class Answer {
         }
     }
 
+    /**
+     * only user who give this answer and admin can delete it
+     * 
+     * the score will be decreased in user table
+     * 
+     * @param type $id
+     * @return boolean
+     */
     public static function delete_answer($id) {
-        if (Model_Answer::delete($id)) {
-            Message::set_success_message('success');
-            return true;
-        } else {
-            Message::set_error_message('fail');
-            return false;
+        $can_be_deleted = false;
+        $answer = Model_Answer::get_one($id);
+        if ($answer) {
+            $uid = $anser['uid'];
+            $score = $answer['num_of_votes'];
+
+            if (Transaction_User::user_has_loggedin() && $uid == Transaction_User::get_uid()) {
+                $can_be_deleted = true;
+            } elseif (Transaction_Staff::staff_has_loggedin()) {
+                $can_be_deleted = true;
+            }
+            if ($can_be_deleted) {
+                Model_Answer::delete($id);
+                Model_User::decrease_score($uid, $score);
+                Message::set_success_message('success');
+                return true;
+            } else {
+                Message::set_error_message('fail');
+                return false;
+            }
         }
     }
 

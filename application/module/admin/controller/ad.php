@@ -115,7 +115,7 @@ class Ad extends Base {
      * page, orderby, direction, search can be empty
      */
     public function retrieve() {
-       if (!\App\Transaction\Html::previous_page_is_search_page()) {
+       if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
             \App\Transaction\Html::remember_current_admin_page();
         }
         \App\Transaction\Session::set_admin_current_l1_menu('Ad');

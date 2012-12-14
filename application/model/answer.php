@@ -1,13 +1,15 @@
 <?php
+
 namespace App\Model;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\Answer as Base_Answer;
 use \Zx\Model\Mysql;
 
 class Answer extends Base_Answer {
-    public static function get_all_keywords()
-    {
+
+    public static function get_all_keywords() {
         $sql = "SELECT keyword, keyword_en FROM answer WHERE status=1";
         $r = Mysql::select_all($sql);
         $arr = array();
@@ -24,17 +26,17 @@ class Answer extends Base_Answer {
                     if (trim($keyword) != '' && !in_array($keyword, $arr)) {
                         $arr[] = $keyword;
                     }
-                }                
+                }
             }
         }
         return $arr;
     }
+
     /**
      * 
      * @param string $url is a unique column in answer table
      */
-    public static function get_one_by_url($url)
-    {
+    public static function get_one_by_url($url) {
         $sql = "SELECT b.*, bc.title as cat_name
             FROM answer b
             LEFT JOIN answer_category bc ON b.cat_id=bc.id
@@ -42,21 +44,24 @@ class Answer extends Base_Answer {
         ";
         //$params = array(':url'=>$url);
 //		$query = Mysql::interpolateQuery($sql, $params);
-      //\Zx\Test\Test::object_log('query', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);        
-       return Mysql::select_one($sql);
+        //\Zx\Test\Test::object_log('query', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);        
+        return Mysql::select_one($sql);
     }
+
     /**
      *
      * @param intval $cat_id  category id
      * @return boolean
      */
-    public static function exist_answer_under_cat($cat_id)
-    {
+    public static function exist_answer_under_cat($cat_id) {
         $where = 'b.cat_id=' . $cat_id;
         $num = parent::get_num($where);
-        if ($num>0) return true;
-        else return false;
+        if ($num > 0)
+            return true;
+        else
+            return false;
     }
+
     /**
       according to category or keyword
       keywords are seperated by '^'
@@ -88,18 +93,19 @@ class Answer extends Base_Answer {
             }
         }
     }
+
     /**
-     * 
-     * @param string $keyword
-     * @param intval $page_num
+     * @param int $uid
      * @return array
      */
-    public static function get_active_answers_by_keyword($keyword, $page_num=1)
-    {
-                $where = " b.status=1 AND keyword LIKE '%$keyword%'";
-        $offset = ($page_num - 1) * NUM_OF_ARTICLES_IN_CAT_PAGE;
-        return parent::get_all($where, $offset, NUM_OF_ARTICLES_IN_CAT_PAGE, $order_by, $direction);
+    public static function get_recent_answers_by_uid($uid) {
+        $where = " a.status=1 AND q.status=1 AND a.uid=$uid";
+        $offset = ($page_num - 1) * NUM_OF_RECENT_ANSWERS_IN_FRONT_PAGE;
+        $order_by = 'a.date_created';
+        $direction = 'DESC';
+        return parent::get_all($where, $offset, NUM_OF_RECENT_ANSWERS_IN_FRONT_PAGE, $order_by, $direction);
     }
+
     /**
      * get active cats order by category name
      */
@@ -137,27 +143,31 @@ class Answer extends Base_Answer {
         $where = ' status=1 AND cat_id=' . $cat_id;
         return parent::get_num($where);
     }
- /**
+
+    /**
      */
-    public static function get_active_answers_by_uid_and_page_num($uid, $where=1, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = " status=1 AND uid=$uid AND ($where)" ;
+    public static function get_active_answers_by_uid_and_page_num($uid, $where = 1, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = " status=1 AND uid=$uid AND ($where)";
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
-    public static function get_num_of_active_answers_by_uid($uid, $where=1) {
-        $where = " status=1 AND uid=$uid AND ($where)" ;
+
+    public static function get_num_of_active_answers_by_uid($uid, $where = 1) {
+        $where = " status=1 AND uid=$uid AND ($where)";
         return parent::get_num($where);
-    }    
-    public static function get_active_answers_by_qid_and_page_num($qid, $where=1, $page_num = 1, $order_by = 'a.date_created', $direction = 'ASC') {
-        $where = " a.status=1 AND a.qid=$qid AND ($where)" ;
+    }
+
+    public static function get_active_answers_by_qid_and_page_num($qid, $where = 1, $page_num = 1, $order_by = 'a.date_created', $direction = 'ASC') {
+        $where = " a.status=1 AND a.qid=$qid AND ($where)";
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
-    public static function get_num_of_active_answers_by_qid($qid, $where=1) {
-        $where = " a.status=1 AND a.qid=$qid AND ($where)" ;
+
+    public static function get_num_of_active_answers_by_qid($qid, $where = 1) {
+        $where = " a.status=1 AND a.qid=$qid AND ($where)";
         return parent::get_num($where);
-    }    
-    
+    }
+
     public static function get_answers_by_page_num($where = '1', $page_num = 1, $order_by = 'id', $direction = 'ASC') {
         $page_num = intval($page_num);
         $page_num = ($page_num > 0) ? $page_num : 1;

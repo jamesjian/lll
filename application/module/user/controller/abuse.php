@@ -15,7 +15,7 @@ use \App\Transaction\Vote as Transaction_Vote;
 /**
 
  */
-class Vote extends Base {
+class Abuse extends Base {
 
      public function init() {
         parent::init();
@@ -33,7 +33,7 @@ class Vote extends Base {
         if (($uid = Transaction_User::get_uid()) > 0) {
             $item_type = (isset($params[0])) ? intval($params[0]) : 0;
             $item_id = (isset($params[1])) ? intval($params[1]) : 0;
-            if ($item_type > 0 && $item_id > 0)
+            if ($item_type > 0 && $qid > 0)
                 switch ($item_type) {
                     case 1:
                         $active_item = Model_Question::is_active_question($item_id);
@@ -43,25 +43,22 @@ class Vote extends Base {
                         $active_item = Model_Question::is_active_answer($item_id);
                         $item_name = '回答';
                         break;
-                    /** ad is not voted currently
                     case 3:
                         $active_item = Model_Question::is_active_ad($item_id);
                         $item_name = '广告';
                         break;
-                     * 
-                     */
                     default:
                         $active_item = false;
                 }
             if ($active_item) {
-                Transaction_Vote::create($uid, $item_type, $item_id, $active_item);
-                $message = "您已投票成功， 感谢您的支持。";
+                Transaction_Abuse::create($uid, $item_type, $item_id, $active_item);
+                $message = "您已举报成功， 网站管理员核实后会作出相关处理， 感谢您的支持。";
                 $success = true;
             } else {
-                $message = '对不起， 该' . $item_name . '无效， 不接受投票， 谢谢！'; // inactive or not existing question
+                $message = '对不起， 该' . $item_name . '无效， 不接受举报， 谢谢！'; // inactive or not existing question
             }
         } else {
-            $message = '对不起， 只有注册用户登录后才可以投票。';
+            $message = '对不起， 只有注册用户登录后才可以举报。';
         }
         View::set_view_file($this->view_path . 'result.php');
         View::set_action_var('message', $message);

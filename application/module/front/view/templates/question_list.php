@@ -2,8 +2,7 @@
     <ul class="zx-front-question-list-heading">
         <li>问题</li>
         <li>区域</li>
-        <li>支持数</li>
-        <li>浏览量</li>
+        <li>支持票数</li>
         <li>答案数量</li>
     </ul>
     <?php
@@ -16,8 +15,6 @@
      */
     if ($questions) {
         $regions = \App\Model\Region::get_au_states_abbr();
-        ?>
-        <?php
         foreach ($questions as $question) {
             $read_more_link = FRONT_HTML_ROOT . 'question/content/' . $question['id'];
             ?>		

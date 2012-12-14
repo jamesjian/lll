@@ -7,6 +7,9 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\View\View;
 use \Zx\Test\Test;
 use \App\Model\User as Model_User;
+use \App\Model\Question as Model_Question;
+use \App\Model\Answer as Model_Answer;
+use \App\Model\Ad as Model_Ad;
 use \App\Transaction\User as Transaction_User;
 use \App\Transaction\Html as Transaction_Html;
 use \Zx\Message\Message as Zx_Message;
@@ -298,23 +301,22 @@ class User extends Base {
     /**
      * list all users 
      * email is hidden
-
-
-     * 
+     * order by score
      * pagination
      */
     public function all() {
+        Transaction_Html::remember_current_page();
         Transaction_Html::set_title('All user');
         Transaction_Html::set_keyword('all user');
         Transaction_Html::set_description('all user');
         $current_page = (isset($params[0])) ? intval($params[0]) : 1;
         if ($current_page < 1)
             $current_page = 1;
-        $order_by = 'rank';
+        $order_by = 'score';
         $direction = 'DESC';
         $users = Model_User::get_active_users_by_page_num($current_page, $order_by, $direction);
         $num_of_articles = Model_User::get_num_of_active_users();
-        $num_of_pages = ceil($num_of_articles / NUM_OF_ITEMS_IN_ONE_PAGE);
+        $num_of_pages = ceil($num_of_articles / NUM_OF_USERS_IN_FRONT_PAGE);
         View::set_view_file($this->view_path . 'retrieve.php');
         View::set_action_var('users', $users);
         View::set_action_var('current_page', $current_page);
@@ -323,7 +325,6 @@ class User extends Base {
 
     public function detail() {
         $uid = $this->params[0];
-
         $user = Model_User::get_one($uid);
         //\Zx\Test\Test::object_log('$article', $article, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($user) {
@@ -336,13 +337,15 @@ class User extends Base {
             Transaction_Html::set_title($user['name']);
             Transaction_Html::set_keyword($user['name']);
             Transaction_Html::set_description($user['name']);
-            //Model_Article::increase_rank($article_id);
+            
             $recent_questions = Model_Question::get_recent_questions_by_uid($uid);
-            $recent_answers = Model_Question::get_recent_answers_by_uid($uid);
+            $recent_answers = Model_Answer::get_recent_answers_by_uid($uid);
+            $recent_ads = Model_Ad::get_recent_ads_by_uid($uid);
             View::set_view_file($this->view_path . 'one_user.php');
             View::set_action_var('user', $user);
             View::set_action_var('recent_questions', $recent_questions);
             View::set_action_var('recent_answers', $recent_answers);
+            View::set_action_var('recent_ads', $recent_ads);
         } else {
             //if no article, goto homepage
             Transaction_Html::goto_home_page();
