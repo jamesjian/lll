@@ -23,8 +23,8 @@ class Ad extends Base {
     public $view_path;
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/user/view/ad/';
         parent::init();
+        $this->view_path = APPLICATION_PATH . 'module/user/view/ad/';
     }
     
     public function adjust_weight()

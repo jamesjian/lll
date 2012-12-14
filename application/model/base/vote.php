@@ -10,11 +10,12 @@ prevent one user from voting one item multiple times
   uid mediumint(8) not null 0,
  item_type tinyint(1) NOT NULL DEFAULT '1',  //1. question, 2. answer, 3. ad
  item_id mediumint(8) not null default 0, 
+ date_created datetime
    primary key (uid, item_type, item_id)
  } engine=innodb default charset=utf8
 */
 class Vote {
-    public static $fields = array('uid','item_type', 'item_id');
+    public static $fields = array('uid','item_type', 'item_id','date_created');
     public static $table = TABLE_VOTE;
      /**
      *

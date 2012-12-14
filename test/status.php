@@ -13,7 +13,13 @@
     2. registered       //after registration
     3. deleted  (not implemented)
 
- * 
+ * every question 1
+ * every answer 2
+ * every vote 1
+ * every confirmed abuse -1
+ * num of ads <= num of valid answers (when an answer is disabled, if the ad is only for this answer, the ad is disabled)
+ *   
+ * sum of score of ads = score 
  * 
  *2. question  when status=2
  * valid 0 not sure (can be abused, has abuse button), 1 valid(cannot be abused, no abuse button), 2 invalid(has been abused, no display at all)

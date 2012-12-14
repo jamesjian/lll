@@ -268,4 +268,19 @@ class Tag extends Base_Tag {
             return false;
         }
     }
+    /**
+     * 
+     * @param int $id
+     * @param string $tag_name
+     * @return boolean 
+     */
+    public static function duplicate_tag_name($id, $tag_name){
+        $tag_name = strtolower($tag_name);
+        $where = " name='$tag_name' AND id<>$id ";
+        if ($tag  = parent::get_one_by_where($where)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

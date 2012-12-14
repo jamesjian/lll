@@ -21,8 +21,8 @@ class Question extends Base {
     public $view_path;
 
     public function init() {
-        $this->view_path = APPLICATION_PATH . 'module/user/view/question/';
         parent::init();
+        $this->view_path = APPLICATION_PATH . 'module/user/view/question/';
     }
 /**
      * only my questions

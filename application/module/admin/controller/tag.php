@@ -5,10 +5,12 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Message\Message;
 use \App\Model\Tag as Model_Tag;
 use \App\Transaction\Tag as Transaction_Tag;
+use \App\Transaction\Html as Transaction_Html;
 use \Zx\View\View;
 use \Zx\Test\Test;
 
 /**
+ * tag can be created by tag function or question or ad functions
  * tag usually can not be deleted or updated
  * except status
  */
@@ -22,7 +24,31 @@ class Tag extends Base {
         $this->list_page = ADMIN_HTML_ROOT . 'tag/retrieve/1/name/ASC/';
         //\App\Transaction\Session::set_ck_upload_path('tag');
     }
+    public function create()
+    {
+        $success = false;
+        $posted = array();
+        $errors = array();
+        if (isset($_POST['submit']) &&
+                isset($_POST['name']) && !empty($_POST['name'])) {
+            $name = trim($_POST['name']);
 
+            $arr = array('name' => $name,
+            );
+            if (Transaction_Tag::create($arr)) {
+                $success = true;
+            }
+        } else {
+            Zx_Message::set_error_message('name can not be empty。');
+        }
+        if ($success) {
+             Transaction_Html::goto_previous_admin_page();
+        } else {
+            View::set_view_file($this->view_path . 'create.php');
+            View::set_action_var('posted', $posted);
+            View::set_action_var('errors', $errors);
+        }
+    }
     /**
      * 
      */
