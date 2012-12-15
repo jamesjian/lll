@@ -63,7 +63,15 @@ class Tag {
             return false;
         }
     }
-
+    /**
+     * only by admin
+     * 
+     * @param str $tag_source  usually one tag name such as “悉尼大学” or "sydney university'
+     * @param str $tag_dest usually multiple tag names such as @悉尼@大学@
+     */
+    public static function transfer_tag($tag_source, $tag_dest) {
+        
+    }
     /**
      * merge $id_source to $id_dest
      * 1. tag table,  sum of num_of_questions, num_of_ads

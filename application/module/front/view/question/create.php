@@ -41,7 +41,8 @@ if (isset($errors)) {
                 </td>               
             </tr>
             <tr>
-                <td class="table_title required">关键词:</td>
+                <td class="table_title required">关键词: <a href="<?php echo FRONT_HTML_ROOT . 'tag/usage';?>" class="zx-front-tag-usage">（点击此处查看关键词使用规则)</a>
+                </td>
                 <td class="table_input">  
                     <input type="text" name="tnames"  class="form_element" 
                            value="<?php if (isset($posted['tnames'])) echo $posted['tnames']; ?>"/>

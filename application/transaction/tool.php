@@ -6,7 +6,23 @@ use \App\Model\Article as Model_Article;
 use \App\Model\Articlecategory as Model_Articlecategory;
 
 class Tool {
-
+/**
+   * @uses 字符串处理 去掉标点符号,HTML,并过滤重复字符串
+ *   @tutorial
+   * @param string $str such as $str = "   中国 ，。墨尔本大学，<javascript>    ";
+ *   @return $str = '中国 墨尔本大学'
+   */
+   function getClearStr($str){
+    $punc_arr = array('？','！','￥','（','）','：','‘','’','“','”','《','》','，','…','。','、','&nbsp'); //can be adjusted
+    $str = trim($str);
+    //去掉中,英文标点符号和HTML代码
+    $str=preg_replace("/[[:punct:]]/",'',strip_tags(html_entity_decode(str_replace($punc_arr,' ',$str),ENT_QUOTES,'UTF-8')));
+    //去掉两个以上空格
+    $str = preg_replace('/\s(?=\s)/', '', $str);  
+    //去掉重复字符, it's complicated, for example '墨尔本大学 悉尼大学' will be '墨尔本大学 悉尼'， it's not accurate.
+    //$str=implode("",array_unique(preg_split('/(?<!^)(?!$)/u',$str)));
+    return $str;
+  }
     /**
      * Validate a credit card number
      * @param string $card_num Credit card number

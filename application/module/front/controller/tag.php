@@ -242,5 +242,9 @@ class Tag extends Base {
     public function hottest() {
 
     }
-
+    public function usage()
+    {
+                View::set_view_file($this->view_path . 'usage.php');
+                View::do_not_use_template();
+    }
 }

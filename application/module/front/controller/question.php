@@ -29,7 +29,7 @@ class Question extends Base {
     public function init() {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/front/view/question/';
-        $this->list_page = FRONT_HTML_ROOT . 'question/all/';
+        $this->list_page = FRONT_HTML_ROOT . 'question/latest/1';
     }
 
     /*     * one question

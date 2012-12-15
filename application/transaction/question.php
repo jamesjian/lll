@@ -32,22 +32,9 @@ class Question {
             $uname = $user['uname'];
             $status = 0;
         }
-
+        $tids = Model_Tag::get_tids_by_tnames($arr['tnames']);
         //prepare tag ids
-        $tags = explode('@', $arr['tnames']);
-        $tids = '';
-        foreach ($tags as $tag) {
-            if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
-                Model_Tag::increase_num_of_questions($existing_tag['id']);
-                $tids .= $existing_tag['id'] . '@';
-            } else {
-                $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
-                //\Zx\Test\Test::object_log('$tag_arr', $tag_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
-                $tag_id = Model_Tag::create($tag_arr);
-                $tids .= $tag_id . '@';
-            }
-        }
+        Model_Tag::increase_num_of_questions_by_tids($tids);
         $arr['tids'] = $tids;
         $arr['uid'] = $uid;
         $arr['uname'] = $uname;
