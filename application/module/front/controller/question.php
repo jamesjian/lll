@@ -288,11 +288,14 @@ class Question extends Base {
         if (isset($_POST['submit']) &&
                 isset($_POST['title']) && !empty($_POST['title']) &&
                 isset($_POST['content']) && !empty($_POST['content']) &&
-                isset($_POST['tnames']) && !empty($_POST['tnames'])
+                (!empty($_POST['tname1']) || !empty($_POST['tname2']) || !empty($_POST['tname3']) || !empty($_POST['tname4']) || !empty($_POST['tname5']))                                                                     )
         ) {
             $title = trim($_POST['title']);
             $region = isset($_POST['region']) ? trim($_POST['region']) : 'AU';
-            $tnames = trim($_POST['tnames']);
+            $tnames = TNAME_SEPERATOR;
+            if (!empty($_POST['tname1'])) {
+                $tnames .= trim($_POST['tname1']);
+            }
             $content = trim($_POST['content']);
 
             $arr = array('title' => $title,

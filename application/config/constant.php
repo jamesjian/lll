@@ -46,6 +46,7 @@ define('SITENAME', 'NAME OF THIS SITE');
 
 
 
+define('TNAME_SEPERATOR', '@');
 define('NUM_OF_ITEMS_IN_ONE_PAGE', 20);
 define('NUM_OF_QUESTIONS_IN_FRONT_PAGE', 100);
 define('NUM_OF_ADS_IN_FRONT_PAGE', 100);

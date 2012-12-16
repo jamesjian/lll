@@ -44,8 +44,11 @@ if (isset($errors)) {
                 <td class="table_title required">关键词: <a href="<?php echo FRONT_HTML_ROOT . 'tag/usage';?>" class="zx-front-tag-usage">（点击此处查看关键词使用规则)</a>
                 </td>
                 <td class="table_input">  
-                    <input type="text" name="tnames"  class="form_element" 
-                           value="<?php if (isset($posted['tnames'])) echo $posted['tnames']; ?>"/>
+                    <input type="text" name="tname1"  class="form_element" value="<?php if (isset($posted['tname1'])) echo $posted['tname1']; ?>"/>
+                    <input type="text" name="tname2"  class="form_element" value="<?php if (isset($posted['tname2'])) echo $posted['tname2']; ?>"/>
+                    <input type="text" name="tname3"  class="form_element" value="<?php if (isset($posted['tname3'])) echo $posted['tname3']; ?>"/>
+                    <input type="text" name="tname4"  class="form_element" value="<?php if (isset($posted['tname4'])) echo $posted['tname4']; ?>"/>
+                    <input type="text" name="tname5"  class="form_element" value="<?php if (isset($posted['tname5'])) echo $posted['tname5']; ?>"/>
                 </td>
             </tr>
             <tr>

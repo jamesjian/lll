@@ -11,13 +11,14 @@ use \Zx\Model\Mysql;
   num_of_questions unsigned mediumint(8) default 0,
   num_of_ads unsigned mediumint(8) default 0,
   num_of_views unsigned int(11) default 0,
+  transfer_to varchar(255) not null default '',
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */
 
 class Tag {
     public static $fields = array('id','name','num_of_questions','num_of_ads',
-        'num_of_views', 'status', 'date_created');
+        'num_of_views','transfer_to', 'status', 'date_created');
     public static $table = TABLE_TAG;
     /**
      *
