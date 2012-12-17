@@ -114,7 +114,33 @@ class Tag extends Base {
         View::set_action_var('current_page', $current_page);
         View::set_action_var('num_of_pages', $num_of_pages);
     }
-    
-    
+    /**
+     * from one existing tag to one or multiple existing or non-existing tags
+     * tags are seperated by    TNAME_SEPERATOR
+     */
+    public function transfer()
+    {
+               $success = false;
+        $posted = array();
+        $errors = array();
+        if (isset($_POST['submit']) &&
+                isset($_POST['tsource']) && isset($_POST['tdest'])) {
+            $tag_source = trim($_POST['tsource']);
+            $tag_dest = trim($_POST['tdest']);
+            $posted = array('tsource'=>$tsource, 'tdest'=>$tdest);
+            if (Transaction_Tag::transfer_tag($tag_source, $tag_dest)) {
+                $success = true;
+            }
+        } else {
+            Zx_Message::set_error_message('tag can not be empty。');
+        }
+        if ($success) {
+             Transaction_Html::goto_previous_admin_page();
+        } else {
+            View::set_view_file($this->view_path . 'transfer.php');
+            View::set_action_var('posted', $posted);
+            View::set_action_var('errors', $errors);
+        }
+    }
 
 }

@@ -344,6 +344,11 @@ class Tag extends Base_Tag {
         return parent::get_all($where, 0, 10, 'b.date_created', 'DESC');
     }
 
+    /**
+     * 
+     * @param type $tag_name
+     * @return record or false
+     */
     public static function exist_tag_by_tag_name($tag_name) {
         $tag_name = strtolower($tag_name);
         $where = " name='$tag_name'";

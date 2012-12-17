@@ -13,7 +13,7 @@ use \App\Transaction\Question as Transaction_Question;
 /* * 
  * homepage: /=>/front/question/latest/page/1
  * latest: /front/question/latest/page/3
- * 
+ 
  * most popular:/front/question/most_popular/page/3
  * question under category: /front/questioncategory/retrieve/$category_id_3/category_name.php
  * one: /front/question/content/$id/$question_url

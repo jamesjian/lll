@@ -3,6 +3,7 @@
 namespace App\Transaction;
 
 use \App\Model\Tag as Model_Tag;
+use \App\Transaction\Tool as Transaction_Tool;
 use \Zx\Message\Message;
 use \Zx\Model\Mysql;
 
@@ -65,11 +66,46 @@ class Tag {
     }
     /**
      * only by admin
-     * 
+     * when transfer tag:
+     * 1. question table tids, tnames
+     * 2. ad table tids, tnames
+     * 3. tag table: original tag: decrease num_of_questions and num_of_ads, maybe different
+     *               new tags: increase num_of_questions and num_of_ads, maybe different
      * @param str $tag_source  usually one tag name such as “悉尼大学” or "sydney university'
      * @param str $tag_dest usually multiple tag names such as @悉尼@大学@
      */
     public static function transfer_tag($tag_source, $tag_dest) {
+        $tname = Transaction_Tool::get_clear_string($tag_source);
+        $tag_source = Model_Tag::get_tag_by_name($tname);
+        if ($tag_source) {
+            $tid_source = $tag_source['id'];
+            $tname_source = $tag_source['name'];
+            $num_of_questions_source = $tag_source['num_of_questions'];
+            $num_of_ads_source = $tag_source['num_of_ads'];
+            $tdest_arr = explode(TNAME_SEPERATOR, $tag_dest);
+            foreach ($tdest_arr as $tname) {
+                $tname = Transaction_Tool::get_clear_string($tname);
+                if ($tag=  Model_Tag::exist_tag_by_tag_name($tag_name)) {
+                    $tid = $tag['id'];
+                    $tname = $tag['name'];
+                } else {
+                    $tag = Model_Tag::create($arr);
+                    $tid = $tag['id'];
+                    $tname = $tag['name'];
+                }
+                $tids = $tid . TNAME_SEPERATOR;
+                $tnames = $tname . TNAME_SEPERATOR;
+            }
+            $q = "UPDATE " . TABLE_TAG . ' SET num_of_questions=0, num_of_ads=0 WHERE id=' . $tid_source;
+            foreach ($tid_arr as $tid) {
+                $q = "UPDATE " . TABLE_TAG . ' SET num_of_questions=num_of_questions+' . $num_of_questions_source . ',' .
+                        'num_of_ads=num_of_ads+' . $num_of_ads_source. ' WHERE id=' . $tid;
+                    ;
+                
+            }
+            $q = "UPDATE " . TABLE_QUESTION . " SET tids=REPLACE('$tid_source','$tids', tids)" . " WHERE tids LIKE '%$tid_source%'";
+            $q = "UPDATE " . TABLE_QUESTION . " SET tnamess=REPLACE('$tname_source','$tnames', tnames)" . " WHERE tnames LIKE '%$tname_source%'";
+        }
         
     }
     /**
