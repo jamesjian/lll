@@ -1,30 +1,77 @@
+<h4>编辑问题</h4>
+<div class="clear-both"></div>
 <?php
-use \Zx\Message\Message as Zx_Message;
-Zx_Message::show_message();
-//must provide title, content, tags and user id
+if (isset($errors)) {
+    echo "<div  class='errormessage'>";
+    foreach ($errors as $key => $message) {
+        echo $message, BR;
+    }
+    echo "</div>";
+}
+\Zx\Message\Message::show_message();
 ?>
-<form action="<?php echo USER_HTML_ROOT . 'question/create'; ?>" method="post">
-    <fieldset>
-        <legend>Create question</legend>
-        <dl>
-            <dt>Title:</dt><dd><input type="text" name="title" size="50" value="<?php
-            if (isset($_POST['title'])) echo $_POST['title'];?>"/></dd>
-            <dt> User id:</dt><dd><input type="text" name="uid" size="50"  value="<?php
-            if (isset($_POST['uid'])) echo $_POST['uid'];?>"/></dd>
-            <dt> Tags:至少一个关键词， 最多五个关键词， 多个关键词之间以@符号分割， 例如留学@移民@中介@培训</dt><dd><input type="text" name="tnames" size="50"  value="<?php
-            if (isset($_POST['tnames'])) echo $_POST['tnames'];?>"/></dd>
-            <dt> Status:</dt>
-            <dd><input type="radio" name="status" value="1" />Active    
-                <input type="radio" name="status" value="0" />Inactive    </dd>
-            <dt> Content: </dt><dd><textarea cols="10" rows="30" name="content"><?php
-            if (isset($_POST['content'])) echo $_POST['content'];?></textarea></dd>
-            <dt> <input type="hidden" name="uid" value="<?php if (isset($_POST['uid']))
-                echo $_POST['uid']; else echo $uid;?>" /></dt>
-            <dd><input type="submit" name="submit" value="create" /></dd>
-        </dl>
-    </fieldset>    
+<form id="login_form" name="login_form" method="post" action="<?php echo FRONT_HTML_ROOT; ?>question/create">
+    <fieldset class="fyl_fieldset">
+        <table>
+            <tr>
+                <td class="table_title required">标题:</td>
+                <td class="table_input"> 
+                    <input type="text" name="title"  class="form_element"   id="title" 
+                           value="<?php if (isset($posted['title'])) echo $posted['title']; ?>"/>
+                </td>
+            </tr>
+            <tr>    
+                <td class="table_title required"> State:</td>
+                <td class="table_input">
+                    <select id="region" name="region">
+                        <?php
+                        $regions = \App\Model\Region::get_au_states_abbr();
+                        foreach ($regions as $region) {
+                            ?>
+                            <option value="<?php echo $region; ?>"
+                            <?php
+                            if (isset($_POST['region']) && $_POST['region'] == $region) {
+                                echo ' selected';
+                            }
+                            ?>><?php echo $region; ?>             
+                            </option>
+                            <?php
+                        }
+                        ?></select>
+                </td>               
+            </tr>
+            <tr>
+                <td class="table_title required">关键词: <a href="<?php echo FRONT_HTML_ROOT . 'tag/usage';?>" class="zx-front-tag-usage">（点击此处查看关键词使用规则)</a>
+                </td>
+                <td class="table_input">  
+                    <input type="text" name="tname1"  class="form_element" value="<?php if (isset($posted['tname1'])) echo $posted['tname1']; ?>"/>
+                    <input type="text" name="tname2"  class="form_element" value="<?php if (isset($posted['tname2'])) echo $posted['tname2']; ?>"/>
+                    <input type="text" name="tname3"  class="form_element" value="<?php if (isset($posted['tname3'])) echo $posted['tname3']; ?>"/>
+                    <input type="text" name="tname4"  class="form_element" value="<?php if (isset($posted['tname4'])) echo $posted['tname4']; ?>"/>
+                    <input type="text" name="tname5"  class="form_element" value="<?php if (isset($posted['tname5'])) echo $posted['tname5']; ?>"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="table_title required">内容:</td>
+                <td class="table_input"> 
+                    Content: </dt><dd><textarea cols="10" rows="30" name="content"><?php if (isset($posted['content'])) echo $posted['content']; ?></textarea>
+                </td>
+                </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <button type='submit' name='submit' value="submit">发布</button>
+                    (如果你已登录， 新问题将会立即被发布， 如果你尚未登录， 新问题审核通过后才会显示。）
+                    <a href="<?php echo FRONT_HTML_ROOT; ?>user/login">现在登录</a>或
+                    <a href="<?php echo FRONT_HTML_ROOT; ?>user/register">注册新用户</a>
+
+                </td>
+            </tr>
+        </table>
+    </fieldset>
 </form>
-<a href="<?php echo \App\Transaction\Html::get_previous_admin_page(); ?>" />Cancel</a>
+<a href="<?php echo \App\Transaction\Html::get_previous_page(); ?>" />Cancel</a>
 <?php
 include_once(PHP_CKEDITOR_PATH . 'j_ckedit.class.php');
 echo CKEDITOR::ckHeader();

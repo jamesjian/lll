@@ -10,29 +10,6 @@ use \Zx\Model\Mysql;
 class Tag extends Base_Tag {
 
     /**
-     *
-     * @param string $tnames  @a@b@c@
-     * @return string tag ids @1@2@3@
-     */
-    public static function get_tids_by_tnames($tnames) {
-        $tags = explode(' ', $tnames);
-        $tids = '@';
-        foreach ($tags as $tag) {
-            if (trim($tag) <> '' && $existing_tag = self::exist_tag_by_tag_name($tag)) {
-                self::increase_num_of_questions($existing_tag['id']);
-                $tids .= $existing_tag['id'] . '@';
-            } else {
-                $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //must have one now
-                //\Zx\Test\Test::object_log('$tag_arr', $tag_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
-                $tag_id = Model_Tag::create($tag_arr);
-                $tids .= $tag_id . '@';
-            }
-        }
-        return $tids;
-    }
-
-    /**
      * 
      * @param intval $cat_id  tag id
      * @return boolean
@@ -269,41 +246,76 @@ class Tag extends Base_Tag {
         $params = array(':id' => $tid);
         return Mysql::exec($sql, $params);
     }
-
-    /**
-     * multiple tag ids 
-     * @param string $tids  @1@2@3@
-     * @return boolean
-     */
-    public static function increase_num_of_questions_by_tids($tids) {
-        $tid_arr = explode('@', $tids);
-        $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions+1 WHERE id=:id';
-        foreach ($tid_arr as $tid) {
-            $params = array(':id' => $tag_id);
-            Mysql::exec($sql, $params);
-        }
-        return true;
-    }
-    /**
-     * multiple tag ids 
-     * @param string $tids  @1@2@3@
-     * @return boolean
-     */
-    public static function increase_num_of_ads_by_tids($tids) {
-        $tid_arr = explode('@', $tids);
-        $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads+1 WHERE id=:id';
-        foreach ($tid_arr as $tid) {
-            $params = array(':id' => $tag_id);
-            Mysql::exec($sql, $params);
-        }
-        return true;
-    }
-
     public static function increase_num_of_ads($tag_id) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads+1 WHERE id=:id';
         $params = array(':id' => $tag_id);
         return Mysql::exec($sql, $params);
     }
+    public static function decrease_num_of_questions($tid) {
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions-1 WHERE id=:id';
+        $params = array(':id' => $tid);
+        return Mysql::exec($sql, $params);
+    }
+    public static function decrease_num_of_ads($tag_id) {
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads-1 WHERE id=:id';
+        $params = array(':id' => $tag_id);
+        return Mysql::exec($sql, $params);
+    }
+
+    /**
+     * multiple tag ids 
+     * @param array $tids  
+     * @return boolean
+     */
+    public static function increase_num_of_questions_by_tids($tids) {
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions+1 WHERE id=:id';
+        foreach ($tids as $tid) {
+            $params = array(':id' => $tag_id);
+            Mysql::exec($sql, $params);
+        }
+        return true;
+    }
+    /**
+     * multiple tag ids 
+     * @param array $tids 
+     * @return boolean
+     */
+    public static function increase_num_of_ads_by_tids($tids) {
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads+1 WHERE id=:id';
+        foreach ($tids as $tid) {
+            $params = array(':id' => $tag_id);
+            Mysql::exec($sql, $params);
+        }
+        return true;
+    }
+    /**
+     * multiple tag ids 
+     * @param array $tids  
+     * @return boolean
+     */
+    public static function decrease_num_of_questions_by_tids($tids) {
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions-1 WHERE id=:id';
+        foreach ($tids as $tid) {
+            $params = array(':id' => $tag_id);
+            Mysql::exec($sql, $params);
+        }
+        return true;
+    }
+    /**
+     * multiple tag ids 
+     * @param array $tids 
+     * @return boolean
+     */
+    public static function decrease_num_of_ads_by_tids($tids) {
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads-1 WHERE id=:id';
+        foreach ($tids as $tid) {
+            $params = array(':id' => $tag_id);
+            Mysql::exec($sql, $params);
+        }
+        return true;
+    }
+
+
 
     /**
      * currently top 20

@@ -55,18 +55,66 @@ class User extends Base_User {
         return parent::get_one(2); //匿名回答用户
     }
 
+    /**
+     * increase num of questions and score simultaneously
+     * @param type $uid
+     */
     public static function increase_num_of_questions($uid) {
-        $sql = "UPDATE " . parent::$table . " SET num_of_questions=num_of_questions+1 WHERE id=:id";
+        $sql = "UPDATE " . parent::$table . " SET num_of_questions=num_of_questions+1,
+             score=score+" . SCORE_OF_QUESTION . " WHERE id=:id";
         $params = array(':id' => $uid);
-        return Mysql::exec($sql, $params);
+        Mysql::exec($sql, $params);
     }
-
+    /**
+     * increase num of answers and score simultaneously
+     * @param type $uid
+     */
     public static function increase_num_of_answers($uid) {
-        $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers+1 WHERE id=:id";
+        $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers+1,
+             score=score+" . SCORE_OF_ANSWER . " WHERE id=:id";
         $params = array(':id' => $uid);
         return Mysql::exec($sql, $params);
     }
-
+    /**
+     * increase num of answers and ad_score simultaneously
+     * @param type $uid
+     */    
+    public static function increase_num_of_ads($uid) {
+        $sql = "UPDATE " . parent::$table . " SET num_of_ads=num_of_ads+1,
+             ad_score=ad_score+" . SCORE_OF_AD . " WHERE id=:id";
+        $params = array(':id' => $uid);
+        return Mysql::exec($sql, $params);
+    }
+    /**
+     * decrease num of questions and score simultaneously
+     * @param type $uid
+     */    
+    public static function decrease_num_of_questions($uid) {
+        $sql = "UPDATE " . parent::$table . " SET num_of_questions=num_of_questions-1,
+             score=score-" . SCORE_OF_QUESTION . " WHERE id=:id";
+        $params = array(':id' => $uid);
+        return Mysql::exec($sql, $params);
+    }
+    /**
+     * decrease num of answers and score simultaneously
+     * @param type $uid
+     */
+    public static function decrease_num_of_answers($uid) {
+        $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers-1,
+             score=score-" . SCORE_OF_ANSWER . " WHERE id=:id";
+        $params = array(':id' => $uid);
+        return Mysql::exec($sql, $params);
+    }
+    /**
+     * increase num of answers and ad_score simultaneously
+     * @param type $uid
+     */    
+    public static function decrease_num_of_ads($uid) {
+        $sql = "UPDATE " . parent::$table . " SET num_of_ads=num_of_ads-1,
+             ad_score=ad_score-" . SCORE_OF_AD . " WHERE id=:id";
+        $params = array(':id' => $uid);
+        return Mysql::exec($sql, $params);
+    }
     public static function disable_user($uid) {
         $arr['status'] = 0;
         return parent::update($uid, $arr);

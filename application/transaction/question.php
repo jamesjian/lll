@@ -6,6 +6,7 @@ use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answer;
 use \App\Model\User as Model_User;
 use \App\Model\Tag as Model_Tag;
+use App\Transaction\Tool as Transaction_Tool;
 use \Zx\Message\Message;
 use \Zx\Model\Mysql;
 
@@ -17,6 +18,7 @@ class Question {
      * in controller, it must have title, content and tnames
      * if user has logged in, fill the user id and status=1 (active)
      * otherwise, fill the user id with default question user id and status=0 (inactive)
+     * $arr['tnames'] is an array (tag1, tag2, tag3, tag4, tag5), can be less than 5
      * @param type $arr
      */
     public static function create($arr = array()) {
@@ -32,10 +34,22 @@ class Question {
             $uname = $user['uname'];
             $status = 0;
         }
-        $tids = Model_Tag::get_tids_by_tnames($arr['tnames']);
         //prepare tag ids
-        Model_Tag::increase_num_of_questions_by_tids($tids);
+        $tnames = '';
+        foreach ($arr['tnames'] as $tag) {
+            $tnames .= $tag . TNAME_SEPERATOR;
+            if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
+                $tid = $existing_tag['id'];
+                Model_Tag::increase_num_of_questions($tid);
+                $tids .=  $tid. TNAME_SEPERATOR;
+            } else {
+                $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //have one already
+                $tid = Model_Tag::create($tag_arr);
+                $tids .= $tid . TNAME_SEPERATOR;
+            }            
+        }
         $arr['tids'] = $tids;
+        $arr['tnames'] = $tnames;
         $arr['uid'] = $uid;
         $arr['uname'] = $uname;
         $arr['status'] = $status;
@@ -255,14 +269,21 @@ class Question {
 
     /**
      * usually a question cannot be deleted
-     * user who give this question and admin can delete it when no answer connect it
-     * @param type $id
+     * user who submit this question and admin can delete it when no answer for it
+     * after deletion, 
+     * 1. user table score will be decreased
+     * 2. tag table num_of_questions will be decreased
+     * @param type $id 
      * @return boolean
      */
     public static function delete_question($id) {
 
         if (Model_Question::can_be_deleted()) {
+            $question = Model_Question::get_one($id);
             if (Model_Question::delete($id)) {
+                Model_User::decrease_num_of_questions($question['uid']);
+                $tids = explode(',', substr($question['tids'], 0, -1)); //remove trailing seperator
+                Model_Tag::increase_num_of_ads_by_tids($tids);
                 Message::set_success_message('success');
                 return true;
             } else {

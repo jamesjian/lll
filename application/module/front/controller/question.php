@@ -7,6 +7,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Controller\Route;
 use \Zx\View\View;
 use \Zx\Message\Message as Zx_Message;
+use App\Transaction\Tool as Transaction_Tool;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Question as Transaction_Question;
 use App\Transaction\Html as Transaction_Html;
@@ -288,13 +289,21 @@ class Question extends Base {
         if (isset($_POST['submit']) &&
                 isset($_POST['title']) && !empty($_POST['title']) &&
                 isset($_POST['content']) && !empty($_POST['content']) &&
-                (!empty($_POST['tname1']) || !empty($_POST['tname2']) || !empty($_POST['tname3']) || !empty($_POST['tname4']) || !empty($_POST['tname5']))                                                                     )
-        ) {
+                (!empty($_POST['tname1']) || !empty($_POST['tname2']) || 
+                 !empty($_POST['tname3']) || !empty($_POST['tname4']) || 
+                 !empty($_POST['tname5']))) {
             $title = trim($_POST['title']);
             $region = isset($_POST['region']) ? trim($_POST['region']) : 'AU';
-            $tnames = TNAME_SEPERATOR;
-            if (!empty($_POST['tname1'])) {
-                $tnames .= trim($_POST['tname1']);
+            $tnames = array();
+            for ($i=1; $i<=NUM_OF_TNAMES_PER_ITEM; $i++) {
+                $index = 'tname' . $i;
+                if (isset($_POST[$index])) {
+                    $tag = Transaction_Tool::get_clear_string($_POST[$index]);
+                    if ( $tag<> '') {
+                        //only contain valid tag
+                        $tnames[] = $tag;
+                    }
+                }
             }
             $content = trim($_POST['content']);
 

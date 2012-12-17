@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Transaction;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
+
 use \App\Model\Ad as Model_Ad;
 use \App\Model\User as Model_User;
 use \Zx\Message\Message;
@@ -14,33 +17,32 @@ class Ad {
      * @param int $ad_id
      * @param int $weight
      */
-    public static function adjust_score($ad_id, $score)
-    {
+    public static function adjust_score($ad_id, $score) {
         $success = false;
         $user = Transaction_User::get_user();
         //1. valid user
         if ($user) {
-        //2. valid ad
-        if (Model_Ad::ad_belong_to_user($ad_id)) {
-            $ad = Model_Ad::get_one($ad_id);
-            $score_restored = $user['score']-$user['invalid_score']-$user['ad_score']+$ad['score'];
-            $score_left =  $score_restored - $score;
-            if ($score_left>=0) {
-                $ad_arr = array('score'=>$score);
-                $user_arr = array('ad_score'=>$user['ad_score'] - $ad['score'] + $score);
-                $success = true;
-            } elseif ($score_restored>=0) {
-                $ad_arr = array('score'=>$score_restored);
-                $user_arr = array('ad_score'=>$user['score']-$user['invalid_score']);                
-                $message = "仍有积分， 但积分不足";
-            } else {
-                $message = "可用积分为0";
-            }
+            //2. valid ad
+            if (Model_Ad::ad_belong_to_user($ad_id)) {
+                $ad = Model_Ad::get_one($ad_id);
+                $score_restored = $user['score'] - $user['invalid_score'] - $user['ad_score'] + $ad['score'];
+                $score_left = $score_restored - $score;
+                if ($score_left >= 0) {
+                    $ad_arr = array('score' => $score);
+                    $user_arr = array('ad_score' => $user['ad_score'] - $ad['score'] + $score);
+                    $success = true;
+                } elseif ($score_restored >= 0) {
+                    $ad_arr = array('score' => $score_restored);
+                    $user_arr = array('ad_score' => $user['score'] - $user['invalid_score']);
+                    $message = "仍有积分， 但积分不足";
+                } else {
+                    $message = "可用积分为0";
+                }
                 Model_Ad::update($ad_id, $ad_arr);
                 Model_User::update($uid, $user_arr);
-        } else {
-            $message = "无效的广告序号";
-        }
+            } else {
+                $message = "无效的广告序号";
+            }
         } else {
             $message = "用户未登录";
         }
@@ -51,6 +53,7 @@ class Ad {
             return true;
         }
     }
+
     /**
      * in controller, check Model_User::available_score($this->uid) to make sure score is more than 1
      * @param array $arr
@@ -74,11 +77,20 @@ class Ad {
         }
     }
 
+    /**
+     * tag names change, tag ids change, and num_of_questions of tags change
+
+     * @param type $id
+     * @param type $arr
+     * @return boolean
+     */
     public static function update_ad($id, $arr) {
         //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         if (count($arr) > 0 && (isset($arr['title']) || isset($arr['content']))) {
             if (Model_Ad::update($id, $arr)) {
+                
+                //Todo: check tag
                 Message::set_success_message('success');
                 return true;
             } else {
@@ -121,7 +133,7 @@ class Ad {
             $str = substr($str, 0, -1); //remove last ','
             return $str;
             //Transaction_Swiftmail::send_string_to_admin($str);
-        } 
+        }
     }
 
 }

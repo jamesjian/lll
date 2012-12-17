@@ -12,7 +12,7 @@ class Tool {
    * @param string $str such as $str = "   中国 ，。墨尔本大学，<javascript>    ";
  *   @return $str = '中国 墨尔本大学'
    */
-   function getClearStr($str){
+   public static function get_clear_string($str){
     $punc_arr = array('？','！','￥','（','）','：','‘','’','“','”','《','》','，','…','。','、','&nbsp'); //can be adjusted
     $str = trim($str);
     //去掉中,英文标点符号和HTML代码
@@ -29,7 +29,7 @@ class Tool {
      * @param string $type Either American express, Diners Club, Discover, MasterCard or Visa card
      * @return boolean
      */
-    function is_credit_card($card_num, $type) {
+    public static function is_credit_card($card_num, $type) {
 
         $cc_num = str_replace(' ', '', $card_num);
         $success = false;
@@ -74,7 +74,7 @@ class Tool {
      
      * @return boolean
      */
-    function is_abn($abn) {
+    public static function is_abn($abn) {
         // only check digits
         $abn = preg_replace("/[^\d]/", "", $abn);
 
