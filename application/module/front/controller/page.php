@@ -26,15 +26,15 @@ class Page extends Base {
 
     //one page
     public function terms() {
-        $term_condition = Model_Page::get_terms();
+        //$term_condition = Model_Page::get_terms();
         View::set_view_file($this->view_path . 'terms.php');
-        View::set_action_var('term_condition', $term_condition);
+        //View::set_action_var('term_condition', $term_condition);
     }
     //one page
     public function privacy() {
-        $privacy = Model_Page::get_privacy();
+        //$privacy = Model_Page::get_privacy();
         View::set_view_file($this->view_path . 'privacy.php');
-        View::set_action_var('privacy', $privacy);
+        //View::set_action_var('privacy', $privacy);
     }
 
     //many rows;
