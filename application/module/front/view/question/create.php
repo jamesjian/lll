@@ -1,3 +1,8 @@
+<?php
+/**
+ * only content, no content1 (for num_of_answers>0)
+ */
+?>
 <h4>新问题</h4>
 <div class="clear-both"></div>
 <?php

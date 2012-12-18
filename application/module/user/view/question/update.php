@@ -1,3 +1,10 @@
+<?php
+/**
+ * must updated by registered user
+ * if NO answer, can edit content 
+ * if has answer, only edit content1 
+ */
+?>
 <h4>编辑问题</h4>
 <div class="clear-both"></div>
 <?php
@@ -41,7 +48,7 @@ if (isset($errors)) {
                 </td>               
             </tr>
             <tr>
-                <td class="table_title required">关键词: <a href="<?php echo FRONT_HTML_ROOT . 'tag/usage';?>" class="zx-front-tag-usage">（点击此处查看关键词使用规则)</a>
+                <td class="table_title required">关键词: <a href="<?php echo FRONT_HTML_ROOT . 'tag/usage'; ?>" class="zx-front-tag-usage">（点击此处查看关键词使用规则)</a>
                 </td>
                 <td class="table_input">  
                     <input type="text" name="tname1"  class="form_element" value="<?php if (isset($posted['tname1'])) echo $posted['tname1']; ?>"/>
@@ -51,21 +58,32 @@ if (isset($errors)) {
                     <input type="text" name="tname5"  class="form_element" value="<?php if (isset($posted['tname5'])) echo $posted['tname5']; ?>"/>
                 </td>
             </tr>
+
             <tr>
                 <td class="table_title required">内容:</td>
                 <td class="table_input"> 
-                    Content: </dt><dd><textarea cols="10" rows="30" name="content"><?php if (isset($posted['content'])) echo $posted['content']; ?></textarea>
+                    <textarea cols="10" rows="30" name="content" <?php if ($question['num_of_answers'] > 0) echo 'disabled'; ?>><?php if (isset($posted['content'])) echo $posted['content']; ?></textarea>
                 </td>
+            </tr>
+            <?php
+            if ($question['num_of_answers'] > 0) {
+                ?>
+                <tr>
+
+                    <td class="table_title required">补充内容:</td>
+                    <td class="table_input"> 
+                        <textarea cols="10" rows="30" name="content1" ><?php if (isset($posted['content'])) echo $posted['content']; ?></textarea>
+                    </td>
+
                 </tr>
+                <?php
+            }
+            ?>
             <tr>
                 <td>
                 </td>
                 <td>
-                    <button type='submit' name='submit' value="submit">发布</button>
-                    (如果你已登录， 新问题将会立即被发布， 如果你尚未登录， 新问题审核通过后才会显示。）
-                    <a href="<?php echo FRONT_HTML_ROOT; ?>user/login">现在登录</a>或
-                    <a href="<?php echo FRONT_HTML_ROOT; ?>user/register">注册新用户</a>
-
+                    <button type='submit' name='submit' value="submit">更新</button>
                 </td>
             </tr>
         </table>

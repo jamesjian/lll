@@ -5,7 +5,9 @@ namespace App\Model\Base;
 use \Zx\Model\Mysql;
 
 /*
- *  //1. 造谣诽谤， 2. 种族歧视， 3.色情 4. 暴力， 虐待（人或动物） 5. 违禁物品（毒品， 武器, 人体器官等） 6. 误导欺诈
+ * 1. 造谣诽谤， 2. 种族或宗教歧视， 3.色情 4. 暴力， 虐待（人或动物） 5. 违禁物品（毒品， 武器, 人体器官等） 
+ * 6. 误导欺诈  7. 与澳洲无关或无实质内容
+ * if less than 10 categories, put into array instead of database
   CREATE TABLE abuse_category (id unsigned tinyint(3) AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
   description text,

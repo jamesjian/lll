@@ -6,6 +6,7 @@ use \Zx\Model\Mysql;
 
 /*
  * if a question is disabled, it will be moved to disabled_question table
+ * if has answer, only create/edit content1, if has no answer, can edit content
  *  #AU means australia
   CREATE TABLE question (
  id unsigned mediumint(8) AUTO_INCREMENT PRIMARY KEY,
@@ -16,6 +17,7 @@ use \Zx\Model\Mysql;
   tids varchar(255) NOT NULL DEFAULT '',
   tnames varchar(255) not null default '', #tag names are fixed  
   content text,
+  content1 text,
   num_of_answers unsigned smallint(4) default 0,
   num_of_views unsigned int(11) default 0,
   num_of_votes unsigned mediumint(7) default 0,
@@ -26,8 +28,8 @@ use \Zx\Model\Mysql;
 
 class Question {
     public static $fields = array('id','title','region', 'uid','uname',
-        'tids','tnames','num_of_answers',
-        'content', 'num_of_views','num_of_votes', 'valid', 'status', 'date_created');
+        'tids','tnames','num_of_answers','content',
+        'content1', 'num_of_views','num_of_votes', 'valid', 'status', 'date_created');
     public static $table = TABLE_QUESTION;
     /**
      *

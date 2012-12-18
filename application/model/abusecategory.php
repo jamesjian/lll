@@ -9,8 +9,10 @@ class Abusecategory extends Base_Abusecategory{
      */
     public static function get_cats()
     {
-        return array('1'=>'造谣诽谤', '2'=>'种族歧视', '3'=>'色情暴力', 
-            '4'=>'违禁物品（毒品， 武器等）', '5'=>'误导欺诈');
+        return array('1'=>'造谣诽谤', '2'=>'种族或宗教歧视', '3'=>'色情', 
+            '4'=>'暴力， 虐待（人或动物）',
+            '5'=>'违禁物品（毒品， 武器， 人体器官等）', '6'=>'误导欺诈',
+            '7'=>'与澳洲无关或无实质内容');
     }    
     /**
      * get all cats order by category name

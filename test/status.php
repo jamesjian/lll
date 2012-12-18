@@ -21,11 +21,17 @@
  *   
  * sum of score of ads = score 
  * 
- *2. question  when status=2
- * valid 0 not sure (can be abused, has abuse button), 1 valid(cannot be abused, no abuse button), 2 invalid(has been abused, no display at all)
- * status 0: inactive by user, 1: active, 2: disabled by admin (because of invalid, valid=2)
+ *2. question  cannot be deleted by user, only be deactivated by user or disabled by admin 
+ * when status=2
+ * valid 0 not sure (can be abused, has abuse button), 1 valid(cannot be abused, no abuse button), 2 invalid(has been verified as an invalid question, no display at all)
+ * status 0: inactive by user only when no answer, 1: active, 2: disabled by admin (because of invalid, valid=2)
+ *                status                            valid    display
+ * value          0 (when no answer)                 any     content   no display        
+ *               1                                   0       has report button
+ *               1                                   1       no report button
+ *               2                                   any     content  no display
  * 
- * 
+ * 3. answer 
  * search question: search title and tag 
  * homepage:
  * 
