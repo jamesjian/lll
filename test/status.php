@@ -157,6 +157,41 @@
  * 
  * 
  * user: adjust weight of ads
+ * 
+ * 
+ * 
+ * minimum test:
+ * admin:
+ * 1. user list, disable
+ * 2. question list, disable
+ *    question by user
+ * 3. answer list, disable
+ *    answer by question, by user
+ * 4. ad list, disable
+ *    ad by user
+ *    answer link ad
+ * 5. abuse list, update
+ * 6. page crud
+ *    
+ * front: 
+ * 1. user list, register, login, forgotten password, activate
+ * 2. question create, list, list by user, content  (contain answer and ad)
+ *    abuse, vote
+ * 3. answer create, abuse, vote
+ * 4. ad list, ad content, abuse, vote
+ * 5. static pages
+ * 6. contact us
+ * 
+ * user:
+ * 1. profile, change password, 
+ * 2. question list, edit (when no answer)
+ * 3. answer list, edit 
+ * 4. ad, crud
+ *    link ad and answer
+ * 5. abuse list if have abuse
+ *    
+ *    
+ * 
  */
 
 /**
