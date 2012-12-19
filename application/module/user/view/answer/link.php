@@ -5,12 +5,13 @@ Zx_Message::show_message();
 ?>
 <form action="<?php echo USER_HTML_ROOT . 'answer/link_ad'; ?>" method="post">
     <fieldset>
-        <legend>Create question</legend>
+        <legend>连接广告与回答</legend>
         <dl>
-            <dt>Answer Ids:
-            1. <1000
-            2. >1000
-            3. 1,3,5,8,9
+            <dt>请输入回答ID, 可以有以下几种格式
+            例1. <1000， 我的所有ID小于1000的回答都显示本广告
+            例2. >1000， 我的所有ID大于1000的回答都显示本广告
+            例3. between 1000, 2000， 我的所有ID大于1000且小于2000的回答都显示本广告
+            例4. 1,3,5,8,9，  我的ID是1,3,5,8,9的回答都显示本广告
             
             </dt><dd><input type="text" name="aids" size="50" value="<?php
             if (isset($_POST['aids'])) echo $_POST['aids'];?>"/></dd>

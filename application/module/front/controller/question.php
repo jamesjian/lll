@@ -13,6 +13,7 @@ use App\Transaction\Question as Transaction_Question;
 use App\Transaction\Html as Transaction_Html;
 use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answer;
+use \App\Model\Ad as Model_Ad;
 use \App\Model\Tag as Model_Tag;
 
 /**
@@ -56,6 +57,8 @@ class Question extends Base {
             $answers = Model_Answer::get_active_answers_by_qid_and_page_num($qid, $current_page_num);
             $num_of_answers = Model_Answer::get_num_of_active_answers_by_qid($qid);
             //$related_questions = Model_Question::get_10_active_related_questions($qid);
+            $n = Model_Answer::get_num_of_inactive_ads($answers);
+            $selected_ads = Model_Ad::get_selected_ads($n);
             $related_questions = array();
             $latest_questions = array();
             View::set_action_var('question', $question);
@@ -63,6 +66,7 @@ class Question extends Base {
             View::set_action_var('num_of_answers', $num_of_answers);
             View::set_action_var('related_questions', $related_questions);
             View::set_action_var('latest10', $latest_questions);
+            View::set_action_var('selected_ads', $selected_ads);
         } else {
             //if no question, goto homepage
             Transaction_Html::goto_home_page();

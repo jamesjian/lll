@@ -8,6 +8,24 @@ use \App\Model\Base\Answer as Base_Answer;
 use \Zx\Model\Mysql;
 
 class Answer extends Base_Answer {
+    /**
+     * in a question page, there're multiple answers for this question, 
+     * some ads of the answers are active, some are inactive or expired
+     * get the num of inactive ads from these answers to help get selected ads 
+     * (Model_Ad::get_selected_ads)
+     * @param arr $answers it's from Model_Answer::get_all();
+     * $return int num of inactive ads
+     */
+    public static function get_num_of_selected_ads($answers)
+    {
+        $n = 0;
+        $now = date('Y:m:d h:i:s');
+        foreach ($answers as $answer) {
+            //1 is active
+            if ($answer['ad_status'] <> 1 || $answer['ad_date_end']<$now) $n++;
+        }
+        return $n;
+    }
 
     public static function get_all_keywords() {
         $sql = "SELECT keyword, keyword_en FROM answer WHERE status=1";
@@ -188,7 +206,7 @@ class Answer extends Base_Answer {
         return parent::get_all();
     }
 
-    /**
+    /*
      * get active cats order by category name
      */
     public static function get_all_active_answers() {

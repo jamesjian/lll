@@ -5,6 +5,7 @@ namespace App\Transaction;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\User as Model_User;
+use \App\Model\Ad as Model_Ad;
 use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 use \App\Transaction\Tool as Transaction_Tool;
 use \Zx\Message\Message as Zx_Message;
@@ -82,6 +83,8 @@ class User {
     }
 
     /**
+     * when a user is disabled, the ads will be disabled too, 
+     * but question and answer are not affected
      * @param int $uid
      * @param int $status
      * @return boolean 
@@ -91,6 +94,10 @@ class User {
         if ($user) {
             $arr = array('status' => $status);
             Model_User::update($uid, $arr);
+            if ($status == 0) {
+                //disabled
+                Model_Ad::disable_by_uid($uid);
+            }
             return true;
         } else {
             return false;

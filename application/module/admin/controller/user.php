@@ -22,11 +22,11 @@ class User extends Base {
      * for ajax
      */
     public function change_status() {
-        Test::object_log('pp_product', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //Test::object_log('pp_product', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         $changed = false;
-        $uid = isset($_POST['id']) ? intval($_POST['id']) : 0;
-        $status = isset($_POST['status']) ? intval($_POST['status']) : 0;
+        $uid = isset($_POST['id']) ? intval($_POST['id']) : 1;
+        $status = isset($_POST['status']) ? intval($_POST['status']) : 1;
         if ($uid > 0) {
             if (Transaction_User::change_status($uid, $status)) {
                 $changed = true;

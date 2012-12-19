@@ -58,6 +58,7 @@
                 </div>
                 <div class="zx-front-left3">
                     <?php
+                    $selected_ad_index = 0;
                     foreach ($answers as $answer) {
                         if ($answer['status']) {
                         ?>
@@ -65,13 +66,30 @@
                             <section>
                                 <div class="zx-front-question-content">
                                     <?php
-                                    
                                     echo $answer['content'];
                                     ?>
                                 </div>
                                 <div>
                                     <?php echo $answer['uname']; ?>
-
+                                </div>
+                                <div>
+                                    <?php
+                                    //ad with this answer
+                                    if ($answer['ad_id']!=0 && $answer['ad_status'] == 1) {
+                                        //active ad
+                                        $ad_link = FRONT_HTML_ROOT . 'ad/content/' . $answer['ad_id'];
+                                        ?>
+                                    <a href="<?php echo $ad_link;?>"><?php echo $answer['ad_title'];?></a>
+                                    <?php
+                                    } else {
+                                        //inacitve ad, use selected ads instead
+                                        $ad_link = FRONT_HTML_ROOT . 'ad/content/' . $selected_ads[$selected_ad_index]['ad_id'];
+                                        ?>
+                                    <a href="<?php echo $ad_link;?>"><?php echo $selected_ads[$selected_ad_index]['ad_title'];?></a>
+                                    <?php   
+                                    $selected_ad_index++;
+                                    }
+                                    ?>
                                 </div>
                             </section>
                         </article>

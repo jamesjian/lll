@@ -126,7 +126,7 @@ class Answer extends Base {
             if ($aids <> '' &&  $ad_id>0) {
                 $arr = array('aids' => $aids,
                     'ad_id' => $ad_id,
-                    'ad_id' => $this->uid,
+                    'uid' => $this->uid,
                 );
                 if (Transaction_Answer::link_ad($arr)) {
                     $success = true;

@@ -27,9 +27,28 @@ class Ad extends Base {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/user/view/ad/';
     }
-    
-    public function adjust_weight()
-    {
+
+    /**
+     * extend validation date
+     * ajax
+     */
+    public function extend() {
+        $ad_id = (isset($this->params[0])) ? intval($this->params[0]) : 0;
+        $result = false;
+        if ($ad_id > 0) {
+            if (Transaction_Ad::extend_ad($ad_id)) {
+                $ad = Model_Ad::get_one($ad_id);
+                $result = true;
+                View::set_view_file($this->view_path . 'extend_result.php');
+                View::set_action_var('ad', $ad);
+                View::do_not_use_template();
+            }
+        } else {
+            //todo
+        }
+    }
+
+    public function adjust_weight() {
         $success = false;
         $posted = array();
         $errors = array();
@@ -57,17 +76,18 @@ class Ad extends Base {
             View::set_action_var('errors', $errors);
         }
     }
+
     /**
      * only my ads
      * pagination
      */
     public function my_ads() {
-       if (!\App\Transaction\Html::previous_user_page_is_search_page()) {
+        if (!\App\Transaction\Html::previous_user_page_is_search_page()) {
             \App\Transaction\Html::remember_current_user_page();
-        }        
+        }
         $uid = $this->uid;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
+        $current_page = (isset($this->params[2])) ? intval($this->params[2]) : 1;  //default page 1
         $home_url = HTML_ROOT;
         //$tag_url = FRONT_HTML_ROOT . 'ad/tag/' . $tag['id']; 
         $order_by = 'date_created';
@@ -96,14 +116,14 @@ class Ad extends Base {
         ) {
             $title = trim($_POST['title']);
             $tnames = trim($_POST['tnames']);
-            $score = (isset($_POST['score']))?intval($_POST['score']) : 1; //at least 1
+            $score = (isset($_POST['score'])) ? intval($_POST['score']) : 1; //at least 1
             $content = trim($_POST['content']);
 
             $arr = array('title' => $title,
                 'tnames' => $tnames,
                 'score' => $score,
                 'content' => $content,
-                'uid'=>$this->uid,
+                'uid' => $this->uid,
             );
             if (Model_User::has_score($this->uid) && Transaction_Ad::create_by_user($arr)) {
                 $success = true;

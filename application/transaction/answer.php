@@ -130,9 +130,11 @@ class Answer {
     }
 
     /*
-     * <1000
-     * >10000
-     * 1,3,5,6
+     $arr['aids']包括回答ID, 可以有以下几种格式
+            例1. <1000， 我的所有ID小于1000的回答都显示本广告
+            例2. >1000， 我的所有ID大于1000的回答都显示本广告
+            例3. >1000<2000， 我的所有ID大于1000且小于2000的回答都显示本广告
+            例4. 1,3,5,8,9，  我的ID是1,3,5,8,9的回答都显示本广告
      * ad id must belong to user id (it's judged in controller)
      */
 
@@ -144,21 +146,36 @@ class Answer {
         if (strpos($aids, '<')) {
             $domain = 'less than';
             $aid = intval(str_replace('<', '', $aids));
-            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE id<=' . $aid . ' AND uid=' . $uid;
+            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . ' WHERE id<=' . $aid . ' AND uid=' . $uid;
         } elseif (strpos($aids, '>')) {
             $domain = 'more than';
             $aid = intval(str_replace('>', '', $aids));
-            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE id<=' . $aid . ' AND uid=' . $uid;
+            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . ' WHERE id<=' . $aid . ' AND uid=' . $uid;
+        } elseif (strpos($aids, 'between')) {
+            $domain = 'between';
+            $aids = intval(str_replace('between', '', $aids));
+            $aids = explod(',',$aids);
+            if (intval($aids[0])<=intval($aids[1])) {
+                $low = intval($aids[0]); $high = intval($aids[1]);
+            } else {
+                $low = intval($aids[1]); $high = intval($aids[0]);
+            }
+            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . ' WHERE id>=' . $low . ' AND id<=' . $high . ' AND uid=' . $uid;
         } else {
             $domain = 'equal';
             $aids = explode(',', $aids);
-            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . 'WHERE  uid=' . $uid . ' AND (';
+            $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . ' WHERE  uid=' . $uid . ' AND (';
             foreach ($aids as $aid) {
                 $update .= ' aid=' . $aid . ' OR ';
             }
             $update = substr($update, 0, -4) . ')'; //remove last 'OR', and ')' 
         }
         Mysql::exec($update);
+        //when link, the ad display date will be extended
+        $arr = array('date_start' => date('Y-m-d h:i:s'),
+                'date_end' => date * 'Y-m-d h:i:s', strtotime('+' . DAYS_OF_AD . ' days'),
+            );
+        Model_Ad::update($ad_id, $arr);
     }
 
 }

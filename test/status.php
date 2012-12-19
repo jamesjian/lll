@@ -8,11 +8,11 @@
   disabled: by admin, when this user login or do anything, the software will ask it to contact the admin. 
 
  * difference between inactive an disabled: the former can be activated, the latter is disabled by admin and cannot do anything.
-    0. inactive 	//be disabled
+    0. inactive 	//be disabled, but question and answer is not influenced, ads will be disabled too,don't use it frequently
     1. active           //after activation
     2. registered       //after registration
-    3. deleted  (not implemented)
-
+    //3. deleted          //will never be back to active
+     
  * every question 1
  * every answer 2
  * every vote 1
@@ -32,6 +32,12 @@
  *               2                                   any     content  no display
  * 
  * 3. answer 
+ * 
+ * 4. ad
+ *   status: 0: inactive by user, will not displayed
+ *           1: active 
+ *           2. disabled by admin, will not displayed
+ * date_start start from answer connect to ad or extend
  * search question: search title and tag 
  * homepage:
  * 

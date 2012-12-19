@@ -6,6 +6,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \Zx\Model\Mysql;
 use App\Model\Question as Model_Question;
+use App\Model\Ad as Model_Ad;
 
 /*
   CREATE TABLE answer (
@@ -33,9 +34,11 @@ class Answer {
      * @return 1D array or boolean when false 
      */
     public static function get_one($id) {
-        $sql = "SELECT a.*, q.title, q.tnames
+        $sql = "SELECT a.*, q.title, q.tnames, 
+            ad.status as ad_status, ad.title as ad_title, ad.content as ad_content, ad.date_end as ad_date_end
             FROM  " . self::$table . " a
             LEFT JOIN " . Model_Question::$table . " q ON q.id=a.qid
+            LEFT JOIN " . Model_Ad::$table . "  ad ON a.ad_id=ad.id                
             WHERE id=:id
         ";
         $params = array(':id' => $id);
@@ -50,18 +53,22 @@ class Answer {
      * @return 1D array or boolean when false 
      */
     public static function get_one_by_where($where) {
-        $sql = "SELECT a.*, q.title, q.tnames
+        $sql = "SELECT a.*, q.title, q.tnames, 
+            ad.status as ad_status, ad.title as ad_title, ad.content as ad_content, ad.date_end as ad_date_end
             FROM  " . self::$table . " a
             LEFT JOIN " . Model_Question::$table . " q ON q.id=a.qid
+            LEFT JOIN " . Model_Ad::$table . "  ad ON a.ad_id=ad.id                
             WHERE $where
         ";
         return Mysql::select_one($sql);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
-        $sql = "SELECT a.*, q.title, q.tnames
+        $sql = "SELECT a.*, q.title, q.tnames, 
+            ad.status as ad_status, ad.title as ad_title, ad.content as ad_content, ad.date_end as ad_date_end
             FROM " . self::$table . "  a
             LEFT JOIN " . Model_Question::$table . "  q ON q.id=a.qid
+            LEFT JOIN " . Model_Ad::$table . "  ad ON a.ad_id=ad.id
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count

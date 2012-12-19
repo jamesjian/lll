@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Transaction;
 
 defined('SYSTEM_PATH') or die('No direct script access.');
@@ -11,6 +10,18 @@ use App\Transaction\User as Transaction_User;
 use \Zx\Model\Mysql;
 
 class Ad {
+
+    public static function extend($ad_id) {
+        if (Model_Ad::exist_ad($ad_id)) {
+            $arr = array('date_start' => date('Y-m-d h:i:s'),
+                'date_end' => date * 'Y-m-d h:i:s', strtotime('+' . DAYS_OF_AD . ' days'),
+            );
+            return Model_Ad::update($ad_id, $arr);
+        } else {
+            Message::set_error_message('invalid ad id');
+            return false;
+        }
+    }
 
     /**
      * available num of ads>weight>=1
@@ -89,7 +100,7 @@ class Ad {
 
         if (count($arr) > 0 && (isset($arr['title']) || isset($arr['content']))) {
             if (Model_Ad::update($id, $arr)) {
-                
+
                 //Todo: check tag
                 Message::set_success_message('success');
                 return true;

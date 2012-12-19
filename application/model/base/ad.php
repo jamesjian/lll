@@ -17,7 +17,11 @@ use \Zx\Model\Mysql;
   num_of_views unsigned MEDIUMINT(8) not null default 0,
    valid unsigned tinyint(1) not null default 1,
   status unsigned tinyint(1) not null default 1,
-  date_created datetime) engine=innodb default charset=utf8
+  date_created datetime,
+  date_start datetime,
+  date_end datetime
+  ) engine=innodb default charset=utf8
+  
 */
 class Ad {
     public static $fields = array('id','title','uid','uname',
