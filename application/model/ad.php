@@ -9,8 +9,6 @@ use \Zx\Model\Mysql;
 
 class Ad extends Base_Ad {
     /**
-
-     * 
      * todo:
      * add a special status or mark for all selected ads in ad table
      * 

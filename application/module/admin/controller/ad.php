@@ -89,8 +89,6 @@ class Ad extends Base {
                     $arr['content'] = trim($_POST['content']);
                 if (isset($_POST['tnames']))
                     $arr['tnames'] = trim($_POST['tnames']);
-                if (isset($_POST['rank']))
-                    $arr['rank'] = intval($_POST['rank']);
                 if (isset($_POST['status']))
                     $arr['status'] = intval($_POST['status']);
                 if (Transaction_Ad::update_ad($id, $arr)) {
