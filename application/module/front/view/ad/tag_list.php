@@ -6,8 +6,8 @@
       $link_prefix = HTML_ROOT . 'front/question/tag/' . $tag;
       $link_postfix = "/$order_by/$direction";
      */
-    $link_prefix = HTML_ROOT . 'front/question/tag/' . $tag['id'];
-    $link_postfix = "/$order_by/$direction";
+    $link_prefix = FRONT_HTML_ROOT . 'ad/tag/' . $tag['id'] . '/';
+    $link_postfix = ""; //always order by score desc
     include FRONT_VIEW_PATH . 'template/pagination.php';
     ?>
 </div>

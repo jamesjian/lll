@@ -155,11 +155,31 @@ class Html {
     }
 
     /**
+     * for front end
       if has current user SEARCH KEYWORD in SESSION, return it, otherwise return false
      */
     public static function get_previous_user_search_keyword() {
-        if (isset($_SESSION['current_user_search_keyword']) && $_SESSION['current_user_search_keyword'] != '') {
-            return $_SESSION['current_user_search_keyword'];
+        if (isset($_SESSION['current_search_keyword']) && $_SESSION['current_search_keyword'] != '') {
+            return $_SESSION['current_search_keyword'];
+        } else {
+            return false;
+        }
+    }
+    /**
+     * for front end
+     * @param string $keyword
+     */
+    public static function remember_current_search_keyword($keyword) {
+        $_SESSION['current_search_keyword'] = $keyword;
+    }
+
+    /**
+     * for front end
+      if has current user SEARCH KEYWORD in SESSION, return it, otherwise return false
+     */
+    public static function get_previous_search_keyword() {
+        if (isset($_SESSION['current_search_keyword']) && $_SESSION['current_search_keyword'] != '') {
+            return $_SESSION['current_search_keyword'];
         } else {
             return false;
         }
@@ -171,6 +191,17 @@ class Html {
      */
     public static function previous_admin_page_is_search_page() {
         if (isset($_SESSION['current_admin_page']) && strpos($_SESSION['current_admin_page'], 'search') !==false) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /**
+     * remember search result page rather than use new retrieve page
+     * @return boolean
+     */
+    public static function previous_page_is_search_page() {
+        if (isset($_SESSION['current_page']) && strpos($_SESSION['current_page'], 'search') !==false) {
             return true;
         } else {
             return false;

@@ -10,6 +10,7 @@ use \Zx\Model\Mysql;
  * #score has been consumed by ad
   CREATE TABLE user (
   id unsigned mediumint(7) AUTO_INCREMENT primary key,
+   id1 varchar(44) not null unique,
   uname varchar(30) not null default '',
   password varchar(255) NOT NULL DEFAULT '',
   email varchar(255) not null default '' unique ,
@@ -26,7 +27,7 @@ use \Zx\Model\Mysql;
 
 class User {
 
-    public static $fields = array('id', 'uname', 'password', 'email',
+    public static $fields = array('id','id1', 'uname', 'password', 'email',
         'image', 'num_of_questions','num_of_answers','num_of_ads',
         'score', 'invalid_score','ad_score', 'status', 'date_created');
     public static $table = TABLE_USER;
@@ -90,7 +91,10 @@ class User {
         }
         $insert_str = implode(',', $insert_arr);
         $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
-        return Mysql::insert($sql, $params);
+        $id = Mysql::insert($sql, $params);
+        $arr = array('id1'=>2*$id . md5($id));  //generate id1
+        self::update($id, $arr);
+        return $id;
     }
 
     public static function update($id, $arr) {

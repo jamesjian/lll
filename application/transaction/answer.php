@@ -15,7 +15,17 @@ use \App\Transaction\Staff as Transaction_Staff;
 //use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Answer {
-
+    /**
+     * mainly for front end
+     * @param array $answer  record
+     * @return string 
+     */
+    public static function get_link($answer)
+    {
+        $link = FRONT_HTML_ROOT . 'answer/content/' . $answer['id1'];
+        return $link;
+        
+    }
     public static function reply_question($arr = array()) {
         if (isset($_SESSION['user'])) {
             $uid = $_SESSION['user']['uid'];
@@ -33,7 +43,7 @@ class Answer {
                 isset($arr['content']) && trim($arr['content']) != ''
         ) {
             if (!isset($arr['rank']))
-                $arr['rank'] = 0; //initialize
+                //$arr['rank'] = 0; //initialize
 
             if (Model_Answer::create($arr)) {
                 Model_Question::increase_num_of_answers($arr['qid']);

@@ -35,16 +35,17 @@ class Question extends Base {
     }
 
     /*     * one question
-     * /front/question/content/id/page/6/slug-url  the page is for pages of answers of this question
+     * /front/question/content/id/6/slug-url  the page is for pages of answers of this question
      * use url rather than id in the query string
      */
 
     public function content() {
-        $qid = $this->params[0]; //it's an id
-        $current_page_num = isset($this->params[2]) ? $this->params[2] : 1;
-        $question = Model_Question::get_one($qid);
+        $qid1 = isset($this->params[0]) ?  intval($this->params[0]) : 0; //it's an id1
+        $current_page_num = isset($this->params[1]) ? intval($this->params[1]) : 1;
+        $question = Model_Question::get_one_by_id1($qid1);
         //\Zx\Test\Test::object_log('$question', $question, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($question) {
+        $qid = $question['id'];
 
             $home_url = HTML_ROOT;
             Transaction_Html::remember_current_page();  //after reply this question, return back to this page
@@ -74,8 +75,11 @@ class Question extends Base {
     }
 
     /**
+     * we have latest, tag, user, unanswered, answered list, 
+     * all is not necessary, index page has 100 latest questions
      * front/question/3, 3 is page number
      */
+    /*
     public function all() {
         $current_page = (isset($params[0])) ? intval($params[0]) : 1;  //default page 1
         $order_by = 'date_created';
@@ -91,7 +95,7 @@ class Question extends Base {
         View::set_action_var('current_page', $current_page);
         View::set_action_var('num_of_pages', $num_of_pages);
     }
-
+*/
     /**
      * user id
       retrieve questions under a user
@@ -116,7 +120,7 @@ class Question extends Base {
             //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_questions = Model_Question::get_num_of_active_questions_by_uid($uid);
             $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'question_list_by_user.php');
+            View::set_view_file($this->view_path . 'user_list.php');
             View::set_action_var('user', $user);
             View::set_action_var('questions', $questions);
             View::set_action_var('order_by', $order_by);

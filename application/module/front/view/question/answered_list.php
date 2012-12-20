@@ -1,10 +1,5 @@
 <?php
 /**
- * this may be our homepage
- * left ads                     tag cloud
- *  article                        right ads
- * related articles                latest
- *                              hottest
  */
 ?>
 <div class='zx-front-left'>	

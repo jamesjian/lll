@@ -11,6 +11,7 @@ use App\Model\Ad as Model_Ad;
 /*
   CREATE TABLE answer (
   id unsigned MEDIUMINT(8) AUTO_INCREMENT PRIMARY KEY,
+ id1 varchar(44) not null unique, 
   qid unsigned MEDIUMINT(8) not null default 0,
   uid unsigned MEDIUMINT(7) not null default 0,
   uname varchar(30) not null '',  #user name is fixed
@@ -24,7 +25,7 @@ use App\Model\Ad as Model_Ad;
 
 class Answer {
 
-    public static $fields = array('id', 'qid', 'uid', 'uname', 'ad_id',
+    public static $fields = array('id', 'id1','qid', 'uid', 'uname', 'ad_id',
         'content', 'num_of_votes','valid', 'status', 'date_created');
     public static $table = TABLE_ANSWER;
 
@@ -101,7 +102,10 @@ class Answer {
         }
         $insert_str = implode(',', $insert_arr);
         $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
-        return Mysql::insert($sql, $params);
+        $id = Mysql::insert($sql, $params);
+        $arr = array('id1'=>2*$id . md5($id));  //generate id1
+        self::update($id, $arr);
+        return $id;
     }
 
     public static function update($id, $arr) {

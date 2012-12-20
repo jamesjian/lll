@@ -13,7 +13,17 @@ use \Zx\Model\Mysql;
 //use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Question {
-
+    /**
+     * mainly for front end
+     * @param array $question  record
+     * @return string 
+     */
+    public static function get_link($question)
+    {
+        $link = FRONT_HTML_ROOT . 'question/content/' . $question['id1'];
+        return $link;
+        
+    }
     /**
      * in controller, it must have title, content and tnames
      * if user has logged in, fill the user id and status=1 (active)

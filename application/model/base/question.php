@@ -10,6 +10,7 @@ use \Zx\Model\Mysql;
  *  #AU means australia
   CREATE TABLE question (
  id unsigned mediumint(8) AUTO_INCREMENT PRIMARY KEY,
+ id1 varchar(44) not null unique,
   title varchar(255) NOT NULL DEFAULT '',
  region varchar(3) not null default 'AU',
   uid unsigned mediumint(7) not null 0,
@@ -27,7 +28,7 @@ use \Zx\Model\Mysql;
  */
 
 class Question {
-    public static $fields = array('id','title','region', 'uid','uname',
+    public static $fields = array('id','id1','title','region', 'uid','uname',
         'tids','tnames','num_of_answers','content',
         'content1', 'num_of_views','num_of_votes', 'valid', 'status', 'date_created');
     public static $table = TABLE_QUESTION;
@@ -91,8 +92,11 @@ class Question {
         $insert_str = implode(',', $insert_arr);
         $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
         //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
-        return Mysql::insert($sql, $params);
+        
+        $id = Mysql::insert($sql, $params);
+        $arr = array('id1'=>2*$id . md5($id));  //generate id1
+        self::update($id, $arr);
+        return $id;
     }
 
     public static function update($id, $arr) {

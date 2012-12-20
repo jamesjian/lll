@@ -10,8 +10,7 @@ if ($user_list) {
     <table>
         <?php
         foreach ($user_list as $user) {
-            $uid = $user['id'];
-            $link_user = FRONT_HTML_ROOT . 'user/detail/' . $uid;
+            $link_user = \App\Transaction\User::get_link($user);
             if ($i == 0) {
                 echo "<tr>";
             }

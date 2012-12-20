@@ -12,7 +12,20 @@ use \Zx\Message\Message as Zx_Message;
 use \Zx\Tool\Upload as Zx_Upload;
 
 class User {
-
+    /**
+     * mainly for front end
+     * @param array $user  record but not necessary to be complete
+     * @return string 
+     */
+    public static function get_link($user)
+    {
+        $link = FRONT_HTML_ROOT . 'user/detail/' . $user['id1'];
+        if (isset($user['name'])) {
+            $link .= '/' . $user['name'];
+        }
+        return $link;
+        
+    }
     /**
      * @param type $uid
      * @return type

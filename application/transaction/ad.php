@@ -10,7 +10,17 @@ use App\Transaction\User as Transaction_User;
 use \Zx\Model\Mysql;
 
 class Ad {
-
+    /**
+     * mainly for front end
+     * @param array $ad  record
+     * @return string 
+     */
+    public static function get_link($ad)
+    {
+        $link = FRONT_HTML_ROOT . 'ad/content/' . $ad['id1'];
+        return $link;
+        
+    }
     public static function extend($ad_id) {
         if (Model_Ad::exist_ad($ad_id)) {
             $arr = array('date_start' => date('Y-m-d h:i:s'),

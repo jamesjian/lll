@@ -34,5 +34,21 @@ class Base {
         View::set_action_var('popular_tags', $popular_tags);
         View::set_action_var('latest_ads', $latest_ads);
     }
+    public function search() {
 
+        if (isset($_POST['search']) && trim($_POST['search']) != '') {
+            \App\Transaction\Html::remember_current_page();
+            \App\Transaction\Html::remember_current_search_keyword(trim($_POST['search']));  //keep search keyword
+            $link = $this->list_page . trim($_POST['search']);
+        } else {
+            $keyword = \App\Transaction\Html::get_previous_search_keyword();
+
+            if ($keyword && $keyword != '') {
+                $link = $this->list_page . $keyword;
+            } else {
+                $link = $this->list_page;
+            }
+        }
+        header('Location: ' . $link);
+    }
 }

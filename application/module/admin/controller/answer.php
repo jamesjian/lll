@@ -123,6 +123,8 @@ class Answer extends Base {
     /**
       /page/orderby/direction/search
      * page, orderby, direction, search can be empty
+     * 
+     * 
      */
     public function retrieve() {
        if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {

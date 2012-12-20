@@ -1,5 +1,34 @@
 <?php
 /**
+ * * minimum test:
+ * admin:
+ * 1. user list  , disable
+ * 2. question list, disable
+ *    question by user
+ * 3. answer list, disable
+ *    answer by question, by user
+ * 4. ad list, disable
+ *    ad by user
+ *    answer link ad
+ * 5. abuse list, update
+ * 6. page crud
+ *    
+ * front: 
+ * 1. user list ((user/all/page number), register, login, forgotten password, activate
+ * 2. question create, list, list by user/tag, content  (contain answer and ad)
+ *    abuse, vote
+ * 3. answer create, abuse, vote
+ * 4. ad list, ad content, abuse, vote
+ * 5. static pages
+ * 6. contact us
+ * 
+ * user:
+ * 1. profile, change password, 
+ * 2. question list, edit (when no answer)
+ * 3. answer list, edit 
+ * 4. ad, crud
+ *    link ad and answer
+ * 5. abuse list if have abuse
  *
  1. user
   inactive: when register a new user, or its email box is changed (need to activate it again)
@@ -81,11 +110,11 @@
  *    首页->广告分类(always popular)->拼音顺序
  * 
  * 18. ad/tag/tagid/pageid
- *    首页->教育（广告）(always score)
+ *    首页->教育（广告）(always score and not expired)
  * 19. question/content/questionid
- *    stack->NIBA是什么？
+ *    (breadcrumb)stack->NIBA是什么？
  * 20. ad/content/adid
- *    stack->赶快来报名    
+ *    (breadcrumb)stack->赶快来报名    
  * 21. question/create
  * 22. answer/create/questionid
  * 
@@ -160,36 +189,7 @@
  * 
  * 
  * 
- * minimum test:
- * admin:
- * 1. user list, disable
- * 2. question list, disable
- *    question by user
- * 3. answer list, disable
- *    answer by question, by user
- * 4. ad list, disable
- *    ad by user
- *    answer link ad
- * 5. abuse list, update
- * 6. page crud
- *    
- * front: 
- * 1. user list, register, login, forgotten password, activate
- * 2. question create, list, list by user, content  (contain answer and ad)
- *    abuse, vote
- * 3. answer create, abuse, vote
- * 4. ad list, ad content, abuse, vote
- * 5. static pages
- * 6. contact us
- * 
- * user:
- * 1. profile, change password, 
- * 2. question list, edit (when no answer)
- * 3. answer list, edit 
- * 4. ad, crud
- *    link ad and answer
- * 5. abuse list if have abuse
- *    
+    
  *    
  * 
  */
@@ -220,7 +220,7 @@ class page_premium_lodgement extends page_dual {
    * @param generate_page_base $generate_page  Page maker for the page
    * @param array $info Associative array holding buttons, form information and controls. $info['form'] is the form start tag, $info['controls'] is the HTML for controls
    * @param integer $policyid Policy id of the current policy
-   *
+   * 
    * @return string
    * @access public
    */     

@@ -36,7 +36,6 @@ class Answer extends Base {
 
     public function content() {
         $answer_url = $this->params[0]; //it's url rather than an id
-
         $answer = Model_Answer::get_one_by_url($answer_url);
         //\Zx\Test\Test::object_log('$answer', $answer, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($answer) {

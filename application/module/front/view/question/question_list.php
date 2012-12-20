@@ -1,3 +1,14 @@
+<?php
+/**
+ *this is a template of question list, be used by 
+ * user_list, 
+ * popular_list, 
+ * latest_list, 
+ * tag_list, 
+ * unanswered_list, 
+ * anaswered_list 
+ */
+?>
 <div class="zx-front-question-list">
     <ul class="zx-front-question-list-heading">
         <li>问题</li>
@@ -16,7 +27,9 @@
     if ($questions) {
         $regions = \App\Model\Region::get_au_states_abbr();
         foreach ($questions as $question) {
-            $read_more_link = FRONT_HTML_ROOT . 'question/content/' . $question['id'];
+            $read_more_link = \App\Transaction\Question::get_link($question);
+            $user = array('id'=>$question['uid']);  //must provide array
+            $link_user = \App\Transaction\User::get_link($user);
             ?>		
             <ul class='zx-front-one-question'>
                 <li><a href='<?php echo $read_more_link; ?>' class='zx-front-latest-question'>
@@ -32,7 +45,7 @@
                             <?php
                         }
                         ?>
-                    <a href="<?php echo FRONT_HTML_ROOT . 'user/detail' . $question['uid']; ?>">
+                    <a href="<?php echo $link_user; ?>">
                         <?php echo $question['uname']; ?></a>
                     <?php echo $question['date_created']; ?>
                 </li>

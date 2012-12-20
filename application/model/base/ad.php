@@ -7,6 +7,7 @@ use \Zx\Model\Mysql;
  if completely valid, 0, else 1* 
   CREATE TABLE ad (
  id unsigned MEDIUMINT(8)  AUTO_INCREMENT PRIMARY KEY,
+  id1 varchar(44) not null unique,
   title varchar(255) NOT NULL DEFAULT '',
   uid unsigned MEDIUMINT(7)  not null default 0,
   uname varchar(255) not null default '',  #user name is fixed
@@ -24,7 +25,7 @@ use \Zx\Model\Mysql;
   
 */
 class Ad {
-    public static $fields = array('id','title','uid','uname',
+    public static $fields = array('id','id1','title','uid','uname',
         'tids','tnames', 'content','score',  'num_of_views','valid',
           'status', 'date_created');
     public static $table = TABLE_AD;
@@ -89,7 +90,10 @@ class Ad {
         }
         $insert_str = implode(',', $insert_arr);
         $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
-        return Mysql::insert($sql, $params);
+        $id = Mysql::insert($sql, $params);
+        $arr = array('id1'=>2*$id . md5($id));  //generate id1
+        self::update($id, $arr);
+        return $id;
     }
 
     public static function update($id, $arr) {
@@ -107,8 +111,10 @@ class Ad {
         $params[':id'] = $id;
         //$query = Mysql::interpolateQuery($sql, $params);
         //\Zx\Test\Test::object_log('query', $query, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
-        return Mysql::exec($sql, $params);
+        $id = Mysql::insert($sql, $params);
+        $arr = array('id1'=>2*$id . md5($id));  //generate id1
+        self::update($id, $arr);
+        return $id;
     }
 
     public static function delete($id) {

@@ -16,7 +16,7 @@
     </div>	
     <div class='zx-front-left2'>
         <?php
-        include FRONT_VIEW_PATH . 'template/question_list.php';
+        include 'question_list.php';
         $link_prefix = HTML_ROOT . 'front/question/latest/';
         $link_postfix = "";  //no need to have order by and direction
         include FRONT_VIEW_PATH . 'templates/pagination.php';

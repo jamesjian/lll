@@ -17,10 +17,12 @@ use \Zx\Message\Message as Zx_Message;
 class User extends Base {
 
     public $view_path;
-
+public $list_page = '';
     public function init() {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/front/view/user/';
+        $this->list_page = FRONT_HTML_ROOT . 'user/all/1/';
+        
     }
 
     public function login1() {
@@ -300,12 +302,15 @@ class User extends Base {
 
     /**
      * list all users 
+     * user/all/page number/search
      * email is hidden
      * order by score
      * pagination
      */
     public function all() {
-        Transaction_Html::remember_current_page();
+       if (!\App\Transaction\Html::previous_page_is_search_page()) {
+            \App\Transaction\Html::remember_current_page();
+        }        
         Transaction_Html::set_title('All user');
         Transaction_Html::set_keyword('all user');
         Transaction_Html::set_description('all user');
@@ -314,6 +319,12 @@ class User extends Base {
             $current_page = 1;
         $order_by = 'score';
         $direction = 'DESC';
+        $search = isset($this->params[3]) ? $this->params[3] : '';
+        if ($search != '') {
+            $where = " uname LIKE '%$search%' OR email LIKE '%$search%'";
+        } else {
+            $where = '1';
+        }        
         $users = Model_User::get_active_users_by_page_num($current_page, $order_by, $direction);
         $num_of_articles = Model_User::get_num_of_active_users();
         $num_of_pages = ceil($num_of_articles / NUM_OF_USERS_IN_FRONT_PAGE);
@@ -324,10 +335,11 @@ class User extends Base {
     }
 
     public function detail() {
-        $uid = $this->params[0];
+        $uid1 = isset($this->params[0]) ?  intval($this->params[0]) : 0; //it's an id1
         $user = Model_User::get_one($uid);
         //\Zx\Test\Test::object_log('$article', $article, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($user) {
+        $uid = $user['id'];
 
             $home_url = HTML_ROOT;
             $category_url = FRONT_HTML_ROOT . 'article/category/' . $article['cat_name'];
@@ -352,8 +364,13 @@ class User extends Base {
         }
     }
 
+    /**
+     * search user name only
+     */
     public function search() {
         //todo
+        $search = isset($_POST['keyword']) ? trim($search): '';
+        
     }
 
 }

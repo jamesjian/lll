@@ -36,10 +36,11 @@ class Ad extends Base {
      */
 
     public function content() {
-        $ad_id = $this->params[0]; //it's an id
+        $ad_id1 = isset($this->params[0]) ?  intval($this->params[0]) : 0; //it's an id1
         $ad = Model_Ad::get_one($ad_id);
         //\Zx\Test\Test::object_log('$ad', $ad, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($ad) {
+        $ad_id = $ad['id'];
             $home_url = HTML_ROOT;
             Transaction_Html::remember_current_page();  //after reply this ad, return back to this page
             Transaction_Html::set_title($ad['title']);
@@ -67,6 +68,7 @@ class Ad extends Base {
     /**
      * front/ad/3, 3 is page number
      */
+    /*
     public function all() {
             $current_page = (isset($params[0])) ? intval($params[0]) : 1;  //default page 1
             $order_by = 'date_created';
@@ -82,7 +84,7 @@ class Ad extends Base {
             View::set_action_var('current_page', $current_page);
             View::set_action_var('num_of_pages', $num_of_pages);
     }
-
+    */
     /**
       retrieve ads under a user
       front/ad/retrieve_by_uid/id/page/3/, 3 is page number
