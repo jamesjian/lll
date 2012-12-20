@@ -8,7 +8,18 @@ use \Zx\Message\Message;
 use \Zx\Model\Mysql;
 
 class Tag {
-
+    /**
+     * mainly for front end
+     * @param array $tag  record
+     * @param string $type ad or question
+     * @return string 
+     */
+    public static function get_link($tag, $type)
+    {
+        $link = FRONT_HTML_ROOT . $type . '/tag/' . $tag['id'];
+        return $link;
+        
+    }
     public static function create($arr = array()) {
         if (count($arr) > 0 && isset($arr['name'])
                 && !Model_Tag::exist_tag_by_tag_name($arr['name'])) {

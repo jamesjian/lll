@@ -28,15 +28,14 @@
         $regions = \App\Model\Region::get_au_states_abbr();
         foreach ($questions as $question) {
             $read_more_link = \App\Transaction\Question::get_link($question);
-            $user = array('id'=>$question['uid']);  //must provide array
-            $link_user = \App\Transaction\User::get_link($user);
+            $link_user = \App\Transaction\User::get_link($question['uid']);
             ?>		
             <ul class='zx-front-one-question'>
                 <li><a href='<?php echo $read_more_link; ?>' class='zx-front-latest-question'>
                         <?php echo $question['title']; ?></a>
                     <?php
-                    $tids = explode(',', $question['tids']);
-                    $tnames = explode(',', $question['tnames']);
+                    $tids = explode(TNAME_SEPERATOR, $question['tids']);
+                    $tnames = explode(TNAME_SEPERATOR, $question['tnames']);
                     foreach ($tids as $index => $tag_id) {
                         $tag_link = FRONT_HTML_ROOT . 'question/tag/' . $tag_id . '/latest/1';
                         ?>

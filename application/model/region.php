@@ -27,7 +27,8 @@ class Region {
     }
 
     public static function get_au_states_abbr() {
-        return array('AU', 'ACT', 'NSW', 'VIC', 'QLD', 'NT', 'TAS', 'WA', 'SA');
+        return array('AU'=>'AUSTRALA', 'ACT' => 'ACT', 'NSW' => 'NSW','VIC' =>  'VIC', 'QLD' => 'QLD', 
+           'NT' => 'NT', 'TAS' => 'TAS',  'WA' => 'WA','SA' => 'SA');
     }
 
     public static function get_au_states_full() {

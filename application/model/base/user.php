@@ -48,7 +48,7 @@ class User {
         return Mysql::select_one($sql);
     }
 
-    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'b.date_created', $direction = 'DESC') {
+    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'score', $direction = 'DESC') {
         $sql = "SELECT *  FROM " . self::$table . " WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count

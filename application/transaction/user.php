@@ -14,11 +14,12 @@ use \Zx\Tool\Upload as Zx_Upload;
 class User {
     /**
      * mainly for front end
-     * @param array $user  record but not necessary to be complete
+     * @param int $uid  
      * @return string 
      */
-    public static function get_link($user)
+    public static function get_link($uid)
     {
+        $user = Model_User::get_one($uid);
         $link = FRONT_HTML_ROOT . 'user/detail/' . $user['id1'];
         if (isset($user['name'])) {
             $link .= '/' . $user['name'];

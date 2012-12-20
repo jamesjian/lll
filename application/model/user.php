@@ -9,7 +9,18 @@ use \Zx\Model\Mysql;
 use \Zx\Test\Test;
 
 class User extends Base_User {
-
+    /**
+     * make sure id1 is valid
+     * @param string $id1  
+     * @return record
+     */
+    public static function get_one_by_id1($id1)
+    {
+       
+                $sql = "SELECT *  FROM " . parent::$table . " WHERE id1=:id1";
+        $params = array(':id1' => $id1);
+        return Mysql::select_one($sql, $params);
+    }
     public static function decrease_one_answer_score($uid, $score) {
         $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers-1, 
                     score=score-$score WHERE id=$uid";
@@ -379,7 +390,7 @@ class User extends Base_User {
         return parent::get_num();
     }
 
-    public static function get_active_users_by_page_num($page_num = 1, $order_by = 'rank', $direction = 'ASC') {
+    public static function get_active_users_by_page_num($page_num = 1, $order_by = 'score', $direction = 'DESC') {
         $where = ' status=1 ';
         $offset = ($page_num - 1) * NUM_OF_USERS_IN_FRONT_PAGE;
         return parent::get_all($where, $offset, NUM_OF_USERS_IN_FRONT_PAGE, $order_by, $direction);

@@ -9,6 +9,18 @@ use \Zx\Model\Mysql;
 
 class Answer extends Base_Answer {
     /**
+     * make sure id1 is valid
+     * @param string $id1  
+     * @return record
+     */
+    public static function get_one_by_id1($id1)
+    {
+       
+                $sql = "SELECT *  FROM " . parent::$table . " WHERE id1=:id1";
+        $params = array(':id1' => $id1);
+        return Mysql::select_one($sql, $params);
+    }    
+    /**
      * in a question page, there're multiple answers for this question, 
      * some ads of the answers are active, some are inactive or expired
      * get the num of inactive ads from these answers to help get selected ads 
@@ -118,7 +130,7 @@ class Answer extends Base_Answer {
      */
     public static function get_recent_answers_by_uid($uid) {
         $where = " a.status=1 AND q.status=1 AND a.uid=$uid";
-        $offset = ($page_num - 1) * NUM_OF_RECENT_ANSWERS_IN_FRONT_PAGE;
+        $offset = 0;
         $order_by = 'a.date_created';
         $direction = 'DESC';
         return parent::get_all($where, $offset, NUM_OF_RECENT_ANSWERS_IN_FRONT_PAGE, $order_by, $direction);

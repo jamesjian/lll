@@ -17,7 +17,7 @@
     <body class='zx-front-body'>	
         <div class='zx-front-header'>
             <div class='zx-front-logo'>
-                <a href='<?php echo FRONT_HTML_ROOT; ?>common/sitemap.php' title='<?php echo SITENAME;?>'><?php echo SITENAME;?></a>
+                <a href='<?php echo HTML_ROOT;?>' title='<?php echo SITENAME;?>'><img src="<?php echo HTML_IMAGE_ROOT . 'icon/logo.png';?>" title="this is logo"/></a>
             </div>
             <div>
                 <a href="<?php echo FRONT_HTML_ROOT;?>user/register" title="注册用户">注册用户</a>
@@ -29,16 +29,16 @@
                 </form>
             </div>
             <nav class='zx-front-top-menu'>
-                <a href="<?php echo FRONT_HTML_ROOT;?>question/retrieve" title="最新问题">最新问题</a>
-                <a href="<?php echo FRONT_HTML_ROOT;?>qyestion/unanswered" title="待解答问题">待解答问题</a>
-                <a href="<?php echo FRONT_HTML_ROOT;?>qyestion/answered" title="待解答问题">已解答问题</a>
-                <a href="<?php echo FRONT_HTML_ROOT;?>qyestion/answered" title="待解答问题">最受关注问题</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>question/latest" title="最新问题">最新问题</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>question/unanswered" title="待解答问题">待解答问题</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>question/answered" title="待解答问题">已解答问题</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>question/popular" title="待解答问题">最受关注问题</a>
                 <?php 
                 /** only has tags for question in main menu, the link of tags for ads is display in tags section in all ad pages */
                 ?>
-                <a href="<?php echo FRONT_HTML_ROOT;?>tag/question" title="所有分类">所有问题分类</a>
-                <a href="<?php echo FRONT_HTML_ROOT;?>user/retrieve" title="用户列表">用户列表</a>
-                <a href="<?php echo FRONT_HTML_ROOT;?>ad/retrieve" title="最新信息">最新信息</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>tag/qpopular" title="所有分类">所有问题分类</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>user/all" title="用户列表">用户列表</a>
+                <a href="<?php echo FRONT_HTML_ROOT;?>tag/apopular" title="最新信息">最新信息</a>
             </nav>
         </div>
         <div class="zx-front-clear-both"></div>

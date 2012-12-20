@@ -57,7 +57,7 @@ class Html {
         header('Location: ' . FRONT_HTML_ROOT . 'ad/all');
     }
     public static function goto_home_page() {
-        header('Location: ' . FRONT_HTML_ROOT . 'question/all');
+        header('Location: ' . HTML_ROOT);
     }
 
     public static function goto_user_home_page() {

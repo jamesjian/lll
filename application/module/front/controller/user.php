@@ -13,16 +13,18 @@ use \App\Model\Ad as Model_Ad;
 use \App\Transaction\User as Transaction_User;
 use \App\Transaction\Html as Transaction_Html;
 use \Zx\Message\Message as Zx_Message;
+use \Zx\Controller\Route;
+use \App\Transaction\Session as Transaction_Session;
 
 class User extends Base {
 
     public $view_path;
-public $list_page = '';
+    public $list_page = '';
+
     public function init() {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/front/view/user/';
         $this->list_page = FRONT_HTML_ROOT . 'user/all/1/';
-        
     }
 
     public function login1() {
@@ -69,12 +71,12 @@ public $list_page = '';
         $email = (isset($_POST['email'])) ? trim($_POST['email']) : '';
         //\Zx\Test\Test::object_log('$uname', $uname, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if (\Zx\Tool\Valid::alpha_numeric($uname, true)) {
-          //  \Zx\Test\Test::object_log('$uname', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
+            //  \Zx\Test\Test::object_log('$uname', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
             if (Model_User::exist_uname_or_email($uname) || Model_User::exist_uname_or_email($email)) {
-            //                \Zx\Test\Test::object_log('$uname', '1111', __FILE__, __LINE__, __CLASS__, __METHOD__);
+                //                \Zx\Test\Test::object_log('$uname', '1111', __FILE__, __LINE__, __CLASS__, __METHOD__);
                 $message = "该账户已被注册, 请输入不同的账户名称";
             } else {
-              //              \Zx\Test\Test::object_log('$uname', '2222', __FILE__, __LINE__, __CLASS__, __METHOD__);
+                //              \Zx\Test\Test::object_log('$uname', '2222', __FILE__, __LINE__, __CLASS__, __METHOD__);
                 $result = true;
                 $message = "该账户未被注册，";
             }
@@ -308,13 +310,13 @@ public $list_page = '';
      * pagination
      */
     public function all() {
-       if (!\App\Transaction\Html::previous_page_is_search_page()) {
+        if (!\App\Transaction\Html::previous_page_is_search_page()) {
             \App\Transaction\Html::remember_current_page();
-        }        
+        }
         Transaction_Html::set_title('All user');
         Transaction_Html::set_keyword('all user');
         Transaction_Html::set_description('all user');
-        $current_page = (isset($params[0])) ? intval($params[0]) : 1;
+        $current_page = (isset($this->params[0])) ? intval($this->params[0]) : 1;
         if ($current_page < 1)
             $current_page = 1;
         $order_by = 'score';
@@ -324,7 +326,9 @@ public $list_page = '';
             $where = " uname LIKE '%$search%' OR email LIKE '%$search%'";
         } else {
             $where = '1';
-        }        
+        }
+        //\Zx\Test\Test::object_log('$current_page', $current_page, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
         $users = Model_User::get_active_users_by_page_num($current_page, $order_by, $direction);
         $num_of_articles = Model_User::get_num_of_active_users();
         $num_of_pages = ceil($num_of_articles / NUM_OF_USERS_IN_FRONT_PAGE);
@@ -335,21 +339,19 @@ public $list_page = '';
     }
 
     public function detail() {
-        $uid1 = isset($this->params[0]) ?  intval($this->params[0]) : 0; //it's an id1
-        $user = Model_User::get_one($uid);
-        //\Zx\Test\Test::object_log('$article', $article, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        $uid1 = isset($this->params[0]) ? $this->params[0] : ''; //it's an id1
+        $user = Model_User::get_one_by_id1($uid1);
         if ($user) {
-        $uid = $user['id'];
+            $uid = $user['id'];
 
             $home_url = HTML_ROOT;
-            $category_url = FRONT_HTML_ROOT . 'article/category/' . $article['cat_name'];
+            $category_url = FRONT_HTML_ROOT . 'article/category/' . $user['uname'];
             Transaction_Session::set_breadcrumb(0, $home_url, '首页');
-            Transaction_Session::set_breadcrumb(1, $category_url, $article['cat_name']);
-            Transaction_Session::set_breadcrumb(2, Route::$url, $article['title']);
-            Transaction_Html::set_title($user['name']);
-            Transaction_Html::set_keyword($user['name']);
-            Transaction_Html::set_description($user['name']);
-            
+            Transaction_Session::set_breadcrumb(1, Route::$url, $user['uname']);
+            Transaction_Html::set_title($user['uname']);
+            Transaction_Html::set_keyword($user['uname']);
+            Transaction_Html::set_description($user['uname']);
+
             $recent_questions = Model_Question::get_recent_questions_by_uid($uid);
             $recent_answers = Model_Answer::get_recent_answers_by_uid($uid);
             $recent_ads = Model_Ad::get_recent_ads_by_uid($uid);
@@ -369,8 +371,7 @@ public $list_page = '';
      */
     public function search() {
         //todo
-        $search = isset($_POST['keyword']) ? trim($search): '';
-        
+        $search = isset($_POST['keyword']) ? trim($search) : '';
     }
 
 }

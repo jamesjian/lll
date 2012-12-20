@@ -125,7 +125,7 @@ class Tag extends Base_Tag {
     public static function get_active_ad_tags_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
         $where = ' status=1 AND num_of_ads>0';
         $offset = ($page_num - 1) * NUM_OF_TAGS_IN_FRONT_PAGE;
-        return parent::get_all($where, $offset, NUM_OF_TAG_ITEMS_IN_ONE_PAGE, $order_by, $direction);
+        return parent::get_all($where, $offset, NUM_OF_TAGS_IN_FRONT_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_active_ad_tags() {
@@ -136,7 +136,7 @@ class Tag extends Base_Tag {
     public static function get_active_question_tags_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
         $where = ' status=1 AND num_of_questions>0';
         $offset = ($page_num - 1) * NUM_OF_TAGS_IN_FRONT_PAGE;
-        return parent::get_all($where, $offset, NUM_OF_TAG_ITEMS_IN_ONE_PAGE, $order_by, $direction);
+        return parent::get_all($where, $offset, NUM_OF_TAGS_IN_FRONT_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_active_question_tags() {

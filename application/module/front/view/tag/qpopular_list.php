@@ -25,7 +25,7 @@
             $n = count($tags);
             for ($i = 0; $i < $n; $i++) {
                 $tag = $tags[$i];
-                $link = HTMLROOT . 'front/question/tag/' . $tag['id'] . '/page/1/' . $tag['name'];
+                $link = FRONT_HTML_ROOT . 'question/tag/' . $tag['id'] . '/page/1/' . $tag['name'];
                 ?>
                 <div class="zx-front-tag">
                     <a href="<?php echo $link; ?>"><?php echo $tag['name']; ?></a>
@@ -44,7 +44,7 @@
 </div>
 <div class='zx-front-right'>
     <div class='zx-front-right1'>
-        <?php include FRONT_VIEW_PATH . 'templates/most_popular_ad_tags.php'; ?>
+        <?php include 'most_popular_question_tags.php'; ?>
     </div>	
     <div class="zx-front-right2">
         <?php include FRONT_VIEW_PATH . 'templates/right_google_ads.php'; ?>        

@@ -3,14 +3,14 @@
 include 'search.php';
 ?>
 <?php
-if ($user_list) {
+if ($users) {
     $columns = 5; //5 users in one line
     $i = 0;
     ?>
     <table>
         <?php
-        foreach ($user_list as $user) {
-            $link_user = \App\Transaction\User::get_link($user);
+        foreach ($users as $user) {
+            $link_user = \App\Transaction\User::get_link($user['id']);
             if ($i == 0) {
                 echo "<tr>";
             }
@@ -31,9 +31,9 @@ if ($user_list) {
     ?>
     </table>
     <?php
-    $link_prefix = ADMIN_HTML_ROOT . 'user/retrieve/';
+    $link_prefix = FRONT_HTML_ROOT . 'user/all/';
     $link_postfix = ""; //always order by score desc
-    include ADMIN_VIEW_PATH . 'templates/pagination.php';
+    include FRONT_VIEW_PATH . 'templates/pagination.php';
 } else {
     echo 'No record.';
 }

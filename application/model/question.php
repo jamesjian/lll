@@ -7,12 +7,25 @@ use \Zx\Model\Mysql;
 
 class Question extends Base_Question {
     /**
+     * make sure id1 is valid
+     * @param string $id1  
+     * @return record
+     */
+    public static function get_one_by_id1($id1)
+    {
+       
+                $sql = "SELECT *  FROM " . parent::$table . " WHERE id1=:id1";
+        $params = array(':id1' => $id1);
+        return Mysql::select_one($sql, $params);
+    }    
+    /**
+     * only one page
      * @param int $uid
      * @return array
      */
     public static function get_recent_questions_by_uid($uid) {
         $where = " status=1 AND uid=$uid";
-        $offset = ($page_num - 1) * NUM_OF_RECENT_QUESTIONS_IN_FRONT_PAGE;
+        $offset = 0; 
         $order_by = 'date_created';
         $direction = 'DESC';
         return parent::get_all($where, $offset, NUM_OF_RECENT_QUESTIONS_IN_FRONT_PAGE, $order_by, $direction);

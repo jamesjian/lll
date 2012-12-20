@@ -44,7 +44,7 @@
 </div>
 <div class='zx-front-right'>
     <div class='zx-front-right1'>
-        <?php include FRONT_VIEW_PATH . 'templates/most_popular_question_tags.php'; ?>
+        <?php include 'most_popular_question_tags.php'; ?>
     </div>	
     <div class="zx-front-right2">
         <?php include FRONT_VIEW_PATH . 'templates/right_google_ads.php'; ?>

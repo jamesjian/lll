@@ -5,6 +5,9 @@ use \Zx\Model\Mysql;
 
 /*
  if completely valid, 0, else 1* 
+ * 
+ * 
+ update ts8wl_answer set id1=concat(convert(2*id, char(11)), md5(id))
   CREATE TABLE ad (
  id unsigned MEDIUMINT(8)  AUTO_INCREMENT PRIMARY KEY,
   id1 varchar(44) not null unique,
@@ -27,7 +30,7 @@ use \Zx\Model\Mysql;
 class Ad {
     public static $fields = array('id','id1','title','uid','uname',
         'tids','tnames', 'content','score',  'num_of_views','valid',
-          'status', 'date_created');
+          'status', 'date_created', 'date_start', 'date_end');
     public static $table = TABLE_AD;
     
      /**
