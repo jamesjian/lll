@@ -4,23 +4,24 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 
 /*
-status: 0: created(when report an abuse), 2. confirmed(it's a real abuse), 3. cancelled(it's not an abuse)
+status: 0: created(when report an claim), 2. confirmed(it's a real claim), 3. cancelled(it's not an claim)
  item type //1. question, 2. answer, 3. ad
- cat id   //1. 造谣诽谤， 2. 种族歧视， 3.色情 4. 暴力， 虐待（人或动物） 5. 违禁物品（毒品， 武器, 人体器官等） 6. 误导欺诈
-  CREATE TABLE abuse (
+ cat id   //1. 造谣诽谤（扣一分）， 2. 种族歧视（扣一分）， 3.色情 4. 暴力， 虐待（人或动物）（扣一分） 5. 违禁物品（毒品， 武器, 人体器官等）（扣一分） 6. 误导欺诈（扣一分）
+ 7. 广告嫌疑（扣一分） 8. 无内容或答非所问或灌水内容（将被删除， 不扣分）
+  CREATE TABLE claim (
  id unsigned MEDIUMINT(8)   AUTO_INCREMENT PRIMARY KEY,
  item_type unsigned tinyint(3) NOT NULL DEFAULT '1',  
  item_id unsigned MEDIUMINT(8)   not null default 0, 
- uid unsigned MEDIUMINT(7)   not null 0,  //can be empty
+ claimant_id unsigned MEDIUMINT(7)   not null 0,  //can be empty
  cat_id unsigned tinyint(3) not null default '1',
-  content text,
+  result text,
   reportable unsigned tinyint(1) not null default 1,// if completely valid, 0, else 1
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
 */
-class Abuse {
-    public static $fields = array('id','item_type','item_id','uid',
-        'cat_id','content','status', 'date_created');
+class Claim {
+    public static $fields = array('id','item_type','item_id','claimant_id',
+        'cat_id','result','status', 'date_created');
     public static $table = TABLE_ABUSE;
     
      /**

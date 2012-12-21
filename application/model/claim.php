@@ -7,25 +7,25 @@ use \App\Model\Base\Question as Base_Question;
 use \App\Model\Base\Answer as Base_Answer;
 use \App\Model\Base\Ad as Base_Ad;
 use \App\Model\Base\User as Base_User;
-use \App\Model\Base\Abuse as Base_Abuse;
+use \App\Model\Base\Claim as Base_Claim;
 use \Zx\Model\Mysql;
 
-class Abuse extends Base_Abuse {
+class Claim extends Base_Claim {
 
-    public static function get_num_of_active_abuses($where = 1) {
+    public static function get_num_of_active_claims($where = 1) {
         $where = " status=1 AND ($where)";
         return parent::get_num($where);
     }
-    public static function get_num_of_abuses_by_item_type($item_type, $where=1) {
+    public static function get_num_of_claims_by_item_type($item_type, $where=1) {
         $where = " ($where) AND item_type=$item_type";
         return parent::get_num($where);
     }
 
-    public static function get_num_of_abuses($where = '1') {
+    public static function get_num_of_claims($where = '1') {
         return parent::get_num($where);
     }
     
- public static function get_abuses_by_item_type_and_page_num($item_type,$where=1, $page_num = 1, $order_by = 'a.id', $direction = 'ASC') {
+ public static function get_claims_by_item_type_and_page_num($item_type,$where=1, $page_num = 1, $order_by = 'a.id', $direction = 'ASC') {
      switch ($item_type) {
          case 1:
              //question

@@ -1,6 +1,6 @@
 
-drop table ts8wl_abuse;
-drop table ts8wl_abuse_category;
+drop table ts8wl_claim;
+drop table ts8wl_claim_category;
 drop table ts8wl_ad;
 drop table ts8wl_answer;
 drop table ts8wl_article;

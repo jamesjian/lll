@@ -5,7 +5,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 
 /*
- * user, question, answer, ad, tag, abuse
+ * user, question, answer, ad, tag, claim
  *  # num_of_questions+num_of_answers+num_of_ads+num_of_question_votes+num_of_answer_votes
  * #score has been consumed by ad
   CREATE TABLE user (

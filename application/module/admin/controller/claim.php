@@ -7,32 +7,33 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answser;
 use \App\Model\Ad as Model_Ad;
-use \App\Model\Abuse as Model_Abuse;
-use \App\Model\Abusecategory as Model_Abusecategory;
-use \App\Transaction\Abuse as Transaction_Abuse;
+use \App\Model\Claim as Model_Claim;
+use \App\Model\Claimcategory as Model_Claimcategory;
+use \App\Transaction\Claim as Transaction_Claim;
 use \Zx\View\View;
 use \Zx\Test\Test;
 
 //must have item type (1: question, 2: answer, 3: ad)
-class Abuse extends Base {
+class Claim extends Base {
 
     public $list_page = '';
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/abuse/';
-        $this->list_page = ADMIN_HTML_ROOT . 'abuse/retrieve_by_item_type/1/1/title/ASC/'; //default list question abuses, first 1 is item type
-        \App\Transaction\Session::set_ck_upload_path('abuse');
+        $this->view_path = APPLICATION_PATH . 'module/admin/view/claim/';
+        $this->list_page = ADMIN_HTML_ROOT . 'claim/retrieve_by_item_type/1/1/title/ASC/'; //default list question claims, first 1 is item type
+        \App\Transaction\Session::set_ck_upload_path('claim');
     }
 
     public function delete() {
         $id = $this->params[0];
-        Transaction_Abuse::delete_abuse($id);
+        Transaction_Claim::delete_claim($id);
         header('Location: ' . $this->list_page);
     }
 
     /**
      * only change status
+
      */
     public function update() {
         $success = false;
@@ -44,31 +45,31 @@ class Abuse extends Base {
             if ($id <> 0) {
                 if (isset($_POST['status']))
                     $arr['status'] = intval($_POST['status']);
-                if (Transaction_Abuse::update_abuse($id, $arr)) {
+                if (Transaction_Claim::update_claim($id, $arr)) {
                     header('Location: ' . $this->list_page);
                 }
             }
         } else {
             $id = isset($this->params[0]) ? intval($this->params[0]) : 0;
         }
-        $abuse = Model_Abuse::get_one($id);
-        if ($abuse) {
-            $cats = Model_Abusecategory::get_cats(); //an array
-            switch ($abuse['item_type']) {
+        $claim = Model_Claim::get_one($id);
+        if ($claim) {
+            $cats = Model_Claimcategory::get_cats(); //an array
+            switch ($claim['item_type']) {
                 case '1':
-                    $item = Model_Question::get_one($abuse['item_id']);
+                    $item = Model_Question::get_one($claim['item_id']);
                     break;
                 case '2':
-                    $item = Model_Answer::get_one($abuse['item_id']);
+                    $item = Model_Answer::get_one($claim['item_id']);
                     break;
                 case '3':
-                    $item = Model_Ad::get_one($abuse['item_id']);
+                    $item = Model_Ad::get_one($claim['item_id']);
                     break;
             }
             //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
             View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('abuse', $abuse);
+            View::set_action_var('claim', $claim);
             View::set_action_var('cats', $cats);
             View::set_action_var('item', $item);
         } else {
@@ -86,7 +87,7 @@ class Abuse extends Base {
         if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
             \App\Transaction\Html::remember_current_admin_page();
         }
-        \App\Transaction\Session::set_current_l1_menu('Abuse');
+        \App\Transaction\Session::set_current_l1_menu('Claim');
         $item_type = isset($this->params[0]) ? intval($this->params[0]) : 1; //default is question
         $current_page = isset($this->params[1]) ? intval($this->params[1]) : 1;
         $order_by = isset($this->params[2]) ? $this->params[2] : 'id';
@@ -97,14 +98,14 @@ class Abuse extends Base {
         } else {
             $where = '1';
         }
-        $abuse_list = Model_Abuse::get_abuses_by_item_type_and_page_num($item_type, $where, $current_page, $order_by, $direction);
-        $num_of_records = Model_Abuse::get_num_of_abuses_by_item_type($item_type, $where);
+        $claim_list = Model_Claim::get_claims_by_item_type_and_page_num($item_type, $where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Claim::get_num_of_claims_by_item_type($item_type, $where);
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
-        //\Zx\Test\Test::object_log('abuse_list', $abuse_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('claim_list', $claim_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         View::set_view_file($this->view_path . 'retrieve_active_by_item_type.php');
         View::set_action_var('type_id', $type_id);
-        View::set_action_var('abuse_list', $abuse_list);
+        View::set_action_var('claim_list', $claim_list);
         View::set_action_var('search', $search);
         View::set_action_var('order_by', $order_by);
         View::set_action_var('direction', $direction);

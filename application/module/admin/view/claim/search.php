@@ -1,5 +1,5 @@
 <?php
-$link_search = ADMIN_HTML_ROOT . 'abuse/search/' . $type_id;
+$link_search = ADMIN_HTML_ROOT . 'claim/search/' . $type_id;
 ?>
 <form action="<?php echo $link_search;?>" method="post">
 Keyword:<input type="text" name="search" value="<?php echo $search;?>" />

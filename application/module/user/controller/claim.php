@@ -15,7 +15,7 @@ use \App\Transaction\Vote as Transaction_Vote;
 /**
 
  */
-class Abuse extends Base {
+class Claim extends Base {
 
      public function init() {
         parent::init();
@@ -51,7 +51,7 @@ class Abuse extends Base {
                         $active_item = false;
                 }
             if ($active_item) {
-                Transaction_Abuse::create($uid, $item_type, $item_id, $active_item);
+                Transaction_Claim::create($uid, $item_type, $item_id, $active_item);
                 $message = "您已举报成功， 网站管理员核实后会作出相关处理， 感谢您的支持。";
                 $success = true;
             } else {

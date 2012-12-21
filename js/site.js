@@ -115,7 +115,7 @@ site = {
         //$('#region_select_state').bind('change', region.region_change_state);
         return false;
     },    
-    get_abuse_dialog : function(e) {
+    get_claim_dialog : function(e) {
         // m=m+1; //for checking bind/unbind
         // console.log('get dialog'+m);
         var url = $(this).attr('href');
@@ -134,7 +134,7 @@ site = {
     },
     /*
          **/
-    open_abuse_dialog : function(data, title) {
+    open_claim_dialog : function(data, title) {
         // m=m+1; //for checking bind/unbind
         // console.log('open dialog'+m);
         $('#dialog').dialog({
@@ -181,9 +181,9 @@ site = {
         $('.zx-front-vote-link').bind('click', {
             title : '值得关注'
         }, message.get_vote_dialog);        
-        $('.zx-front-abuse-link').bind('click', {
+        $('.zx-front-claim-link').bind('click', {
             title : '举报'
-        }, message.get_abuse_dialog);           
+        }, message.get_claim_dialog);           
 $('#dialog').dialog({
             autoOpen: false,
             height: 300,

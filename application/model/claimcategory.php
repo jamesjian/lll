@@ -1,9 +1,9 @@
 <?php
 namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
-use \App\Model\Base\Abcategory as Base_Abusecategory;
+use \App\Model\Base\Abcategory as Base_Claimcategory;
 use \Zx\Model\Mysql;
-class Abusecategory extends Base_Abusecategory{
+class Claimcategory extends Base_Claimcategory{
     /**
      * get active cats order by category name
      */
@@ -63,7 +63,7 @@ class Abusecategory extends Base_Abusecategory{
      * @return array or false if not exists
      */
     public static function exist_cat_title($title) {
-        $sql = "SELECT * FROM abuse_category WHERE title='$title'";
+        $sql = "SELECT * FROM claim_category WHERE title='$title'";
                 \Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         return Mysql::select_one($sql);

@@ -1,10 +1,11 @@
-question, answer, ad, 
-abuse
+<?php
+/*question, answer, ad, 
+claim
 user
 
 
 drop table ts8wl_ad;
-drop table ts8wl_abuse;
+drop table ts8wl_claim;
 drop table ts8wl_answer;
 drop table cache;
 drop table ts8wl_question;
@@ -166,7 +167,8 @@ drop table session;
 商业经验
  产品介绍
  公司宣传
- 
+ */
+?>
  
  <?php
 
@@ -208,7 +210,7 @@ $q = substr($q, 0, -1);
 //echo $q;
 $dbh->exec($q);
 
-
+/*
 
 mem
 1. user
@@ -281,7 +283,7 @@ admin
         3. create answer user
         4. create answer under this question id and answer user id  (enter question id and user id)
         
-        
+        */
         
         
 /*        
@@ -300,8 +302,8 @@ questions:
  * 2. user register, activation, forgotten password, 
  * 3. question list, (newest, unanswered, most popular), 
  *    create question, 
- * mark useful, report abuse
- * 4. one question and answer list, vote answer, report abuse
+ * mark useful, report claim
+ * 4. one question and answer list, vote answer, report claim
  * 5. answer a question
  * 6. user list
  * 7. tag list
@@ -333,25 +335,24 @@ questions:
  * 
  */
     
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-
-　　　　　　　　　　　　　　　　　　
+/*
+ * 
+ * 本网站不鼓励灌水
+ * 任何问题或回答或广告更新后， 举报状态被复位， 即便原先已被确定没有谬误， 因为更新而导致内容变化， 仍可能会有谬误产生。
+ 分数规则：
+ * 1. 每提出一个问题或回答一个问题可以得一分
+ * 2. 每被vote一次， 可以得一分
+ * 3. 注册用户每成功举报一次， 第一个举报的可以得一分
+ * 4. 问题或回答或广告被成功举报， 扣规定分数
+ * 5. 灌水信息被举报和被删除不扣分
+ * 6. 
+ * 
+ * 被举报后的流程：
+ * 初始状态为 not sure, 
+ * 1. 确认是否违规， 如果不违规， 设定状态为valid, 如果违规， 设定状态为invalid
+ * 2. 如果违规， 违规信息被屏蔽， 或以极淡颜色显示部分内容
+ * 3. 如果违规， 且分值为n,  首个举报者加n分， 被举报者扣n分， 举报灌水者， 举报者加1分， 被举报者不扣分
+ */
         
         
         

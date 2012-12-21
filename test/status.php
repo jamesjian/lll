@@ -10,15 +10,15 @@
  * 4. ad list, disable
  *    ad by user
  *    answer link ad
- * 5. abuse list, update
+ * 5. claim list, update
  * 6. page crud
  *    
  * front: 
  * 1. user list ((user/all/page number), register, login, forgotten password, activate
  * 2. question create, list, list by user/tag, content  (contain answer and ad)
- *    abuse, vote
- * 3. answer create, abuse, vote
- * 4. ad list, ad content, abuse, vote
+ *    claim, vote
+ * 3. answer create, claim, vote
+ * 4. ad list, ad content, claim, vote
  * 5. static pages
  * 6. contact us
  * 
@@ -28,7 +28,7 @@
  * 3. answer list, edit 
  * 4. ad, crud
  *    link ad and answer
- * 5. abuse list if have abuse
+ * 5. claim list if have claim
  *
  1. user
   inactive: when register a new user, or its email box is changed (need to activate it again)
@@ -45,14 +45,14 @@
  * every question 1
  * every answer 2
  * every vote 1
- * every confirmed abuse -1
+ * every confirmed claim -1
  * num of ads <= num of valid answers (when an answer is disabled, if the ad is only for this answer, the ad is disabled)
  *   
  * sum of score of ads = score 
  * 
  *2. question  cannot be deleted by user, only be deactivated by user or disabled by admin 
  * when status=2
- * valid 0 not sure (can be abused, has abuse button), 1 valid(cannot be abused, no abuse button), 2 invalid(has been verified as an invalid question, no display at all)
+ * valid 0 not sure (can be claimd, has claim button), 1 valid(cannot be claimd, no claim button), 2 invalid(has been verified as an invalid question, no display at all)
  * status 0: inactive by user only when no answer, 1: active, 2: disabled by admin (because of invalid, valid=2)
  *                status                            valid    display
  * value          0 (when no answer)                 any     content   no display        
@@ -118,13 +118,13 @@
  * 21. question/create
  * 22. answer/create/questionid
  * 
- * vote and abuse only by user
+ * vote and claim only by user
  * 23. user/vote/question/questionid
  * 24. user/vote/answer/answerid
  * 25. user/vote/ad/adid
- * 26. user/abuse/question/questionid
- * 26. user/abuse/answer/answerid
- * 26. user/abuse/ad/adid
+ * 26. user/claim/question/questionid
+ * 26. user/claim/answer/answerid
+ * 26. user/claim/ad/adid
  * 
  * 
  * 27. question/myquestions
@@ -137,7 +137,7 @@
  * 34. user/home  (name, email, logo, num_of_question/answer/ad, scores)
  * 35. user/change_logo
  * 
-    vote and abuse ajax
+    vote and claim ajax
  *  *  displays ad categories (rather than ads), can switch between most popular categories and all categories for ads
  *     and region
  * 

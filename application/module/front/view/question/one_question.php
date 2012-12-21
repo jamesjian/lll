@@ -31,10 +31,10 @@
                                 <a href="<?php echo $vote_link; ?>" class="zx-front-vote-link" title="如果这个问题值得关注， 请投票">关注度</a>
                                 <?php
                                 if ($question['valid'] == 0) {
-                                    $abuse_link = FRONT_HTML_ROOT . 'question/abuse/' . $question['id'];
-                                    //not sure it's valid or not, has report abuse button
+                                    $claim_link = FRONT_HTML_ROOT . 'question/claim/' . $question['id'];
+                                    //not sure it's valid or not, has report claim button
                                     ?>
-                                    <a href = "<?php echo $abuse_link; ?>" class = "zx-front-abuse-link" title = "如果这个问题有违法或违规嫌疑， 请举报。">举报</a>
+                                    <a href = "<?php echo $claim_link; ?>" class = "zx-front-claim-link" title = "如果这个问题有违法或违规嫌疑， 请举报。">举报</a>
                                     <?php
                                 }
                                 echo $regions[$question['region']],
