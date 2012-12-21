@@ -9,12 +9,12 @@ use \Zx\Model\Mysql;
  * 5. 违禁物品（毒品， 武器, 人体器官等） （-10)
  * 6. 误导欺诈（-10) 7. 广告嫌疑(-1) 8. 与澳洲无关或无实质内容 (0)
  * if less than 10 categories, put into array instead of database
-  CREATE TABLE claim_category (id unsigned tinyint(3) AUTO_INCREMENT PRIMARY KEY,
+  CREATE TABLE claim_category (id tinyint(3) unsigned AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
- claimant_score tinyint(2) not null default 1,
- defendant_score tinyint(2) not null default 1,
+ claimant_score tinyint(2) unsigned not null default 1,
+ defendant_score tinyint(2) unsigned not null default 1,
   description text,
-  status unsigned tinyint(1) not null default 1,
+  status tinyint(1) unsigned not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  */
 
