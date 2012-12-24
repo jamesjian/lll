@@ -36,16 +36,8 @@ div.zx-front-header2{
 }
 
 .zx-front-logo{
-    width: 500px;
-    height: 50px;
     float: left;
     background-repeat: no-repeat;
-    color: black;
-    font-size: 30px;
-    font-weight: 900;
-    text-align: center;
-    text-shadow: green;
-    letter-spacing: 0;
 }
 .zx-front-logo a{
     color: black;
@@ -228,4 +220,55 @@ nav.zx-front-bottom-menu li a{
     text-decoration: none;
     font-size:13px;
     font-weight: 800;
+}
+
+/**  question list */
+.zx-front-question-list li{
+    list-style: none;
+    float: left;
+}
+
+
+li.zx-front-question-list-heading-col1{
+    width:50px;
+}
+li.zx-front-question-list-heading-col2{
+    width:300px;
+}
+li.zx-front-question-list-heading-col3{
+    width:50px;
+}
+li.zx-front-question-list-heading-col4{
+    width:50px;
+}
+li.zx-front-question-list-heading-col5{
+    width:50px;
+}
+li.zx-front-one-question-col1{
+    width: 50px;
+}
+li.zx-front-one-question-col2{
+    width: 300px;
+}
+li.zx-front-one-question-col3{
+    width: 50px;
+}
+li.zx-front-one-question-col4{
+    width: 50px;
+}
+li.zx-front-one-question-col5{
+    width: 50px;
+}
+li.zx-front-one-question-col6{
+    width: 250px;
+}
+li.zx-front-one-question-col7{
+    width: 150px;
+}
+li.zx-front-one-question-col8{
+    float: right;
+    width: 150px;
+}
+div.zx-front-one-question{
+    border-bottom: solid silver 1px;
 }

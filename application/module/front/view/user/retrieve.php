@@ -10,6 +10,7 @@ if ($users) {
     <table>
         <?php
         foreach ($users as $user) {
+            
             $link_user = \App\Transaction\User::get_link($user['id']);
             if ($i == 0) {
                 echo "<tr>";

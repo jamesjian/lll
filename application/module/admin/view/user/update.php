@@ -31,5 +31,5 @@ Zx_Message::show_message();
         </dl>
     </fieldset>    
 </form>
-<a href="<?php echo \App\Transaction\Session::get_previous_admin_page(); ?>" />Cancel</a>
+<a href="<?php echo \App\Transaction\HTML::get_previous_admin_page(); ?>" />Cancel</a>
 

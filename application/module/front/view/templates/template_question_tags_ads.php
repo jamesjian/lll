@@ -1,7 +1,6 @@
 <?php
 /**
  *  questions tags and latest ads as right column
- *  
  */
  include 'header.php'; ?>
 

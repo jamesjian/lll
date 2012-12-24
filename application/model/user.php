@@ -386,12 +386,12 @@ class User extends Base_User {
         return parent::get_all($where, $start, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
-    public static function get_num_of_users() {
-        return parent::get_num();
+    public static function get_num_of_users($where) {
+        return parent::get_num($where);
     }
 
-    public static function get_active_users_by_page_num($page_num = 1, $order_by = 'score', $direction = 'DESC') {
-        $where = ' status=1 ';
+    public static function get_active_users_by_page_num($where, $page_num = 1, $order_by = 'score', $direction = 'DESC') {
+        $where = " ($where) AND status=1 ";
         $offset = ($page_num - 1) * NUM_OF_USERS_IN_FRONT_PAGE;
         return parent::get_all($where, $offset, NUM_OF_USERS_IN_FRONT_PAGE, $order_by, $direction);
     }

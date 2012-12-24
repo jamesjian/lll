@@ -322,15 +322,16 @@ class User extends Base {
         $order_by = 'score';
         $direction = 'DESC';
         $search = isset($this->params[3]) ? $this->params[3] : '';
+        //when display all users, don't display 匿名用户
         if ($search != '') {
-            $where = " uname LIKE '%$search%' OR email LIKE '%$search%'";
+            $where = " id>3 AND uname LIKE '%$search%' OR email LIKE '%$search%'";
         } else {
-            $where = '1';
+            $where = 'id>3';
         }
         //\Zx\Test\Test::object_log('$current_page', $current_page, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        $users = Model_User::get_active_users_by_page_num($current_page, $order_by, $direction);
-        $num_of_articles = Model_User::get_num_of_active_users();
+        $users = Model_User::get_active_users_by_page_num($where, $current_page, $order_by, $direction);
+        $num_of_articles = Model_User::get_num_of_active_users($where);
         $num_of_pages = ceil($num_of_articles / NUM_OF_USERS_IN_FRONT_PAGE);
         View::set_view_file($this->view_path . 'retrieve.php');
         View::set_action_var('users', $users);

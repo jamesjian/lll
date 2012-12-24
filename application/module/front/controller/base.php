@@ -30,7 +30,6 @@ class Base {
          */
         $this->template_path = APPLICATION_PATH . 'module/front/view/templates/';
         View::set_template_file($this->template_path . 'template_question_tags_ads.php');
-        
         View::set_action_var('popular_tags', $popular_tags);
         View::set_action_var('latest_ads', $latest_ads);
     }
