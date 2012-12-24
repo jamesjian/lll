@@ -42,11 +42,12 @@ class Question {
             $user = Model_User::get_default_question_user();
             $uid = $user['id'];
             $uname = $user['uname'];
-            $status = 0;
+            $status = 1;
         }
         //prepare tag ids
         $tids = TNAME_SEPERATOR;
         $tnames = TNAME_SEPERATOR;
+        $arr['tnames'] = array_unique($arr['tnames']); //remove duplicate entry
         foreach ($arr['tnames'] as $tag) {
             $tnames .= $tag . TNAME_SEPERATOR;
             if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
@@ -87,7 +88,7 @@ class Question {
             $arr['num_of_views'] = 0;
             $arr['num_of_votes'] = 0;
 
-
+            $arr['tnames'] = array_unique($arr['tnames']); //remove duplicate entry
 //prepare tag ids
             $tags = explode(TNAME_SEPERATOR, $arr['tnames']);
             foreach ($tags as $tag) {

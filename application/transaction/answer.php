@@ -32,7 +32,8 @@ class Answer {
             $uname = $_SESSION['user']['uname'];
             $status = 1;
         } else {
-            $uid = Model_User::get_default_question_uid();
+            $user = Model_User::get_default_answer_user();
+            $uid = $user['id'];
             $uname = '匿名回答用户';
             $status = 0;
         }
@@ -42,9 +43,7 @@ class Answer {
         if (count($arr) > 0 &&
                 isset($arr['content']) && trim($arr['content']) != ''
         ) {
-            if (!isset($arr['rank']))
-                //$arr['rank'] = 0; //initialize
-
+            $arr['num_of_votes'] = 0;
             if (Model_Answer::create($arr)) {
                 Model_Question::increase_num_of_answers($arr['qid']);
                 Model_User::increase_num_of_answers($arr['uid']);

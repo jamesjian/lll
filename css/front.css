@@ -272,3 +272,24 @@ li.zx-front-one-question-col8{
 div.zx-front-one-question{
     border-bottom: solid silver 1px;
 }
+
+/** one question */
+span.zx-front-state-name{
+    color: red;
+    padding-right: 30px;
+}
+a.zx-front-vote-link{
+    color: silver;
+    font-size: 10px;
+}
+a.zx-front-claim-link
+{
+    color: silver;
+    font-size: 10px;
+}
+span.zx-front-claim{
+    font-size: 10px;
+}
+span.zx-front-question-user{
+    font-size: 15px;
+}

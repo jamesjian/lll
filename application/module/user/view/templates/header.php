@@ -17,8 +17,9 @@
     <body class='zx-front-body'>	
         <div class='zx-front-header'>
             <div class='zx-front-logo'>
-                <a href='<?php echo HTML_ROOT; ?>' title='<?php echo SITENAME;?>'><?php echo SITENAME;?></a>
+                <a href='<?php echo HTML_ROOT;?>' title='<?php echo SITENAME;?>'><img src="<?php echo HTML_IMAGE_ROOT . 'icon/logo.png';?>" title="this is logo"/></a>
             </div>
+            <a href="<?php echo FRONT_HTML_ROOT; ?>user/logout" title="退出">退出</a>
             <div class="zx-front-search">
                 <form>
                     <input name="question" size="50" /><input type="submit" value="查找问题" />

@@ -33,7 +33,7 @@ class Question extends Base {
      * only my questions
      * pagination
      */
-    public function my_questions() {
+    public function user() {
         $uid = $this->uid;
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1

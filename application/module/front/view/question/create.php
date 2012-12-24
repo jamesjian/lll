@@ -21,7 +21,7 @@ if (isset($errors)) {
             <tr>
                 <td class="table_title required">标题:</td>
                 <td class="table_input"> 
-                    <input type="text" name="title"  class="form_element"   id="title" 
+                    <input type="text" name="title"  class="form_element"   id="title" size="100"
                            value="<?php if (isset($posted['title'])) echo $posted['title']; ?>"/>
                 </td>
             </tr>
@@ -31,15 +31,13 @@ if (isset($errors)) {
                     <select id="region" name="region">
                         <?php
                         $regions = \App\Model\Region::get_au_states_abbr();
-                        foreach ($regions as $region) {
+                        foreach ($regions as $index => $region) {
                             ?>
-                            <option value="<?php echo $region; ?>"
-                            <?php
+                            <option value="<?php echo $index; ?>"<?php
                             if (isset($_POST['region']) && $_POST['region'] == $region) {
                                 echo ' selected';
                             }
-                            ?>><?php echo $region; ?>             
-                            </option>
+                            ?>><?php echo $region; ?></option>
                             <?php
                         }
                         ?></select>
@@ -67,7 +65,7 @@ if (isset($errors)) {
                 </td>
                 <td>
                     <button type='submit' name='submit' value="submit">发布</button>
-                    (如果你已登录， 新问题将会立即被发布， 如果你尚未登录， 新问题审核通过后才会显示。）
+                    <?php /*(如果你已登录， 新问题将会立即被发布， 如果你尚未登录， 新问题审核通过后才会显示。） */?>
                     <a href="<?php echo FRONT_HTML_ROOT; ?>user/login">现在登录</a>或
                     <a href="<?php echo FRONT_HTML_ROOT; ?>user/register">注册新用户</a>
 

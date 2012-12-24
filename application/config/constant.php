@@ -39,7 +39,7 @@ define('HTML_UPLOAD_PATH', HTML_ROOT . 'upload/');
 define('PHP_CKEDITOR_PATH', PHP_PUBLIC_PATH . 'js/ckeditor' . DIRECTORY_SEPARATOR);
 define('HTML_CKEDITOR_PATH', HTML_ROOT . 'js/ckeditor/');
 
-define('SESSION_LIEFTIME', 1200); //used by session class
+define('SESSION_LIEFTIME', 12000); //used by session class
 
 define('BR', '<br />');
 define('LOG_FILE', PHP_ROOT . 'test/my_log.php');

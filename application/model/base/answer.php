@@ -11,7 +11,7 @@ use App\Model\Ad as Model_Ad;
 /*
   CREATE TABLE answer (
   id unsigned MEDIUMINT(8) AUTO_INCREMENT PRIMARY KEY,
- id1 varchar(44) not null unique, 
+  id1 varchar(44) not null unique,
   qid unsigned MEDIUMINT(8) not null default 0,
   uid unsigned MEDIUMINT(7) not null default 0,
   uname varchar(30) not null '',  #user name is fixed
@@ -25,8 +25,8 @@ use App\Model\Ad as Model_Ad;
 
 class Answer {
 
-    public static $fields = array('id', 'id1','qid', 'uid', 'uname', 'ad_id',
-        'content', 'num_of_votes','valid', 'status', 'date_created');
+    public static $fields = array('id', 'id1', 'qid', 'uid', 'uname', 'ad_id',
+        'content', 'num_of_votes', 'valid', 'status', 'date_created');
     public static $table = TABLE_ANSWER;
 
     /**
@@ -80,7 +80,10 @@ class Answer {
     }
 
     public static function get_num($where = '1') {
-        $sql = "SELECT COUNT(id) AS num FROM " . self::$table . " WHERE $where";
+        $sql = "SELECT COUNT(a.id) AS num FROM " . self::$table . " a
+            LEFT JOIN " . Model_Question::$table . "  q ON q.id=a.qid
+            LEFT JOIN " . Model_Ad::$table . "  ad ON a.ad_id=ad.id
+            WHERE $where";
         $result = Mysql::select_one($sql);
         if ($result) {
             return $result['num'];
@@ -103,7 +106,7 @@ class Answer {
         $insert_str = implode(',', $insert_arr);
         $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
         $id = Mysql::insert($sql, $params);
-        $arr = array('id1'=>2*$id . md5($id));  //generate id1
+        $arr = array('id1' => 2 * $id . md5($id));  //generate id1
         self::update($id, $arr);
         return $id;
     }

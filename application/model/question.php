@@ -225,8 +225,8 @@ class Question extends Base_Question {
         return parent::get_num($where);
     }
 
-    public static function increase_rank($qid) {
-        $sql = 'UPDATE ' . self::$table .  ' SET rank=rank+1 WHERE id=:id';
+    public static function increase_num_of_views($qid) {
+        $sql = 'UPDATE ' . self::$table .  ' SET num_of_views=num_of_views+1 WHERE id=:id';
         $params = array(':id' => $qid);
         return Mysql::exec($sql, $params);
     }

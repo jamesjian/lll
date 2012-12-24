@@ -65,6 +65,13 @@ class User extends Base_User {
     public static function get_default_answer_user() {
         return parent::get_one(2); //匿名回答用户
     }
+    /**
+     * 
+     * @return int default user for anonymous user
+     */
+    public static function get_default_claim_user() {
+        return parent::get_one(3); //匿名举报用户
+    }
 
     /**
      * increase num of questions and score simultaneously

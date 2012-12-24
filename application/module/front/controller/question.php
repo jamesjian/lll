@@ -40,7 +40,7 @@ class Question extends Base {
      */
 
     public function content() {
-        $qid1 = isset($this->params[0]) ?  intval($this->params[0]) : 0; //it's an id1
+        $qid1 = isset($this->params[0]) ?  trim($this->params[0]) : ''; //it's an id1
         $current_page_num = isset($this->params[1]) ? intval($this->params[1]) : 1;
         $question = Model_Question::get_one_by_id1($qid1);
         //\Zx\Test\Test::object_log('$question', $question, __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -52,13 +52,13 @@ class Question extends Base {
             Transaction_Html::set_title($question['title']);
             Transaction_Html::set_keyword($question['title'] . str_replace('#', ',', $question['tnames']));
             Transaction_Html::set_description($question['title']);
-            Model_Question::increase_rank($qid);
+            Model_Question::increase_num_of_views($qid);
 
             View::set_view_file($this->view_path . 'one_question.php');
             $answers = Model_Answer::get_active_answers_by_qid_and_page_num($qid, $current_page_num);
             $num_of_answers = Model_Answer::get_num_of_active_answers_by_qid($qid);
             //$related_questions = Model_Question::get_10_active_related_questions($qid);
-            $n = Model_Answer::get_num_of_inactive_ads($answers);
+            $n = Model_Answer::get_num_of_selected_ads($answers);
             $selected_ads = Model_Ad::get_selected_ads($n);
             $related_questions = array();
             $latest_questions = array();

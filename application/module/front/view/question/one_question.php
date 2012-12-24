@@ -17,6 +17,15 @@
     <?php
     if ($question) {
         switch ($question['status']) {
+            //deleted or invalid
+            case '0':
+                //deleted by user
+                echo "该问题已被提问用户取消。";
+                break;
+            case '2':
+                //disabled by admin
+                echo "该问题因违反网站规定被禁止浏览。";
+                break;
             case '1':
                 //valid question
                 ?>
@@ -28,7 +37,13 @@
                     <article>
                         <header>
                             <h1 class="zx-front-question-title">
-                                <a href="<?php echo $vote_link; ?>" class="zx-front-vote-link" title="如果这个问题值得关注， 请投票">关注度</a>
+                                <span class="zx-front-state-name"><?php echo $regions[$question['region']];?></span>
+                                <?php echo $question['title'], BR;?>
+                            <span class="zx-front-question-user">
+                                <?php echo $question['uname']; ?>
+                            </span>                                
+                                <span class="zx-front-claim">已有<?php echo $question['num_of_votes']; ?>人关注</span>
+                                <a href="<?php echo $vote_link; ?>" class="zx-front-vote-link" title="如果这个问题值得关注， 请投票">我也关注</a>
                                 <?php
                                 if ($question['valid'] == 0) {
                                     $claim_link = FRONT_HTML_ROOT . 'question/claim/' . $question['id'];
@@ -37,8 +52,6 @@
                                     <a href = "<?php echo $claim_link; ?>" class = "zx-front-claim-link" title = "如果这个问题有违法或违规嫌疑， 请举报。">举报</a>
                                     <?php
                                 }
-                                echo $regions[$question['region']],
-                                $question['title'], BR;
                                 ?>
                             </h1>
                         </header>
@@ -48,9 +61,7 @@
                                 echo $question['content'], BR;
                                 ?>
                             </div>
-                            <div class="zx-front-question-user">
-                                <?php echo $question['uname']; ?>
-                            </div>
+
 
                         </section>
                     </article>
@@ -61,39 +72,39 @@
                     $selected_ad_index = 0;
                     foreach ($answers as $answer) {
                         if ($answer['status']) {
-                        ?>
-                        <article>
-                            <section>
-                                <div class="zx-front-question-content">
-                                    <?php
-                                    echo $answer['content'];
-                                    ?>
-                                </div>
-                                <div>
-                                    <?php echo $answer['uname']; ?>
-                                </div>
-                                <div>
-                                    <?php
-                                    //ad with this answer
-                                    if ($answer['ad_id']!=0 && $answer['ad_status'] == 1) {
-                                        //active ad
-                                        $ad_link = FRONT_HTML_ROOT . 'ad/content/' . $answer['ad_id'];
+                            ?>
+                            <article>
+                                <section>
+                                    <div class="zx-front-question-content">
+                                        <?php
+                                        echo $answer['content'];
                                         ?>
-                                    <a href="<?php echo $ad_link;?>"><?php echo $answer['ad_title'];?></a>
-                                    <?php
-                                    } else {
-                                        //inacitve ad, use selected ads instead
-                                        $ad_link = FRONT_HTML_ROOT . 'ad/content/' . $selected_ads[$selected_ad_index]['ad_id'];
+                                    </div>
+                                    <div>
+                                        <?php echo $answer['uname']; ?>
+                                    </div>
+                                    <div>
+                                        <?php
+                                        //ad with this answer
+                                        if ($answer['ad_id'] != 0 && $answer['ad_status'] == 1) {
+                                            //active ad
+                                            $ad_link = FRONT_HTML_ROOT . 'ad/content/' . $answer['ad_id'];
+                                            ?>
+                                            <a href="<?php echo $ad_link; ?>"><?php echo $answer['ad_title']; ?></a>
+                                            <?php
+                                        } else {
+                                            //inacitve ad, use selected ads instead
+                                            $ad_link = FRONT_HTML_ROOT . 'ad/content/' . $selected_ads[$selected_ad_index]['ad_id'];
+                                            ?>
+                                            <a href="<?php echo $ad_link; ?>"><?php echo $selected_ads[$selected_ad_index]['ad_title']; ?></a>
+                                            <?php
+                                            $selected_ad_index++;
+                                        }
                                         ?>
-                                    <a href="<?php echo $ad_link;?>"><?php echo $selected_ads[$selected_ad_index]['ad_title'];?></a>
-                                    <?php   
-                                    $selected_ad_index++;
-                                    }
-                                    ?>
-                                </div>
-                            </section>
-                        </article>
-                        <?php
+                                    </div>
+                                </section>
+                            </article>
+                            <?php
                         }
                     }
                     //pagination of answers
@@ -117,55 +128,46 @@
                 </div>
                 <?php
                 break;
-            //deleted or invalid
-            case '0':
-                //deleted by user
-                echo "该问题已被提问用户取消。";
-                break;
-            case '2':
-                //disabled by admin
-                echo "该问题因违反网站规定被禁止浏览。";
-                break;
         }
     }
     ?>    
 </div>
 <div class='zx-front-right'>
     <div class='zx-front-right1'>
-        <?php //include FRONT_VIEW_PATH . 'templates/tag_cloud.php';  ?>
+<?php //include FRONT_VIEW_PATH . 'templates/tag_cloud.php';   ?>
     </div>	
     <div class="zx-front-right2">
-        <?php
+<?php
 //related articles
-        if ($related_questions) {
-            ?>
+if ($related_questions) {
+    ?>
             <span class="zx-front-related-article">相关问题：</span> 
             <nav>
                 <ul>
-                    <?php
-                    $current_qid = $question['id'];
-                    foreach ($related_questions as $question) {
-                        if (!($question['id'] == $current_qid)) {
-                            $read_more_link = HTML_ROOT . 'front/question/content/' . $question['id'];
-                            ?>		
+    <?php
+    $current_qid = $question['id'];
+    foreach ($related_questions as $question) {
+        if (!($question['id'] == $current_qid)) {
+            $read_more_link = HTML_ROOT . 'front/question/content/' . $question['id'];
+            ?>		
                             <li><?php echo "<a href='$read_more_link' class='zx-front-related-question'>" . $question['title'] . "</a>";
-                            ?>
+            ?>
                             </li>
-                            <?php
-                        }
-                    }//foreach
-                    ?>
+                                <?php
+                            }
+                        }//foreach
+                        ?>
                 </ul>
             </nav>	
-            <?php
-        }//if ($related_articles)
-        ?>        
+    <?php
+}//if ($related_articles)
+?>        
     </div>    
     <div class='zx-front-right3'>
-        <?php include FRONT_VIEW_PATH . 'templates/right_google_ads.php'; ?>
+<?php include FRONT_VIEW_PATH . 'templates/right_google_ads.php'; ?>
     </div>
     <div class='zx-front-right4'>
-        <?php include FRONT_VIEW_PATH . 'templates/latest_questions.php'; ?>
+<?php include FRONT_VIEW_PATH . 'templates/latest_questions.php'; ?>
     </div>
 
 </div>

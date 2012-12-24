@@ -183,7 +183,7 @@ class Answer extends Base_Answer {
     }
 
     public static function get_num_of_active_answers_by_uid($uid, $where = 1) {
-        $where = " status=1 AND uid=$uid AND ($where)";
+        $where = " a.status=1 AND a.uid=$uid AND ($where)";
         return parent::get_num($where);
     }
 

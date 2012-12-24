@@ -75,7 +75,7 @@ class User extends Base {
                 );
                 if (App_User::update_profile(App_User::get_uid(), $posted)) {
                     //App_Http::goto_previous_page();
-                    App_Http::goto_my_account_page();
+                    Transaction_Html::goto_user_home_page();
                 }
             } else {
                 $errors = $post->errors('user');
@@ -134,7 +134,7 @@ class User extends Base {
                 if (App_User::change_email($uid, $posted)) {
                     $success = true;
                     //App_Http::goto_previous_page();
-                    App_Http::goto_logout_page(); // back to my account page
+                    Transaction_Html::goto_logout_page(); // back to my account page
                 }
             } else {
                 $errors = $post->errors('user');
@@ -202,7 +202,7 @@ class User extends Base {
                 );
                 if (App_User::update_profile(App_User::get_uid(), $posted)) {
                     //App_Http::goto_previous_page();
-                    App_Http::goto_my_account_page();
+                    Transaction_Html::goto_user_home_page();
                 }
             } else {
                 $errors = $post->errors('user');

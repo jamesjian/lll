@@ -4861,4 +4861,119 @@ $r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline
     [1] => 
     [2] => 
 )
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$staff_password:admin<span style="color:red;">file:C:\wamp\www\lll\application\model\staff.phpline:23class:App\Model\Staffmethod:App\Model\Staff::verify_staff</span><br /><br />$staff:Array
+(
+    [name] => admin
+    [0] => admin
+    [password] => $1$N1..Se0.$BxSDUxnfj3srt8G0Blvbh0
+    [1] => $1$N1..Se0.$BxSDUxnfj3srt8G0Blvbh0
+)
+<span style="color:red;">file:C:\wamp\www\lll\application\model\staff.phpline:28class:App\Model\Staffmethod:App\Model\Staff::verify_staff</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
+<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r:FALSE<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:117class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:Array
+(
+    [0] => 00000
+    [1] => 
+    [2] => 
+)
 <span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:118class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />$r2 FALSE:00000<span style="color:red;">file:C:\wamp\www\library\zx\model\mysql.phpline:119class:Zx\Model\Mysqlmethod:Zx\Model\Mysql::select_one</span><br /><br />

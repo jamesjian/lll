@@ -201,7 +201,7 @@ class User extends Base {
 
         //App_Test::objectLog('Session',  App_Session::get_all_session(), __FILE__, __LINE__, __CLASS__, __METHOD__);        
         if (Transaction_User::user_has_loggedin()) {
-            App_Http::goto_my_account_page();
+            Transaction_Html::goto_user_home_page();
         } else {
             //if not logged in
             if (isset($_POST['uname']) && !empty($_POST['uname']) &&
