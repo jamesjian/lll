@@ -297,7 +297,7 @@ class Tool {
           $rand_color dot color or line color
          */
         for ($i = 0, $j = 1, $k = 1; $i <= 50; $i++) {
-            $rand_color = imagecolorallocate($im, rand(150, 200), rand(150, 200), rand(150, 200));
+            $rand_color = imagecolorallocate($im, rand(50, 255), rand(50, 255), rand(50, 255));
             $x1 = rand(0, $image_width);
             $y1 = rand(0, $image_height);
             if ($j == 1) {
@@ -306,7 +306,7 @@ class Tool {
                 //can be near/up or far/down several pixels between 1 and 20  
                 $x2 = $x1 + rand(1, 20);
                 $y2 = $y1 + rand(1, 20) * $k;
-                imagesetthickness($im, rand(1, 3));  //width of line
+                imagesetthickness($im, rand(25, 55));  //width of line
                 imageline($im, $x1, $y1, $x2, $y2, $rand_color);
                 $k *= -1;  //change direction
             }

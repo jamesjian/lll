@@ -3,13 +3,12 @@
  * in right column
  */
 ?>
-<span class="zx-front-latest-ad">最新信息：</span> 
-： 
+<span class="zx-front-latest-ad-title">最新信息：</span> 
 <?php
 //$latest_ads
 if ($latest_ads) {
     ?>
-    <nav>
+    <nav class="zx-front-latest-ad-list">
         <ul>
             <?php
             foreach ($latest_ads as $ad) {

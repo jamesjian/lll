@@ -13,9 +13,7 @@
     <ul class="zx-front-question-list-heading">
         <li class="zx-front-question-list-heading-col1">区域</li>
         <li class="zx-front-question-list-heading-col2">问题</li>
-        <li class="zx-front-question-list-heading-col3">支持数</li>
-        <li class="zx-front-question-list-heading-col4">浏览量</li>
-        <li class="zx-front-question-list-heading-col5">回答数</li>
+        <li class="zx-front-question-list-heading-col3">关注/查看/回答</li>
     </ul>
     <div class="zx-front-clear-both"></div>
     <?php
@@ -37,13 +35,12 @@
                 <li class="zx-front-one-question-col1"><?php echo $regions[$question['region']]; ?></li>
                 <li class="zx-front-one-question-col2"><a href='<?php echo $read_more_link; ?>' class=''>
                         <?php echo $question['title']; ?></a></li>
-                <li class="zx-front-one-question-col3"><?php echo $question['num_of_votes']; ?></li>
-                <li class="zx-front-one-question-col4"><?php echo $question['num_of_views']; ?></li>
-                <li class="zx-front-one-question-col5"><?php echo $question['num_of_answers']; ?></li>
+                <li class="zx-front-one-question-col3"><?php echo $question['num_of_votes']; ?>/<?php echo $question['num_of_views']; ?>
+                /<?php echo $question['num_of_answers']; ?></li>
             </ul>
             <div class="zx-front-clear-both"></div>
             <ul>
-                <li class="zx-front-one-question-col6">
+                <li class="zx-front-one-question-col4">
                     <?php
                     $tids = explode(TNAME_SEPERATOR, $question['tids']);
                     $tnames = explode(TNAME_SEPERATOR, $question['tnames']);
@@ -56,13 +53,7 @@
                     }
                     ?>
                 </li>
-                <li class="zx-front-one-question-col7">
-                    <a href="<?php echo $link_user; ?>">
-                        <?php echo $question['uname']; ?></a>
-                </li>
-                <li class="zx-front-one-question-col8">
-                    <?php echo $question['date_created']; ?>
-                </li>
+                <li class="zx-front-one-question-col5"><a href="<?php echo $link_user;?>"><?php echo $question['uname']; ?></a><br /><?php echo $question['date_created']; ?></li>
             </ul>  
             <div class="zx-front-clear-both"></div>
     </div>

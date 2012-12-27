@@ -1,4 +1,4 @@
-<h4>用户登录</h4>
+
 <div class="clear-both"></div>
 <?php
 if (isset($errors)) {
@@ -10,16 +10,17 @@ if (isset($errors)) {
 }
 \Zx\Message\Message::show_message();
 ?>
-<form id="login_form" name="login_form" method="post" action="<?php echo FRONT_HTML_ROOT; ?>user/login">
-    <fieldset class="fyl_fieldset">
+<form class="zx-front-login-form" name="login_form" method="post" action="<?php echo FRONT_HTML_ROOT; ?>user/login">
+    <fieldset>
+        <legend>用户登录</legend>
         <table>
             <tr>
-                <td class="table_title required">您的用户名或电子邮箱:</td>
-                <td class="table_input">  <input type="text" name="uname"  class="form_element"   id="uname" /></td>
+                <td class="zx-front-table-title zx-front-required">您的用户名或电子邮箱:</td>
+                <td class="">  <input type="text" name="uname"  class="form_element"   id="uname" /></td>
             </tr>
             <tr>
-                <td class="table_title required">您的用户密码:</td>
-                <td class="table_input"> <input type="password" name="password"  class="form_element"   id="password" /><span id="caps_on">您现在输入的是大写字母</span></td>
+                <td class="zx-front-table-title zx-front-required">您的用户密码:</td>
+                <td class=""> <input type="password" name="password"  class="form_element"   id="password" /><span id="caps_on">您现在输入的是大写字母</span></td>
             </tr>
             <tr>     
                 <td></td>

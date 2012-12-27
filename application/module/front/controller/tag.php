@@ -148,7 +148,7 @@ class Tag extends Base {
         View::set_view_file($this->view_path . 'apinyin_list.php');
         View::set_action_var('tags', $tags);
         View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);        
+        View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -173,7 +173,7 @@ class Tag extends Base {
     }
 
     public function qpinyin() {
-                Transaction_Html::set_title('问题类别');
+        Transaction_Html::set_title('问题类别');
         Transaction_Html::set_keyword('问题类别');
         Transaction_Html::set_description('问题类别');
         $current_page = (isset($params[0])) ? intval($params[0]) : 1;
@@ -194,7 +194,8 @@ class Tag extends Base {
 
      */
     public function qpopular() {
-                Transaction_Html::set_title('最受关注问题类别');
+        View::set_template_file($this->template_path . 'template.php');
+        Transaction_Html::set_title('最受关注问题类别');
         Transaction_Html::set_keyword('最受关注问题类别');
         Transaction_Html::set_description('最受关注问题类别');
         $current_page = (isset($params[0])) ? intval($params[0]) : 1;
@@ -240,11 +241,12 @@ class Tag extends Base {
       tag/hottest/3, 3 is page number, if missing, 1 is default page number
      */
     public function hottest() {
+        
+    }
 
+    public function usage() {
+        View::set_view_file($this->view_path . 'usage.php');
+        View::do_not_use_template();
     }
-    public function usage()
-    {
-                View::set_view_file($this->view_path . 'usage.php');
-                View::do_not_use_template();
-    }
+
 }

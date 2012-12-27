@@ -1,4 +1,23 @@
-body.zx-front-body{
+img{
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+body{
+    background:#FFF;color:#000;
+    font-family:"Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+    font-size:100%;
+    width: 1000px;
+    margin: auto;
+}
+a{
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
+div.zx-front-body{
+
 
 }
 div.zx-front-clear-both{
@@ -44,39 +63,57 @@ div.zx-front-header2{
     text-decoration: none;
 }
 a.zx-front-read-more {
-    background: none repeat scroll 0 0 #F7941E;
-    border-radius: 10px 10px 10px 10px;
-    color: white;
+    background: none repeat scroll 0 0 silver;
+    border-radius: 3px 3px 3px 3px;
+    color: #555444;
     float: right;
     font-size: 13px;
-    padding: 1px 2px 1px 6px;
+    padding: 3px 15px;
     text-decoration: none;
 }
 nav.zx-front-top-menu{
-    width: 900px;
-    float: right;
+    width: 1000px;
+    /*float: right;*/
 
 }
-nav.zx-front-top-menu li.zx-front-top-active-menu {
-    color: white;
-    background-color: #F90;
+nav.zx-front-top-menu a.zx-front-top-active-menu {
+    color: black;
+    background-color: silver;
+
 }
 nav.zx-front-top-menu li{
     list-style-type: none;
     display: block;
     float: left;
-    margin-right: 7px;
+    margin-right: 1px;
 }
-nav.zx-front-top-menu li a{
+nav.zx-front-top-menu a{
     color: white;
     display: block;
-    font-weight: bold;
-    padding: 6px 12px 6px 12px;
-    text-decoration: none;   
-    background: none repeat scroll 0 0 #F7941E;
-        border: 6px solid #F2F2F3;
-    border-radius: 20px 20px 20px 20px;
+    font-weight: 600;
+    font-size:12px;
+    height:12px;
+    padding: 5px 12px 9px 12px;
+    background: none repeat scroll 0 0 #555444;
+    border: 1px solid #555444;
     cursor: pointer;
+}
+a.zx-front-top-menu-first{
+    border-radius: 20px 0px 0px 20px;
+}
+a.zx-front-top-menu-last{
+    border-radius: 0px 20px 20px 0px;
+}
+.zx-front-login{
+    margin:3px 0;
+}
+.zx-front-login a{
+    color: #555444;
+    padding: 1px 12px 3px 12px;
+    background: none repeat scroll 0 0 silver;
+    border: 1px solid silver;    
+    font-weight: 600;
+    font-size:11px;
 }
 .zx-front-main{
     margin-top:20px;
@@ -129,17 +166,36 @@ div.zx-front-right5{
     font-size: 16px;
     font-weight: 800;
 }
-a.zx-front-tag1{
-    text-decoration: none;
-    color:#F7941E;
-    font-weight:700;
-    font-size:15px;
+div.zx-front-tag1, div.zx-front-tag2{
+    float:left;
+    margin:5px;
+    font-size: 11px;
+    padding: 5px;
+    border-radius: 5px 5px 5px 5px;
 }
-a.zx-front-tag2{
-    text-decoration: none;
-    color:#766666;
-    font-weight:700;
-    font-size: 15px;
+div.zx-front-tag1{
+    background-color: silver;
+}
+div.zx-front-tag2{
+    background-color: #555444;
+}
+div.zx-front-tag1 a{
+    color: #555444;
+}
+div.zx-front-tag2 a{
+    color: white;
+}
+.zx-front-latest-ad-list li{
+    list-style: none;
+}
+.zx-front-latest-ad-title{
+    color: #766666;
+    font-size: 16px;
+    font-weight: 800;
+}
+a.zx-front-latest-ad{
+    color: black;
+    font-size: 13px;
 }
 .zx-front-article-title{
     color: #766666;
@@ -147,49 +203,46 @@ a.zx-front-tag2{
     font-weight: 900;
 }
 .zx-front-latest_ad{
-        text-decoration: none;
+    text-decoration: none;
     color:#332828;
     font-weight:700;
     font-size: 15px;
 }
+a.zx-front-latest-ad:hover{
+    text-decoration: underline;
+}
 .zx-front-latest-article{
-        text-decoration: none;
+    text-decoration: none;
     color:#332828;
     font-weight:700;
     font-size: 15px;
 }
 .zx-front-related-article{
-        text-decoration: none;
+    text-decoration: none;
     color:#332828;
     font-weight:700;
     font-size: 15px;
 }
 div.zx-front-footer{
-    border-top: 8px solid #F2F2F3;
+    width:1000px;
+    margin:30px auto;
+    background-color: #E1E1E1;
+    border:0px;
+    border-top: 8px solid #555444;
     padding: 15px;
-    margin-top: 30px;    
-    margin-bottom: 50px;
 }
 nav.zx-front-bottom-menu{
-    width: 900px;
     font-size: 12px;
-    margin:auto;
+    margin-bottom: 50px;
 }
 
 nav.zx-front-bottom-menu li{
     list-style-type: none;
-    display: block;
     float: left;
     margin-right: 7px;
 }
 nav.zx-front-bottom-menu li a{
-    color: white;
-    display: block;
-    font-weight: bold;
-    padding: 6px 12px 6px 12px;
-    text-decoration: none;   
-    background: none repeat scroll 0 0 #F7941E;
-    border-radius: 5px;
+    color: #555444;
     cursor: pointer;    
 }
 .zx-front-left2 nav ul li{
@@ -199,17 +252,21 @@ nav.zx-front-bottom-menu li a{
     margin-top: 5px;
 }
 .zx-front-article-title{
-    
+
 }
 .zx-front-article-abstract{
     margin-top:5px;
 }
 .zx-front-article-content{
-    
+
 }
 
-.zx-front-tag{
-    color: red;    
+a.zx-front-tag{
+    text-align: left;
+    background-color: silver;
+    color: #555444;    
+    padding:5px;
+    border-radius: 5px 5px 5px 5px;
 }
 
 .zx-front-breadcrumb{
@@ -226,6 +283,7 @@ nav.zx-front-bottom-menu li a{
 .zx-front-question-list li{
     list-style: none;
     float: left;
+    font-size: 11px;
 }
 
 
@@ -233,34 +291,50 @@ li.zx-front-question-list-heading-col1{
     width:50px;
 }
 li.zx-front-question-list-heading-col2{
-    width:300px;
+    width:350px;
 }
 li.zx-front-question-list-heading-col3{
-    width:50px;
+    width:150px;
 }
 li.zx-front-question-list-heading-col4{
-    width:50px;
+    width:350px;
 }
 li.zx-front-question-list-heading-col5{
-    width:50px;
+    width:150px;
 }
 li.zx-front-one-question-col1{
-    width: 50px;
+    width: 22px;
+    background-color: silver;
+    color: #555444;
+    padding: 5px;
+    margin-right:15px;
+    border-radius: 5px 5px 5px 5px;
 }
 li.zx-front-one-question-col2{
-    width: 300px;
+    width: 350px;
+}
+li.zx-front-one-question-col2 a {
+    color: green;
+    text-decoration: underline;
+    font-size: 13px;
+    font-weight: 800;
 }
 li.zx-front-one-question-col3{
-    width: 50px;
+    width: 100px;
 }
 li.zx-front-one-question-col4{
-    width: 50px;
+    width: 350px;
 }
 li.zx-front-one-question-col5{
-    width: 50px;
+    width: 150px;
+
+}
+li.zx-front-one-question-col5 a{
+    color: green;
+
 }
 li.zx-front-one-question-col6{
-    width: 250px;
+    width: 650px;
 }
 li.zx-front-one-question-col7{
     width: 150px;
@@ -270,7 +344,7 @@ li.zx-front-one-question-col8{
     width: 150px;
 }
 div.zx-front-one-question{
-    border-bottom: solid silver 1px;
+    border-bottom: solid silver 2px;
 }
 
 /** one question */
@@ -292,4 +366,56 @@ span.zx-front-claim{
 }
 span.zx-front-question-user{
     font-size: 15px;
+}
+.zx-front-page-content{
+    text-align: left;
+}
+
+.zx-front-disclaimer{
+    color: black;
+    font-size: 13px;
+}
+.zx-front-remind{
+    margin-top:10px;
+    color: #555444;
+    font-size:12px;
+}
+
+.zx-front-register-form fieldset, 
+.zx-front-contact-us-form fieldset, 
+.zx-front-login-form fieldset{
+    border: 2px groove threedface;
+    font-size: 13px;
+    background-color: #F1F1F1;
+}
+.zx-front-register-form a, .zx-front-login-form a{
+    font-size: 13px;
+    color: #555444;
+}
+
+.zx-front-required::after {
+    content: url("../image/icon/star-icon.png");
+}
+
+.zx-front-user-list a{
+    font-size: 13px;
+    color: #555444;
+}
+
+.zx-front-user-menu{
+    list-style: none;
+    width: 100px;
+}
+.zx-front-user-menu li{
+    background-color: #C1C1C1;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 3px 3px 3px 3px;
+
+}
+
+.zx-front-user-menu a{
+    color: #555444;
+    font-size: 13px;
+    font-weight: 600;
 }

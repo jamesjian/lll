@@ -1,10 +1,7 @@
 
-<?php include 'header.php'; ?>
-
-
+<?php include FRONT_VIEW_PATH.'templates/header.php';?>
 <div class='zx-front-main'>
     <?php echo $content; ?>
-
 </div>
 <div class="zx-front-clear-both"></div>
-<?php include 'footer.php'; ?>
+<?php include FRONT_VIEW_PATH.'templates/footer.php'; ?>
