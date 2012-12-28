@@ -294,7 +294,7 @@ class Question {
      */
     public static function delete_question($id) {
 
-        if (Model_Question::can_be_deleted()) {
+        if (Model_Question::can_be_deleted($id)) {
             $question = Model_Question::get_one($id);
             if (Model_Question::delete($id)) {
                 Model_User::decrease_num_of_questions($question['uid']);

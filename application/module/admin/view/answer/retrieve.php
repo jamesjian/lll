@@ -4,8 +4,8 @@ include 'search.php';
 //no create link in this page, create link is in retrieve_by_uid page, must have valid user id
 ?>
 <?php
-if ($question_list) {
-$link_prefix = ADMIN_HTML_ROOT . "question/retrieve/$current_page/";
+if ($answer_list) {
+$link_prefix = ADMIN_HTML_ROOT . "answer/retrieve/$current_page/";
 $next_direction = ($direction == 'ASC') ? 'DESC' : 'ASC';  //change direction
 $link_postfix =  "/$next_direction/$search";
 $link_id = $link_prefix . 'id' . $link_postfix;
@@ -31,19 +31,19 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 </tr>
 
 <?php
-    foreach ($question_list as $question) {
-	$qid = $question['id'];
-	$link_delete = ADMIN_HTML_ROOT . 'question/delete/' . $qid;
-	$link_update = ADMIN_HTML_ROOT . 'question/update/' . $qid;
+    foreach ($answer_list as $answer) {
+	$qid = $answer['id'];
+	$link_delete = ADMIN_HTML_ROOT . 'answer/delete/' . $qid;
+	$link_update = ADMIN_HTML_ROOT . 'answer/update/' . $qid;
 ?>
 <tr>
-	<td><?php echo $question['id'];?></td>
-	<td><?php echo $question['title'];?></td>
-	<td><?php echo $question['tnames'];?></td>
-	<td><?php echo $question['uname'];?></td>
-	<td><?php echo $question['num_of_votes'];?></td>
-        <td><?php echo $question['status'];?></td>
-	<td><a href='<?php echo $link_delete;?>' class="delete_question">delete</a></td>
+	<td><?php echo $answer['id'];?></td>
+	<td><?php echo $answer['title'];?></td>
+	<td><?php echo $answer['tnames'];?></td>
+	<td><?php echo $answer['uname'];?></td>
+	<td><?php echo $answer['num_of_votes'];?></td>
+        <td><?php echo $answer['status'];?></td>
+	<td><a href='<?php echo $link_delete;?>' class="delete_answer">delete</a></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
 </tr>
 <?php
@@ -51,7 +51,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	?>
 	</table>
 <?php
-$link_prefix = ADMIN_HTML_ROOT . 'question/retrieve/';	
+$link_prefix = ADMIN_HTML_ROOT . 'answer/retrieve/';	
 $link_postfix = "/$order_by/$direction/$search";
 include ADMIN_VIEW_PATH . 'templates/pagination.php';
 } else {

@@ -198,7 +198,7 @@ class Answer extends Base {
        if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
             \App\Transaction\Html::remember_current_admin_page();
         }
-        \App\Transaction\Session::set_current_l1_menu('Answer');
+        //\App\Transaction\Html::set_current_l1_menu('Answer');
         $qid = isset($this->params[0]) ? intval($this->params[0]) : 0;
         $current_page = isset($this->params[1]) ? intval($this->params[1]) : 1;
         $order_by = isset($this->params[2]) ? $this->params[2] : 'id';

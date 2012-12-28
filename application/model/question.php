@@ -46,6 +46,7 @@ class Question extends Base_Question {
      */
     public static function can_be_deleted($id){
          $question = parent::get_one($id);
+\Zx\Test\Test::object_log('$question', $question, __FILE__, __LINE__, __CLASS__, __METHOD__);         
          if ($question && $question['num_of_answers']==0) {
              return true;
          } else {
@@ -243,7 +244,14 @@ class Question extends Base_Question {
     }
 
     public static function increase_num_of_views($qid) {
-        $sql = 'UPDATE ' . self::$table .  ' SET num_of_views=num_of_views+1 WHERE id=:id';
+        $sql = 'UPDATE ' . parent::$table .  ' SET num_of_views=num_of_views+1 WHERE id=:id';
+        $params = array(':id' => $qid);
+        return Mysql::exec($sql, $params);
+    }
+    public static function decrease_num_of_answers($qid) {
+        $sql = 'UPDATE ' . parent::$table .  ' SET num_of_answers=num_of_answers-1 WHERE id=:id';
+        \Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        \Zx\Test\Test::object_log('$qid', $qid, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $params = array(':id' => $qid);
         return Mysql::exec($sql, $params);
     }

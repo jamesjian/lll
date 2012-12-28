@@ -150,24 +150,13 @@ class Answer extends Base_Answer {
         return parent::get_num();
     }
 
-    /**
-     */
-    public static function get_active_answers_by_cat_id_and_page_num($cat_id, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = ' b.status=1 AND b.cat_id=' . $cat_id;
-        $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
-        return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
-    }
-
-    public static function get_answers_by_cat_id_and_page_num($cat_id, $where = '1', $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = ' (b.status=1 AND b.cat_id=' . $cat_id . ')  AND (' . $where . ')';
+    public static function get_answers_by_qid_and_page_num($qid, $where = '1', $page_num = 1, $order_by = 'a.date_created', $direction = 'ASC') {
+        $where = ' a.qid=' . $qid . '  AND (' . $where . ')';
         $offset = ($page_num - 1) * NUM_OF_ARTICLES_IN_CAT_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ARTICLES_IN_CAT_PAGE, $order_by, $direction);
     }
 
-    public static function get_num_of_answers_by_cat_id($cat_id, $where = '1') {
-        $where = ' (b.cat_id=' . $cat_id . ')  AND (' . $where . ')';
-        return parent::get_num($where);
-    }
+
 
     public static function get_num_of_active_answers_by_cat_id($cat_id) {
         $where = ' status=1 AND cat_id=' . $cat_id;
@@ -195,6 +184,10 @@ class Answer extends Base_Answer {
 
     public static function get_num_of_active_answers_by_qid($qid, $where = 1) {
         $where = " a.status=1 AND a.qid=$qid AND ($where)";
+        return parent::get_num($where);
+    }
+    public static function get_num_of_answers_by_qid($qid, $where = 1) {
+        $where = " a.qid=$qid AND ($where)";
         return parent::get_num($where);
     }
 

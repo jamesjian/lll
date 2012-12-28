@@ -11,7 +11,7 @@ $link_postfix =  "/$next_direction/$search";
 $link_id = $link_prefix . 'id' . $link_postfix;
 $link_title = $link_prefix . 'title' . $link_postfix;
 $link_tnames = $link_prefix . 'tnames' . $link_postfix;
-$link_rank = $link_prefix . 'rank' . $link_postfix;
+$link_num_of_votes = $link_prefix . 'num_of_votes' . $link_postfix;
 $link_uname = $link_prefix . 'uname' . $link_postfix;
 $link_status = $link_prefix . 'status' . $link_postfix;
 $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' : 
@@ -24,7 +24,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <th><a href='<?php echo $link_title;?>'>title</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_tnames;?>'>tags</a><img src="<?php echo $direction_img;?>" /></th>
 <th>Content</th>
-<th><a href='<?php echo $link_rank;?>'>rank</a><img src="<?php echo $direction_img;?>" /></th>
+<th><a href='<?php echo $link_num_of_votes;?>'>votes</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_uname;?>'>user</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_status;?>'>status</a><img src="<?php echo $direction_img;?>" /></th>
 <th>delete</th>
@@ -42,7 +42,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	<td><?php echo $answer['title'];?></td>
 	<td><?php echo $answer['tnames'];?></td>
 	<td><?php echo mb_substr($answer['content'], 0, 50, 'UTF-8');?></td>
-	<td><?php echo $answer['rank'];?></td>
+	<td><?php echo $answer['num_of_votes'];?></td>
 	<td><?php echo $answer['uname'];?></td>
         <td><?php echo $answer['status'];?></td>
 	<td><a href='<?php echo $link_delete;?>' class="delete_answer">delete</a></td>

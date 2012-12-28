@@ -42,7 +42,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
     foreach ($question_list as $question) {
 	$qid = $question['id'];
 	$link_delete = ADMIN_HTML_ROOT . 'question/delete/' . $qid;
-	$link_answers = ADMIN_HTML_ROOT . 'answer/retrive_by_qid/' . $qid;
+	$link_answers = ADMIN_HTML_ROOT . 'answer/retrieve_by_qid/' . $qid;
 	$link_new_answer = ADMIN_HTML_ROOT . 'answer/create/' . $qid;
 	$link_update = ADMIN_HTML_ROOT . 'question/update/' . $qid;
 ?>

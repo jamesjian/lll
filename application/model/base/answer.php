@@ -40,7 +40,7 @@ class Answer {
             FROM  " . self::$table . " a
             LEFT JOIN " . Model_Question::$table . " q ON q.id=a.qid
             LEFT JOIN " . Model_Ad::$table . "  ad ON a.ad_id=ad.id                
-            WHERE id=:id
+            WHERE a.id=:id
         ";
         $params = array(':id' => $id);
 
@@ -74,7 +74,7 @@ class Answer {
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-//\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         return Mysql::select_all($sql);
     }

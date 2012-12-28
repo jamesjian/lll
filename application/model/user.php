@@ -110,6 +110,7 @@ class User extends Base_User {
     public static function decrease_num_of_questions($uid) {
         $sql = "UPDATE " . parent::$table . " SET num_of_questions=num_of_questions-1,
              score=score-" . SCORE_OF_QUESTION . " WHERE id=:id";
+        \Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $params = array(':id' => $uid);
         return Mysql::exec($sql, $params);
     }
@@ -130,6 +131,17 @@ class User extends Base_User {
     public static function decrease_num_of_ads($uid) {
         $sql = "UPDATE " . parent::$table . " SET num_of_ads=num_of_ads-1,
              ad_score=ad_score-" . SCORE_OF_AD . " WHERE id=:id";
+        $params = array(':id' => $uid);
+        return Mysql::exec($sql, $params);
+    }
+    /**
+     *
+     * @param int $uid
+     * @param int $score can be any number
+     * @return type 
+     */
+    public static function decrease_score($uid, $score=1) {
+        $sql = "UPDATE " . parent::$table . " SET score=score-$score WHERE id=:id";
         $params = array(':id' => $uid);
         return Mysql::exec($sql, $params);
     }

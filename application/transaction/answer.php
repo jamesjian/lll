@@ -95,7 +95,7 @@ class Answer {
         $can_be_deleted = false;
         $answer = Model_Answer::get_one($id);
         if ($answer) {
-            $uid = $anser['uid'];
+            $uid = $answer['uid'];
             $score = $answer['num_of_votes'];
 
             if (Transaction_User::user_has_loggedin() && $uid == Transaction_User::get_uid()) {
@@ -105,6 +105,7 @@ class Answer {
             }
             if ($can_be_deleted) {
                 Model_Answer::delete($id);
+                Model_Question::decrease_num_of_answers($answer['qid']);
                 Model_User::decrease_score($uid, $score);
                 Message::set_success_message('success');
                 return true;
