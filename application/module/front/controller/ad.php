@@ -24,9 +24,11 @@ class Ad extends Base {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/front/view/ad/';
         $this->list_page =  FRONT_HTML_ROOT . 'ad/all/';
+        $popular_tags = Model_Tag::get_most_popular_ad_tags();
+        $latest_ads = Model_Ad::get_latest_ads();        
         View::set_template_file($this->template_path . 'template_ad_tags_ads.php');
-        View::set_action_var('popular_tags', $popular_tags);
-        View::set_action_var('latest_ads', $latest_ads);        
+        View::set_template_var('popular_tags', $popular_tags);
+        View::set_template_var('latest_ads', $latest_ads);        
     }
 
     
@@ -132,20 +134,21 @@ class Ad extends Base {
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
         if ($tag_id != 0 && $tag = Model_Tag::get_one($tag_id)) {
             $home_url = HTML_ROOT;
-            //$tag_url = FRONT_HTML_ROOT . 'ad/tag/' . $tag['id']; 
+            $tag_url = FRONT_HTML_ROOT . 'ad/tag/' . $tag['id']; 
             Transaction_Session::set_breadcrumb(0, $home_url,  '首页');
-            Transaction_Session::set_breadcrumb(1, $category_url,  $tag['name']);
+            Transaction_Session::set_breadcrumb(1, $tag_url,  $tag['name']);
             //$cat = Model_Adcategory::get_one($cat_id);
             Transaction_Html::set_title($tag['name']);
             Transaction_Html::set_keyword($tag['name']);
             Transaction_Html::set_description($tag['name']);
             $order_by = 'score';
             $direction = 'DESC';
-            $ads = Model_Ad::get_active_ads_by_tag_id_and_page_num($tag_id, $current_page, $order_by, $direction);
+            $where = '1';
+            $ads = Model_Ad::get_active_ads_by_tag_id_and_page_num($tag_id, $where, $current_page, $order_by, $direction);
             //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            $num_of_ads = Model_Ad::get_num_of_active_ads_by_tat_id($tag_id);
+            $num_of_ads = Model_Ad::get_num_of_active_ads_by_tag_id($tag_id);
             $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'ad_list_by_tid.php');
+            View::set_view_file($this->view_path . 'tag_list.php');
             View::set_action_var('tag', $tag);
             View::set_action_var('ads', $ads);
             //View::set_action_var('order_by', $order_by);

@@ -22,10 +22,12 @@ use \App\Transaction\Question as Transaction_Question;
 class Question extends Base {
 
     public $view_path;
+    public $list_page;
 
     public function init() {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/user/view/question/';
+        $this->list_page = USER_HTML_ROOT . 'question/user/' . $this->user['id'];
     }
 
     /**

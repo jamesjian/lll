@@ -278,6 +278,93 @@ a.zx-front-tag{
     font-size:13px;
     font-weight: 800;
 }
+/** ad list */
+.zx-front-ad-list li{
+    list-style: none;
+    float: left;
+    font-size: 11px;
+}
+
+
+li.zx-front-ad-list-heading-col1{
+    width:50px;
+}
+li.zx-front-ad-list-heading-col2{
+    width:350px;
+}
+li.zx-front-ad-list-heading-col3{
+    width:150px;
+}
+li.zx-front-ad-list-heading-col4{
+    width:350px;
+}
+li.zx-front-ad-list-heading-col5{
+    width:150px;
+}
+li.zx-front-one-ad-col1{
+    width: 22px;
+    background-color: silver;
+    color: #555444;
+    padding: 5px;
+    margin-right:15px;
+    border-radius: 5px 5px 5px 5px;
+}
+li.zx-front-one-ad-col2{
+    width: 350px;
+}
+li.zx-front-one-ad-col2 a {
+    color: green;
+    text-decoration: underline;
+    font-size: 13px;
+    font-weight: 800;
+}
+li.zx-front-one-ad-col3{
+    width: 100px;
+}
+li.zx-front-one-ad-col4{
+    width: 350px;
+}
+li.zx-front-one-ad-col5{
+    width: 150px;
+
+}
+li.zx-front-one-ad-col5 a{
+    color: green;
+
+}
+li.zx-front-one-ad-col6{
+    width: 650px;
+}
+li.zx-front-one-ad-col7{
+    width: 150px;
+}
+li.zx-front-one-ad-col8{
+    float: right;
+    width: 150px;
+}
+div.zx-front-one-ad{
+    border-bottom: solid silver 2px;
+}
+
+/**  one question detail page */
+.zx-front-question{
+    border: 2px green solid;
+    border-radius: 5px 5px 5px 5px;
+    width: 600px;
+    padding:10px;
+}
+span.zx-front-state-name{
+    color: red;
+    padding-right: 30px;
+    font-size:15px;
+}
+.zx-front-one-answer{
+        border: 2px silver solid;
+    border-radius: 5px 5px 5px 5px;
+    width: 600px;
+    padding:10px;
+    margin: 5px;
+}
 
 /**  question list */
 .zx-front-question-list li{

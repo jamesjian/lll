@@ -1,9 +1,5 @@
 <?php
 /**
- * left ads                     tag cloud
- *  article                        right ads
- * related articles                latest
- *                              hottest
  */
 ?>
 
@@ -16,7 +12,7 @@
     </div>	
     <div class='zx-front-left2'>
         <?php //find tag ?>
-        <form action="<?php echo FRONT_HTML_ROOT;?>tag/search" method="post">
+        <form action="<?php echo FRONT_HTML_ROOT;?>tag/qsearch" method="post">
             查找问题类别<input name="search" size="50" />
             <input type="submit" value="查找" />
         </form>

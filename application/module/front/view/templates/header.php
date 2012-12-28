@@ -83,7 +83,7 @@
                         /** only has tags for question in main menu, the link of tags for ads is display in tags section in all ad pages */
                         ?>
                         <li> <a href="<?php echo FRONT_HTML_ROOT; ?>user/all" title="全体用户列表" class="<?php echo $active_menu_item6; ?>">用户列表</a></li>
-                        <li> <a href="<?php echo FRONT_HTML_ROOT; ?>tag/apopular" title="赞助信息" class="zx-front-top-menu-last <?php echo $active_menu_item7; ?>">赞助信息</a></li>
+                        <li> <a href="<?php echo FRONT_HTML_ROOT; ?>tag/apopular" title="广告信息" class="zx-front-top-menu-last <?php echo $active_menu_item7; ?>">广告信息</a></li>
                     </ul>
                 </nav>
                 <!--

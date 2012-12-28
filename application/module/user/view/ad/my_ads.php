@@ -19,7 +19,7 @@
                 <td>序号</td>
                 <td>标题</td>
                 <td>类别</td>
-                <td>积分</td>
+                <td>分值</td>
                 <td>时间</td>
                 <td>操作</td>
             </tr>
@@ -27,8 +27,8 @@
             foreach ($ads as $ad) {
                 $ad_id = $ad['id'];
                 $update_link = USER_HTML_ROOT . 'ad/update/' . $ad_id;
-                $update_link = USER_HTML_ROOT . 'ad/delete/' . $ad_id;
-                $update_link = USER_HTML_ROOT . 'ad/extend/' . $ad_id;
+                $delete_link = USER_HTML_ROOT . 'ad/delete/' . $ad_id;
+                $extend_link = USER_HTML_ROOT . 'ad/extend/' . $ad_id;
             ?>
             <tr>
                 <td><?php echo $ad_id;?></td>
@@ -38,7 +38,7 @@
                 <td><?php echo $ad['date_created'];?></td>
                 <td><a href="<?php echo $update_link;?>">更改</a></td>
                 <td><a href="<?php echo $delete_link;?>">删除</a></td>
-                <td><a href="<?php echo $delete_link;?>">延长</a></td>
+                <td><a href="<?php echo $extend_link;?>">延长</a></td>
             </tr>
             <?php
             }

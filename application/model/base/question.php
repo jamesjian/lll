@@ -107,7 +107,6 @@ class Question {
                 $params[":$field"] = $arr[$field];
             }
         }        
-        
         $update_str = implode(',', $update_arr);
         $sql = 'UPDATE ' .self::$table . ' SET '. $update_str . ' WHERE id=:id';
         //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);

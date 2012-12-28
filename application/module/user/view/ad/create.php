@@ -10,14 +10,27 @@ if (isset($errors)) {
 }
 \Zx\Message\Message::show_message();
 ?>
-<form class="zx-front-form" name="login_form" method="post" action="<?php echo FRONT_HTML_ROOT; ?>ad/create">
+<form class="zx-front-form" name="ad_form" method="post" action="<?php echo USER_HTML_ROOT; ?>ad/create">
     <fieldset class="fyl_fieldset">
         <table>
             <tr>
                 <td class="zx-front-table-title zx-front-required">标题:</td>
                 <td class="table_input"> 
-                    <input type="text" name="title"  class="form_element"   id="title" 
+                    <input type="text" name="title"  class="form_element"   id="title" size="80"
                            value="<?php if (isset($posted['title'])) echo $posted['title']; ?>"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="zx-front-table-title zx-front-required">分值:</td>
+                <td class="table_input"> 
+                    <input type="text" name="score"  class="form_element"   id="score" size="5"
+                           value="<?php 
+                           if (isset($posted['score']) && intval($posted['score'])>=1){ 
+                               echo $posted['score'];
+                           } else {
+                               //at least 1 
+                               echo 1;
+                           } ?>"/>
                 </td>
             </tr>
             <tr>    

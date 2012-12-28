@@ -20,10 +20,11 @@ use \App\Model\Answer as Model_Answer;
 class Answer extends Base {
 
     public $view_path;
-
+    public $list_page;
     public function init() {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/user/view/answer/';
+        $this->list_page = USER_HTML_ROOT . 'answer/user/' . $this->user['id'];        
     }
 
     /**

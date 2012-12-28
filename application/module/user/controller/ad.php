@@ -5,6 +5,7 @@ namespace App\Module\User\Controller;
 use \Zx\Controller\Route;
 use \Zx\View\View;
 use \Zx\Message\Message as Zx_Message;
+use App\Transaction\Tool as Transaction_Tool;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
 use \App\Model\Ad as Model_Ad;
@@ -23,10 +24,11 @@ use \App\Transaction\Ad as Transaction_Ad;
 class Ad extends Base {
 
     public $view_path;
-
+    public $list_page;
     public function init() {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/user/view/ad/';
+        $this->list_page = USER_HTML_ROOT . 'ad/user/' . $this->user['id'];        
     }
 
     /**
@@ -108,37 +110,58 @@ class Ad extends Base {
     }
 
     public function create() {
+        \Zx\Test\Test::object_log('$_POST', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        
         $success = false;
         $posted = array();
-        $errors = array();
-        if (isset($_POST['submit']) &&
-                isset($_POST['title']) && !empty($_POST['title']) &&
-                isset($_POST['content']) && !empty($_POST['content']) &&
-                isset($_POST['tnames']) && !empty($_POST['tnames'])
-        ) {
-            $title = trim($_POST['title']);
-            $tnames = trim($_POST['tnames']);
-            $score = (isset($_POST['score'])) ? intval($_POST['score']) : 1; //at least 1
-            $content = trim($_POST['content']);
-
-            $arr = array('title' => $title,
-                'tnames' => $tnames,
-                'score' => $score,
-                'content' => $content,
-                'uid' => $this->uid,
-            );
-            if (Model_User::has_score($this->uid) && Transaction_Ad::create_by_user($arr)) {
-                $success = true;
+        $errors = array();        
+        if (Model_User::has_score($this->uid)) {
+            if (isset($_POST['submit'])) {
+                if (isset($_POST['title']) && !empty($_POST['title']) &&
+                        isset($_POST['content']) && !empty($_POST['content']) &&
+                        !empty($_POST['score']) &&
+                        (!empty($_POST['tname1']) || !empty($_POST['tname2']) ||
+                        !empty($_POST['tname3']) || !empty($_POST['tname4']) ||
+                        !empty($_POST['tname5']))) {
+                    $title = trim($_POST['title']);
+                    $region = isset($_POST['region']) ? trim($_POST['region']) : 'AU';
+                    $score = isset($_POST['score']) ? intval($_POST['score']) : 1;
+                    $tnames = array();
+                    for ($i = 1; $i <= NUM_OF_TNAMES_PER_ITEM; $i++) {
+                        $index = 'tname' . $i;
+                        if (isset($_POST[$index])) {
+                            $tag = Transaction_Tool::get_clear_string($_POST[$index]);
+                            if ($tag <> '') {
+                                //only contain valid tag
+                                $tnames[] = $tag;
+                            }
+                        }
+                    }
+                    $content = trim($_POST['content']);
+                    $arr = array('title' => $title,
+                        'tnames' => $tnames,
+                        'score' => $score,
+                        'content' => $content,
+                        'region' => $region,
+                    );
+                    \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                    if (Transaction_Ad::create_by_user($arr)) {
+                        $success = true;
+                    }
+                } else {
+                    Zx_Message::set_error_message('标题， 内容, 分值和关键词请填写完整。');
+                }
+            }
+            if ($success) {
+                header('Location: ' . $this->list_page);
+            } else {
+                View::set_view_file($this->view_path . 'create.php');
+                View::set_action_var('posted', $posted);
+                View::set_action_var('errors', $errors);
             }
         } else {
-            Zx_Message::set_error_message('请完整填写广告标题， 内容和分类。');
-        }
-        if ($success) {
-            Transaction_Html::goto_previous_user_page();
-        } else {
-            View::set_view_file($this->view_path . 'create.php');
-            View::set_action_var('posted', $posted);
-            View::set_action_var('errors', $errors);
+            Zx_Message::set_error_message('您的积分为0， 不能发布新的广告。');
+            header('Location: ' . $this->list_page);
         }
     }
 

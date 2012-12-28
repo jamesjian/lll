@@ -114,6 +114,16 @@ class Ad extends Base_Ad {
         $where = " status=1 AND uid=$uid AND ($where)";
         return parent::get_num($where);
     }
+    public static function get_active_ads_by_tag_id_and_page_num($tag_id, $where = 1, $page_num = 1, $order_by = 'score', $direction = 'ASC') {
+        $where = " status=1 AND tids LIKE '%". TNAME_SEPERATOR . $tag_id. TNAME_SEPERATOR . "%'" ;
+        $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
+    }
+
+    public static function get_num_of_active_ads_by_tag_id($tag_id, $where = 1) {
+        $where = " status=1 AND tids LIKE '%". TNAME_SEPERATOR . $tag_id. TNAME_SEPERATOR . "%'" ;
+        return parent::get_num($where);
+    }
 
     public static function get_ads_by_uid_and_page_num($uid, $where = '1', $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
         $where = ' (uid=' . $uid . ')  AND (' . $where . ')';
