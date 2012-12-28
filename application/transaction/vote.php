@@ -6,6 +6,8 @@ use \App\Model\Vote as Model_Vote;
 use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answer;
 use \App\Model\Ad as Model_Ad;
+use \App\Model\Question as Model_Question;
+use \App\Model\Answer as Model_Answer;
 use \Zx\Message\Message;
 use \Zx\Model\Mysql;
 

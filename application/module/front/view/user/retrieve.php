@@ -7,7 +7,7 @@ if ($users) {
     $columns = 5; //5 users in one line
     $i = 0;
     ?>
-    <table>
+    <table class="zx-front-user-list">
         <?php
         foreach ($users as $user) {
             
@@ -16,7 +16,7 @@ if ($users) {
                 echo "<tr>";
             }
             ?>
-            <td><?php echo $user['id']; ?>
+            <td><?php //echo $user['id']; ?>
             <a href='<?php echo $link_user; ?>'><?php echo $user['uname']; ?></a>
             <?php echo $user['score'];?>
             </td>

@@ -1,9 +1,5 @@
 <?php
 /**
- * left ads                     tag cloud
- *  article                        right ads
- * related articles                latest
- *                              hottest
  */
 ?>
 
@@ -16,46 +12,37 @@
     </div>	
     <div class='zx-front-left2'>
         <?php //find tag ?>
-        <form>
+        <form action="<?php echo FRONT_HTML_ROOT;?>tag/qsearch" method="post">
             查找问题类别<input name="search" size="50" />
             <input type="submit" value="查找" />
         </form>
         <?php
         if ($tags) {
+        ?>
+        <table><tr>
+        <?php
             $n = count($tags);
+            $k = 5;
             for ($i = 0; $i < $n; $i++) {
                 $tag = $tags[$i];
                 $link = FRONT_HTML_ROOT . 'question/tag/' . $tag['id'] . '/page/1/' . $tag['name'];
                 ?>
-                <div class="zx-front-tag">
-                    <a href="<?php echo $link; ?>"><?php echo $tag['name']; ?></a>
-                </div>
+                <td>
+                    <a href="<?php echo $link; ?>" class="zx-front-tag"><?php echo $tag['name']; ?></a>
+                    x <?php echo $tag['num_of_questions'];?>
+                </td>
                 <?php
-                if (($i + 1) % 4 == 0) {
-                    echo BR;
+                if (($i + 1) % 5 == 0) {
+                   echo "</tr><tr>";
                 }//if
             }//for tag
         }//if tags
         ?>
+            </tr>
+        </table>
     </div>
     <?php
     //might have pagination if too many tags
     ?>
 </div>
-<div class='zx-front-right'>
-    <div class='zx-front-right1'>
-        <?php include 'most_popular_question_tags.php'; ?>
-    </div>	
-    <div class="zx-front-right2">
-        <?php include FRONT_VIEW_PATH . 'templates/right_google_ads.php'; ?>        
-    </div>    
-    <div class='zx-front-right3'>
 
-    </div>
-    <div class='zx-front-right4'>
-
-    </div>
-    <div class='zx-front-right5'>
-
-    </div>
-</div>

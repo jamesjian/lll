@@ -1,7 +1,6 @@
 <?php
-
 namespace App\Module\User\Controller;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Controller\Route;
 use \Zx\View\View;
 use App\Transaction\Session as Transaction_Session;
@@ -23,10 +22,12 @@ use \App\Transaction\Question as Transaction_Question;
 class Question extends Base {
 
     public $view_path;
+    public $list_page;
 
     public function init() {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/user/view/question/';
+        $this->list_page = USER_HTML_ROOT . 'question/user/' . $this->user['id'];
     }
 
     /**
@@ -40,19 +41,19 @@ class Question extends Base {
         $home_url = HTML_ROOT;
         //$tag_url = FRONT_HTML_ROOT . 'question/tag/' . $tag['id']; 
         Transaction_Session::set_breadcrumb(0, $home_url, '首页');
-        Transaction_Session::set_breadcrumb(1, $category_url, $tag['name']);
+        //Transaction_Session::set_breadcrumb(1, $category_url, $tag['name']);
         //$cat = Model_Questioncategory::get_one($cat_id);
-        Transaction_Html::set_title($tag['name']);
-        Transaction_Html::set_keyword($tag['name']);
-        Transaction_Html::set_description($tag['name']);
+        //Transaction_Html::set_title($tag['name']);
+        //Transaction_Html::set_keyword($tag['name']);
+        //Transaction_Html::set_description($tag['name']);
         $order_by = 'date_created';
         $direction = 'DESC';
-        $questions = Model_Question::get_active_questions_by_uid_and_page_num($uid, $current_page, $order_by, $direction);
+        $where ='1';
+        $questions = Model_Question::get_active_questions_by_uid_and_page_num($uid, $where, $current_page, $order_by, $direction);
         //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $num_of_questions = Model_Question::get_num_of_active_questions_by_uid($uid);
         $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
         View::set_view_file($this->view_path . 'my_questions.php');
-        View::set_action_var('user', $this->user);
         View::set_action_var('questions', $questions);
         View::set_action_var('order_by', $order_by);
         View::set_action_var('direction', $direction);

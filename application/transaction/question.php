@@ -74,6 +74,7 @@ class Question {
     }
 
     /**
+     * outdated
      * add new tags into tag table 
      * put tag ids into question table
      * @param int $arr

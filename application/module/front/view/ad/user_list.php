@@ -8,6 +8,6 @@
      */
     $link_prefix = FRONT_HTML_ROOT . 'ad/user/' . $user['id'] . '/';
     $link_postfix = ""; //always order by score desc
-    include FRONT_VIEW_PATH . 'template/pagination.php';
+    include FRONT_VIEW_PATH . 'templates/pagination.php';
     ?>
 </div>

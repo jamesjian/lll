@@ -17,7 +17,6 @@ class Session {
     }
 
     /**
-
      */
     public static function get_ck_upload_path() {
 

@@ -176,8 +176,8 @@ class Answer extends Base_Answer {
 
     /**
      */
-    public static function get_active_answers_by_uid_and_page_num($uid, $where = 1, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = " status=1 AND uid=$uid AND ($where)";
+    public static function get_active_answers_by_uid_and_page_num($uid, $where = 1, $page_num = 1, $order_by = 'a.date_created', $direction = 'DESC') {
+        $where = " a.status=1 AND a.uid=$uid AND ($where)";
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }

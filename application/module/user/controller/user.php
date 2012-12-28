@@ -32,15 +32,7 @@ class User extends Base {
      */
     public function home() {
         Transaction_Html::remember_current_page();
-        $num_of_questions = Model_Question::get_num_of_active_questions_by_uid($this->uid);
-        $num_of_answers = Model_Answer::get_num_of_active_answers_by_uid($this->uid);
-        $num_of_ads = Model_Ad::get_num_of_active_ads_by_uid($this->uid);
-        //some information 
          View::set_view_file($this->view_path . 'home.php');
-         View::set_action_var('user', $this->user);
-         View::set_action_var('num_of_questions', $num_of_questions);
-         View::set_action_var('num_of_answers', $num_of_answers);
-         View::set_action_var('num_of_ads', $num_of_ads);
     }
   
     /**

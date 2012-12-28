@@ -65,7 +65,7 @@ class Answer {
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
-        $sql = "SELECT a.*, q.title, q.tnames, 
+        $sql = "SELECT a.*, q.id1 as qid1,  q.title, q.tnames, 
             ad.status as ad_status, ad.title as ad_title, ad.content as ad_content, ad.date_end as ad_date_end
             FROM " . self::$table . "  a
             LEFT JOIN " . Model_Question::$table . "  q ON q.id=a.qid

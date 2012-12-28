@@ -1,26 +1,28 @@
 <?php
+
 namespace App\Transaction;
 
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Ad as Model_Ad;
 use \App\Model\User as Model_User;
+use \App\Model\Tag as Model_Tag;
 use \Zx\Message\Message;
 use App\Transaction\User as Transaction_User;
 use \Zx\Model\Mysql;
 
 class Ad {
+
     /**
      * mainly for front end
      * @param array $ad  record
      * @return string 
      */
-    public static function get_link($ad)
-    {
+    public static function get_link($ad) {
         $link = FRONT_HTML_ROOT . 'ad/content/' . $ad['id1'];
         return $link;
-        
     }
+
     public static function extend($ad_id) {
         if (Model_Ad::exist_ad($ad_id)) {
             $arr = array('date_start' => date('Y-m-d h:i:s'),
@@ -44,7 +46,7 @@ class Ad {
         //1. valid user
         if ($user) {
             //2. valid ad
-            if (Model_Ad::ad_belong_to_user($ad_id)) {
+            if (Model_Ad::ad_belong_to_user($ad_id, $user['id'])) {
                 $ad = Model_Ad::get_one($ad_id);
                 $score_restored = $user['score'] - $user['invalid_score'] - $user['ad_score'] + $ad['score'];
                 $score_left = $score_restored - $score;
@@ -76,16 +78,40 @@ class Ad {
     }
 
     /**
-     * in controller, check Model_User::available_score($this->uid) to make sure score is more than 1
+     * in controller, check Model_User::has_score($this->uid) to make sure score is more than 1
      * @param array $arr
      * @return boolean
      */
     public static function create_by_user($arr = array()) {
-        $score = $arr['score'];
-        $arr['score'] = 0; //create ad firstly, then adjust score
+        $uid = $_SESSION['user']['uid'];
+        $uname = $_SESSION['user']['uname'];
+        $status = 1;
         if (count($arr) > 0 && isset($arr['title'])) {
+            $tids = TNAME_SEPERATOR;
+            $tnames = TNAME_SEPERATOR;
+            $arr['tnames'] = array_unique($arr['tnames']); //remove duplicate entry
+            foreach ($arr['tnames'] as $tag) {
+                $tnames .= $tag . TNAME_SEPERATOR;
+                if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
+                    $tid = $existing_tag['id'];
+                    Model_Tag::increase_num_of_ads($tid);
+                    $tids .= $tid . TNAME_SEPERATOR;
+                } else {
+                    $tag_arr = array('name' => $tag, 'num_of_ads' => 1);  //have one already
+                    $tid = Model_Tag::create($tag_arr);
+                    $tids .= $tid . TNAME_SEPERATOR;
+                }
+            }
+            $arr['tids'] = $tids;
+            $arr['tnames'] = $tnames;
+            $arr['uid'] = $uid;
+            $arr['uname'] = $uname;
+            $arr['status'] = $status;
+            $arr['num_of_views'] = 0;
+                    \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+            
             if ($ad_id = Model_Ad::create($arr)) {
-                self::adjust_score($ad_id, $score);
+                self::adjust_score($ad_id, $arr['score']);
                 Message::set_success_message('新广告添加成功');
                 return true;
             } else {

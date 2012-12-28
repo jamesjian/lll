@@ -41,7 +41,7 @@ class Page {
     public static function get_one_by_where($where) {
         $sql = "SELECT a.*, ac.title as cat_name
             FROM " . self::$table . " a
-            LEFT JOIN page_category ac ON a.cat_id=ac.id
+            LEFT JOIN " . \App\Model\Pagecategory::$table . " ac ON a.cat_id=ac.id
             WHERE $where
         ";
 		$params = array();
@@ -49,10 +49,10 @@ class Page {
     }
 
 	
-    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'a.display_order', $direction = 'ASC') {
+    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'a.id', $direction = 'ASC') {
         $sql = "SELECT a.*, ac.title as cat_name
             FROM " . self::$table . " a
-            LEFT JOIN page_category ac ON a.cat_id=ac.id
+            LEFT JOIN " . \App\Model\Pagecategory::$table . " ac ON a.cat_id=ac.id
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count

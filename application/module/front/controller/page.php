@@ -36,6 +36,11 @@ class Page extends Base {
         View::set_view_file($this->view_path . 'privacy.php');
         //View::set_action_var('privacy', $privacy);
     }
+    public function score() {
+        //$privacy = Model_Page::get_privacy();
+        View::set_view_file($this->view_path . 'score.php');
+        //View::set_action_var('privacy', $privacy);
+    }
 
     //many rows;
     public function faqs() {

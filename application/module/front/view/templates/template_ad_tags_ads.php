@@ -14,14 +14,14 @@
         <div class='zx-front-right1'>
             <?php
             //tag cloud or search
-            include 'most_pupular_ad_tags.php';
+            include FRONT_VIEW_PATH . 'tag/most_popular_ad_tags.php';
             ?>
         </div>	
         <div class='zx-front-right2'>
             <?php include 'right_google_ads.php'; ?>
         </div>
         <div class='zx-front-right3'>
-            <?php include 'related_ads.php'; ?>
+            <?php include FRONT_VIEW_PATH . 'ad/related_ads.php'; ?>
         </div>
     </div>    
 </div>

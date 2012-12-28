@@ -22,11 +22,11 @@ class Common extends Base {
         Transaction_Html::set_title('网站地图');
         Transaction_Html::set_keyword('');
         Transaction_Html::set_description('');
-        $cats = Model_Articlecategory::get_all_active_cats();
-        $articles = Model_Article::get_all_active_articles();
+        //$cats = Model_Articlecategory::get_all_active_cats();
+        //$articles = Model_Article::get_all_active_articles();
         View::set_view_file($this->view_path . 'sitemap.php');
-        View::set_action_var('cats', $cats);
-        View::set_action_var('articles', $articles);
+        //View::set_action_var('cats', $cats);
+        //View::set_action_var('articles', $articles);
     }
 
     public function contact_us() {

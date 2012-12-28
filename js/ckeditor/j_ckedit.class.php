@@ -8,6 +8,7 @@
 	
 /**
   *this class is a helper class for ckeditor 3.1
+ * editor dimension is defined in config.js like config.width="300px"
 */
 
 class CKEDITOR{
@@ -54,7 +55,7 @@ class CKEDITOR{
 	  * @return html code with script code
 	  * ckfileuploader.php is for file uploading
 	*/
-	public static function ckHtmlEditor($element_name, $rows  = 10, $cols = 80,
+	public static function ckHtmlEditor($element_name, $rows  = 10, $cols = 50,
 	                                $default_text = ''){	
             //filebrowserUploadUrl: '" .  HTML_CKEDITOR_PATH . "j_ckfileuploader.php', before language: 'zh-cn'
 		$str = "<textarea name='$element_name' rows='$rows' cols='$cols'>
@@ -71,7 +72,7 @@ class CKEDITOR{
 			</script>";
 		return $str;	
 	}
-	public static function ckHtmlEditor_no_image($element_name, $rows  = 10, $cols = 80,
+	public static function ckHtmlEditor_no_image($element_name, $rows  = 10, $cols = 50,
 	                                $default_text = ''){	
             //filebrowserUploadUrl: '" .  HTML_CKEDITOR_PATH . "j_ckfileuploader.php', before language: 'zh-cn'
 		$str = "<textarea name='$element_name' rows='$rows' cols='$cols'>
@@ -99,7 +100,7 @@ class CKEDITOR{
 	  * @return html code with script code
 	  * ckfileuploader.php is for file uploading
 	*/
-	public static function ckHtmlEditor_Full($element_name, $rows  = 10, $cols = 80,
+	public static function ckHtmlEditor_Full($element_name, $rows  = 10, $cols = 50,
 	                                $default_text = ''){	
             //filebrowserUploadUrl: '" .  HTML_CKEDITOR_PATH . "j_ckfileuploader.php', before language: 'zh-cn'
 		$str = "<textarea name='$element_name' rows='$rows' cols='$cols'>

@@ -1,47 +1,21 @@
-<ul>
-    <li><a href="<?php echo HTML_ROOT; ?>" title="homepage">Home</a></li>
-    <?php
-    /*
-    if ($cat_groups) {
-        $current_cat_group = \App\Transaction\Session::get_front_current_cat_group();
-        foreach ($cat_groups as $group) {
-            $link = HTML_ROOT . 'front/catgroup/content/' . $group['title'];
-            if ($current_cat_group == $group['title']) {
-                $active_class = ' class="zx-front-active-menu"';
-            } else {
-                $active_class = '';
-            }
-            ?>
-            <li <?php echo $active_class; ?>><a href="<?php echo $link; ?>" title="<?php echo $group['title']; ?>"><?php echo $group['title']; ?></a>
-                <div>
-                    <?php
-                    //list categories within this group
-                    foreach ($group['cat1s'] as $cat1) {
-                        $link = HTML_ROOT . 'front/category/l1/' . $cat1['title'];
-                        ?>
-                        <dt><a href="<?php echo $link; ?>" title="<?php echo $cat1['title']; ?>"><?php echo $cat1['title']; ?></a></dt>
-                        <dd>
-                            <?php
-                            foreach ($cat1['cat2s'] as $cat2) {
-                                $link = HTML_ROOT . 'front/category/l2/' . $cat1['title'];
-                                ?>
-
-                                <a href="<?php echo $link; ?>" title="<?php echo $cat1['title']; ?>"><?php echo $cat1['title']; ?></a>
-                                <?php
-                            }//cat2s
-                            ?>
-                        </dd>
-
-                        <?php
-                    } //cat1s
-                    ?>
-                </div>
-            </li>
-        <?php
-    }//groups
-}//if cat_groups
-     * 
-     */
+<?php
+//this is splash page of the account
+$question_link = USER_HTML_ROOT . 'question/user/' . $user['id'];
+$answer_link = USER_HTML_ROOT . 'answer/user/' . $user['id'];
+$ad_link = USER_HTML_ROOT . 'ad/user/' . $user['id'];
+$password_link = USER_HTML_ROOT . 'user/password/' . $user['id'];
+$image_link = USER_HTML_ROOT . 'user/image/' . $user['id'];
 ?>
-
+    用户名:<?php echo $user['uname']; ?><br />电子邮箱:<?php echo $user['email']; ?><br />
+    总分:<?php echo $user['score']; ?>
+<ul class="zx-front-user-menu">
+    <li><a href="<?php echo $password_link; ?>">更新密码</a></li>
+    <li><a href="<?php echo $image_link; ?>">更改头像</a>  </li>  
 </ul>
+<ul class="zx-front-user-menu">
+    <li><a href="<?php echo $question_link; ?>">提问(<?php echo $num_of_questions; ?>)</a></li>
+    <li><a href="<?php echo $answer_link; ?>">回答(<?php echo $num_of_answers; ?>)</a></li>
+    <li><a href="<?php echo $ad_link; ?>">广告(<?php echo $num_of_ads;?>)</a></li>
+</ul>
+
+
