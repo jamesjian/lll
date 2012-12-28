@@ -62,7 +62,7 @@ class Question {
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-//\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         return Mysql::select_all($sql);
     }

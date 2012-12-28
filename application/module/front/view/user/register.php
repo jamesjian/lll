@@ -12,7 +12,7 @@
         \Zx\Message\Message::show_message();
         ?>
         <div class="zx-front-clear-both"></div>
-        <form class="zx-front-register-form" name="register_form" method="post" action="<?php echo FRONT_HTML_ROOT; ?>user/register">
+        <form class="zx-front-form" name="register_form" method="post" action="<?php echo FRONT_HTML_ROOT; ?>user/register">
             <fieldset>
                 <legend>注册新用户</legend>
                 <table>

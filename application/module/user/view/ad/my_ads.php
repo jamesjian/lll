@@ -5,13 +5,15 @@
 
 <div class='zx-front-left'>	
     <div class="zx-front-breadcrumb">
-        <?php echo \App\Transaction\Session::get_breadcrumb(); ?>
+        <?php 
+        //echo \App\Transaction\Session::get_breadcrumb(); 
+        ?>
     </div>
     <div class='zx-front-left1'>
         <?php 
         $create_link = USER_HTML_ROOT . 'ad/create';
         ?>
-        <a href="<?php echo $create_link;?>">新广告(您还有<?php echo $user['num_of_answers'];?>个广告积分</a>
+        <a href="<?php echo $create_link;?>">新广告</a>
         <table>
             <tr>
                 <td>序号</td>

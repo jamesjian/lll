@@ -1,9 +1,6 @@
 <?php
-
-defined('SYSPATH') or die('No direct script access.');
-
 namespace App\Module\User\Controller;
-
+defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Controller\Route;
 use \Zx\View\View;
 use App\Transaction\Session as Transaction_Session;
@@ -41,26 +38,26 @@ class Answer extends Base {
      * pagination
      * 
      */
-    public function my_answers() {
+    public function user() {
         //\Zx\Test\Test::object_log('$cat_title', $cat_title, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $current_page = (isset($params[2])) ? intval($params[2]) : 1;  //default page 1
         $home_url = HTML_ROOT;
         //$tag_url = FRONT_HTML_ROOT . 'question/tag/' . $tag['id']; 
         Transaction_Session::set_breadcrumb(0, $home_url, '首页');
-        Transaction_Session::set_breadcrumb(1, $category_url, $tag['name']);
+        //Transaction_Session::set_breadcrumb(1, $category_url, $tag['name']);
         //$cat = Model_Questioncategory::get_one($cat_id);
-        Transaction_Html::set_title($tag['name']);
-        Transaction_Html::set_keyword($tag['name']);
-        Transaction_Html::set_description($tag['name']);
-        $order_by = 'date_created';
+        //Transaction_Html::set_title($tag['name']);
+        //Transaction_Html::set_keyword($tag['name']);
+        //Transaction_Html::set_description($tag['name']);
+        $order_by = 'a.date_created';
         $direction = 'DESC';
-        $questions = Model_Answer::get_active_answers_by_uid_and_page_num($this->uid, $current_page, $order_by, $direction);
+        $where = '1';
+        $answers = Model_Answer::get_active_answers_by_uid_and_page_num($this->uid, $where, $current_page, $order_by, $direction);
         //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $num_of_questions = Model_Answer::get_num_of_active_answers_by_uid($this->uid);
+        $num_of_questions = Model_Answer::get_num_of_active_answers_by_uid($this->uid, $where);
         $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
         View::set_view_file($this->view_path . 'my_answers.php');
-        View::set_action_var('user', $this->user);
-        View::set_action_var('questions', $questions);
+        View::set_action_var('answers', $answers);
         View::set_action_var('order_by', $order_by);
         View::set_action_var('direction', $direction);
         View::set_action_var('current_page', $current_page);

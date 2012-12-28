@@ -154,7 +154,7 @@ class Question extends Base_Question {
     /**
      * get active cats order by category name
      */
-    public static function get_active_questions_by_page_num($page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+    public static function get_active_questions_by_page_num($page_num = 1, $order_by = 'date_created', $direction = 'ASC') {
         $where = ' status=1 ';
         $offset = ($page_num - 1) * NUM_OF_QUESTIONS_IN_FRONT_PAGE;
         return parent::get_all($where, $offset, NUM_OF_QUESTIONS_IN_FRONT_PAGE, $order_by, $direction);
@@ -167,13 +167,13 @@ class Question extends Base_Question {
 
     /**
      */
-    public static function get_active_questions_by_uid_and_page_num($uid, $where=1,$page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+    public static function get_active_questions_by_uid_and_page_num($uid, $where=1,$page_num = 1, $order_by = 'date_created', $direction = 'ASC') {
         $where = ' status=1 AND uid=' . $uid;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
-    public static function get_questions_by_uid_and_page_num($uid, $where = '1', $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+    public static function get_questions_by_uid_and_page_num($uid, $where = '1', $page_num = 1, $order_by = 'date_created', $direction = 'ASC') {
         $where = ' (uid=' . $uid . ')  AND (' . $where . ')';
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
@@ -189,12 +189,29 @@ class Question extends Base_Question {
         return parent::get_num($where);
     }
  /**
+  * @param string $tag_name 
      */
-    public static function get_active_questions_by_tag_and_page_num($tag, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = " status=1 AND tnames LIKE '%$tag%'" ;
+    public static function get_active_questions_by_tag_name_and_page_num($tag_name, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = " status=1 AND tnames LIKE '%". TNAME_SEPERATOR . $tag_name. TNAME_SEPERATOR . "%'" ;
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
+ /**
+  * @param string $tag_id
+     */    
+    public static function get_active_questions_by_tag_id_and_page_num($tag_id, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = " status=1 AND tids LIKE '%". TNAME_SEPERATOR . $tag_id. TNAME_SEPERATOR . "%'" ;
+        $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
+    }
+    public static function get_num_of_active_questions_by_tag_name($tag_name) {
+        $where = " status=1 AND  tnames LIKE '%". TNAME_SEPERATOR . $tag_name. TNAME_SEPERATOR . "%'" ;
+        return parent::get_num($where);
+    }    
+    public static function get_num_of_active_questions_by_tag_id($tag_id) {
+        $where = " status=1 AND  tids LIKE '%". TNAME_SEPERATOR . $tag_id. TNAME_SEPERATOR . "%'" ;
+        return parent::get_num($where);
+    }    
     public static function get_num_of_active_questions_by_keyword($keyword) {
         $where = " status=1 AND  tnames LIKE '%$tag%'" ;
         return parent::get_num($where);

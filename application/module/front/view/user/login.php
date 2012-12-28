@@ -10,7 +10,7 @@ if (isset($errors)) {
 }
 \Zx\Message\Message::show_message();
 ?>
-<form class="zx-front-login-form" name="login_form" method="post" action="<?php echo FRONT_HTML_ROOT; ?>user/login">
+<form class="zx-front-form" name="login_form" method="post" action="<?php echo FRONT_HTML_ROOT; ?>user/login">
     <fieldset>
         <legend>用户登录</legend>
         <table>

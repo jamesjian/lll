@@ -347,10 +347,24 @@ div.zx-front-one-question{
     border-bottom: solid silver 2px;
 }
 
-/** one question */
+/**  one question detail page */
+.zx-front-question{
+    border: 2px green solid;
+    border-radius: 5px 5px 5px 5px;
+    width: 600px;
+    padding:10px;
+}
 span.zx-front-state-name{
     color: red;
     padding-right: 30px;
+    font-size:15px;
+}
+.zx-front-one-answer{
+        border: 2px silver solid;
+    border-radius: 5px 5px 5px 5px;
+    width: 600px;
+    padding:10px;
+    margin: 5px;
 }
 a.zx-front-vote-link{
     color: silver;
@@ -381,16 +395,14 @@ span.zx-front-question-user{
     font-size:12px;
 }
 
-.zx-front-register-form fieldset, 
-.zx-front-contact-us-form fieldset, 
-.zx-front-login-form fieldset{
+.zx-front-form fieldset{
     border: 2px groove threedface;
     font-size: 13px;
     background-color: #F1F1F1;
 }
-.zx-front-register-form a, .zx-front-login-form a{
+.zx-front-form a{
     font-size: 13px;
-    color: #555444;
+    color: green;
 }
 
 .zx-front-required::after {
@@ -418,4 +430,9 @@ span.zx-front-question-user{
     color: #555444;
     font-size: 13px;
     font-weight: 600;
+}
+
+.zx-front-user-menu{
+    width:120px;
+    float: left;
 }

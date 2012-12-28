@@ -57,5 +57,6 @@
     })();
 
 </script>        
+<div id="dialog"></div>
 </body>
 </html>	

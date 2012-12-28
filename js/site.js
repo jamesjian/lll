@@ -178,13 +178,16 @@ site = {
         $('ul.mainmenu>li').hover(site.hover_submenu);
         $('#refresh_vcode').click(site.refresh_vcode);
         $('#check_account').click(site.check_account);     
+        $('.zx-front-tag-usage').bind('click', {
+            title : '关键词使用规则'
+        }, message.get_tag_usage_dialog);        
         $('.zx-front-vote-link').bind('click', {
             title : '值得关注'
         }, message.get_vote_dialog);        
         $('.zx-front-claim-link').bind('click', {
             title : '举报'
         }, message.get_claim_dialog);           
-$('#dialog').dialog({
+        $('#dialog').dialog({
             autoOpen: false,
             height: 300,
             width: 450,
@@ -200,7 +203,8 @@ $('#dialog').dialog({
                 '切换': function(){
                     $('form.change_region_form').submit();
                 }, */
-                '关闭': function(){$(this).dialog('close');
+                '关闭': function(){
+                    $(this).dialog('close');
                 }
             }
         })//dialog        
@@ -213,5 +217,37 @@ $('#dialog').dialog({
         site.bind_events();
     }
 }
-
+message={
+    get_tag_usage_dialog : function(e) {
+        // m=m+1; //for checking bind/unbind
+        // console.log('get dialog'+m);
+        var url = $(this).attr('href');
+        // console.log(url);
+        var title = e.data.title;
+        $.ajax({
+            type : "POST",
+            url : url,
+            data : {},
+            dataType : 'html',
+            success : function(data) {
+                message.open_message_dialog(data, title)
+            }
+        });
+        return false;
+    },
+    open_message_dialog : function(data, title) {
+        // m=m+1; //for checking bind/unbind
+        // console.log('open dialog'+m);
+        $('#dialog').dialog({
+            title : title
+        });
+        $('#dialog').html(data);
+        $('#dialog').dialog('open');
+        //$('#region_select_state').bind('change', region.region_change_state);
+        return false;
+    },  
+    init: function(){
+        //console.log('aaa');
+    }
+}
 $(document).ready(site.init);

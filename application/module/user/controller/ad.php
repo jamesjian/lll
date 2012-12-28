@@ -4,6 +4,7 @@ namespace App\Module\User\Controller;
 
 use \Zx\Controller\Route;
 use \Zx\View\View;
+use \Zx\Message\Message as Zx_Message;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
 use \App\Model\Ad as Model_Ad;
@@ -81,7 +82,7 @@ class Ad extends Base {
      * only my ads
      * pagination
      */
-    public function my_ads() {
+    public function user() {
         if (!\App\Transaction\Html::previous_user_page_is_search_page()) {
             \App\Transaction\Html::remember_current_user_page();
         }
@@ -92,7 +93,8 @@ class Ad extends Base {
         //$tag_url = FRONT_HTML_ROOT . 'ad/tag/' . $tag['id']; 
         $order_by = 'date_created';
         $direction = 'DESC';
-        $ads = Model_Ad::get_active_ads_by_uid_and_page_num($uid, $current_page, $order_by, $direction);
+        $where = "1";
+        $ads = Model_Ad::get_active_ads_by_uid_and_page_num($uid, $where, $current_page, $order_by, $direction);
         //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $num_of_ads = Model_Ad::get_num_of_active_ads_by_uid($uid);
         $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);

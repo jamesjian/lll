@@ -1,7 +1,7 @@
 您可以直接发送邮件到 <?php echo ENQUIRY_EMAIL_USER; ?>或填妥以下表格后提交给我们， 我们会在24小时以内和您联系。 
 
 
-<form  class="zx-front-contact-us-form" action="<?php echo HTML_ROOT . ''; ?>" method="POST">
+<form  class="zx-front-form" action="<?php echo HTML_ROOT . ''; ?>" method="POST">
     <fieldset>
         <table>
             <legend>联系我们</legend>

@@ -11,8 +11,16 @@
         <!--[if IE]>
             <link  rel="stylesheet" type="text/css" href="/css/site_ie.css" />    
         <![endif]-->            
+        <script type="text/javascript">
+            if (navigator.userAgent.toLowerCase().indexOf('chrome')!=-1){
+                document.write('<link rel="stylesheet" type="text/css" href="<?php echo HTML_ROOT;?>/css/site_chrome.css"/>');                    
+            }
+        </script>              
         <link rel="shortcut icon" href="<?php echo HTML_ROOT . 'image/icon/favicon.ico?v3'; ?>" />
-        <script type="text/javascript" src="<?php echo HTML_ROOT . 'js/jquery/jquery-1.8.1.min.js'; ?>"></script>
+
+        <link rel="stylesheet" href="<?php echo HTML_ROOT . 'js/jquery/jquery-ui-1.9.2.custom/css/trontastic/jquery-ui-1.9.2.custom.min.css';?>" />
+        <script type="text/javascript" src="<?php echo HTML_ROOT . 'js/jquery/jquery-1.8.3.min.js'; ?>"></script>
+        <script type="text/javascript" src="<?php echo HTML_ROOT . 'js/jquery/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js'; ?>"></script>
     </head>
     <body>
         <div class='zx-front-body'>	
@@ -24,6 +32,7 @@
                     <?php
                     if (\App\Transaction\User::user_has_loggedin()) {
                         ?>    
+                        <a href="<?php echo USER_HTML_ROOT; ?>user/home" title="我的账户" class="zx-front-top-menu-first">我的账户</a>
                         <a href="<?php echo FRONT_HTML_ROOT; ?>user/logout" title="退出" class="zx-front-top-menu-last">退出</a>
                         <?php
                     } else {

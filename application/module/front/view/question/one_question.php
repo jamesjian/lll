@@ -34,11 +34,11 @@
                     $regions = \App\Model\Region::get_au_states_abbr();
                     $vote_link = FRONT_HTML_ROOT . 'question/vote/' . $question['id'];
                     ?>
-                    <article>
+                    <article class="zx-front-question">
                         <header>
-                            <h1 class="zx-front-question-title">
-                                <span class="zx-front-state-name"><?php echo $regions[$question['region']];?></span>
+                            <h1 class="zx-front-question-title">问题： 
                                 <?php echo $question['title'], BR;?>
+                                <span class="zx-front-state-name"><?php echo $regions[$question['region']];?></span>
                             <span class="zx-front-question-user">
                                 <?php echo $question['uname']; ?>
                             </span>                                
@@ -69,11 +69,13 @@
                 </div>
                 <div class="zx-front-left3">
                     <?php
+                    if ($answers) {
+                    echo $num_of_answers . "个回答：";
                     $selected_ad_index = 0;
                     foreach ($answers as $answer) {
                         if ($answer['status']) {
                             ?>
-                            <article>
+                            <article class="zx-front-one-answer">
                                 <section>
                                     <div class="zx-front-question-content">
                                         <?php
@@ -113,6 +115,10 @@
                         $link_postfix = "/$order_by/$direction";
                         include FRONT_VIEW_PATH . 'templates/pagination.php';
                     }
+        }//if has answer
+        else {
+            echo "尚无回答。";
+        }
                     ?>
                 </div>
                 <div class="zx-front-left4">
@@ -132,6 +138,11 @@
     }
     ?>    
 </div>
+<?php
+//the following is disabled now, we will check it later.
+//the rigth column of the page is defined in template
+?>
+<!--
 <div class='zx-front-right'>
     <div class='zx-front-right1'>
 <?php //include FRONT_VIEW_PATH . 'templates/tag_cloud.php';   ?>
@@ -163,11 +174,5 @@ if ($related_questions) {
 }//if ($related_articles)
 ?>        
     </div>    
-    <div class='zx-front-right3'>
-<?php include FRONT_VIEW_PATH . 'templates/right_google_ads.php'; ?>
-    </div>
-    <div class='zx-front-right4'>
-<?php include FRONT_VIEW_PATH . 'templates/latest_questions.php'; ?>
-    </div>
 
-</div>
+-->
