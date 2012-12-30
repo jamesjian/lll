@@ -119,7 +119,7 @@ class Ad extends Base {
             if (isset($_POST['submit'])) {
                 if (isset($_POST['title']) && !empty($_POST['title']) &&
                         isset($_POST['content']) && !empty($_POST['content']) &&
-                        !empty($_POST['score']) &&
+                        !empty($_POST['score']) && intval($_POST['score'])<=$this->user['score'] &&
                         (!empty($_POST['tname1']) || !empty($_POST['tname2']) ||
                         !empty($_POST['tname3']) || !empty($_POST['tname4']) ||
                         !empty($_POST['tname5']))) {
@@ -144,12 +144,12 @@ class Ad extends Base {
                         'content' => $content,
                         'region' => $region,
                     );
-                    \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                    //\Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
                     if (Transaction_Ad::create_by_user($arr)) {
                         $success = true;
                     }
                 } else {
-                    Zx_Message::set_error_message('标题， 内容, 分值和关键词请填写完整。');
+                    Zx_Message::set_error_message('标题， 内容, 分值和关键词请填写完整, 分值必须在您的积分范围内。');
                 }
             }
             if ($success) {

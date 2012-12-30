@@ -37,6 +37,14 @@ class Ad {
 
     /**
      * available num of ads>weight>=1
+     * 
+     * not only create, score of an ad can be adjusted
+     * 
+     * score of this user needs to be adjusted simultaneously
+     * 
+     * new user score = current user score + original ad score - new ad score  
+     * new user ad score = current user ad score - original ad score + new ad score, it's for effeciency
+     * 
      * @param int $ad_id
      * @param int $weight
      */
@@ -108,7 +116,7 @@ class Ad {
             $arr['uname'] = $uname;
             $arr['status'] = $status;
             $arr['num_of_views'] = 0;
-                    \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                   // \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
             
             if ($ad_id = Model_Ad::create($arr)) {
                 self::adjust_score($ad_id, $arr['score']);

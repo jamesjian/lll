@@ -94,3 +94,16 @@
                 </div>-->
             </div>
             <div class="zx-front-clear-both"></div>
+<div class='zx-front-remind'>
+    点击<a href="<?php echo FRONT_HTML_ROOT . 'question/latest'; ?>">这里</a>可以查看更多最新问题， 
+    点击<a href="<?php echo FRONT_HTML_ROOT . 'question/create'; ?>">这里</a>可以发布您的新问题， 
+    <?php
+    if (!\App\Transaction\User::user_has_loggedin()) {
+        ?>        
+        要获得更多个性化服务， 请点击<a href="<?php echo FRONT_HTML_ROOT . 'user/register'; ?>">这里</a>注册用户， 
+        或者如果您已注册， 点击<a href="<?php echo FRONT_HTML_ROOT . 'user/login'; ?>">这里</a>登录，
+        <?php
+    }
+    ?>
+    点击<a href="<?php echo FRONT_HTML_ROOT . 'tag/ad'; ?>">这里</a>可以查看用户提供的最新信息。 
+</div>            

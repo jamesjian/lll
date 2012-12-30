@@ -171,7 +171,35 @@ site = {
             alert('用户名和邮箱不能为空');
         }
         return false;
+    },   
+    get_login_form_dialog : function(e) {
+        // m=m+1; //for checking bind/unbind
+        // console.log('get dialog'+m);
+        var url = $(this).attr('href');
+        // console.log(url);
+        var title = e.data.title;
+        $.ajax({
+            type : "POST",
+            url : url,
+            data : {},
+            dataType : 'html',
+            success : function(data) {
+                site.open_dialog(data, title)
+            }
+        });
+        return false;
     },    
+    open_dialog : function(data, title) {
+        // m=m+1; //for checking bind/unbind
+        // console.log('open dialog'+m);
+        $('#dialog').dialog({
+            title : title
+        });
+        $('#dialog').html(data);
+        $('#dialog').dialog('open');
+        //$('#region_select_state').bind('change', region.region_change_state);
+        return false;
+    },      
     bind_events: function(){
         site.unbind_events();  
         $('#test').click(site.test);
@@ -181,6 +209,9 @@ site = {
         $('.zx-front-tag-usage').bind('click', {
             title : '关键词使用规则'
         }, message.get_tag_usage_dialog);        
+        $('.zx-front-login-popup').bind('click', {
+            title : '登录'
+        }, site.get_login_form_dialog);        
         $('.zx-front-vote-link').bind('click', {
             title : '值得关注'
         }, message.get_vote_dialog);        

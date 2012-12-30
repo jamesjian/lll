@@ -54,9 +54,9 @@
                                         <?php
                                     }
                                 if (!\App\Transaction\User::user_has_loggedin()) {
-                                    //remind user to login
+                                    //remind user to login  (ajax)
                                     ?>
-                                    (<a href="<?php echo FRONT_HTML_ROOT . 'user/login'; ?>">登录</a>后才可以投票支持该问题或举报该问题)
+                                    (<a href="<?php echo FRONT_HTML_ROOT . 'user/login_form_popup'; ?>" class="zx-front-login-popup">登录</a>后才可以投票支持该问题或举报该问题)
                                     <?php
                                 }
                                 ?>

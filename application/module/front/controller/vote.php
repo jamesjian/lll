@@ -27,7 +27,7 @@ class Vote extends Base {
     }
 /**
      * ajax
-     * vote a question or an answer , the item must be active
+     * vote a question or an answer (no ad) , the item must be active
      * create/1/5: first 1 is item type, 1: question, 2: answer,  second 5 is item id
      */
     public function create() {

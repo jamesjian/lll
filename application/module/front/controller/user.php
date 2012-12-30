@@ -182,11 +182,45 @@ class User extends Base {
      * for ajax
      * because there is another normal login form, so use seperate login action to handle the form
      */
-    public function login_form_ajax() {
-        Zx_Message::set_new_SESSID();
-        View::set_view_file($this->view_path . 'login_ajax');
-
+    public function login_popup_form() {
+        //Zx_Message::set_new_SESSID();
+        View::set_view_file($this->view_path . 'login_form_popup');
         View::do_not_use_template(); //ajax
+    }
+    /**
+     * for ajax
+     * not used currently
+     */
+    public function login_popup()
+    {
+        $success = false;
+        $posted = array();
+
+        //App_Test::objectLog('Session',  App_Session::get_all_session(), __FILE__, __LINE__, __CLASS__, __METHOD__);        
+        if (Transaction_User::user_has_loggedin()) {
+            $message = "您已登陆成功。";
+        } else {
+            //if not logged in
+            if (isset($_POST['uname']) && !empty($_POST['uname']) &&
+                    isset($_POST['password']) && !empty($_POST['password'])
+            ) {
+                $uname = $_POST['uname'];
+                $password = $_POST['password'];
+
+                if (Transaction_User::verify_user($uname, $password)) {
+                    $message = "您已登陆成功。";
+                } else {
+                    //if not valid, display form again
+                    //maybe disabled by administrator
+                    $message = "登录失败. 请检查您的用户名和密码, 如果您输入的用户名尚未激活， 请检查您的邮箱并激活用户后， 重新登录。";
+                }
+            } else {
+                $errors = array();
+            }
+        }
+        View::set_view_file($this->view_path . 'login_result_pop');
+        View::set_action_var('message', $message);
+        View::do_not_use_template(); //ajax        
     }
 
     /**
@@ -211,7 +245,8 @@ class User extends Base {
                 $password = $_POST['password'];
 
                 if (Transaction_User::verify_user($uname, $password)) {
-                    Transaction_Html::goto_user_home_page();
+                    //Transaction_Html::goto_user_home_page();
+                    $success = true;
                 } else {
                     //if not valid, display form again
                     //maybe disabled by administrator
@@ -227,6 +262,8 @@ class User extends Base {
             View::set_view_file($this->view_path . 'login.php');
             View::set_action_var('posted', $posted);
             View::set_action_var('errors', $errors);
+        } else {
+            View::set_view_file($this->view_path . 'login_result.php');
         }
     }
 
