@@ -76,6 +76,8 @@ define('VIEW_NAMESPACE', 'View');
 define('FRONT_NAMESPACE', 'Front');
 define('MEMBER_NAMESPACE', 'Mem');
 define('ADMIN_NAMESPACE', 'Admin');
+define('VOTE_TITLE','关注');
+define('CLAIM_TITLE','举报');
 
 
 

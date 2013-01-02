@@ -43,6 +43,7 @@
         根据本网站的信息而受到的任何损失或伤害都由自己承担， 本网站不承担任何直接或连带责任。     
     </div>
 </div>
+<div id="zx-front-dialog"></div>
 <script type="text/javascript" src="<?php echo HTML_ROOT . 'js/site.js'; ?>"></script>
 <script type="text/javascript">
 
@@ -57,6 +58,6 @@
     })();
 
 </script>        
-<div id="dialog"></div>
+
 </body>
 </html>	

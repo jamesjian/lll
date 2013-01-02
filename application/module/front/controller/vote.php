@@ -25,6 +25,11 @@ class Vote extends Base {
         $this->view_path = FRONT_VIEW_PATH . 'vote/';
         //$this->list_page = FRONT_HTML_ROOT . 'vote/all/';
     }
+    public function vote_popup_form()
+    {
+                View::set_view_file($this->view_path . 'login_form_popup.php');
+        View::do_not_use_template(); //ajax
+    }
 /**
      * ajax
      * vote a question or an answer (no ad) , the item must be active

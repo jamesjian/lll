@@ -38,7 +38,7 @@
                     } else {
                         ?>
                         <a href="<?php echo FRONT_HTML_ROOT; ?>user/register" title="注册用户" class="zx-front-top-menu-first">注册用户</a>
-                        <a href="<?php echo FRONT_HTML_ROOT; ?>user/login" title="登录" class="zx-front-top-menu-last">登录</a>
+                        <a href="<?php echo FRONT_HTML_ROOT; ?>user/login_popup_form" title="登录" class="zx-front-top-menu-last zx-front-login-popup">登录</a>
                         <?php
                     }
                     ?>

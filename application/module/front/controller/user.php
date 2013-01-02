@@ -184,7 +184,7 @@ class User extends Base {
      */
     public function login_popup_form() {
         //Zx_Message::set_new_SESSID();
-        View::set_view_file($this->view_path . 'login_form_popup');
+        View::set_view_file($this->view_path . 'login_form_popup.php');
         View::do_not_use_template(); //ajax
     }
     /**

@@ -59,11 +59,11 @@ site = {
     open_message_dialog : function(data, title) {
         // m=m+1; //for checking bind/unbind
         // console.log('open dialog'+m);
-        $('#dialog').dialog({
+        $('#zx-front-dialog').dialog({
             title : title
         });
-        $('#dialog').html(data);
-        $('#dialog').dialog('open');
+        $('#zx-front-dialog').html(data);
+        $('#zx-front-dialog').dialog('open');
         //$('#region_select_state').bind('change', region.region_change_state);
         return false;
     },      
@@ -107,11 +107,11 @@ site = {
     open_vote_dialog : function(data, title) {
         // m=m+1; //for checking bind/unbind
         // console.log('open dialog'+m);
-        $('#dialog').dialog({
+        $('#zx-front-dialog').dialog({
             title : title
         });
-        $('#dialog').html(data);
-        $('#dialog').dialog('open');
+        $('#zx-front-dialog').html(data);
+        $('#zx-front-dialog').dialog('open');
         //$('#region_select_state').bind('change', region.region_change_state);
         return false;
     },    
@@ -137,11 +137,11 @@ site = {
     open_claim_dialog : function(data, title) {
         // m=m+1; //for checking bind/unbind
         // console.log('open dialog'+m);
-        $('#dialog').dialog({
+        $('#zx-front-dialog').dialog({
             title : title
         });
-        $('#dialog').html(data);
-        $('#dialog').dialog('open');
+        $('#zx-front-dialog').html(data);
+        $('#zx-front-dialog').dialog('open');
         //$('#region_select_state').bind('change', region.region_change_state);
         return false;
     },  
@@ -178,12 +178,14 @@ site = {
         var url = $(this).attr('href');
         // console.log(url);
         var title = e.data.title;
+        console.log('11111');
         $.ajax({
             type : "POST",
             url : url,
             data : {},
             dataType : 'html',
             success : function(data) {
+                console.log('222222');
                 site.open_dialog(data, title)
             }
         });
@@ -192,11 +194,15 @@ site = {
     open_dialog : function(data, title) {
         // m=m+1; //for checking bind/unbind
         // console.log('open dialog'+m);
-        $('#dialog').dialog({
+        console.log('333333');
+        $('#zx-front-dialog').dialog({
             title : title
         });
-        $('#dialog').html(data);
-        $('#dialog').dialog('open');
+        console.log('4444444');
+        $('#zx-front-dialog').html(data);
+        console.log('55555');
+        $('#zx-front-dialog').dialog('open');
+        console.log('66666');
         //$('#region_select_state').bind('change', region.region_change_state);
         return false;
     },      
@@ -218,7 +224,7 @@ site = {
         $('.zx-front-claim-link').bind('click', {
             title : '举报'
         }, message.get_claim_dialog);           
-        $('#dialog').dialog({
+        $('#zx-front-dialog').dialog({
             autoOpen: false,
             height: 300,
             width: 450,
@@ -269,11 +275,11 @@ message={
     open_message_dialog : function(data, title) {
         // m=m+1; //for checking bind/unbind
         // console.log('open dialog'+m);
-        $('#dialog').dialog({
+        $('#zx-front-dialog').dialog({
             title : title
         });
-        $('#dialog').html(data);
-        $('#dialog').dialog('open');
+        $('#zx-front-dialog').html(data);
+        $('#zx-front-dialog').dialog('open');
         //$('#region_select_state').bind('change', region.region_change_state);
         return false;
     },  
