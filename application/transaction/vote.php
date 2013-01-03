@@ -14,43 +14,69 @@ use \Zx\Model\Mysql;
 class Vote {
 
     /**
+     * no vote on ad
+     * vote is different from claim, it's confirmed immediately
+     * claim needs to be confirmed by admin
      * uid, item_type, item_id, active_item are all valid in controller method
-     * @param int $uid
+     * 1, check status of item, it should be active
+     * 2. check if repeat to vote
+     * 3. create record in vote table
+     * 4. add score to user
+     * 5. add number to item  (num of votes)
+     * 
+     * 
      * @param int $item_type
      * @param int $item_id
-     * @param record $item  is a redundant parameter to save time
      * @return boolean
      */
-    public static function create($uid, $item_type, $item_id, $item) {
-        $vote = Model_Vote::get_one($uid, $item_type, $item_id);
-        if ($vote) {
-            Message::set_error_message('repeate to vote');
+    public static function create($item_type, $item_id) {
+        switch ($item_type) {
+            case '1': //question:
+                $item = Model_Question::get_one($item_id);
+                $item_name = "问题";
+                break;
+            case '2': //answer
+                $item = Model_Answer::get_one($item_id);
+                $item_name = "回答";
+                break;
+        }
+
+        if ($item['status'] == 'inactive') {
+            Message::set_error_message('感谢您的支持， 该' . $item_name . '已被删除。');
             return false;
         } else {
-            //new record in vote
-            $arr = array('uid' => $uid, 'item_type' => $item_type, 'item_id' => $item_id);
-            Model_Vote::create($arr);
-            $user = Model_User::get_one($item['user_id']);
-            //add score to user
-            $arr = array('score' => $user['score'] + 1);
-            Model_User::update($item['user_id'], $arr);
-            //add number to item
-            $arr = array('num_of_votes' => $item['vote'] + 1);
-            switch ($item_type) {
-                case 1:  //question
-                    Model_Question::update($item_id, $arr);
-                    break;
-                case 2: //answer
-                    Model_Answer::update($item_id, $arr);
-                    break;
-                /** ad is not voted currently
-                  case 3:
-                  Model_Ad::update($item_id, $arr);
-                  break;
-                 * 
-                 */
+            $uid = $item['uid'];
+            $vote = Model_Vote::get_one($uid, $item_type, $item_id);
+            if ($vote) {
+                Message::set_error_message('感谢您的支持，您只能对同一' . $item_name . '投一次票。');
+                return false;
+            } else {
+                $arr = array('uid' => $uid,
+                    'item_type' => $item_type,
+                    'item_id' => $item_id,
+                );
+                if (Model_Vote::create($arr)) {
+                    $user = Model_User::get_one($item['user_id']);
+                    //add score to user
+                    $arr = array('score' => $user['score'] + 1);
+                    Model_User::update($item['user_id'], $arr);
+                    //add number to item
+                    $arr = array('num_of_votes' => $item['vote'] + 1);
+                    switch ($item_type) {
+                        case 1:  //question
+                            Model_Question::update($item_id, $arr);
+                            break;
+                        case 2: //answer
+                            Model_Answer::update($item_id, $arr);
+                            break;
+                    }
+                    Message::set_success_message('您的投票已被记录， 感谢您的支持。');
+                    return true;
+                } else {
+                    Message::set_error_message('对不起， 系统出错， 请稍后再试。');
+                    return false;
+                }
             }
-            return true;
         }
     }
 

@@ -3,11 +3,11 @@
  * if loggedin no user fields
  * else has user fields
  */
-$link =  FRONT_HTML_ROOT . "claim/create/$item_type/$item_id";
+$link =  FRONT_HTML_ROOT . "vote/create/$item_type/$item_id";
 ?>
 <form class="zx-front-form" name="claim_form" method="post" action="<?php echo $link;?>">
     <fieldset>
-        <legend><?php echo CLAIM_TITLE;?></legend>
+        <legend><?php echo VOTE_TITLE;?></legend>
         <table>
             <?php
             if ($loggedin) {
@@ -21,18 +21,12 @@ $link =  FRONT_HTML_ROOT . "claim/create/$item_type/$item_id";
                 <td class=""> <input type="password" name="password"  class="form_element"   id="password" /><span id="caps_on">您现在输入的是大写字母</span></td>
             </tr>
             <?php 
-            }
+            } 
             ?>
             <tr>
-                <td class="zx-front-table-title zx-front-required">请选择理由:</td>
+                <td class="zx-front-table-title zx-front-required">确认</td>
                 <td class=""> 
-                    <select name="cat_id">
-                        <?php 
-                        foreach ($cats as $cat) {
-                            echo "<option value='{$cat['id']}'>{$cat['name']}</option>";
-                        }
-                        ?>
-                    </select>    
+                    <input type="checkbox" name="cofirm" />值得关注
                     </td>
             </tr>            
             <?php

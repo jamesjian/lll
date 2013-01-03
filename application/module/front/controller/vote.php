@@ -16,7 +16,7 @@ use \App\Model\Ad as Model_Ad;
 use \App\Model\Question as Model_Question;
 
 /**
-only user can claim and vote 
+  only user can claim and vote
  */
 class Vote extends Base {
 
@@ -25,49 +25,64 @@ class Vote extends Base {
         $this->view_path = FRONT_VIEW_PATH . 'vote/';
         //$this->list_page = FRONT_HTML_ROOT . 'vote/all/';
     }
-    public function vote_popup_form()
-    {
-                View::set_view_file($this->view_path . 'login_form_popup.php');
-        View::do_not_use_template(); //ajax
+
+    public function vote_popup_form() {
+        if (Transaction_User::user_has_loggedin()) {
+            $loggedin = true;
+        } else {
+            $loggedin = false;
+        }
+        View::set_view_file($this->view_path . 'vote_popup_form.php');
+        View::set_action_var('item_type', $item_type);
+        View::set_action_var('item_id', $item_id);
+        View::set_action_var('loggedin', $loggedin);
+        View::do_not_use_template(); //ajax        
     }
-/**
+
+    /**
      * ajax
      * vote a question or an answer (no ad) , the item must be active
      * create/1/5: first 1 is item type, 1: question, 2: answer,  second 5 is item id
      */
     public function create() {
-        
+       $loggedin = false;
         $success = false;
-        $message = '';
-        if (\App\Transaction\User::user_has_loggedin()) {
-            $item_type = (isset($params[0])) ? intval($params[0]) : 0;
-            $item_id = (isset($params[1])) ? intval($params[1]) : 0;
-            if ($item_type > 0 && $item_id > 0)
-                switch ($item_type) {
-                    case 1:
-                        $active_item = Model_Question::is_active_question($item_id);
-                        $item_name = '问题';
-                        break;
-                    case 2:
-                        $active_item = Model_Answer::is_active_answer($item_id);
-                        $item_name = '回答';
-                        break;
-                    default:
-                        $active_item = false;
-                }
-            if ($active_item) {
-                $uid = Transaction_User::get_uid();
-                Transaction_Vote::create($uid, $item_type, $item_id, $active_item);
-                $message = "您已投票成功， 感谢您的支持。";
-                $success = true;
-            } else {
-                $message = '对不起， 该' . $item_name . '无效， 不接受投票， 谢谢！'; // inactive or not existing question
-            }
+        $posted = array();
+
+        //App_Test::objectLog('Session',  App_Session::get_all_session(), __FILE__, __LINE__, __CLASS__, __METHOD__);        
+        if (Transaction_User::user_has_loggedin()) {
+            $loggedin=true;
         } else {
-            $message = '对不起， 只有注册用户登录后才可以投票。';
-        }
-        View::set_view_file($this->view_path . 'result.php');
+            if (isset($_POST['uname']) && !empty($_POST['uname']) &&
+                    isset($_POST['password']) && !empty($_POST['password'])
+            ) {
+                $uname = $_POST['uname'];
+                $password = $_POST['password'];
+
+                if (Transaction_User::verify_user($uname, $password)) {
+                    //Transaction_Html::goto_user_home_page();
+                    $loggedin = true;
+                } else {
+                    Zx_Message::set_error_message("登录失败. 请检查您的用户名和密码, 如果您输入的用户名尚未激活， 请检查您的邮箱并激活用户后， 重新登录。");
+                }
+            } 
+        } 
+        if ($loggedin) {
+            $user = $_SESSION['user'];
+            if (isset($_POST['confirm']) && !empty($_POST['confirm'])){
+                //$_POST['confirm']  is a checkbox, if $_POST['confirm'] is not empty, it's valid
+                $item_type = $this->params[0];
+                $item_id = $this->params[1];
+                if (Transaction_Vote::vote($item_type, $item_id)) {
+                     Zx_Message::set_error_message("感谢您的关注。");
+
+                } else {
+                   Zx_Message::set_error_message("您提交的信息有误， 请重新操作。");
+                }
+            } 
+        } 
+        View::set_view_file($this->view_path . 'vote_result');
         View::set_action_var('message', $message);
-        View::do_not_use_template();
     }
+
 }

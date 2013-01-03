@@ -32,6 +32,12 @@ class Question {
         'tids','tnames','num_of_answers','content',
         'content1', 'num_of_views','num_of_votes', 'valid', 'status', 'date_created');
     public static $table = TABLE_QUESTION;
+    const STATUS_DISABLED=0;
+    const STATUS_VALID=1;
+    const STATUS_INVALID=2;
+    const STATUS_NOT_CONFIRMED=3;
+    
+
     /**
      *
      * @param int $id

@@ -33,7 +33,12 @@ class Claim extends Base {
 
     /**
      * only change status
-
+       original status is "not confirmed"
+     * new status will be "confirmed" if item is bad
+     * or "cancelled" if item is good
+     * 
+     * change status of item and claim
+     * add score to item and user
      */
     public function update() {
         $success = false;
@@ -45,7 +50,7 @@ class Claim extends Base {
             if ($id <> 0) {
                 if (isset($_POST['status']))
                     $arr['status'] = intval($_POST['status']);
-                if (Transaction_Claim::update_claim($id, $arr)) {
+                if (Transaction_Claim::update_claim($id, $status)) {
                     header('Location: ' . $this->list_page);
                 }
             }

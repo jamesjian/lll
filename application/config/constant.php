@@ -16,6 +16,7 @@ define('APPLICATION_PATH', PHP_ROOT . 'application' . DIRECTORY_SEPARATOR);
 //cache and session table is controlled by library, they don't have TABLE_PREFIX
 $tables = array('ad','answer', 'article', 'article_category', 'claim',
                 'claim_category','page', 'page_category','question', 'region', 
+    'score',
                 'staff','tag','user','vote',);
 foreach ($tables as $table) {
     define('TABLE_' . strtoupper($table), TABLE_PREFIX . $table);  //TABLE_PREFIX is defined in constant_db.php

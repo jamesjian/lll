@@ -4,7 +4,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 
 /*
-status: 0: created(when report an claim), 2. confirmed(it's a real claim), 3. cancelled(it's not an claim)
+status: 0: created(when report an claim), 2. confirmed(the item is bad), 3. cancelled(the item is good)
  item type //1. question, 2. answer, 3. ad
  cat id   //1. 造谣诽谤（扣一分）， 2. 种族歧视（扣一分）， 3.色情 4. 暴力， 虐待（人或动物）（扣一分） 5. 违禁物品（毒品， 武器, 人体器官等）（扣一分） 6. 误导欺诈（扣一分）
  7. 广告嫌疑（扣一分） 8. 无内容或答非所问或灌水内容（将被删除， 不扣分）
@@ -23,7 +23,9 @@ class Claim {
     public static $fields = array('id','item_type','item_id','claimant_id',
         'cat_id','result','status', 'date_created');
     public static $table = TABLE_ABUSE;
-    
+    const STATUS_NOT_CONFIRMED=0;
+    const STATUS_CONFIRMED=1;
+    const STATUS_CANCELLED=2;
      /**
      *
      * @param int $id
