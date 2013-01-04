@@ -22,22 +22,36 @@ use \Zx\Model\Mysql;
   num_of_answers unsigned smallint(4) default 0,
   num_of_views unsigned int(11) default 0,
   num_of_votes unsigned mediumint(7) default 0,
-  valid unsigned tinyint(1) not null default 1,
   status unsigned tinyint(1) not null default 1,  //1: active, 2. 
   date_created datetime) engine=innodb default charset=utf8
+ *  * todo: answer_history table to record all answers when updated
  */
 
 class Question {
     public static $fields = array('id','id1','title','region', 'uid','uname',
         'tids','tnames','num_of_answers','content',
-        'content1', 'num_of_views','num_of_votes', 'valid', 'status', 'date_created');
+        'content1', 'num_of_views','num_of_votes', 'status', 'date_created');
     public static $table = TABLE_QUESTION;
-    const STATUS_DISABLED=0;
-    const STATUS_VALID=1;
-    const STATUS_INVALID=2;
-    const STATUS_NOT_CONFIRMED=3;
+    /**for status
+     * when created or updated, it's STATUS_ACTIVE
+     * when somebody claim it, it's STATUS_CLAIMED
+     * when somebody claim it and it's checked by admin and not wrong, it's STATUS_CORRECT
+     * when somebody claim it and it's checked by admin and it's really bad, it's STATUS_DISABLED
+     * even if it's STATUS_CORRECT, but when it's updated, it's STATUS_ACTIVE
+     * STATUS_ACTIVE->STATUS_CLAIMED->STATUS_CORRECT     ->  STATUS_ACTIVE
+     * (created)       (claimed)       completely correct    updated
+     * STATUS_ACTIVE->STATUS_CLAIMED->STATUS_DISABLED  
+     * (created)       (claimed)       completely correct    updated
+     * 
+     * STATUS_DISABLED cannot be changed by front user, but can be changed by admin when mistake happened
+     * in the front end, only STATUS_DISABLED will not display, others will display
+     * 
+    */
+    const STATUS_DISABLED=0; //if this question is disabled by admin
+    const STATUS_CORRECT=1;   //if this question completely correct
+    const STATUS_ACTIVE=2;  //if this question is active and can be claimed
+    const STATUS_CLAIMED=3; //when it's claimed by user
     
-
     /**
      *
      * @param int $id

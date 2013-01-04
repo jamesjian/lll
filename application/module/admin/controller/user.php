@@ -6,7 +6,22 @@ use \App\Model\User as Model_User;
 use \App\Transaction\User as Transaction_User;
 use \Zx\View\View;
 use \Zx\Test\Test;
-
+/**
+ * question/retrieve_by_uid
+ * question/retrieve_by_tid
+ * answer/retrieve_by_uid
+ * answer/retrieve_by_qid
+ * answer/retrieve_by_ad_id
+ * ad/retrieve_by_uid
+ * ad/retrieve_by_tid
+ * vote/retrieve_by_uid
+ * vote/retrieve_by_qid
+ * claim/retrieve_by_uid
+ * claim/retrieve_by_uid
+ * claim/retrieve_by_qid
+ * claim/retrieve_by_aid
+ * claim/retrieve_by_ad_id
+ */
 class User extends Base {
 
     public $list_page = '';

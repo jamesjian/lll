@@ -31,7 +31,11 @@ class User {
         'image', 'num_of_questions','num_of_answers','num_of_ads',
         'score', 'invalid_score','ad_score', 'status', 'date_created');
     public static $table = TABLE_USER;
-
+    //for status
+    const STATUS_REGISTERED = 0;  //when a user registered, but not activated
+    const STATUS_ACTIVE = 1; //if this user is active
+    const STATUS_DISABLED = 2;  //if this user is disabled by admin
+    
     public static function get_one($id) {
         $sql = "SELECT * FROM " . self::$table . " WHERE id=:id";
         $params = array(':id' => $id);

@@ -1,40 +1,46 @@
 <?php
+
 namespace App\Model\Base;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
+
 use \Zx\Model\Mysql;
 
 /*
-status: 0: created(when report an claim), 2. confirmed(the item is bad), 3. cancelled(the item is good)
- item type //1. question, 2. answer, 3. ad
- cat id   //1. 造谣诽谤（扣一分）， 2. 种族歧视（扣一分）， 3.色情 4. 暴力， 虐待（人或动物）（扣一分） 5. 违禁物品（毒品， 武器, 人体器官等）（扣一分） 6. 误导欺诈（扣一分）
- 7. 广告嫌疑（扣一分） 8. 无内容或答非所问或灌水内容（将被删除， 不扣分）
+  status: 0: created(when report an claim), 2. confirmed(the item is bad), 3. cancelled(the item is good)
+  item type //1. question, 2. answer, 3. ad
+  cat id   //1. 造谣诽谤（扣一分）， 2. 种族歧视（扣一分）， 3.色情 4. 暴力， 虐待（人或动物）（扣一分） 5. 违禁物品（毒品， 武器, 人体器官等）（扣一分） 6. 误导欺诈（扣一分）
+  7. 广告嫌疑（扣一分） 8. 无内容或答非所问或灌水内容（将被删除， 不扣分）
   CREATE TABLE claim (
- id unsigned MEDIUMINT(8)   AUTO_INCREMENT PRIMARY KEY,
- item_type unsigned tinyint(3) NOT NULL DEFAULT '1',  
- item_id unsigned MEDIUMINT(8)   not null default 0, 
- claimant_id unsigned MEDIUMINT(7)   not null 0,  //can be empty
- cat_id unsigned tinyint(3) not null default '1',
+  id unsigned MEDIUMINT(8)   AUTO_INCREMENT PRIMARY KEY,
+  item_type unsigned tinyint(3) NOT NULL DEFAULT '1',
+  item_id unsigned MEDIUMINT(8)   not null default 0,
+  claimant_id unsigned MEDIUMINT(7)   not null 0,  //can be empty
+  cat_id unsigned tinyint(3) not null default '1',
   result text,
-  reportable unsigned tinyint(1) not null default 1,// if completely valid, 0, else 1
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
-*/
+ */
+
 class Claim {
-    public static $fields = array('id','item_type','item_id','claimant_id',
-        'cat_id','result','status', 'date_created');
+
+    public static $fields = array('id', 'item_type', 'item_id', 'claimant_id',
+        'cat_id', 'result', 'status', 'date_created');
     public static $table = TABLE_ABUSE;
-    const STATUS_NOT_CONFIRMED=0;
-    const STATUS_CONFIRMED=1;
-    const STATUS_CANCELLED=2;
-     /**
+    //for status
+    const STATUS_CREATED = 0;  //when a claim is created
+    const STATUS_CORRECT_CLAIM = 1; //if this claim is correct
+    const STATUS_WRONG_CLAIM = 2;  //if this claim is wrong
+
+    /**
      *
      * @param int $id
      * @return 1D array or boolean when false 
      */
     public static function get_one($id) {
         $sql = "SELECT *
-            FROM " . self::$table .  
-           " WHERE id=:id";
+            FROM " . self::$table .
+                " WHERE id=:id";
         $params = array(':id' => $id);
 
 
@@ -48,16 +54,16 @@ class Claim {
      */
     public static function get_one_by_where($where) {
         $sql = "SELECT *
-            FROM " . self::$table .  
-           " WHERE $where
+            FROM " . self::$table .
+                " WHERE $where
         ";
         return Mysql::select_one($sql);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
         $sql = "SELECT *
-            FROM " . self::$table .  
-           " WHERE $where
+            FROM " . self::$table .
+                " WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
@@ -77,7 +83,8 @@ class Claim {
     }
 
     public static function create($arr) {
-        $insert_arr = array(); $params = array();
+        $insert_arr = array();
+        $params = array();
         $arr['date_created'] = date('Y-m-d h:i:s');
         foreach (self::$fields as $field) {
             if (array_key_exists($field, $arr)) {
@@ -91,16 +98,17 @@ class Claim {
     }
 
     public static function update($id, $arr) {
-        $update_arr = array();$params = array();
+        $update_arr = array();
+        $params = array();
         foreach (self::$fields as $field) {
             if (array_key_exists($field, $arr)) {
                 $update_arr[] = "$field=:$field";
                 $params[":$field"] = $arr[$field];
             }
-        }        
-        
+        }
+
         $update_str = implode(',', $update_arr);
-        $sql = 'UPDATE ' .self::$table . ' SET '. $update_str . ' WHERE id=:id';
+        $sql = 'UPDATE ' . self::$table . ' SET ' . $update_str . ' WHERE id=:id';
         //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $params[':id'] = $id;
         //$query = Mysql::interpolateQuery($sql, $params);
@@ -110,7 +118,7 @@ class Claim {
     }
 
     public static function delete($id) {
-        $sql = "Delete FROM " . self::$table ." WHERE id=:id";
+        $sql = "Delete FROM " . self::$table . " WHERE id=:id";
         $params = array(':id' => $id);
         return Mysql::exec($sql, $params);
     }

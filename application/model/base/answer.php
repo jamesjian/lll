@@ -18,17 +18,36 @@ use App\Model\Ad as Model_Ad;
   ad_id unsigned MEDIUMINT(8) not null default 0,
   content text,
   num_of_votes unsigned mediumint(7) default 0,
-  valid unsigned tinyint(1) not null default 1,
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
+ * 
+ * todo: answer_history table to record all answers when updated
  */
 
 class Answer {
 
     public static $fields = array('id', 'id1', 'qid', 'uid', 'uname', 'ad_id',
-        'content', 'num_of_votes', 'valid', 'status', 'date_created');
+        'content', 'num_of_votes',  'status', 'date_created');
     public static $table = TABLE_ANSWER;
-
+    /**for status
+     * when created or updated, it's STATUS_ACTIVE
+     * when somebody claim it, it's STATUS_CLAIMED
+     * when somebody claim it and it's checked by admin and not wrong, it's STATUS_CORRECT
+     * when somebody claim it and it's checked by admin and it's really bad, it's STATUS_DISABLED
+     * even if it's STATUS_CORRECT, but when it's updated, it's STATUS_ACTIVE
+     * STATUS_ACTIVE->STATUS_CLAIMED->STATUS_CORRECT     ->  STATUS_ACTIVE
+     * (created)       (claimed)       completely correct    updated
+     * STATUS_ACTIVE->STATUS_CLAIMED->STATUS_DISABLED  
+     * (created)       (claimed)       completely correct    updated
+     * 
+     * STATUS_DISABLED cannot be changed by front user, but can be changed by admin when mistake happened
+     * in the front end, only STATUS_DISABLED will not display, others will display
+     * 
+    */
+    const STATUS_DISABLED=0; //if this answer is disabled by admin
+    const STATUS_CORRECT=1;   //if this answer completely correct
+    const STATUS_ACTIVE=2;  //if this answer is active and can be claimed
+    const STATUS_CLAIMED=3; //when it's claimed by user
     /**
      *
      * @param int $id

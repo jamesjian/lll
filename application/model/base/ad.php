@@ -22,7 +22,6 @@ use \Zx\Model\Mysql;
   content text,
   score  unsigned MEDIUMINT(6)  not null default 0, #assigned by user according to num of ads
   num_of_views unsigned MEDIUMINT(8) not null default 0,
-  valid unsigned tinyint(1) not null default 1,
   status unsigned tinyint(1) not null default 1,
   date_created datetime,
   date_start datetime,
@@ -34,10 +33,28 @@ use \Zx\Model\Mysql;
 class Ad {
 
     public static $fields = array('id', 'id1', 'title', 'uid', 'uname',
-        'tids', 'tnames', 'content', 'score', 'num_of_views', 'valid',
+        'tids', 'tnames', 'content', 'score', 'num_of_views', 
         'status', 'date_created', 'date_start', 'date_end');
     public static $table = TABLE_AD;
-
+    /**for status
+     * when created or updated, it's STATUS_ACTIVE
+     * when somebody claim it, it's STATUS_CLAIMED
+     * when somebody claim it and it's checked by admin and not wrong, it's STATUS_CORRECT
+     * when somebody claim it and it's checked by admin and it's really bad, it's STATUS_DISABLED
+     * even if it's STATUS_CORRECT, but when it's updated, it's STATUS_ACTIVE
+     * STATUS_ACTIVE->STATUS_CLAIMED->STATUS_CORRECT     ->  STATUS_ACTIVE
+     * (created)       (claimed)       completely correct    updated
+     * STATUS_ACTIVE->STATUS_CLAIMED->STATUS_DISABLED  
+     * (created)       (claimed)       completely correct    updated
+     * 
+     * STATUS_DISABLED cannot be changed by front user, but can be changed by admin when mistake happened
+     * in the front end, only STATUS_DISABLED will not display, others will display
+     * 
+    */
+    const STATUS_DISABLED=0; //if this ad is disabled by admin
+    const STATUS_CORRECT=1;   //if this ad completely correct
+    const STATUS_ACTIVE=2;  //if this ad is active and can be claimed
+    const STATUS_CLAIMED=3; //when it's claimed by user
     /**
      *
      * @param int $id
