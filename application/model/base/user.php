@@ -32,9 +32,11 @@ class User {
         'score', 'invalid_score','ad_score', 'status', 'date_created');
     public static $table = TABLE_USER;
     //for status
-    const STATUS_REGISTERED = 0;  //when a user registered, but not activated
-    const STATUS_ACTIVE = 1; //if this user is active
-    const STATUS_DISABLED = 2;  //if this user is disabled by admin
+    const S_REGISTERED = 0;  //when a user registered, but not activated
+    const S_ACTIVE = 1; //if this user is active
+    const S_DISABLED = 2;  //if this user is disabled by admin
+    const M_SUCCESSFUL_REGISTRATION = "感谢您注册账户， 我们已经发送邮件到您的电子邮箱，请查看邮件并激活您的账户。" ;
+    const M_WRONG_VCODE = '您未输入验证码或输入的验证码不正确， 请重新输入';
     
     public static function get_one($id) {
         $sql = "SELECT * FROM " . self::$table . " WHERE id=:id";

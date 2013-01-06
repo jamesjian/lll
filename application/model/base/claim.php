@@ -28,9 +28,9 @@ class Claim {
         'cat_id', 'result', 'status', 'date_created');
     public static $table = TABLE_ABUSE;
     //for status
-    const STATUS_CREATED = 0;  //when a claim is created
-    const STATUS_CORRECT_CLAIM = 1; //if this claim is correct
-    const STATUS_WRONG_CLAIM = 2;  //if this claim is wrong
+    const S_CREATED = 0;  //when a claim is created
+    const S_CORRECT_CLAIM = 1; //if this claim is correct
+    const S_WRONG_CLAIM = 2;  //if this claim is wrong
 
     /**
      *

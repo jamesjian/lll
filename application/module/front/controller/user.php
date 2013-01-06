@@ -120,12 +120,12 @@ class User extends Base {
 
             if (Transaction_User::register_user($posted)) {
                 $success = true;
-                $message = "感谢您在" . SITENAME . "注册， 我们已经发送邮件到您的电子邮箱，请查看邮件并激活您的账户。";
+                $message = Model_User::M_SUCCESSFUL_REGISTRATION;
                 View::set_view_file($this->view_path . 'validation_message.php');
                 View::set_action_var('message', $message);
             }
         } elseif (isset($_POST['vcode'])) {
-            Zx_Message::set_error_message('您未输入验证码或输入的验证码不正确， 请重新输入');
+            Zx_Message::set_error_message(Model_User::M_WRONG_VCODE);
         }
         if (!$success) {
             View::set_view_file($this->view_path . 'register.php');

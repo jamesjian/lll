@@ -51,10 +51,10 @@ class Ad {
      * in the front end, only STATUS_DISABLED will not display, others will display
      * 
     */
-    const STATUS_DISABLED=0; //if this ad is disabled by admin
-    const STATUS_CORRECT=1;   //if this ad completely correct
-    const STATUS_ACTIVE=2;  //if this ad is active and can be claimed
-    const STATUS_CLAIMED=3; //when it's claimed by user
+    const S_DISABLED=0; //if this ad is disabled by admin
+    const S_CORRECT=1;   //if this ad completely correct
+    const S_ACTIVE=2;  //if this ad is active and can be claimed
+    const S_CLAIMED=3; //when it's claimed by user
     /**
      *
      * @param int $id
