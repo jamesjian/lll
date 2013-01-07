@@ -42,13 +42,7 @@
     2. registered       //after registration
     //3. deleted          //will never be back to active
      
- * every question 1
- * every answer 2
- * every vote 1
- * every confirmed claim -1
- * num of ads <= num of valid answers (when an answer is disabled, if the ad is only for this answer, the ad is disabled)
- *   
- * sum of score of ads = score 
+
  * 
  *2. question  cannot be deleted by user, only be deactivated by user or disabled by admin 
  * when status=2

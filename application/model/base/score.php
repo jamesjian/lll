@@ -3,7 +3,17 @@
  * todo: next step
  * this is a transaction table of score
  * record all transactions (increase and decrease of score)
- * don't disclose to user, only for administration
+ * 
+ * every question 1
+ * every answer 2
+ * every vote 1
+ * every confirmed claim 
+ *   if score of claim is 10, claimant+10, defendant-10
+ * num of ads <= num of valid answers (when an answer is disabled,
+ *  if the ad is only for this answer, the ad is disabled)
+ *   
+ * sum of score of ads = score 
+ * 
  * 
  * CREATE TABLE score (
  id  INT(11) unsigned  AUTO_INCREMENT PRIMARY KEY,

@@ -27,32 +27,43 @@ use App\Model\Ad as Model_Ad;
 class Answer {
 
     public static $fields = array('id', 'id1', 'qid', 'uid', 'uname', 'ad_id',
-        'content', 'num_of_votes',  'status', 'date_created');
+        'content', 'num_of_votes', 'status', 'date_created');
     public static $table = TABLE_ANSWER;
-    /**for status
-     * when created or updated, it's STATUS_ACTIVE
-     * when somebody claim it, it's STATUS_CLAIMED
-     * when somebody claim it and it's checked by admin and not wrong, it's STATUS_CORRECT
-     * when somebody claim it and it's checked by admin and it's really bad, it's STATUS_DISABLED
-     * even if it's STATUS_CORRECT, but when it's updated, it's STATUS_ACTIVE
-     * STATUS_ACTIVE->STATUS_CLAIMED->STATUS_CORRECT     ->  STATUS_ACTIVE
-     * (created)       (claimed)       completely correct    updated
-     * STATUS_ACTIVE->STATUS_CLAIMED->STATUS_DISABLED  
-     * (created)       (claimed)       completely correct    updated
-     * 
-     * STATUS_DISABLED cannot be changed by front user, but can be changed by admin when mistake happened
-     * in the front end, only STATUS_DISABLED will not display, others will display
-     * 
-    */
-    const S_DISABLED=0; //if this answer is disabled by admin
-    const S_CORRECT=1;   //if this answer completely correct
-    const S_ACTIVE=2;  //if this answer is active and can be claimed
-    const S_CLAIMED=3; //when it's claimed by user
+
+    /*     * for status
+     * 1. when created or updated, it's S_ACTIVE, user get score, it can be updated, claimed
+     * 2. if  an answer not claimed and has no vote, it can be deleted(not purge)  -> S_DELETED
+     *    if claimed, have to wait for admin to check it
+     *    if has vote, it's valuable 
+     * 3. only S_ACTIVE and S_CORRECT(will change to S_ACTIVE) can be updated by user
+     *    when somebody claim it, it's S_CLAIMED, it cannot be updated, deleted by user
+     *    when somebody claim it and it's checked by admin and not wrong, it's S_CORRECT, 
+     *     can be updated (status will change to S_ACTIVE), 
+     *     but cannot be claimed and deleted
+     *    when somebody claim it and it's checked by admin and it's really bad, it's S_DISABLED,  
+     *       cannot be claimed,  updated and deleted
+     * 4.  S_ACTIVE->S_CLAIMED->S_CORRECT->            (if updated) S_ACTIVE
+     *    (created)       (claimed)       completely correct    
+     *     S_ACTIVE->S_CLAIMED->S_DISABLED  
+     *    (created)       (claimed)       completely wrong   
+     * 5. only purged by admin
+      * 
+     * S_DISABLED can only be changed to S_DELETED by front user, but can be changed to other status by admin when mistake happened
+     * in the front end, only S_DISABLED and S_DELETED will not display, others will display
+     */
+
+    const S_DISABLED = 0; //if this answer is disabled by admin
+    const S_CORRECT = 1;   //if this answer completely correct, cannot be claimed
+    const S_ACTIVE = 2;  //if this answer is active and can be claimed
+    const S_CLAIMED = 3; //when it's claimed by user
+    const S_DELETED = 4; //when it's deleted by user
+
     /**
      *
      * @param int $id
      * @return 1D array or boolean when false 
      */
+
     public static function get_one($id) {
         $sql = "SELECT a.*, q.title, q.tnames, 
             ad.status as ad_status, ad.title as ad_title, ad.content as ad_content, ad.date_end as ad_date_end
@@ -93,7 +104,7 @@ class Answer {
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        \Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         return Mysql::select_all($sql);
     }

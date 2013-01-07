@@ -64,7 +64,7 @@ class Ad extends Base_Ad {
      * @return boolean
      */
     public static function inactive($ad_id) {
-        $arr = array('status' => 0);
+        $arr = array('status' => parent::S_INACTIVE);
         return parent::update($ad_id, $arr);
     }
 
@@ -73,7 +73,10 @@ class Ad extends Base_Ad {
      * @return array
      */
     public static function get_recent_ads_by_uid($uid) {
-        $where = ' status=' . parent::S_DISABLED . " AND uid=$uid";
+        $where = ' status=' . parent::S_CORRECT . 
+                ' OR status=' .  parent::S_ACTIVE . 
+                ' OR status=' .  parent::S_CLAIMED . 
+                " AND uid=$uid";
         $offset = 0;
         $order_by = 'date_created';
         $direction = 'DESC';
@@ -102,18 +105,20 @@ class Ad extends Base_Ad {
      * @return records
      */
     public static function get_latest_ads() {
-        $where = 'id>0 AND status<>' . parent::S_DISABLED;
+        $where = 'id>0 AND  status=' . parent::S_CORRECT . 
+                ' OR status=' .  parent::S_ACTIVE . 
+                ' OR status=' .  parent::S_CLAIMED;
         return parent::get_all($where, 0, 20, 'date_created', 'DESC');
     }
 
     public static function get_ads_by_uid_and_page_num($uid, $where = '1', $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = "id>0 AND  uid=$uid AND ($where)";
+        $where = "id>0 AND uid=$uid AND status<>" .parent::S_DELETED . "  AND ($where)";
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_ads_by_uid($uid, $where = 1) {
-        $where = "id>0 AND  uid=$uid AND ($where)";
+        $where = "id>0 AND status<>" .parent::S_DELETED . " AND  uid=$uid AND ($where)";
         return parent::get_num($where);
     }
 
@@ -121,24 +126,32 @@ class Ad extends Base_Ad {
      * active means not disabled by admin, even if it's claimed by other users
      */
     public static function get_active_ads_by_uid_and_page_num($uid, $where = 1, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
-        $where = "id>0 AND uid=$uid AND status<>" . parent::S_DISABLED . " AND ($where)";
+        $where = "id>0 AND uid=$uid AND (status=" . parent::S_CORRECT . 
+                ' OR status=' .  parent::S_ACTIVE . 
+                ' OR status=' .  parent::S_CLAIMED .  ") AND ($where)";
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_active_ads_by_uid($uid, $where = 1) {
-        $where = "id>0 AND uid=$uid AND status<>" . parent::S_DISABLED . " AND ($where)";
+        $where = "id>0 AND uid=$uid AND (status=" . parent::S_CORRECT . 
+                ' OR status=' .  parent::S_ACTIVE . 
+                ' OR status=' .  parent::S_CLAIMED .  ") AND ($where)";
         return parent::get_num($where);
     }
 
     public static function get_active_ads_by_tag_id_and_page_num($tag_id, $where = 1, $page_num = 1, $order_by = 'score', $direction = 'ASC') {
-        $where = " id>0 AND status<>" . parent::S_DISABLED . " AND tids LIKE '%" . TNAME_SEPERATOR . $tag_id . TNAME_SEPERATOR . "%'";
+        $where = " id>0 AND (status=" . parent::S_CORRECT . 
+                ' OR status=' .  parent::S_ACTIVE . 
+                ' OR status=' .  parent::S_CLAIMED .  ") AND tids LIKE '%" . TNAME_SEPERATOR . $tag_id . TNAME_SEPERATOR . "%'";
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_active_ads_by_tag_id($tag_id, $where = 1) {
-        $where = "id>0 AND  status<>" . parent::S_DISABLED . " AND tids LIKE '%" . TNAME_SEPERATOR . $tag_id . TNAME_SEPERATOR . "%'";
+        $where = "id>0 AND (status=" . parent::S_CORRECT . 
+                ' OR status=' .  parent::S_ACTIVE . 
+                ' OR status=' .  parent::S_CLAIMED .  ") AND tids LIKE '%" . TNAME_SEPERATOR . $tag_id . TNAME_SEPERATOR . "%'";
         return parent::get_num($where);
     }
 

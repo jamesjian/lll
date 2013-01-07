@@ -8,6 +8,10 @@ use \Zx\Model\Mysql;
  * user, question, answer, ad, tag, claim
  *  # num_of_questions+num_of_answers+num_of_ads+num_of_question_votes+num_of_answer_votes
  * #score has been consumed by ad
+ * num_of_questions * score of question+num_of_answers * score of _answer 
+ * - invalid score
+ * 
+ * 
   CREATE TABLE user (
   id unsigned mediumint(7) AUTO_INCREMENT primary key,
    id1 varchar(44) not null unique,

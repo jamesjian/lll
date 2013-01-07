@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Module\User\Controller;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
+
 use \Zx\Controller\Route;
 use \Zx\View\View;
 use App\Transaction\Session as Transaction_Session;
@@ -12,7 +15,7 @@ use \App\Transaction\Question as Transaction_Question;
 /* * 
  * homepage: /=>/front/question/latest/page/1
  * latest: /front/question/latest/page/3
- 
+
  * most popular:/front/question/most_popular/page/3
  * question under category: /front/questioncategory/retrieve/$category_id_3/category_name.php
  * one: /front/question/content/$id/$question_url
@@ -48,7 +51,7 @@ class Question extends Base {
         //Transaction_Html::set_description($tag['name']);
         $order_by = 'date_created';
         $direction = 'DESC';
-        $where ='1';
+        $where = '1';
         $questions = Model_Question::get_active_questions_by_uid_and_page_num($uid, $where, $current_page, $order_by, $direction);
         //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $num_of_questions = Model_Question::get_num_of_active_questions_by_uid($uid);
@@ -62,38 +65,38 @@ class Question extends Base {
     }
 
     /**
-     * only owner of the question and no answer for it can be updated
+     * only owner of the question and S_ACTIVE/S_CORRECT can be updated
      */
     public function update() {
         $qid = (isset($params[0])) ? intval($params[0]) : 0;
         if ($qid > 0 && Model_Question::question_belong_to_user($qid, $this->uid)) {
             $question = Model_Question::get_one($qid);
-            if ($question['num_of_answers'] == 0) {
-
+            if ($question['status'] == Model_Question::S_ACTIVE ||
+                    $question['status'] == Model_Question::S_CORRECT) {
+                
             } else {
-                Message::set_error_message('已有人回答该问题， 只能补充信息');
+                Message::set_error_message('状态不允许更新');
             }
             View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('question', $question);            
+            View::set_action_var('question', $question);
         } else {
             Transaction_Html::goto_previous_user_page();
         }
     }
+
     /**
-     * only owner of the question and no answer for it can be updated
+     * IF NO ANSWER, can do this
+     * only set staus to s_DELETED
      */
     public function delete() {
         $qid = (isset($params[0])) ? intval($params[0]) : 0;
+        $question = Model_Question::get_one($qid);
         if ($qid > 0 && Model_Question::question_belong_to_user($qid, $this->uid)) {
-            $question = Model_Question::get_one($qid);
-            if ($question['num_of_answers'] == 0) {
-                Transaction_Question::delete_question($qid);
-            } else {
-                Message::set_error_message('已有人回答该问题， 不能删除');
-            }
-        } 
-            Transaction_Html::goto_previous_user_page();
-        
+            Transaction_Question::delete_question($qid);
+        } else {
+            Message::set_error_message('已有人回答该问题， 不能删除');
+        }
+        Transaction_Html::goto_previous_user_page();
     }
 
 }

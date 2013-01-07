@@ -16,14 +16,26 @@ class Claimcategory extends Base_Claimcategory {
      * get active cats order by category name
      */
     public static function get_cats() {
-        return array('1' => '造谣诽谤', '2' => '种族或宗教歧视', '3' => '色情',
+        return array('1' => '造谣诽谤', 
+            '2' => '种族或宗教歧视', 
+            '3' => '色情',
             '4' => '暴力， 虐待（人或动物）',
-            '5' => '违禁物品（毒品， 武器， 人体器官等）', '6' => '误导欺诈',
-            '7' => '与澳洲无关或无实质内容');
+            '5' => '违禁物品（毒品， 武器， 人体器官等）', 
+            '6' => '误导欺诈',
+            '7'=>'广告嫌疑',
+            '8' => '与澳洲无关或无实质内容');
     }
 
     public static function get_scores() {
-        return array('1' => 10, '2' => 10, '3' => 10, '4' => 10, '5' => 10, '6' => 10, '7' => 1);
+        return array(
+            '1' => 10, 
+            '2' => 10, 
+            '3' => 10, 
+            '4' => 10, 
+            '5' => 10, 
+            '6' => 10, 
+            '7' => 5, 
+            '8' => 2);
     }
 
     /**
@@ -35,6 +47,7 @@ class Claimcategory extends Base_Claimcategory {
         $scores = self::get_scores();
         if (array_key_exists($cat_id, $scores)) {
             return $scores[$cat_id];
-        } return false;
+        } 
+        return false;
     }
 }

@@ -5,7 +5,7 @@ include 'search.php';
 ?>
 <?php
 if ($ad_list) {
-$link_prefix = ADMIN_HTML_ROOT . "ad/retrieve/$current_page/";
+$link_prefix = ADMIN_HTML_ROOT . "ad/retrieve_claimed/$current_page/";
 $next_direction = ($direction == 'ASC') ? 'DESC' : 'ASC';  //change direction
 $link_postfix =  "/$next_direction/$search";
 $link_id = $link_prefix . 'id' . $link_postfix;
@@ -35,7 +35,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <?php
     foreach ($ad_list as $ad) {
 	$ad_id = $ad['id'];
-	$link_delete = ADMIN_HTML_ROOT . 'ad/delete/' . $ad_id;
+	$link_purge = ADMIN_HTML_ROOT . 'ad/purge/' . $ad_id;
 	$link_answers = ADMIN_HTML_ROOT . 'answer/retrive_by_ad_id/' . $ad_id;
 	$link_update = ADMIN_HTML_ROOT . 'ad/update/' . $ad_id;
 ?>
@@ -47,7 +47,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	<td><?php echo $ad['num_of_views'];?></td>
         <td><?php echo $user['score'];?></a></td>
         <td><?php echo $ad['status'];?></td>
-	<td><a href='<?php echo $link_delete;?>' class="delete_ad">delete</a></td>
+	<td><a href='<?php echo $link_purge;?>' class="delete_ad">Purge</a></td>
 	<td><a href='<?php echo $link_answers;?>'>Answers</a></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
 </tr>
@@ -56,7 +56,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	?>
 	</table>
 <?php
-$link_prefix = ADMIN_HTML_ROOT . 'ad/retrieve/';	
+$link_prefix = ADMIN_HTML_ROOT . 'ad/retrieve_claimed/';	
 $link_postfix = "/$order_by/$direction/$search";
 include ADMIN_VIEW_PATH . 'templates/pagination.php';
 } else {

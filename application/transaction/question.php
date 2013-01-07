@@ -37,12 +37,10 @@ class Question {
         if (isset($_SESSION['user'])) {
             $uid = $_SESSION['user']['uid'];
             $uname = $_SESSION['user']['uname'];
-            $status = 1;
         } else {
             $user = Model_User::get_default_question_user();
             $uid = $user['id'];
             $uname = $user['uname'];
-            $status = 1;
         }
         //prepare tag ids
         $tids = TNAME_SEPERATOR;
@@ -64,7 +62,7 @@ class Question {
         $arr['tnames'] = $tnames;
         $arr['uid'] = $uid;
         $arr['uname'] = $uname;
-        $arr['status'] = $status;
+        $arr['status'] = Model_Question::S_ACTIVE;
         $arr['num_of_answers'] = 0;
         $arr['num_of_views'] = 0;
         $arr['num_of_votes'] = 0;
@@ -296,18 +294,19 @@ class Question {
 
         if (Model_Question::can_be_deleted($id)) {
             $question = Model_Question::get_one($id);
-            if (Model_Question::delete($id)) {
+            $arr = array('status'=>  Model_Question::S_DELETED);
+            if (Model_Question::update($id, $arr)) {
                 Model_User::decrease_num_of_questions($question['uid']);
                 $tids = explode(',', substr($question['tids'], 0, -1)); //remove trailing seperator
-                Model_Tag::increase_num_of_ads_by_tids($tids);
-                Message::set_success_message('success');
+                Model_Tag::decrease_num_of_questions_by_tids($tids);
+                Message::set_success_message('问题已被删除。');
                 return true;
             } else {
-                Message::set_error_message('fail');
+                Message::set_error_message('系统出错， 请重试或与管理员联系。');
                 return false;
             }
         } else {
-            Message::set_error_message('has answer');
+            Message::set_error_message('该问题已有回答， 不能删除');
             return false;
         }
     }

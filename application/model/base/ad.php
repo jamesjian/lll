@@ -39,24 +39,34 @@ class Ad {
         'status', 'date_created', 'date_start', 'date_end');
     public static $table = TABLE_AD;
     /**for status
-     * when created or updated, it's STATUS_ACTIVE
-     * when somebody claim it, it's STATUS_CLAIMED
-     * when somebody claim it and it's checked by admin and not wrong, it's STATUS_CORRECT
-     * when somebody claim it and it's checked by admin and it's really bad, it's STATUS_DISABLED
-     * even if it's STATUS_CORRECT, but when it's updated, it's STATUS_ACTIVE
-     * STATUS_ACTIVE->STATUS_CLAIMED->STATUS_CORRECT     ->  STATUS_ACTIVE
-     * (created)       (claimed)       completely correct    updated
-     * STATUS_ACTIVE->STATUS_CLAIMED->STATUS_DISABLED  
-     * (created)       (claimed)       completely correct    updated
+     * 1. when created or updated, it's S_ACTIVE, user consume score, it can be updated, claimed
+     * 2. if  an ad not claimed, it can be deleted(not purge)  -> S_DELETED
+     *    if claimed, have to wait for admin to check it
+     * 3. only S_ACTIVE and S_CORRECT(will change to S_ACTIVE) can be updated by user
+     *    when somebody claim it, it's S_CLAIMED, it cannot be updated, deleted by user
+     *    when somebody claim it and it's checked by admin and not wrong, it's S_CORRECT, 
+     *     can be updated (status will change to S_ACTIVE), 
+     *     but cannot be claimed
+     *    when somebody claim it and it's checked by admin and it's really bad, it's S_DISABLED,  
+     *       cannot be claimed,  updated and deleted
+     * 4.  S_ACTIVE->S_CLAIMED->S_CORRECT->            (if updated) S_ACTIVE
+     *    (created)       (claimed)       completely correct    
+     *     S_ACTIVE->S_CLAIMED->S_DISABLED  
+     *    (created)       (claimed)       completely wrong   
+     * 5. only purged by admin
      * 
-     * STATUS_DISABLED cannot be changed by front user, but can be changed by admin when mistake happened
-     * in the front end, only STATUS_DISABLED will not display, others will display
+     * S_DISABLED can only be changed to S_DELETED by front user, but can be changed to other status by admin when mistake happened
+     * in the front end, only S_DISABLED and S_DELETED will not display, others will display
      * 
     */
     const S_DISABLED=0; //if this ad is wrong and disabled by admin
-    const S_CORRECT=1;   //if this ad completely correct
+    const S_CORRECT=1;   //if this ad completely correct, cannot be claimed
     const S_ACTIVE=2;  //if this ad is active and can be claimed
     const S_CLAIMED=3; //when it's claimed by user
+    const S_DELETED=4; //when it's deleted by user, num of ads will be decreased, 
+                       // keep record, can be purged by admin
+    const S_INACTIVE=5;  //if this ad is inactive by user
+        // (don't want it to be displayed but not deleted, the ad_id in answers will be reset to 0)
     /**
      *
      * @param int $id

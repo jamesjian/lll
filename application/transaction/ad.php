@@ -158,7 +158,39 @@ class Ad {
         }
     }
 
+    /**
+     * usually done by user
+     * 1. set status to S_DELETED
+     * 2. if original status is not S_DELETED, 
+     *    decrease num_of_ads in tag and user table
+     *    and adjust score of a user
+     * 3. set ad_id  to 0 for answers* 
+     * @param int $id
+     * @return boolean
+     */
     public static function delete_ad($id) {
+        $arr = array('status'=>  Model_Ad::S_DELETED);
+        if (Model_Ad::update($id,$arr)) {
+            
+            Message::set_success_message('success');
+            return true;
+        } else {
+            Message::set_error_message('fail');
+            return false;
+        }
+    }
+    /**
+     * only admin can purge an ad
+     * 1.delete record in ad table
+     * 2. if original status is not S_DELETED, 
+     *    decrease num_of_ads in tag and user table
+     *    and adjust score of a user
+     * 3. set ad_id  to 0 for answers
+     * 
+     * @param int $id
+     * @return boolean
+     */
+    public static function purge_ad($id) {
         if (Model_Ad::delete($id)) {
             Message::set_success_message('success');
             return true;

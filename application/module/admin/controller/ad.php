@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Module\Admin\Controller;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \Zx\Message\Message;
@@ -20,16 +22,15 @@ class Ad extends Base {
         \App\Transaction\Session::set_ck_upload_path('ad');
     }
 
-   
     /**
      * must have user id, title, content and tag
      */
     public function create() {
         $success = false;
-        if (isset($_POST['submit']) && 
-                isset($_POST['uid']) && 
-                isset($_POST['title']) && 
-                isset($_POST['content']) && 
+        if (isset($_POST['submit']) &&
+                isset($_POST['uid']) &&
+                isset($_POST['title']) &&
+                isset($_POST['content']) &&
                 isset($_POST['tnames'])) {
             $title = isset($_POST['title']) ? trim($_POST['title']) : '';
             $tnames = isset($_POST['tnames']) ? trim($_POST['tnames']) : '';
@@ -51,7 +52,7 @@ class Ad extends Base {
             }
         } else {
             $uid = isset($this->params[0]) ? intval($this->params[0]) : 0;
-            if (!Model_User::exist_uid($uid)){
+            if (!Model_User::exist_uid($uid)) {
                 Message::set_error_message('无效用户ID。');
                 header('Location: ' . $this->list_page);
             } else {
@@ -66,10 +67,10 @@ class Ad extends Base {
         }
     }
 
-    /** only admin has permission to delete or update the ads */
-    public function delete() {
+    /** only admin has permission to purge an ad */
+    public function purge() {
         $id = $this->params[0];
-        Transaction_Ad::delete_ad($id);
+        Transaction_Ad::purge_ad($id);
         header('Location: ' . $this->list_page);
     }
 
@@ -109,11 +110,12 @@ class Ad extends Base {
     }
 
     /**
+     * all records
       /page/orderby/direction/search
      * page, orderby, direction, search can be empty
      */
     public function retrieve() {
-       if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
+        if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
             \App\Transaction\Html::remember_current_admin_page();
         }
         \App\Transaction\Session::set_admin_current_l1_menu('Ad');
@@ -141,24 +143,17 @@ class Ad extends Base {
     }
 
     /**
-     * under one category
-      retrieve_by_cat_id/cat_id/page/orderby/direction
+     * all records under one user
+      retrieve_by_uid/user_id/page/orderby/direction
      */
     public function retrieve_by_uid() {
-       if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
-            \App\Transaction\Html::remember_current_admin_page();
-        }
+        \App\Transaction\Html::remember_current_admin_page();
         //\App\Transaction\Session::set_current_l1_menu('Ad');
         $uid = isset($this->params[0]) ? intval($this->params[0]) : 0;
         $current_page = isset($this->params[1]) ? intval($this->params[1]) : 1;
         $order_by = isset($this->params[2]) ? $this->params[2] : 'id';
         $direction = isset($this->params[3]) ? $this->params[3] : 'ASC';
-        $search = isset($this->params[4]) ? $this->params[4] : '';
-        if ($search != '') {
-            $where = " title LIKE '%$search%' OR tnames LIKE '%$search%'";
-        } else {
-            $where = '1';
-        }
+        $where = 1;
         $ad_list = Model_Ad::get_ads_by_uid_and_page_num($uid, $where, $current_page, $order_by, $direction);
         $num_of_records = Model_Ad::get_num_of_ads($where);
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
@@ -167,7 +162,115 @@ class Ad extends Base {
         View::set_view_file($this->view_path . 'retrieve_by_uid.php');
         View::set_action_var('uid', $uid);
         View::set_action_var('ad_list', $ad_list);
-        View::set_action_var('search', $search);
+        View::set_action_var('order_by', $order_by);
+        View::set_action_var('direction', $direction);
+        View::set_action_var('current_page', $current_page);
+        View::set_action_var('num_of_pages', $num_of_pages);
+    }
+
+    /**
+     * disabled status S_DISABLED
+     */
+    public function retrieve_disabled() {
+        \App\Transaction\Html::remember_current_admin_page();
+        \App\Transaction\Session::set_admin_current_l1_menu('Ad');
+        $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
+        $order_by = isset($this->params[1]) ? $this->params[1] : 'id';
+        $direction = isset($this->params[2]) ? $this->params[2] : 'DESC';
+        $where = ' status=' . Model_Ad::S_DISABLED;
+        $ad_list = Model_Ad::get_ads_by_page_num($where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Ad::get_num_of_ads($where);
+        $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
+        View::set_view_file($this->view_path . 'retrieve_disabled.php');
+        View::set_action_var('ad_list', $ad_list);
+        View::set_action_var('order_by', $order_by);
+        View::set_action_var('direction', $direction);
+        View::set_action_var('current_page', $current_page);
+        View::set_action_var('num_of_pages', $num_of_pages);
+    }
+
+    /**
+     * deleted status S_DELETED
+     * deleted by user not admin
+     */
+    public function retrieve_deleted() {
+        \App\Transaction\Html::remember_current_admin_page();
+        \App\Transaction\Session::set_admin_current_l1_menu('Ad');
+        $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
+        $order_by = isset($this->params[1]) ? $this->params[1] : 'id';
+        $direction = isset($this->params[2]) ? $this->params[2] : 'DESC';
+        $where = ' status=' . Model_Ad::S_DELETED;
+        $ad_list = Model_Ad::get_ads_by_page_num($where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Ad::get_num_of_ads($where);
+        $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
+        //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
+        View::set_view_file($this->view_path . 'retrieve_deleted.php');
+        View::set_action_var('ad_list', $ad_list);
+        View::set_action_var('order_by', $order_by);
+        View::set_action_var('direction', $direction);
+        View::set_action_var('current_page', $current_page);
+        View::set_action_var('num_of_pages', $num_of_pages);
+    }
+
+    public function retrieve_claimed() {
+        \App\Transaction\Html::remember_current_admin_page();
+        \App\Transaction\Session::set_admin_current_l1_menu('Ad');
+        $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
+        $order_by = isset($this->params[1]) ? $this->params[1] : 'id';
+        $direction = isset($this->params[2]) ? $this->params[2] : 'DESC';
+        $where = ' status=' . Model_Ad::S_CLAIMED;
+        $ad_list = Model_Ad::get_ads_by_page_num($where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Ad::get_num_of_ads($where);
+        $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
+        //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
+        View::set_view_file($this->view_path . 'retrieve_claimed.php');
+        View::set_action_var('ad_list', $ad_list);
+        View::set_action_var('order_by', $order_by);
+        View::set_action_var('direction', $direction);
+        View::set_action_var('current_page', $current_page);
+        View::set_action_var('num_of_pages', $num_of_pages);
+    }
+
+    public function retrieve_correct() {
+        \App\Transaction\Html::remember_current_admin_page();
+        \App\Transaction\Session::set_admin_current_l1_menu('Ad');
+        $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
+        $order_by = isset($this->params[1]) ? $this->params[1] : 'id';
+        $direction = isset($this->params[2]) ? $this->params[2] : 'DESC';
+        $where = ' status=' . Model_Ad::S_CORRECT;
+        $ad_list = Model_Ad::get_ads_by_page_num($where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Ad::get_num_of_ads($where);
+        $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
+        //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
+        View::set_view_file($this->view_path . 'retrieve_correct.php');
+        View::set_action_var('ad_list', $ad_list);
+        View::set_action_var('order_by', $order_by);
+        View::set_action_var('direction', $direction);
+        View::set_action_var('current_page', $current_page);
+        View::set_action_var('num_of_pages', $num_of_pages);
+    }
+
+    /**
+     * only S_ACTIVE 
+     * 
+     */
+    public function retrieve_active() {
+        \App\Transaction\Html::remember_current_admin_page();
+        \App\Transaction\Session::set_admin_current_l1_menu('Ad');
+        $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
+        $order_by = isset($this->params[1]) ? $this->params[1] : 'id';
+        $direction = isset($this->params[2]) ? $this->params[2] : 'DESC';
+        $where = ' status=' . Model_Ad::S_ACTIVE;
+        $ad_list = Model_Ad::get_ads_by_page_num($where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Ad::get_num_of_ads($where);
+        $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
+        //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
+        View::set_view_file($this->view_path . 'retrieve_active.php');
+        View::set_action_var('ad_list', $ad_list);
         View::set_action_var('order_by', $order_by);
         View::set_action_var('direction', $direction);
         View::set_action_var('current_page', $current_page);
