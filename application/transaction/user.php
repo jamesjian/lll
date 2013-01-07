@@ -12,21 +12,21 @@ use \Zx\Message\Message as Zx_Message;
 use \Zx\Tool\Upload as Zx_Upload;
 
 class User {
+
     /**
      * mainly for front end
      * @param int $uid  
      * @return string 
      */
-    public static function get_link($uid)
-    {
+    public static function get_link($uid) {
         $user = Model_User::get_one($uid);
         $link = FRONT_HTML_ROOT . 'user/detail/' . $user['id1'];
         if (isset($user['name'])) {
             $link .= '/' . $user['name'];
         }
         return $link;
-        
     }
+
     /**
      * @param type $uid
      * @return type
@@ -193,17 +193,17 @@ class User {
         if (Model_User::exist_uname($user_arr['uname']) ||
                 Model_User::exist_email($user_arr['email'])
         ) {
-            Zx_Message::set_error_message("用户名或电子邮箱已经被注册， 请用其他用户名或电子邮箱注册。");
+            Zx_Message::set_error_message(Model_User::M_INVALID_USERNAME);
             return false;
         } else {
-            $user_arr['status'] = 1; //activated status is 1, registered status is 2, currently set it to 1 to avoid activate (no email now)
+            $user_arr['status'] = Model_User::S_REGISTERED; //activated status is 1, registered status is 2, currently set it to 1 to avoid activate (no email now)
             if ($uid = Model_User::create($user_arr)) {
                 $user_arr['id'] = $uid;
                 //App_Swiftmailer::send_activation_link($user_arr);
                 //App_Session::set_success_message("感谢您在" . SITENAME . "注册， 我们已经发送邮件到您的电子邮箱， 请查看邮件并激活您的账户。 ");
                 return true;
             } else {
-                Zx_Message::set_error_message("您的账户未注册成功， 请重新注册。");
+                Zx_Message::set_error_message(Model_User::M_SYSTEM_ERROR);
                 return false;
             }
         }
@@ -216,33 +216,43 @@ class User {
      * @return boolean 
      */
     public static function activate_user($uid, $code) {
+        $success = false;
         $user = Model_User::get_one($uid);
-        $code1 = substr(md5($user->id), 1, 10) . substr(md5($user->email), 1, 10) . substr(md5($user->uname), 1, 12);
-        if ($code == $code1) {
-            $arr = array('status' => 1); //active
-            Model_User::update($user, $arr);
-            Zx_Message::set_success_message("您的账户已经激活成功， 您现在就可以登录您的账户。 ");
-            /** to go to account home page directly, store session data
-             * copy from self::valid_user() method
-             * start */
-            $user = Model_User::get_one($uid);
+        switch ($user['status']) {
+            case Model_User::S_REGISTERED:
+                $code1 = substr(md5($user->id), 1, 10) . substr(md5($user->email), 1, 10) . substr(md5($user->uname), 1, 12);
+                if ($code == $code1) {
+                    $arr = array('status' => Model_User::S_ACTIVE); //active
+                    Model_User::update($user, $arr);
+                    Zx_Message::set_success_message(Model_User::M_SUCCESSFUL_ACTIVATION);
+                    /** to go to account home page directly, store session data
+                     * copy from self::valid_user() method
+                     * start */
+                    $user = Model_User::get_one($uid);
 
-            if ($user) {
-                $session_array = array(
-                    'uid' => $user->id,
-                    'uname' => $uname,
-                );
-
-                session_regenerate_id();
-                Zx_Message::set_success_message("您的账户已激活成功， 您可以开始操作您的账户。");
-                $_SESSION['user'] = $session_array;
-            }
-            /** end  */
-            return true;
-        } else {
-            Zx_Message::set_error_message("对不起， 您的账户未激活成功， 请重新激活， 或由网站重新发送一个激活邮件。");
-            return false;
+                    if ($user) {
+                        $session_array = array(
+                            'uid' => $user->id,
+                            'uname' => $uname,
+                        );
+                        session_regenerate_id();
+                        Zx_Message::set_success_message(Model_User::M_SUCCESSFUL_ACTIVATION);
+                        $_SESSION['user'] = $session_array;
+                    }
+                    /** end  */
+                    $success = true;
+                } else {
+                    Zx_Message::set_error_message(Model_User::M_UNSUCCESSFUL_ACTIVATION);
+                }
+                break;
+            case Model_User::S_ACTIVE:
+                Zx_Message::set_error_message(Model_User::M_UNSUCCESSFUL_ACTIVATION);
+                break;
+            case Model_User::S_DISABLED:
+                Zx_Message::set_error_message(Model_User::M_UNSUCCESSFUL_ACTIVATION);
+                break;
         }
+        return $success;
     }
 
     /**
@@ -260,22 +270,26 @@ class User {
         }
         if ($uid) {
             $user = Model_User::get_one($uid);
-            if ($user->status == '2') {
-//App_Test::objectLog('success','2', __FILE__, __LINE__, __CLASS__, __METHOD__);
-                //if inactivated, send activation link
-                $user_arr = array('id' => $uid, 'uname' => $user->uname, 'email' => $user->email);
-                Transaction_Swiftmail::send_activation_link($user_arr);
-                Zx_Message::set_success_message("我们已经发送了激活邮件到您的邮箱， 请您检查邮箱并激活您的账户.");
-                return true;
-            } else {
-                //              App_Test::objectLog('fail','1', __FILE__, __LINE__, __CLASS__, __METHOD__);
-                //otherwise, ignore it
-                Zx_Message::set_error_message("您的账户已经激活， 您现在就可以登录您的账户.");
-                return false;
+            $success = false;
+            $user = Model_User::get_one($uid);
+            switch ($user['status']) {
+                case Model_User::S_REGISTERED:
+                    //if inactivated, send activation link
+                    $user_arr = array('id' => $uid, 'uname' => $user->uname, 'email' => $user->email);
+                    Transaction_Swiftmail::send_activation_link($user_arr);
+                    Zx_Message::set_success_message(Model_User::M_REPEAT_ACTIVATION);
+                    return true;
+                    break;
+                case Model_User::S_ACTIVE:
+                    Zx_Message::set_success_message(Model_User::M_SUCCESSFUL_ACTIVATION);
+                    break;
+                case Model_User::S_DISABLED:
+                    Zx_Message::set_error_message(Model_User::M_UNSUCCESSFUL_ACTIVATION);
+                    break;
             }
         } else {
             //         App_Test::objectLog('fail','3', __FILE__, __LINE__, __CLASS__, __METHOD__);
-            Zx_Message::set_error_message("对不起， 您的用户名或邮箱不正确， 请重新输入.");
+            Zx_Message::set_error_message();
             return false;
         }
     }
@@ -320,7 +334,7 @@ class User {
      */
     public static function update_user($uid, $user_arr) {
         if (
-                //!Model_User::duplicate_uname_or_email($uid, $user_arr['uname']) AND
+        //!Model_User::duplicate_uname_or_email($uid, $user_arr['uname']) AND
                 !Model_User::duplicate_uname_or_email($uid, $user_arr['email'])) {
             if (Model_User::update($uid, $user_arr)) {
                 \Zx\Message\Message::set_success_message("用户信息已更新.");
@@ -330,7 +344,7 @@ class User {
                 return false;
             }
         } else {
-           \Zx\Message\Message::set_error_message("用户名或邮箱已在本网站注册。");
+            \Zx\Message\Message::set_error_message("用户名或邮箱已在本网站注册。");
             return false;
         }
     }
@@ -371,6 +385,7 @@ class User {
             return false;
         }
     }
+
     /**
      * for front end user
      * @return <integer>  if has user id, return it, otherwise, return 0
@@ -456,7 +471,8 @@ class User {
             return false;
         }
     }
-/**
+
+    /**
       To avoid generating passwords containing offensive words,
       vowels are excluded from the list of possible characters.
       To avoid confusing users, pairs of characters which look similar
@@ -503,5 +519,6 @@ class User {
         // done!
         return $password;
     }
+
 }
 

@@ -81,8 +81,10 @@ class Ad extends Base {
     }
 
     /**
-     * only my ads
+     * list ads by user id, the user must be current loggin user
+     * it's not a public page
      * pagination
+     * ad/user/userid/page
      */
     public function user() {
         if (!\App\Transaction\Html::previous_user_page_is_search_page()) {

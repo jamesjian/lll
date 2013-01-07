@@ -36,7 +36,14 @@ class User {
     const S_ACTIVE = 1; //if this user is active
     const S_DISABLED = 2;  //if this user is disabled by admin
     const M_SUCCESSFUL_REGISTRATION = "感谢您注册账户， 我们已经发送邮件到您的电子邮箱，请查看邮件并激活您的账户。" ;
+    const M_SUCCESSFUL_ACTIVATION = "您的账户已经激活成功， 您现在就可以登录您的账户。 " ;
+    const M_REPEAT_ACTIVATION = "我们已经发送了激活邮件到您的邮箱， 请您检查邮箱并激活您的账户." ;
+    const M_UNSUCCESSFUL_ACTIVATION = "对不起， 您的账户未激活成功， 请重新激活， 或由网站重新发送一个激活邮件。";
     const M_WRONG_VCODE = '您未输入验证码或输入的验证码不正确， 请重新输入';
+    const M_INVALID_USERNAME = '用户名或电子邮箱已经被注册， 请用其他用户名或电子邮箱注册。';
+    const M_REGISTRATION_SYSTEM_ERROR = '系统出错， 请重新注册。';
+    const M_LOGIN_SYSTEM_ERROR = '系统出错， 请重新登录。';
+    const M_WRONG_USERNAME = "对不起， 您的用户名或邮箱不正确， 请重新输入.";
     
     public static function get_one($id) {
         $sql = "SELECT * FROM " . self::$table . " WHERE id=:id";
@@ -80,7 +87,7 @@ class User {
         if (crypt($user_input, $password) == $password) {
             echo "Password verified!";
         }
-
+    
      * @param array $arr
      * @return false or id
      */

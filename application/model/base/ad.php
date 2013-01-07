@@ -7,7 +7,9 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 
 /*
-  if completely valid, 0, else 1*
+  id=0 is a dummy ad
+  active ads means not disabled by admin
+ * including completely correct, claimed or acitve (not claimed)
  * 
  * 
   update ts8wl_answer set id1=concat(convert(2*id, char(11)), md5(id))
@@ -51,7 +53,7 @@ class Ad {
      * in the front end, only STATUS_DISABLED will not display, others will display
      * 
     */
-    const S_DISABLED=0; //if this ad is disabled by admin
+    const S_DISABLED=0; //if this ad is wrong and disabled by admin
     const S_CORRECT=1;   //if this ad completely correct
     const S_ACTIVE=2;  //if this ad is active and can be claimed
     const S_CLAIMED=3; //when it's claimed by user
