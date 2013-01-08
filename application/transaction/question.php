@@ -13,22 +13,27 @@ use \Zx\Model\Mysql;
 //use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Question {
+
     /**
      * mainly for front end
      * @param array $question  record
      * @return string 
      */
-    public static function get_link($question)
-    {
+    public static function get_link($question) {
         $link = FRONT_HTML_ROOT . 'question/content/' . $question['id1'];
         return $link;
-        
     }
+
     /**
      * in controller, it must have title, content and tnames
      * if user has logged in, fill the user id and status=1 (active)
      * otherwise, fill the user id with default question user id and status=0 (inactive)
      * $arr['tnames'] is an array (tag1, tag2, tag3, tag4, tag5), can be less than 5
+     * when create a new question:
+     * 1. a new record in question table
+     * 2. records in tag table, increase num_of_questions for each tag
+     * 3. if loggedin user, increase num_of_questions for this user
+     * 
      * @param type $arr
      */
     public static function create($arr = array()) {
@@ -44,22 +49,20 @@ class Question {
         }
         //prepare tag ids
         $tids = TNAME_SEPERATOR;
-        $tnames = TNAME_SEPERATOR;
         $arr['tnames'] = array_unique($arr['tnames']); //remove duplicate entry
         foreach ($arr['tnames'] as $tag) {
-            $tnames .= $tag . TNAME_SEPERATOR;
             if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
                 $tid = $existing_tag['id'];
                 Model_Tag::increase_num_of_questions($tid);
-                $tids .=  $tid. TNAME_SEPERATOR;
+                $tids .= $tid . TNAME_SEPERATOR;
             } else {
                 $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //have one already
                 $tid = Model_Tag::create($tag_arr);
                 $tids .= $tid . TNAME_SEPERATOR;
-            }            
+            }
         }
         $arr['tids'] = $tids;
-        $arr['tnames'] = $tnames;
+        $arr['tnames'] = TNAME_SEPERATOR . implode(TNAME_SEPERATOR, $arr['tnames']) . TNAME_SEPERATOR; //array to string
         $arr['uid'] = $uid;
         $arr['uname'] = $uname;
         $arr['status'] = Model_Question::S_ACTIVE;
@@ -205,11 +208,17 @@ class Question {
     /**
      * tag names change, tag ids change, and num_of_questions of tags change
      * hint: array_diff($arr1, $arr2), if an element in arr1, but not in arr2, it will be in the result array
+     * 
+     * 1. title and content change 
+     * 2. tag change
+     *    new tag, old tag
+     *     num_of_questions for these tags
+     * 
      * @param type $id
-     * @param type $arr
+     * @param array $arr  $arr['tnames'] is an array
      * @return boolean
      */
-    public static function update_question($id = 0, $arr = array()) {
+    public static function update($id = 0, $arr = array()) {
         //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         if (count($arr) > 0) {
@@ -228,8 +237,8 @@ class Question {
             $question = Model_Question::get_one($id);
             $old_tags = explode(TNAME_SEPERATOR, substr($question['tnames'], 1, -1)); //remove first and last TNAME_SEPERATOR
             //$new_tnames = $arr['tnames'];
-
-            $new_tags = explode(TNAME_SEPERATOR, substr($arr['tnames'], 1, -1));//remove first and last TNAME_SEPERATOR
+            $arr['tnames'] = array_unique($arr['tnames']); //remove duplicate
+            $new_tags = $arr['tnames']; //it's an array already
 
             $new_difference = array_diff($new_tags, $old_tags);
             $old_difference = array_diff($old_tags, $new_tags);
@@ -263,20 +272,22 @@ class Question {
                 foreach ($new_tags as $tag) {
                     if ($tag_id = Model_Tag::exist($tag)) {
                         //must exist
-                        $tids .= $tag_id .TNAME_SEPERATOR;
+                        $tids .= $tag_id . TNAME_SEPERATOR;
                         $arr['tids'] = $tids;
                     }
                 }
             }
+            $arr['tnames'] = TNAME_SEPERATOR . implode(TNAME_SEPERATOR, $arr['tnames']) . TNAME_SEPERATOR; //array to string
+            $arr['status'] = Model_Question::S_ACTIVE;//anytime updated, the status will be reset to S_ACTIVE, can be claimed
             if (Model_Question::update($id, $arr)) {
-                Message::set_success_message('success');
+                Message::set_success_message('更新问题成功');
                 return true;
             } else {
-                Message::set_error_message('fail');
+                Message::set_error_message(SYSTEM_ERROR_MESSAGE);
                 return false;
             }
         } else {
-            Message::set_error_message('wrong info');
+            Message::set_error_message('问题信息不完整。');
             return false;
         }
     }
@@ -292,21 +303,16 @@ class Question {
      */
     public static function delete_question($id) {
 
-        if (Model_Question::can_be_deleted($id)) {
-            $question = Model_Question::get_one($id);
-            $arr = array('status'=>  Model_Question::S_DELETED);
-            if (Model_Question::update($id, $arr)) {
-                Model_User::decrease_num_of_questions($question['uid']);
-                $tids = explode(',', substr($question['tids'], 0, -1)); //remove trailing seperator
-                Model_Tag::decrease_num_of_questions_by_tids($tids);
-                Message::set_success_message('问题已被删除。');
-                return true;
-            } else {
-                Message::set_error_message('系统出错， 请重试或与管理员联系。');
-                return false;
-            }
+        $question = Model_Question::get_one($id);
+        $arr = array('status' => Model_Question::S_DELETED);
+        if (Model_Question::update($id, $arr)) {
+            Model_User::decrease_num_of_questions($question['uid']);
+            $tids = explode(TNAME_SEPERATOR, substr($question['tids'], 0, -1)); //remove trailing seperator
+            Model_Tag::decrease_num_of_questions_by_tids($tids);
+            Message::set_success_message('问题已被删除。');
+            return true;
         } else {
-            Message::set_error_message('该问题已有回答， 不能删除');
+            Message::set_error_message('系统出错， 请重试或与管理员联系。');
             return false;
         }
     }

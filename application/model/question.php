@@ -47,7 +47,12 @@ class Question extends Base_Question {
     public static function can_be_deleted($id){
          $question = parent::get_one($id);
 //\Zx\Test\Test::object_log('$question', $question, __FILE__, __LINE__, __CLASS__, __METHOD__);         
-         if ($question && $question['num_of_answers']==0 && $question['num_of_votes'] == 0) {
+         if ($question 
+                 && $question['status'] <>parent::S_CLAIMED 
+                 && $question['status'] <>parent::S_CORRECT
+                 && $question['status'] <>parent::S_DELETED
+                 && $question['num_of_answers']==0 && $question['num_of_votes'] == 0
+                 ) {
              return true;
          } else {
              return false;

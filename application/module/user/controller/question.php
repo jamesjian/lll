@@ -7,7 +7,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Controller\Route;
 use \Zx\View\View;
 use App\Transaction\Session as Transaction_Session;
-use \Zx\Message\Message;
+use \Zx\Message\Message as Zx_Message;
 use App\Transaction\Html as Transaction_Html;
 use \App\Model\Question as Model_Question;
 use \App\Transaction\Question as Transaction_Question;
@@ -68,33 +68,81 @@ class Question extends Base {
      * only owner of the question and S_ACTIVE/S_CORRECT can be updated
      */
     public function update() {
-        $qid = (isset($params[0])) ? intval($params[0]) : 0;
-        if ($qid > 0 && Model_Question::question_belong_to_user($qid, $this->uid)) {
-            $question = Model_Question::get_one($qid);
-            if ($question['status'] == Model_Question::S_ACTIVE ||
-                    $question['status'] == Model_Question::S_CORRECT) {
-                
+        $success = false;
+        $posted = array();
+        $errors = array();
+        if (isset($_POST['submit'])) {
+            $qid = (isset($_POST['qid'])) ? intval($_POST['qid']) : 0;
+            if ($qid > 0) {
+                $question = Model_Question::get_one($qid);
+                if ($question && $question['uid'] == $this->uid &&
+                        ($question['status'] == Model_Question::S_ACTIVE ||
+                        $question['status'] == Model_Question::S_CORRECT)) {
+                    //must be the owner of the question and correct status
+                    if (isset($_POST['title']) && !empty($_POST['title']) &&
+                            isset($_POST['content']) && !empty($_POST['content']) &&
+                            (!empty($_POST['tname1']) || !empty($_POST['tname2']) ||
+                            !empty($_POST['tname3']) || !empty($_POST['tname4']) ||
+                            !empty($_POST['tname5']))) {
+                        $title = trim($_POST['title']);
+                        $region = isset($_POST['region']) ? trim($_POST['region']) : 'AU';
+                        $tnames = array();
+                        for ($i = 1; $i <= NUM_OF_TNAMES_PER_ITEM; $i++) {
+                            $index = 'tname' . $i;
+                            if (isset($_POST[$index])) {
+                                $tag = Transaction_Tool::get_clear_string($_POST[$index]);
+                                if ($tag <> '') {
+                                    //only contain valid tag
+                                    $tnames[] = $tag;
+                                }
+                            }
+                        }
+                        $content = trim($_POST['content']);
+                        $arr = array('title' => $title,
+                            'tnames' => $tnames,
+                            'content' => $content,
+                            'region' => $region,
+                        );
+                        if (Transaction_Question::update($qid, $arr)) {
+                            $success = true;
+                        } else {
+                            //system error?
+                        }
+                    } else {
+                        Zx_Message::set_error_message('标题， 内容和关键词请填写完整。');
+                    }
+                } else {
+                    Zx_Message::set_error_message('该问题目前不允许更新， 请登录您的账户查看原因');
+                }
             } else {
-                Message::set_error_message('状态不允许更新');
+                Zx_Message::set_error_message('无效的问题。');
             }
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('question', $question);
-        } else {
             Transaction_Html::goto_previous_user_page();
+        } else {
+            $qid = (isset($params[0])) ? intval($params[0]) : 0;
+            $question = Model_Question::get_one($qid);
+            if ($question) {
+                View::set_view_file($this->view_path . 'update.php');
+                View::set_action_var('question', $question);
+            } else {
+                Zx_Message::set_error_message('无效的问题。');
+                Transaction_Html::goto_previous_user_page();
+            }
         }
     }
 
     /**
-     * IF NO ANSWER, can do this
-     * only set staus to s_DELETED
+     * if a question has an answer or voted or claimed or correct, it can not be deleted
+     * only set staus to S_DELETED
      */
     public function delete() {
         $qid = (isset($params[0])) ? intval($params[0]) : 0;
-        $question = Model_Question::get_one($qid);
-        if ($qid > 0 && Model_Question::question_belong_to_user($qid, $this->uid)) {
+        if ($qid > 0 && Model_Question::question_belong_to_user($qid, $this->uid
+                        && Model_Question::can_be_deleted($qid)
+        )) {
             Transaction_Question::delete_question($qid);
         } else {
-            Message::set_error_message('已有人回答该问题， 不能删除');
+            Message::set_error_message('该问题不能被删除。');
         }
         Transaction_Html::goto_previous_user_page();
     }

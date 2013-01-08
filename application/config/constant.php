@@ -79,6 +79,7 @@ define('MEMBER_NAMESPACE', 'Mem');
 define('ADMIN_NAMESPACE', 'Admin');
 define('VOTE_TITLE','关注');
 define('CLAIM_TITLE','举报');
+define('SYSTEM_ERROR_MESSAGE','系统故障， 请重试或联系网站管理员。');
 
 
 

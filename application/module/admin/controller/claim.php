@@ -25,6 +25,9 @@ class Claim extends Base {
         \App\Transaction\Session::set_ck_upload_path('claim');
     }
 
+    /**
+     * usually a claim cannot be deleted, it's for reference in the future
+     */
     public function delete() {
         $id = $this->params[0];
         Transaction_Claim::delete_claim($id);
@@ -33,9 +36,9 @@ class Claim extends Base {
 
     /**
      * only change status
-       original status is "not confirmed"
-     * new status will be "confirmed" if item is bad
-     * or "cancelled" if item is good
+       original status is S_CREATED
+     * new status will be S_CORRECT_CLAIM if item is BAD
+     * or S_WRONG_CLAIM if item is GOOD
      * change status of item and claim
      * add score to item and user
      */

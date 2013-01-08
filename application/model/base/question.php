@@ -34,7 +34,8 @@ class Question {
     public static $table = TABLE_QUESTION;
     /**for status
      * 1. when created or updated, it's S_ACTIVE, user get score, it can be updated, claimed
-     * 2. if  a question has an answer or voted or claimed, it can not be deleted
+     *    only S_ACTIVE can be claimed
+     * 2. if  a question has an answer or voted or claimed or correct, it can not be deleted
      *    if claimed, have to wait for admin to check it
      *    if has vote, it's valuable  
      *    if not claimed and no answer (num_of_answers=0) it can be deleted(not purge)  -> S_DELETED
@@ -60,7 +61,6 @@ class Question {
     const S_ACTIVE=2;  //if this question is active and can be claimed
     const S_CLAIMED=3; //when it's claimed by user
     const S_DELETED=4; //when it's deleted by user
-    
     /**
      *
      * @param int $id

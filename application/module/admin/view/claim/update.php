@@ -38,15 +38,15 @@
             <dd>
                 <?php
                 if ($claim['status'] == '1') {
-                    $active_checked = ' checked';
-                    $inactive_checked = '';
+                    $correct_checked = ' checked';
+                    $wrong_checked = '';
                 } else {
-                    $inactive_checked = ' checked';
-                    $active_checked = '';
+                    $wrong_checked = ' checked';
+                    $correct_checked = '';
                 }
                 ?>
-                <input type="radio" name="status" value="1" <?php echo $active_checked; ?>/>Active    
-                <input type="radio" name="status" value="0"  <?php echo $inactive_checked; ?>/>Inactive     
+                <input type="radio" name="status" value="1" <?php echo $correct_checked; ?>/>Correct claim    
+                <input type="radio" name="status" value="0"  <?php echo $wrong_checked; ?>/>Wrong claim    
             </dd>
             <dt> <input type="hidden" name="id" value="<?php echo $claim['id']; ?>" /></dt>
             <dd> <input type="submit" name="submit" value="update" /></dd>

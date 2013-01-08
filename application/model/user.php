@@ -110,7 +110,7 @@ class User extends Base_User {
     public static function decrease_num_of_questions($uid) {
         $sql = "UPDATE " . parent::$table . " SET num_of_questions=num_of_questions-1,
              score=score-" . SCORE_OF_QUESTION . " WHERE id=:id";
-        \Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $params = array(':id' => $uid);
         return Mysql::exec($sql, $params);
     }

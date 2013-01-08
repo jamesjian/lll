@@ -33,6 +33,9 @@ class Claim extends Base {
 
     /**
      * claim_popup_form/1/5: first 1 is item type, 1: question, 2: answer, 3:ad,  second 5 is item id
+     * only loggedin user can claim
+     * the popup form provide fields to fill account info
+     * 
      */
     public function claim_popup_form() {
         $item_type = $this->params[0];
@@ -87,11 +90,12 @@ class Claim extends Base {
                 $cat_id = intval($_POST['cat_id']);
                 $item_type = $this->params[0];
                 $item_id = $this->params[1];
-                if (Transaction_Claim::claim($item_type, $item_id, $user)) {
+                if (Transaction_Claim::claim($item_type, $item_id, $cat_id, $user)) {
                      Zx_Message::set_error_message("感谢您的举报， 我们会尽快核实并作出处理。");
 
                 } else {
-                   Zx_Message::set_error_message("您提交的信息有误， 请重新操作。");
+                    //Transaction_Claim provide error message
+                   //Zx_Message::set_error_message("您提交的信息有误， 请重新操作。");
                 }
             } 
         } 

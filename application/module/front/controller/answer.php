@@ -198,7 +198,7 @@ class Answer extends Base {
                  Transaction_Html::goto_previous_page();
             }
         } else {
-            Zx_Message::set_error_message(' content can not be empty。');
+            Zx_Message::set_error_message('您未回答问题。');
         }
         header('Location: ' . FRONT_HTML_ROOT . 'question/content/' . $qid);
         //always go to question or question list page

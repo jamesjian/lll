@@ -26,20 +26,27 @@ class Answer {
         return $link;
         
     }
+    /**
+     * answer question
+     * 1. num of answer for question 
+     * 1. num of answer and score for user
+     *  
+     * @param array $arr
+     * @return boolean
+     */
+    
     public static function reply_question($arr = array()) {
         if (isset($_SESSION['user'])) {
             $uid = $_SESSION['user']['uid'];
             $uname = $_SESSION['user']['uname'];
-            $status = 1;
         } else {
             $user = Model_User::get_default_answer_user();
             $uid = $user['id'];
             $uname = '匿名回答用户';
-            $status = 0;
         }
         $arr['uid'] = $uid;
         $arr['uname'] = $uname;
-        $status = $status;
+        $status = Model_Answer::S_ACTIVE;
         if (count($arr) > 0 &&
                 isset($arr['content']) && trim($arr['content']) != ''
         ) {
@@ -47,10 +54,10 @@ class Answer {
             if (Model_Answer::create($arr)) {
                 Model_Question::increase_num_of_answers($arr['qid']);
                 Model_User::increase_num_of_answers($arr['uid']);
-                Message::set_success_message('success');
+                Message::set_success_message('感谢您回答问题。');
                 return true;
             } else {
-                Message::set_error_message('fail');
+                Message::set_error_message(SYSTEM_ERROR_MESSAGE);
                 return false;
             }
         } else {
