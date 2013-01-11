@@ -20,6 +20,8 @@ class Tag {
     public static $fields = array('id','name','num_of_questions','num_of_ads',
         'num_of_views','transfer_to', 'status', 'date_created');
     public static $table = TABLE_TAG;
+    const S_DISABLED=0; //if this tag is wrong and disabled by admin such as porn
+    const S_ACTIVE=1;  //if this tag is active 
     /**
      *
      * @param int $id
@@ -85,6 +87,12 @@ class Tag {
         return Mysql::insert($sql, $params);
     }
 
+    /**
+     * 
+     * @param int $id
+     * @param array $arr
+     * @return boolean
+     */
     public static function update($id, $arr) {
         $update_arr = array();$params = array();
         foreach (self::$fields as $field) {

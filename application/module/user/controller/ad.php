@@ -27,7 +27,7 @@ class Ad extends Base {
     public $list_page;
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/user/view/ad/';
+        $this->view_path = USER_VIEW_PATH . 'ad/';
         $this->list_page = USER_HTML_ROOT . 'ad/user/' . $this->user['id'];        
     }
 
@@ -50,7 +50,10 @@ class Ad extends Base {
             //todo
         }
     }
-
+    /**
+     * only change score
+     * others are changed in update() method
+     */
     public function adjust_weight() {
         $success = false;
         $posted = array();
@@ -86,7 +89,7 @@ class Ad extends Base {
      * pagination
      * ad/user/userid/page
      */
-    public function user() {
+    public function myad() {
         if (!\App\Transaction\Html::previous_user_page_is_search_page()) {
             \App\Transaction\Html::remember_current_user_page();
         }
@@ -98,9 +101,9 @@ class Ad extends Base {
         $order_by = 'date_created';
         $direction = 'DESC';
         $where = "1";
-        $ads = Model_Ad::get_active_ads_by_uid_and_page_num($uid, $where, $current_page, $order_by, $direction);
+        $ads = Model_Ad::get_undeleted_ads_by_uid_and_page_num($uid, $where, $current_page, $order_by, $direction);
         //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $num_of_ads = Model_Ad::get_num_of_active_ads_by_uid($uid);
+        $num_of_ads = Model_Ad::get_num_of_undeleted_ads_by_uid($uid);
         $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
         View::set_view_file($this->view_path . 'my_ads.php');
         View::set_action_var('user', $this->user);
@@ -110,7 +113,20 @@ class Ad extends Base {
         View::set_action_var('current_page', $current_page);
         View::set_action_var('num_of_pages', $num_of_pages);
     }
-
+    /**
+     * user can set status to S_INACTIVE, not display in public pages, but not delete it
+     * the answers related it will set ad_id to 0
+     */
+    public function deactivate()
+    {
+        $ad_id = intval($this->params['0']);
+        if (Model_Ad::ad_belong_to_user($ad_id, $this->uid)) {
+            Transaction_Ad::deactivate($ad_id);
+        } else {
+            Zx_Message::set_error_message('您没有权限修改该广告');
+        }
+        header('Location:' . $this->list_page);
+    }
     public function create() {
         \Zx\Test\Test::object_log('$_POST', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
         
@@ -118,6 +134,7 @@ class Ad extends Base {
         $posted = array();
         $errors = array();        
         if (Model_User::has_score($this->uid)) {
+            //must has score (>1)
             if (isset($_POST['submit'])) {
                 if (isset($_POST['title']) && !empty($_POST['title']) &&
                         isset($_POST['content']) && !empty($_POST['content']) &&
@@ -167,12 +184,19 @@ class Ad extends Base {
         }
     }
 
+    /**
+     * only set status to S_DELETED
+     */
     public function delete() {
         $id = $this->params[0];
         Transaction_Ad::delete_by_user($id);
         header('Location: ' . $this->list_page);
     }
 
+    /**
+     * cannot change score
+     * score is changed in adjust_weight() method
+     */
     public function update() {
         $success = false;
         $posted = array();

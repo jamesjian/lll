@@ -8,7 +8,28 @@ use \App\Model\Base\Ad as Base_Ad;
 use \Zx\Model\Mysql;
 
 class Ad extends Base_Ad {
-
+    /**
+     * ,1,2,3,4,5,
+     * ,aaa,bbb,ccc,ddd,eee,
+     * 
+     * if remove tag id 3, it will become:
+     * 
+     * ,1,2,4,5,
+     * ,aaa,bbb,ddd,eee,
+     * 
+     * @param int $tag_id
+     * @param string $tag_name  it's redundant for performance
+     */
+    public static function remove_tag($tag_id, $tag_name) {
+        $tag_id = TNAME_SEPERATOR . $tag_id . TNAME_SEPERATOR;
+        $tag_name = TNAME_SEPERATOR . $tag_name . TNAME_SEPERATOR;
+        $seperator = TNAME_SEPERATOR;
+        $q = "UPDATE " . parent::$table . " SET tids=REPLACE(tids, '$tag_id','$seperator'), 
+            tnames=REPLACE(tnames, '$tag_name','$seperator') 
+            WHERE tids LIKE '%$tag_id%";
+        $params = array();
+        return Mysql::exec($sql, $params);
+    }
     /**
      * make sure id1 is valid
      * @param string $id1  
@@ -119,6 +140,22 @@ class Ad extends Base_Ad {
 
     public static function get_num_of_ads_by_uid($uid, $where = 1) {
         $where = "id>0 AND status<>" .parent::S_DELETED . " AND  uid=$uid AND ($where)";
+        return parent::get_num($where);
+    }
+
+    /**
+     * for a user, undeleted means status<>S_DELETED, only admin can purge a record
+     */
+    public static function get_undeleted_ads_by_uid_and_page_num($uid, $where = 1, $page_num = 1, $order_by = 'b.display_order', $direction = 'ASC') {
+        $where = "id>0 AND uid=$uid AND status<>" . parent::S_DELETED . 
+                 " AND ($where)";
+        $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
+        return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
+    }
+
+    public static function get_num_of_undeleted_ads_by_uid($uid, $where = 1) {
+        $where = "id>0 AND uid=$uid AND status=" . parent::S_DELETED . 
+                " AND ($where)";
         return parent::get_num($where);
     }
 

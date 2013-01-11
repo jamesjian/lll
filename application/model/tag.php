@@ -246,16 +246,19 @@ class Tag extends Base_Tag {
         $params = array(':id' => $tid);
         return Mysql::exec($sql, $params);
     }
+
     public static function increase_num_of_ads($tag_id) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads+1 WHERE id=:id';
         $params = array(':id' => $tag_id);
         return Mysql::exec($sql, $params);
     }
+
     public static function decrease_num_of_questions($tid) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions-1 WHERE id=:id';
         $params = array(':id' => $tid);
         return Mysql::exec($sql, $params);
     }
+
     public static function decrease_num_of_ads($tag_id) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads-1 WHERE id=:id';
         $params = array(':id' => $tag_id);
@@ -268,54 +271,48 @@ class Tag extends Base_Tag {
      * @return boolean
      */
     public static function increase_num_of_questions_by_tids($tids) {
-        $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions+1 WHERE id=:id';
-        foreach ($tids as $tid) {
-            $params = array(':id' => $tag_id);
-            Mysql::exec($sql, $params);
-        }
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions+1
+            WHERE id IN (' . implode(',', $tids) . ')';
+        Mysql::exec($sql, $params);
         return true;
     }
+
     /**
      * multiple tag ids 
      * @param array $tids 
      * @return boolean
      */
     public static function increase_num_of_ads_by_tids($tids) {
-        $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads+1 WHERE id=:id';
-        foreach ($tids as $tid) {
-            $params = array(':id' => $tag_id);
-            Mysql::exec($sql, $params);
-        }
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads+1 
+            WHERE id IN (' . implode(',', $tids) . ')';
+        Mysql::exec($sql, $params);
         return true;
     }
+
     /**
      * multiple tag ids 
      * @param array $tids  
      * @return boolean
      */
     public static function decrease_num_of_questions_by_tids($tids) {
-        $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions-1 WHERE id=:id';
-        foreach ($tids as $tid) {
-            $params = array(':id' => $tag_id);
-            Mysql::exec($sql, $params);
-        }
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions-1 
+            WHERE id IN (' . implode(',', $tids) . ')';
+        Mysql::exec($sql, $params);
         return true;
     }
+
     /**
      * multiple tag ids 
      * @param array $tids 
      * @return boolean
      */
     public static function decrease_num_of_ads_by_tids($tids) {
-        $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads-1 WHERE id=:id';
-        foreach ($tids as $tid) {
-            $params = array(':id' => $tag_id);
-            Mysql::exec($sql, $params);
-        }
+
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads-1 
+            WHERE id IN (' . implode(',', $tids) . ')';
+        Mysql::exec($sql, $params);
         return true;
     }
-
-
 
     /**
      * currently top 20
@@ -343,7 +340,18 @@ class Tag extends Base_Tag {
         $where = ' b.status=1';
         return parent::get_all($where, 0, 10, 'b.date_created', 'DESC');
     }
-
+    public static function is_active_tag($tag_name)
+    {
+        $tag_name = strtolower($tag_name);
+        $where = " name='$tag_name'";
+        if ($tag = parent::get_one_by_where($where)) {
+            if ($tag['status'] == parent::S_ACTIVE) {
+                return $tag;
+            }
+        } else {
+            return false;
+        }        
+    }
     /**
      * 
      * @param type $tag_name

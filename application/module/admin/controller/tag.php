@@ -50,6 +50,8 @@ class Tag extends Base {
         }
     }
     /**
+     * if status changed to S_DISABLED, remove all tag id and name from questions and ads
+     * must be very careful,because it's impossible to be restored.
      * 
      */
     public function update() {
@@ -63,11 +65,11 @@ class Tag extends Base {
                     $arr['num_of_questions'] = trim($_POST['num_of_questions']);
                 if (isset($_POST['num_of_answers']))
                     $arr['num_of_answers'] = trim($_POST['num_of_answers']);
-                if (isset($_POST['rank']))
-                    $arr['rank'] = intval($_POST['rank']);
+                if (isset($_POST['num_of_views']))
+                    $arr['num_of_views'] = intval($_POST['num_of_views']);
                 if (isset($_POST['status']))
                     $arr['status'] = intval($_POST['status']);
-                if (Transaction_Tag::update_tag($id, $arr)) {
+                if (Transaction_Tag::update($id, $arr)) {
                     $success = true;
                 }
             }

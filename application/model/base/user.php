@@ -5,11 +5,42 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 
 /*
- * user, question, answer, ad, tag, claim
- *  # num_of_questions+num_of_answers+num_of_ads+num_of_question_votes+num_of_answer_votes
- * #score has been consumed by ad
- * num_of_questions * score of question+num_of_answers * score of _answer 
- * - invalid score
+ * score:  total got (when create question/answer, vote), always increase
+ * invalid_score: total penalties (when disable), always increase
+ * ad_score: used by ad (when create ad/adjust weight), can increase or decrease
+ * remaining/available score = score - invalid_score - ad_score
+ * 
+ * num_of_questions:
+ * create a question: add 
+ * vote a question: add
+ * delete a question(if can delete) by user or admin: subtract
+ * disable an answer by admin: subtract 
+ * 
+ * num_of_answers:
+ * create an answer: add
+ * vote an answer: add
+ * delete an answer(if can delete) by user or admin: subtract
+ * disable an answer by admin: subtract 
+ * 
+ * num_of_ads:
+ * create an ad: add
+ * delete an ad(if can delete) by user or admin: subtract
+ * disable an ad by admin: subtract 
+ * 
+ * score:
+ * create a question: add score
+ * delete a question(if can delete) by user or admin: subtract score
+ * disable a question by admin: subtract penalty
+ * 
+ * create an answer: add score
+ * delete an answer(if can delete) by user or admin: subtract score
+ * disable an answer by admin: subtract penalty
+ * 
+ * create an ad: no score
+ * delete an ad: no score
+ * disable an ad: subtract penalty
+ * 
+ * 
  * 
  * 
   CREATE TABLE user (

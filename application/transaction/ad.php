@@ -7,6 +7,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Ad as Model_Ad;
 use \App\Model\User as Model_User;
 use \App\Model\Tag as Model_Tag;
+use \App\Model\Answer as Model_Answer;
 use \Zx\Message\Message;
 use App\Transaction\User as Transaction_User;
 use \Zx\Model\Mysql;
@@ -87,6 +88,10 @@ class Ad {
 
     /**
      * in controller, check Model_User::has_score($this->uid) to make sure score is more than 1
+     * create an ad:
+     * 1. new record in ad table
+     * 2. adjust score of user
+     * 3. increase num_of_questions of user and tags
      * @param array $arr
      * @return boolean
      */
@@ -101,9 +106,13 @@ class Ad {
             foreach ($arr['tnames'] as $tag) {
                 $tnames .= $tag . TNAME_SEPERATOR;
                 if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
-                    $tid = $existing_tag['id'];
-                    Model_Tag::increase_num_of_ads($tid);
-                    $tids .= $tid . TNAME_SEPERATOR;
+                    if (Model_Tag::is_active_tag($tag)) {
+                        $tid = $existing_tag['id'];
+                        Model_Tag::increase_num_of_ads($tid);
+                        $tids .= $tid . TNAME_SEPERATOR;
+                    } else {
+                        //disabled tag cannot be added into column
+                    }
                 } else {
                     $tag_arr = array('name' => $tag, 'num_of_ads' => 1);  //have one already
                     $tid = Model_Tag::create($tag_arr);
@@ -116,16 +125,18 @@ class Ad {
             $arr['uname'] = $uname;
             $arr['status'] = $status;
             $arr['num_of_views'] = 0;
-                   // \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            
-            if ($ad_id = Model_Ad::create($arr)) {
-                self::adjust_score($ad_id, $arr['score']);
-                Message::set_success_message('新广告添加成功');
-                return true;
-            } else {
-                Message::set_error_message('新广告添加失败');
-                return false;
-            }
+            // \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+            $user = Model_User::get_one($uid);
+            if ($user['score'])
+                if ($ad_id = Model_Ad::create($arr)) {
+                    //self::adjust_score($ad_id, $arr['score']);
+
+                    Message::set_success_message('新广告添加成功');
+                    return true;
+                } else {
+                    Message::set_error_message('新广告添加失败');
+                    return false;
+                }
         } else {
             Message::set_error_message('新广告信息不完整');
             return false;
@@ -164,21 +175,28 @@ class Ad {
      * 2. if original status is not S_DELETED, 
      *    decrease num_of_ads in tag and user table
      *    and adjust score of a user
-     * 3. set ad_id  to 0 for answers* 
+     * 3. set ad_id  to 0 for answers
      * @param int $id
      * @return boolean
      */
-    public static function delete_ad($id) {
-        $arr = array('status'=>  Model_Ad::S_DELETED);
-        if (Model_Ad::update($id,$arr)) {
-            
-            Message::set_success_message('success');
-            return true;
-        } else {
-            Message::set_error_message('fail');
-            return false;
+    public static function delete_by_user($id) {
+        $ad = Model_Ad::get_one($id);
+        if ($ad['status'] <> Model_Ad::S_DELETED) {
+            $arr = array('status' => Model_Ad::S_DELETED);
+            if (Model_Ad::update($id, $arr)) {
+                Model_Answer::reset_ad_id($id);
+                $tids = substr($ad['tids'], 1, -1); //remove first and last tag seperator
+                Model_Tag::decrease_num_of_ads_by_tids($tids);
+                Model_User::decrease_num_of_ads($ad['uid']);
+                Message::set_success_message('success');
+                return true;
+            } else {
+                Message::set_error_message('fail');
+                return false;
+            }
         }
     }
+
     /**
      * only admin can purge an ad
      * 1.delete record in ad table
@@ -197,6 +215,18 @@ class Ad {
         } else {
             Message::set_error_message('fail');
             return false;
+        }
+    }
+
+    /**
+     * user can set status to S_INACTIVE, not display in public pages, but not delete it
+     * the answers related it will set ad_id to 0
+     * @param int $id
+     */
+    public static function deactivate_ad($id) {
+        $arr = array('status' => Model_Ad::S_INACTIVE);
+        if (Model_Ad::update($id, $arr)) {
+            Model_Answer::reset_ad_id($id);
         }
     }
 

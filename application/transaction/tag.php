@@ -20,6 +20,11 @@ class Tag {
         return $link;
         
     }
+    /**
+     * only by admin
+     * @param array $arr
+     * @return boolean
+     */
     public static function create($arr = array()) {
         if (count($arr) > 0 && isset($arr['name'])
                 && !Model_Tag::exist_tag_by_tag_name($arr['name'])) {
@@ -43,11 +48,23 @@ class Tag {
         }
     }
 
+    /**
+     * if name changed, check name duplicate
+     * if status changed to S_DISABLED, remove all tag id and name from questions and ads
+     * 
+     * @param int $id
+     * @param array $arr
+     * @return boolean
+     */
     public static function update($id, $arr) {
         //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
+        $tag = Model_Tag::get_one($id);
         if (isset($arr['name']) && !Model_Tag::duplicate_tag_name($id, $arr['name'])) {
             if (Model_Tag::update($id, $arr)) {
+                if ($arr['status'] == Model_Tag::S_DISABLED) {
+                    Model_Answer::remove_tag($id, $tag['name']);
+                    Model_Ad::remove_tag($id, $tag['name']);
+                }
                 Message::set_success_message('success');
                 return true;
             } else {

@@ -52,9 +52,13 @@ class Question {
         $arr['tnames'] = array_unique($arr['tnames']); //remove duplicate entry
         foreach ($arr['tnames'] as $tag) {
             if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
-                $tid = $existing_tag['id'];
-                Model_Tag::increase_num_of_questions($tid);
-                $tids .= $tid . TNAME_SEPERATOR;
+                if (Model_Tag::is_active_tag($tag)) {
+                    $tid = $existing_tag['id'];
+                    Model_Tag::increase_num_of_ads($tid);
+                    $tids .= $tid . TNAME_SEPERATOR;
+                } else {
+                    //disabled tag cannot be added into column
+                }
             } else {
                 $tag_arr = array('name' => $tag, 'num_of_questions' => 1);  //have one already
                 $tid = Model_Tag::create($tag_arr);
@@ -278,7 +282,7 @@ class Question {
                 }
             }
             $arr['tnames'] = TNAME_SEPERATOR . implode(TNAME_SEPERATOR, $arr['tnames']) . TNAME_SEPERATOR; //array to string
-            $arr['status'] = Model_Question::S_ACTIVE;//anytime updated, the status will be reset to S_ACTIVE, can be claimed
+            $arr['status'] = Model_Question::S_ACTIVE; //anytime updated, the status will be reset to S_ACTIVE, can be claimed
             if (Model_Question::update($id, $arr)) {
                 Message::set_success_message('更新问题成功');
                 return true;

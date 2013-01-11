@@ -27,6 +27,7 @@
             foreach ($ads as $ad) {
                 $ad_id = $ad['id'];
                 $update_link = USER_HTML_ROOT . 'ad/update/' . $ad_id;
+                $adjust_weight_link = USER_HTML_ROOT . 'ad/adjust_weight/' . $ad_id;
                 $delete_link = USER_HTML_ROOT . 'ad/delete/' . $ad_id;
                 $extend_link = USER_HTML_ROOT . 'ad/extend/' . $ad_id;
             ?>
@@ -36,7 +37,8 @@
                 <td><?php echo $ad['tnames'];?></td>
                 <td><?php echo $ad['score'];?></td>
                 <td><?php echo $ad['date_created'];?></td>
-                <td><a href="<?php echo $update_link;?>">更改</a></td>
+                <td><a href="<?php echo $update_link;?>">分值</a></td>
+                <td><a href="<?php echo $adjust_weight_link;?>">更改</a></td>
                 <td><a href="<?php echo $delete_link;?>">删除</a></td>
                 <td><a href="<?php echo $extend_link;?>">延长</a></td>
             </tr>

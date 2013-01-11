@@ -8,18 +8,52 @@ use \App\Model\Base\Answer as Base_Answer;
 use \Zx\Model\Mysql;
 
 class Answer extends Base_Answer {
+
+    /**
+     * ,1,2,3,4,5,
+     * ,aaa,bbb,ccc,ddd,eee,
+     * 
+     * if remove tag id 3, it will become:
+     * 
+     * ,1,2,4,5,
+     * ,aaa,bbb,ddd,eee,* 
+     * @param int $tag_id
+     * @param string $tag_name  it's redundant for performance
+     */
+    public static function remove_tag($tag_id, $tag_name) {
+        $tag_id = TNAME_SEPERATOR . $tag_id . TNAME_SEPERATOR;
+        $tag_name = TNAME_SEPERATOR . $tag_name . TNAME_SEPERATOR;
+        $seperator = TNAME_SEPERATOR;
+        $q = "UPDATE " . parent::$table . " SET tids=REPLACE(tids, '$tag_id','$seperator'), 
+            tnames=REPLACE(tnames, '$tag_name','$seperator') 
+            WHERE tids LIKE '%$tag_id%";
+        $params = array();
+        return Mysql::exec($sql, $params);
+    }
+
+    /**
+     * when an ad is deleted or disabled or deactivated 
+     * reset ad_id of answers to 0 for original ad_id=$ad_id
+     * @param int $ad_id
+     */
+    public static function reset_ad_id($ad_id) {
+        $q = "UPDATE " . parent::$table . 'SET ad_id=0 WHERE ad_id=:ad_id';
+        $params = array(':ad_id' => $ad_id);
+        return Mysql::exec($sql, $params);
+    }
+
     /**
      * make sure id1 is valid
      * @param string $id1  
      * @return record
      */
-    public static function get_one_by_id1($id1)
-    {
-       
-                $sql = "SELECT *  FROM " . parent::$table . " WHERE id1=:id1";
+    public static function get_one_by_id1($id1) {
+
+        $sql = "SELECT *  FROM " . parent::$table . " WHERE id1=:id1";
         $params = array(':id1' => $id1);
         return Mysql::select_one($sql, $params);
-    }    
+    }
+
     /**
      * in a question page, there're multiple answers for this question, 
      * some ads of the answers are active, some are inactive or expired
@@ -28,13 +62,13 @@ class Answer extends Base_Answer {
      * @param arr $answers it's from Model_Answer::get_all();
      * $return int num of inactive ads
      */
-    public static function get_num_of_selected_ads($answers)
-    {
+    public static function get_num_of_selected_ads($answers) {
         $n = 0;
         $now = date('Y:m:d h:i:s');
         foreach ($answers as $answer) {
             //1 is active
-            if ($answer['ad_status'] <> 1 || $answer['ad_date_end']<$now) $n++;
+            if ($answer['ad_status'] <> 1 || $answer['ad_date_end'] < $now)
+                $n++;
         }
         return $n;
     }
@@ -156,8 +190,6 @@ class Answer extends Base_Answer {
         return parent::get_all($where, $offset, NUM_OF_ARTICLES_IN_CAT_PAGE, $order_by, $direction);
     }
 
-
-
     public static function get_num_of_active_answers_by_cat_id($cat_id) {
         $where = ' status=1 AND cat_id=' . $cat_id;
         return parent::get_num($where);
@@ -186,6 +218,7 @@ class Answer extends Base_Answer {
         $where = " a.status=1 AND a.qid=$qid AND ($where)";
         return parent::get_num($where);
     }
+
     public static function get_num_of_answers_by_qid($qid, $where = 1) {
         $where = " a.qid=$qid AND ($where)";
         return parent::get_num($where);
@@ -214,6 +247,7 @@ class Answer extends Base_Answer {
     /*
      * get active cats order by category name
      */
+
     public static function get_all_active_answers() {
         $where = 'b.status=1';
         return parent::get_all($where);
