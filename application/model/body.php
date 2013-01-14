@@ -23,7 +23,9 @@ class Body extends Base_Body {
      * @return boolean 
      */
     public static function duplicate_en($id, $en) {
-        $en = strtolower($en);
+        $dbh = Mysql::get_dbh();
+\Zx\Test\Test::object_log('$dbh', $dbh, __FILE__, __LINE__, __CLASS__, __METHOD__);        
+        $en = $dbh->quote(strtolower($en));
         $where = " en='$en' AND id<>$id ";
         if ($tag = parent::get_one_by_where($where)) {
             return true;
@@ -37,7 +39,9 @@ class Body extends Base_Body {
      * @return record or false
      */
     public static function exist_by_en($en) {
-        $en = strtolower($en);
+        $dbh = Mysql::get_dbh();
+\Zx\Test\Test::object_log('$dbh', $dbh, __FILE__, __LINE__, __CLASS__, __METHOD__);               
+        $en = $dbh->quote(strtolower($en));
         $where = " en='$en'";
         if ($tag = parent::get_one_by_where($where)) {
             return $tag;
