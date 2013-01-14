@@ -12,7 +12,7 @@ class Article extends Admin {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/article/';
+        $this->view_path = ADMIN_VIEW_PATH . 'article/';
     }
 
     public function create() {

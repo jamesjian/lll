@@ -4,7 +4,7 @@ namespace App\Module\Admin\Controller;
 
 defined('SYSTEM_PATH') or die('No direct script access.');
 
-use \Zx\Message\Message;
+use \Zx\Message\Message as Zx_Message;
 use \App\Model\User as Model_User;
 use \App\Model\Ad as Model_Ad;
 use \App\Transaction\Ad as Transaction_Ad;
@@ -17,7 +17,7 @@ class Ad extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/ad/';
+        $this->view_path = ADMIN_VIEW_PATH . 'ad/';
         $this->list_page = ADMIN_HTML_ROOT . 'ad/retrieve/1/title/ASC/';
         \App\Transaction\Session::set_ck_upload_path('ad');
     }
@@ -53,10 +53,10 @@ class Ad extends Base {
         } else {
             $uid = isset($this->params[0]) ? intval($this->params[0]) : 0;
             if (!Model_User::exist_uid($uid)) {
-                Message::set_error_message('无效用户ID。');
+                Zx_Message::set_error_message('无效用户ID。');
                 header('Location: ' . $this->list_page);
             } else {
-                Message::set_error_message('user id, title, content, tag can not be empty。');
+                Zx_Message::set_error_message('user id, title, content, tag can not be empty。');
             }
         }
         if ($success) {

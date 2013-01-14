@@ -4,7 +4,7 @@ namespace App\Module\Admin\Controller;
 
 defined('SYSTEM_PATH') or die('No direct script access.');
 
-use \Zx\Message\Message;
+use \Zx\Message\Message as Zx_Message;
 use \App\Model\User as Model_User;
 use \App\Model\Question as Model_Question;
 use \App\Transaction\Question as Transaction_Question;
@@ -17,7 +17,7 @@ class Question extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/question/';
+        $this->view_path = ADMIN_VIEW_PATH . 'question/';
         $this->list_page = ADMIN_HTML_ROOT . 'question/retrieve/1/title/ASC/';
         \App\Transaction\Session::set_ck_upload_path('question');
     }
@@ -53,10 +53,10 @@ class Question extends Base {
         } else {
             $uid = isset($this->params[0]) ? intval($this->params[0]) : 0;
             if (!Model_User::exist_uid($uid)) {
-                Message::set_error_message('无效用户ID。');
+                Zx_Message::set_error_message('无效用户ID。');
                 header('Location: ' . $this->list_page);
             } else {
-                Message::set_error_message('user id, title, content, tag can not be empty。');
+                Zx_Message::set_error_message('user id, title, content, tag can not be empty。');
             }
         }
         if ($success) {
@@ -102,7 +102,7 @@ class Question extends Base {
                 }
             }
         } else {
-                Message::set_error_message(' title, content, tag can not be empty。');
+                Zx_Message::set_error_message(' title, content, tag can not be empty。');
         }
         if ($success) {
             \App\Transaction\Html::goto_previous_admin_page();

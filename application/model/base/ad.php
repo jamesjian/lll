@@ -14,10 +14,10 @@ use \Zx\Model\Mysql;
  * 
   update ts8wl_answer set id1=concat(convert(2*id, char(11)), md5(id))
   CREATE TABLE ad (
-  id unsigned MEDIUMINT(8)  AUTO_INCREMENT PRIMARY KEY,
+  id  MEDIUMINT(8) unsigned  AUTO_INCREMENT PRIMARY KEY,
   id1 varchar(44) not null unique,
   title varchar(255) NOT NULL DEFAULT '',
-  uid unsigned MEDIUMINT(7)  not null default 0,
+  uid  MEDIUMINT(7) unsigned  not null default 0,
   uname varchar(255) not null default '',  #user name is fixed
   tids varchar(255) NOT NULL DEFAULT '',
   tnames varchar(255) not null default '', #tag names are fixed

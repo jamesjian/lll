@@ -12,7 +12,7 @@ class Tool extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/tool/';
+        $this->view_path = ADMIN_VIEW_PATH . 'tool/';
     }
 
     public function sitemap() {

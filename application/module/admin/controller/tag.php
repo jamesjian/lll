@@ -2,7 +2,7 @@
 namespace App\Module\Admin\Controller;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
-use \Zx\Message\Message;
+use \Zx\Message\Message as Zx_Message;
 use \App\Model\Tag as Model_Tag;
 use \App\Transaction\Tag as Transaction_Tag;
 use \App\Transaction\Html as Transaction_Html;
@@ -20,7 +20,7 @@ class Tag extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/tag/';
+        $this->view_path = ADMIN_VIEW_PATH . 'tag/';
         $this->list_page = ADMIN_HTML_ROOT . 'tag/retrieve/1/name/ASC/';
         //\App\Transaction\Session::set_ck_upload_path('tag');
     }

@@ -23,6 +23,7 @@ if (Transaction_Staff::staff_has_loggedin()) {
         array('menu_name' => 'Ad', 'link' => 'ad/retrieve'),
         array('menu_name' => 'Tag', 'link' => 'tag/retrieve'),
         array('menu_name' => 'Claim', 'link' => 'claim/retrieve'),
+        array('menu_name' => 'Body', 'link' => 'body/retrieve'),
         array('menu_name' => 'Sitemap', 'link' => 'tool/sitemap'),
         array('menu_name' => 'Logout', 'link' => 'staff/logout'),
     );

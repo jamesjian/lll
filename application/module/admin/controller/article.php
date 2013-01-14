@@ -13,7 +13,7 @@ class Article extends Base {
     public $list_page = '';
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/article/';
+        $this->view_path = ADMIN_VIEW_PATH . 'article/';
         $this->list_page =  ADMIN_HTML_ROOT . 'article/retrieve/1/title/ASC/';
         \App\Transaction\Session::set_ck_upload_path('article');
     }

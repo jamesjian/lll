@@ -20,7 +20,7 @@ class Claim extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/claim/';
+        $this->view_path = ADMIN_VIEW_PATH . 'claim/';
         $this->list_page = ADMIN_HTML_ROOT . 'claim/retrieve_by_item_type/1/1/title/ASC/'; //default list question claims, first 1 is item type
         \App\Transaction\Session::set_ck_upload_path('claim');
     }

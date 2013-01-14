@@ -16,7 +16,7 @@ class Score extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/score/';
+        $this->view_path = ADMIN_VIEW_PATH . 'score/';
         $this->list_page = ADMIN_HTML_ROOT . 'score/retrieve/1/title/ASC/';
     }
 

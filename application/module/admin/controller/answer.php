@@ -2,7 +2,7 @@
 
 namespace App\Module\Admin\Controller;
 defined('SYSTEM_PATH') or die('No direct script access.');
-use \Zx\Message\Message;
+use \Zx\Message\Message as Zx_Message;;
 use \App\Model\User as Model_User;
 use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answer;
@@ -16,7 +16,7 @@ class Answer extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/answer/';
+        $this->view_path = ADMIN_VIEW_PATH . 'answer/';
         $this->list_page = ADMIN_HTML_ROOT . 'answer/retrieve/1/title/ASC/';
         \App\Transaction\Session::set_ck_upload_path('answer');
     }
@@ -51,10 +51,10 @@ class Answer extends Base {
         } else {
             $qid = isset($this->params[0]) ? intval($this->params[0]) : 0;
             if (!Model_Question::exist_qid($qid)){
-                Message::set_error_message('无效问题。');
+                Zx_Message::set_error_message('无效问题。');
                 header('Location: ' . $this->list_page);
             } else {
-                Message::set_error_message('user id,qid and content not be empty。');
+                Zx_Message::set_error_message('user id,qid and content not be empty。');
             }
         }
         if ($success) {

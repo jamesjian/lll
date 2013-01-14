@@ -11,7 +11,7 @@ class Pagecategory extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/pagecategory/';
+        $this->view_path = ADMIN_VIEW_PATH . 'pagecategory/';
     }
 
     public function create() {

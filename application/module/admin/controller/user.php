@@ -28,7 +28,7 @@ class User extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/admin/view/user/';
+        $this->view_path = ADMIN_VIEW_PATH . 'user/';
         $this->list_page = ADMIN_HTML_ROOT . 'user/retrieve/1/uname/ASC/';
         \App\Transaction\Session::set_ck_upload_path('user');
     }
