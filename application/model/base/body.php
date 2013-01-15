@@ -39,16 +39,13 @@ class Body {
      * @return 1D array or boolean when false 
      */
     public static function get_one_by_where($where) {
-        $sql = "SELECT *
-            FROM " . self::$table .
-                " WHERE $where
-        ";
+        $sql = "SELECT * FROM " . self::$table . " WHERE $where";
+//\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);        
         return Mysql::select_one($sql);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
-        $sql = "SELECT *  FROM " . self::$table .
-                " WHERE $where
+        $sql = "SELECT *  FROM " . self::$table . " WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";

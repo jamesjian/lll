@@ -14,6 +14,8 @@ class Body {
      * @return boolean
      */
     public static function create($arr = array()) {
+//        \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);              
+
         if (count($arr) > 0 && isset($arr['en'])
                 && !Model_Body::exist_by_en($arr['en'])) {
             //initialize
