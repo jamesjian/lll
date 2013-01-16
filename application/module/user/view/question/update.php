@@ -14,7 +14,7 @@ if (isset($errors)) {
 }
 \Zx\Message\Message::show_message();
 ?>
-<form class="zx-front-form" name="question_form" method="post" action="<?php echo FRONT_HTML_ROOT; ?>question/update">
+<form class="zx-front-form" name="question_form" method="post" action="<?php echo USER_HTML_ROOT; ?>question/update">
     <fieldset>
         <legend>编辑问题</legend>
         <table>

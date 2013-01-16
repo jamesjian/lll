@@ -6,7 +6,7 @@ $create_link = ADMIN_HTML_ROOT . 'question/create_by_admin';
 <a href="<?php echo $create_link;?>">Create</a>
 <?php
 if ($question_list) {
-$link_prefix = ADMIN_HTML_ROOT . "question/retrieve/$current_page/";
+$link_prefix = ADMIN_HTML_ROOT . "question/retrieve_claimed/$current_page/";
 $next_direction = ($direction == 'ASC') ? 'DESC' : 'ASC';  //change direction
 $link_postfix =  "/$next_direction/$search";
 $link_id = $link_prefix . 'id' . $link_postfix;
@@ -70,7 +70,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	?>
 	</table>
 <?php
-$link_prefix = ADMIN_HTML_ROOT . 'question/retrieve/';	
+$link_prefix = ADMIN_HTML_ROOT . 'question/retrieve_claimed/';	
 $link_postfix = "/$order_by/$direction/$search";
 include ADMIN_VIEW_PATH . 'templates/pagination.php';
 } else {

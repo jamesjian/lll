@@ -8,6 +8,16 @@ use \App\Model\Base\Answer as Base_Answer;
 use \Zx\Model\Mysql;
 
 class Answer extends Base_Answer {
+    public static function get_statuses()
+    {
+        return array(
+          parent::S_ACTIVE=>'active',  
+          parent::S_CLAIMED=>'claimed',  
+          parent::S_CORRECT=>'correct',  
+          parent::S_DELETED=>'deleted',  
+          parent::S_DISABLED=>'disabled',  
+        );
+    }
 
     /**
      * ,1,2,3,4,5,

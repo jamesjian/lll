@@ -7,7 +7,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Answer as Model_Answer;
 use \App\Model\Question as Model_Question;
 use \App\Model\User as Model_User;
-use \Zx\Message\Message;
+use \Zx\Message\Message as Zx_Message;
 use \Zx\Model\Mysql;
 use \App\Transaction\User as Transaction_User;
 use \App\Transaction\Staff as Transaction_Staff;
@@ -15,17 +15,17 @@ use \App\Transaction\Staff as Transaction_Staff;
 //use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Answer {
+
     /**
      * mainly for front end
      * @param array $answer  record
      * @return string 
      */
-    public static function get_link($answer)
-    {
+    public static function get_link($answer) {
         $link = FRONT_HTML_ROOT . 'answer/content/' . $answer['id1'];
         return $link;
-        
     }
+
     /**
      * answer question
      * 1. num of answer for question 
@@ -34,7 +34,6 @@ class Answer {
      * @param array $arr
      * @return boolean
      */
-    
     public static function reply_question($arr = array()) {
         if (isset($_SESSION['user'])) {
             $uid = $_SESSION['user']['uid'];
@@ -54,14 +53,14 @@ class Answer {
             if (Model_Answer::create($arr)) {
                 Model_Question::increase_num_of_answers($arr['qid']);
                 Model_User::increase_num_of_answers($arr['uid']);
-                Message::set_success_message('感谢您回答问题。');
+                Zx_Message::set_success_message('感谢您回答问题。');
                 return true;
             } else {
-                Message::set_error_message(SYSTEM_ERROR_MESSAGE);
+                Zx_Message::set_error_message(SYSTEM_ERROR_MESSAGE);
                 return false;
             }
         } else {
-            Message::set_error_message('请填写内容。');
+            Zx_Message::set_error_message('请填写内容。');
             return false;
         }
     }
@@ -73,20 +72,86 @@ class Answer {
         
     }
 
-    public static function update_answer($id, $arr) {
-        //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+    /**
 
-        if (count($arr) > 0 && (isset($arr['title']) || isset($arr['content']))) {
-            if (Model_Answer::update($id, $arr)) {
-                Message::set_success_message('success');
-                return true;
+     * if an answer status is S_CLAIMED, S_DISABLED or S_DELETED, it cannot be updated
+     * 
+     * if status is S_CORRECT, it will be changed to S_ACTIVE
+     * 
+     * @param type $id
+     * @param type $arr
+     * @return boolean
+     */
+    public static function update_by_user($id, $arr) {
+        //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        $answer = Model_Answer::get_one($id);
+        if (
+                $answer['status'] != Model_Answer::S_CLAIMED &&
+                $answer['status'] != Model_Answer::S_DELETED &&
+                $answer['status'] != Model_Answer::S_DISABLED
+        ) {
+            if (count($arr) > 0 && isset($arr['content'])) {
+                if ($answer['status'] == Model_Answer::S_CORRECT) {
+                    $arr['status'] = Model_Answer::S_ACTIVE;
+                }
+                if (Model_Answer::update($id, $arr)) {
+                    Zx_Message::set_success_message('回答更新成功');
+                    return true;
+                } else {
+                    Zx_Message::set_error_message('系统出错。');
+                    return false;
+                }
             } else {
-                Message::set_error_message('fail');
+                Zx_Message::set_error_message('提供信息不全');
                 return false;
             }
         } else {
-            Message::set_error_message('wrong info');
+            Zx_Message::set_error_message('该回答被举报或被删除或被禁止显示， 目前无法更新。');
+        }
+    }
+
+    /**
+     * status is not involved
+     * @param type $id
+     * @param type $arr
+     * @return boolean
+     */
+    public static function update_by_admin($id, $arr) {
+        //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        $answer = Model_Answer::get_one($id);
+        if (count($arr) > 0 && Model_Answer::update($id, $arr)) {
+            Zx_Message::set_success_message('回答更新成功');
+            return true;
+        } else {
+            Zx_Message::set_error_message('系统出错。');
             return false;
+        }
+    }
+
+    /**
+     * status cannot be changed by user
+     * status can be changed only by admin, but it's different from claim process
+     * this method only adds score, never decreases score
+     * @param type $id
+     * @param type $arr  only has arr['status'] 
+     * @return boolean
+     */
+    public static function update_status_by_admin($id, $arr) {
+        //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        $answer = Model_Answer::get_one($id);
+        if (isset($arr['status']) && $arr['status'] <> $answer['status']) {
+            //if status changed
+            
+
+            if (Model_Answer::update($id, $arr)) {
+                Zx_Message::set_success_message('回答更新成功');
+                return true;
+            } else {
+                Zx_Message::set_error_message('系统出错。');
+                return false;
+            }
+        } else {
+            //nothing to do 
         }
     }
 
@@ -114,10 +179,10 @@ class Answer {
                 Model_Answer::delete($id);
                 Model_Question::decrease_num_of_answers($answer['qid']);
                 Model_User::decrease_score($uid, $score);
-                Message::set_success_message('success');
+                Zx_Message::set_success_message('success');
                 return true;
             } else {
-                Message::set_error_message('fail');
+                Zx_Message::set_error_message('fail');
                 return false;
             }
         }
@@ -147,11 +212,11 @@ class Answer {
     }
 
     /*
-     $arr['aids']包括回答ID, 可以有以下几种格式
-            例1. <1000， 我的所有ID小于1000的回答都显示本广告
-            例2. >1000， 我的所有ID大于1000的回答都显示本广告
-            例3. >1000<2000， 我的所有ID大于1000且小于2000的回答都显示本广告
-            例4. 1,3,5,8,9，  我的ID是1,3,5,8,9的回答都显示本广告
+      $arr['aids']包括回答ID, 可以有以下几种格式
+      例1. <1000， 我的所有ID小于1000的回答都显示本广告
+      例2. >1000， 我的所有ID大于1000的回答都显示本广告
+      例3. >1000<2000， 我的所有ID大于1000且小于2000的回答都显示本广告
+      例4. 1,3,5,8,9，  我的ID是1,3,5,8,9的回答都显示本广告
      * ad id must belong to user id (it's judged in controller)
      */
 
@@ -171,11 +236,13 @@ class Answer {
         } elseif (strpos($aids, 'between')) {
             $domain = 'between';
             $aids = intval(str_replace('between', '', $aids));
-            $aids = explod(',',$aids);
-            if (intval($aids[0])<=intval($aids[1])) {
-                $low = intval($aids[0]); $high = intval($aids[1]);
+            $aids = explod(',', $aids);
+            if (intval($aids[0]) <= intval($aids[1])) {
+                $low = intval($aids[0]);
+                $high = intval($aids[1]);
             } else {
-                $low = intval($aids[1]); $high = intval($aids[0]);
+                $low = intval($aids[1]);
+                $high = intval($aids[0]);
             }
             $update = 'UPDATE ' . Model_Answer::$table . ' SET ad_id=' . $ad_id . ' WHERE id>=' . $low . ' AND id<=' . $high . ' AND uid=' . $uid;
         } else {
@@ -190,8 +257,8 @@ class Answer {
         Mysql::exec($update);
         //when link, the ad display date will be extended
         $arr = array('date_start' => date('Y-m-d h:i:s'),
-                'date_end' => date * 'Y-m-d h:i:s', strtotime('+' . DAYS_OF_AD . ' days'),
-            );
+            'date_end' => date * 'Y-m-d h:i:s', strtotime('+' . DAYS_OF_AD . ' days'),
+        );
         Model_Ad::update($ad_id, $arr);
     }
 

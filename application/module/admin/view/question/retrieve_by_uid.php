@@ -32,6 +32,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 
 <th>delete</th>
 <th>update</th>
+<th>Change status</th>
 </tr>
 
 <?php
@@ -39,6 +40,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	$qid = $question['id'];
 	$link_delete = ADMIN_HTML_ROOT . 'question/delete/' . $qid;
 	$link_update = ADMIN_HTML_ROOT . 'question/update/' . $qid;
+        $link_update_status = ADMIN_HTML_ROOT . 'question/update_status/' . $qid;
 ?>
 <tr>
 	<td><?php echo $question['id'];?></td>
@@ -50,6 +52,8 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
         <td><?php echo $question['date_created'];?></td>
 	<td><a href='<?php echo $link_delete;?>' class="delete_question">delete</a></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
+	<td><a href='<?php echo $link_update_status;?>'>change status</a></td>
+        
 </tr>
 <?php
     }

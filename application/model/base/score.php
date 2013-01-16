@@ -14,6 +14,17 @@
  *   
  * sum of score of ads = score 
  * 
+ * operation:
+ * 1. create question   +
+ * 2. create answer   +
+ * 3. delete question       -
+ * 4. delete answer     -
+ * 5. vote question        +
+ * 6. vote answer         +
+ * 7. disable question        -
+ * 8. disable answer         -
+ * 9. 
+ * 
  * 
  * CREATE TABLE score (
  id  INT(11) unsigned  AUTO_INCREMENT PRIMARY KEY,

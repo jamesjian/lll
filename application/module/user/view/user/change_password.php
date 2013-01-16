@@ -10,7 +10,7 @@ if (isset($errors)) {
 }
 App_Session::display_message();
 ?>
-<form action="<?php echo MEMHTMLROOT; ?>user/change_password" method="post" id="user-form">
+<form action="<?php echo USER_HTML_ROOT; ?>user/change_password" method="post" id="user-form">
     <fieldset>
         <legend>重设密码</legend>
         <table>
@@ -26,9 +26,7 @@ App_Session::display_message();
                 <td class="zx-front-table-title zx-front-required">请再次输入您的新密码:</dt>
             <td><input type="password" name="password2" value=""  /></td>        
             </tr>
-            <tr>
-            <td><input type='hidden' name='sess' value="<?php echo $sess; ?>" />
-            </td>
+            <tr><td></td>
             <td><input type='submit' name='submit' value="修改" />
                 <input type="reset" name="reset"  value="清空" />
             </td>

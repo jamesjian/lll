@@ -6,6 +6,16 @@ use \App\Model\Base\Question as Base_Question;
 use \Zx\Model\Mysql;
 
 class Question extends Base_Question {
+    public static function get_statuses()
+    {
+        return array(
+          parent::S_ACTIVE=>'active',  
+          parent::S_CLAIMED=>'claimed',  
+          parent::S_CORRECT=>'correct',  
+          parent::S_DELETED=>'deleted',  
+          parent::S_DISABLED=>'disabled',  
+        );
+    }    
     /**
      * make sure id1 is valid
      * @param string $id1  

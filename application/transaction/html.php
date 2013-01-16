@@ -59,6 +59,12 @@ class Html {
     public static function goto_home_page() {
         header('Location: ' . HTML_ROOT);
     }
+    /**
+     * login page is a public page
+     */
+    public static function goto_user_login_page() {
+        header('Location: ' . HTML_ROOT . 'user/login');
+    }
 
     public static function goto_user_home_page() {
         header('Location: ' . USER_HTML_ROOT . 'user/home');

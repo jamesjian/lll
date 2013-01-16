@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Module\User\Controller;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
+
 use \Zx\Controller\Route;
 use \Zx\View\View;
 use App\Transaction\Session as Transaction_Session;
@@ -9,7 +12,7 @@ use App\Transaction\User as Transaction_User;
 use App\Transaction\Answser as Transaction_Answser;
 use \App\Model\Answer as Model_Answer;
 
-/** 
+/**
  * homepage: /=>/front/question/latest/page/1
  * latest: /front/question/latest/page/3
  * most popular:/front/question/most_popular/page/3
@@ -21,17 +24,18 @@ class Answer extends Base {
 
     public $view_path;
     public $list_page;
+
     public function init() {
         parent::init();
         $this->view_path = APPLICATION_PATH . 'module/user/view/answer/';
-        $this->list_page = USER_HTML_ROOT . 'answer/user/' . $this->user['id'];        
+        $this->list_page = USER_HTML_ROOT . 'answer/user/' . $this->user['id'];
     }
 
     /**
      * 
      */
     public function vote() {
-        $uid =$this->uid;
+        $uid = $this->uid;
     }
 
     /**
@@ -67,7 +71,7 @@ class Answer extends Base {
 
     public function answer() {
         $success = false;
-        $uid =$this->uid;
+        $uid = $this->uid;
         if (isset($_POST['submit']) &&
                 isset($_POST['uid']) &&
                 isset($_POST['qid']) &&
@@ -101,19 +105,17 @@ class Answer extends Base {
             header('Location: ' . $this->list_page);
         } else {
             View::set_view_file($this->view_path . 'create.php');
-            
         }
         header('Location: ' . Transaction_Session::get_previous_page());
     }
-    
+
     /**
      * link answer id to ad id
      * 2 text fields, one for answer, one for ad
      * 
      * 
      */
-    public function link_ad()
-    {
+    public function link_ad() {
         $success = false;
         if (isset($_POST['submit']) &&
                 isset($_POST['aids']) &&
@@ -121,7 +123,7 @@ class Answer extends Base {
             $aids = isset($_POST['aids']) ? trim($_POST['aids']) : 0;
             $ad_id = isset($_POST['ad_id']) ? intval($_POST['ad_id']) : 0;
 
-            if ($aids <> '' &&  $ad_id>0) {
+            if ($aids <> '' && $ad_id > 0) {
                 $arr = array('aids' => $aids,
                     'ad_id' => $ad_id,
                     'uid' => $this->uid,
@@ -132,7 +134,7 @@ class Answer extends Base {
             }
         } else {
             $ad_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
-            if ($ad_id>0 && Model_Ad::ad_belong_to_user($ad_id, $this->uid)) {
+            if ($ad_id > 0 && Model_Ad::ad_belong_to_user($ad_id, $this->uid)) {
                 //Message::set_error_message('无效问题。');
                 //header('Location: ' . $this->list_page);
             } else {
@@ -143,9 +145,56 @@ class Answer extends Base {
             header('Location: ' . $this->list_page);
         } else {
             View::set_view_file($this->view_path . 'link.php');
-        View::set_action_var('ad_id', $ad_id);
+            View::set_action_var('ad_id', $ad_id);
         }
         //header('Location: ' . Transaction_Session::get_previous_page());
+    }
+
+    public function update() {
+        $success = false;
+        $posted = array();
+        $errors = array();
+        if (isset($_POST['submit'])) {
+            $aid = (isset($_POST['aid'])) ? intval($_POST['aid']) : 0;
+            if ($aid > 0) {
+                //must be the owner of the question and correct status
+                $answer = Model_Answer::get_one($aid);
+                if ($answer && $answer['uid'] == $this->uid) {
+                    if (isset($_POST['content']) && !empty($_POST['content'])) {
+                        $arr['content'] = trim($_POST['content']);
+                        Transaction_Answer::update_by_user($aid, $arr);
+                        $success = true; //for this submission, it's always successful.
+                    } else {
+                        Zx_Message::set_error_message('内容请填写完整。');
+                    }
+                } else {
+                    //invalid record or no permission
+                    $success = true; //for this submission, it's successful.
+                    Zx_Message::set_error_message('无效记录。');
+                }
+            } else {
+                //invalid record
+                $success = true; //for this submission, it's successful.
+                Zx_Message::set_error_message('无效记录。');
+            }
+        } else {
+            $aid = (isset($params[0])) ? intval($params[0]) : 0;
+            $answer = Model_Answer::get_one($aid);
+            if ($answer && $answer['uid'] == $this->uid &&
+                    ($answer['status'] == Model_Question::S_ACTIVE ||
+                    $answer['status'] == Model_Question::S_CORRECT)) {
+                //prepare for update
+            } else {
+                $success = true; //for this submission, it's successful.
+                Zx_Message::set_error_message('无效记录或该回答被举报或被删除或被禁止显示， 目前无法更新。');
+            }
+        }
+        if ($success) {
+            Transaction_Html::goto_previous_user_page();
+        } else {
+            View::set_view_file($this->view_path . 'update.php');
+            View::set_action_var('answer', $answer);
+        }
     }
 
 }

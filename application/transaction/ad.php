@@ -8,7 +8,7 @@ use \App\Model\Ad as Model_Ad;
 use \App\Model\User as Model_User;
 use \App\Model\Tag as Model_Tag;
 use \App\Model\Answer as Model_Answer;
-use \Zx\Message\Message;
+use \Zx\Message\Message as Zx_Message;
 use App\Transaction\User as Transaction_User;
 use \Zx\Model\Mysql;
 
@@ -31,7 +31,7 @@ class Ad {
             );
             return Model_Ad::update($ad_id, $arr);
         } else {
-            Message::set_error_message('invalid ad id');
+            Zx_Message::set_error_message('invalid ad id');
             return false;
         }
     }
@@ -79,7 +79,7 @@ class Ad {
             $message = "用户未登录";
         }
         if (!$success) {
-            Message::set_error_message($message);
+            Zx_Message::set_error_message($message);
             return false;
         } else {
             return true;
@@ -131,14 +131,14 @@ class Ad {
                 if ($ad_id = Model_Ad::create($arr)) {
                     //self::adjust_score($ad_id, $arr['score']);
 
-                    Message::set_success_message('新广告添加成功');
+                    Zx_Message::set_success_message('新广告添加成功');
                     return true;
                 } else {
-                    Message::set_error_message('新广告添加失败');
+                    Zx_Message::set_error_message('新广告添加失败');
                     return false;
                 }
         } else {
-            Message::set_error_message('新广告信息不完整');
+            Zx_Message::set_error_message('新广告信息不完整');
             return false;
         }
     }
@@ -157,14 +157,14 @@ class Ad {
             if (Model_Ad::update($id, $arr)) {
 
                 //Todo: check tag
-                Message::set_success_message('success');
+                Zx_Message::set_success_message('success');
                 return true;
             } else {
-                Message::set_error_message('fail');
+                Zx_Message::set_error_message('fail');
                 return false;
             }
         } else {
-            Message::set_error_message('wrong info');
+            Zx_Message::set_error_message('wrong info');
             return false;
         }
     }
@@ -188,10 +188,10 @@ class Ad {
                 $tids = substr($ad['tids'], 1, -1); //remove first and last tag seperator
                 Model_Tag::decrease_num_of_ads_by_tids($tids);
                 Model_User::decrease_num_of_ads($ad['uid']);
-                Message::set_success_message('success');
+                Zx_Message::set_success_message('success');
                 return true;
             } else {
-                Message::set_error_message('fail');
+                Zx_Message::set_error_message('fail');
                 return false;
             }
         }
@@ -210,7 +210,7 @@ class Ad {
      */
     public static function purge_ad($id) {
         if (Model_Ad::delete($id)) {
-            Message::set_success_message('success');
+            Zx_Message::set_success_message('success');
             return true;
         } else {
             Message::set_error_message('fail');

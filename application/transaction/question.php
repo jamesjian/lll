@@ -7,7 +7,7 @@ use \App\Model\Answer as Model_Answer;
 use \App\Model\User as Model_User;
 use \App\Model\Tag as Model_Tag;
 use App\Transaction\Tool as Transaction_Tool;
-use \Zx\Message\Message;
+use \Zx\Message\Message as Zx_Message;
 use \Zx\Model\Mysql;
 
 //use \App\Transaction\Swiftmail as Transaction_Swiftmail;
@@ -108,15 +108,15 @@ class Question {
             }
             $arr['tids'] = $tids;
             if (Model_Question::create($arr)) {
-                Message::set_success_message('success');
+                Zx_Message::set_success_message('success');
                 Model_User::increase_num_of_questions($arr['uid']);
                 return true;
             } else {
-                Message::set_error_message('fail');
+                Zx_Message::set_error_message('fail');
                 return false;
             }
         } else {
-            Message::set_error_message('请填写完整标题和内容。');
+            Zx_Message::set_error_message('请填写完整标题和内容。');
             return false;
         }
     }
@@ -197,19 +197,21 @@ class Question {
                 //\Zx\Test\Test::object_log('$answer_user_arr', $answer_user_arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
                 Model_User::update($answer_uid, $answer_user_arr);
-                Message::set_success_message('success');
+                Zx_Message::set_success_message('success');
                 return true;
             } else {
-                Message::set_error_message('fail');
+                Zx_Message::set_error_message('fail');
                 return false;
             }
         } else {
-            Message::set_error_message('请填写完整各项。');
+            Zx_Message::set_error_message('请填写完整各项。');
             return false;
         }
     }
 
     /**
+     * if a question status is S_CLAIMED, S_DISABLED or S_DELETED, it cannot be updated
+     * 
      * tag names change, tag ids change, and num_of_questions of tags change
      * hint: array_diff($arr1, $arr2), if an element in arr1, but not in arr2, it will be in the result array
      * 
@@ -284,14 +286,14 @@ class Question {
             $arr['tnames'] = TNAME_SEPERATOR . implode(TNAME_SEPERATOR, $arr['tnames']) . TNAME_SEPERATOR; //array to string
             $arr['status'] = Model_Question::S_ACTIVE; //anytime updated, the status will be reset to S_ACTIVE, can be claimed
             if (Model_Question::update($id, $arr)) {
-                Message::set_success_message('更新问题成功');
+                Zx_Message::set_success_message('更新问题成功');
                 return true;
             } else {
-                Message::set_error_message(SYSTEM_ERROR_MESSAGE);
+                Zx_Message::set_error_message(SYSTEM_ERROR_MESSAGE);
                 return false;
             }
         } else {
-            Message::set_error_message('问题信息不完整。');
+            Zx_Message::set_error_message('问题信息不完整。');
             return false;
         }
     }
@@ -300,7 +302,7 @@ class Question {
      * usually a question cannot be deleted
      * user who submit this question and admin can delete it when no answer for it
      * after deletion, 
-     * 1. user table score will be decreased
+     * 1. user table num_of_questions and score will be decreased
      * 2. tag table num_of_questions will be decreased
      * @param type $id 
      * @return boolean
@@ -311,12 +313,13 @@ class Question {
         $arr = array('status' => Model_Question::S_DELETED);
         if (Model_Question::update($id, $arr)) {
             Model_User::decrease_num_of_questions($question['uid']);
-            $tids = explode(TNAME_SEPERATOR, substr($question['tids'], 0, -1)); //remove trailing seperator
+            Model_User::decrease_score($question['uid'], SCORE_OF_QUESTION);
+            $tids = explode(TNAME_SEPERATOR, substr($question['tids'], 1, -1)); //remove prefix and trailing seperator
             Model_Tag::decrease_num_of_questions_by_tids($tids);
-            Message::set_success_message('问题已被删除。');
+            Zx_Message::set_success_message('问题已被删除。');
             return true;
         } else {
-            Message::set_error_message('系统出错， 请重试或与管理员联系。');
+            Zx_Message::set_error_message('系统出错， 请重试或与管理员联系。');
             return false;
         }
     }

@@ -31,13 +31,15 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <th><a href='<?php echo $link_status;?>'>status</a><img src="<?php echo $direction_img;?>" /></th>
 <th>delete</th>
 <th>update</th>
+<th>Change status</th>
 </tr>
 
 <?php
     foreach ($ad_list as $ad) {
-	$qid = $ad['id'];
-	$link_delete = ADMIN_HTML_ROOT . 'ad/delete/' . $qid;
-	$link_update = ADMIN_HTML_ROOT . 'ad/update/' . $qid;
+	$ad_id = $ad['id'];
+	$link_delete = ADMIN_HTML_ROOT . 'ad/delete/' . $ad_id;
+	$link_update = ADMIN_HTML_ROOT . 'ad/update/' . $ad_id;
+        $link_update_status = ADMIN_HTML_ROOT . 'ad/update_status/' . $ad_id;
 ?>
 <tr>
 	<td><?php echo $ad['id'];?></td>
@@ -49,6 +51,8 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
         <td><?php echo $ad['status'];?></td>
 	<td><a href='<?php echo $link_delete;?>' class="delete_ad">delete</a></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
+        	<td><a href='<?php echo $link_update_status;?>'>change status</a></td>
+
 </tr>
 <?php
     }

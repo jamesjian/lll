@@ -1,6 +1,8 @@
 <?php
+
 use \App\Transaction\Staff as Transaction_Staff;
 use \App\Transaction\Session as Transaction_Session;
+
 /**
  * menu for administration
  * 
@@ -50,8 +52,36 @@ if (Transaction_Staff::staff_has_loggedin()) {
                         array('submenu_name' => 'Question', 'link' => 'claim/retrieve_by_item_type/1'),
                         array('submenu_name' => 'Answer', 'link' => 'claim/retrieve_by_item_type/2'),
                         array('submenu_name' => 'Ad', 'link' => 'claim/retrieve_by_item_type/3'),
-                )),
-                
+                    )
+                ),
+                array('menu_name' => 'Question',
+                    'submenu_arr' => array(
+                        array('submenu_name' => 'All', 'link' => 'question/retrieve/1'),
+                        array('submenu_name' => 'claimed', 'link' => 'question/retrieve_claimed/1'),
+                        array('submenu_name' => 'Correct', 'link' => 'question/retrieve_correct/1'),
+                        array('submenu_name' => 'Deleted', 'link' => 'question/retrieve_deleted/1'),
+                        array('submenu_name' => 'Disabled', 'link' => 'question/retrieve_disabled/1'),
+                    )
+                ),
+                array('menu_name' => 'Answer',
+                    'submenu_arr' => array(
+                        array('submenu_name' => 'All', 'link' => 'answer/retrieve/1'),
+                        array('submenu_name' => 'claimed', 'link' => 'answer/retrieve_claimed/1'),
+                        array('submenu_name' => 'Correct', 'link' => 'answer/retrieve_correct/1'),
+                        array('submenu_name' => 'Deleted', 'link' => 'answer/retrieve_deleted/1'),
+                        array('submenu_name' => 'Disabled', 'link' => 'answer/retrieve_disabled/1'),
+                    )
+                ),
+                array('menu_name' => 'Ad',
+                    'submenu_arr' => array(
+                        array('submenu_name' => 'All', 'link' => 'ad/retrieve/1'),
+                        array('submenu_name' => 'claimed', 'link' => 'ad/retrieve_claimed/1'),
+                        array('submenu_name' => 'Correct', 'link' => 'ad/retrieve_correct/1'),
+                        array('submenu_name' => 'Deleted', 'link' => 'ad/retrieve_deleted/1'),
+                        array('submenu_name' => 'Disabled', 'link' => 'ad/retrieve_disabled/1'),
+                        array('submenu_name' => 'Inactive', 'link' => 'ad/retrieve_inactive/1'),
+                    )
+                ),
             );
             foreach ($menu_arr as $menu) {
                 if ($current_l1_menu == $menu['menu_name']) {

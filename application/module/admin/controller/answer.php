@@ -7,6 +7,7 @@ use \App\Model\User as Model_User;
 use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answer;
 use \App\Transaction\Answer as Transaction_Answer;
+use \App\Transaction\Html as Transaction_Html;
 use \Zx\View\View;
 use \Zx\Test\Test;
 
@@ -69,56 +70,6 @@ class Answer extends Base {
         Transaction_Answer::delete_answer($id);
         header('Location: ' . $this->list_page);
     }
-
-    public function update() {
-        $success = false;
-        if (isset($_POST['submit']) && isset($_POST['id'])) {
-            $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-            \Zx\Test\Test::object_log('id', $id, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            $arr = array();
-            if ($id <> 0) {
-                if (isset($_POST['title']))
-                    $arr['title'] = trim($_POST['title']);
-                if (isset($_POST['title_en']))
-                    $arr['title_en'] = trim($_POST['title_en']);
-                if (isset($_POST['content']))
-                    $arr['content'] = trim($_POST['content']);
-                if (isset($_POST['keyword']))
-                    $arr['keyword'] = trim($_POST['keyword']);
-                if (isset($_POST['keyword_en']))
-                    $arr['keyword_en'] = trim($_POST['keyword_en']);
-                if (isset($_POST['abstract']))
-                    $arr['abstract'] = trim($_POST['abstract']);
-                if (isset($_POST['url']))
-                    $arr['url'] = trim($_POST['url']);
-                if (isset($_POST['cat_id']))
-                    $arr['cat_id'] = intval($_POST['cat_id']);
-                if (isset($_POST['rank']))
-                    $arr['rank'] = intval($_POST['rank']);
-                if (isset($_POST['status']))
-                    $arr['status'] = intval($_POST['status']);
-                if (Transaction_Answer::update_answer($id, $arr)) {
-                    $success = true;
-                }
-            }
-        }
-        if ($success) {
-            header('Location: ' . $this->list_page);
-        } else {
-            if (!isset($id)) {
-                $id = $this->params[0];
-            }
-            $answer = Model_Answer::get_one($id);
-
-            $cats = Model_Answercategory::get_cats();
-            //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('answer', $answer);
-            View::set_action_var('cats', $cats);
-        }
-    }
-
 
     /**
       /page/orderby/direction/search
@@ -223,5 +174,100 @@ class Answer extends Base {
         View::set_action_var('current_page', $current_page);
         View::set_action_var('num_of_pages', $num_of_pages);
     }
-
+    /**
+     * no status involved
+     */
+    public function update() {
+        $success = false;
+        $posted = array();
+        $errors = array();
+        if (isset($_POST['submit'])) {
+            $aid = (isset($_POST['aid'])) ? intval($_POST['aid']) : 0;
+            if ($aid > 0) {
+                //must be the owner of the question and correct status
+                $answer = Model_Answer::get_one($aid);
+                if ($answer) {
+                    if (isset($_POST['content']) && !empty($_POST['content'])) {
+                        $arr['content'] = trim($_POST['content']);
+                        Transaction_Answer::update_by_admin($aid, $arr);
+                        $success = true; //for this submission, it's always successful.
+                    } else {
+                        Zx_Message::set_error_message('内容请填写完整。');
+                    }
+                } else {
+                    //invalid record
+                    $success = true; //for this submission, it's successful.
+                    Zx_Message::set_error_message('无效记录。');
+                }
+            } else {
+                //invalid record
+                $success = true; //for this submission, it's successful.
+                Zx_Message::set_error_message('无效记录。');
+            }
+        } else {
+            $aid = (isset($params[0])) ? intval($params[0]) : 0;
+            $answer = Model_Answer::get_one($aid);
+            if ($answer) {
+                //prepare for update
+            } else {
+                $success = true; //for this submission, it's successful.
+                Zx_Message::set_error_message('无效记录。');
+            }
+        }
+        if ($success) {
+            Transaction_Html::goto_previous_admin_page();
+        } else {
+            View::set_view_file($this->view_path . 'update.php');
+            View::set_action_var('answer', $answer);
+        }
+    }
+    /**
+     * only status involved
+     */
+    public function update_status() {
+        $success = false;
+        $posted = array();
+        $errors = array();
+        if (isset($_POST['submit'])) {
+            $aid = (isset($_POST['aid'])) ? intval($_POST['aid']) : 0;
+            if ($aid > 0) {
+                //must be the owner of the question and correct status
+                $answer = Model_Answer::get_one($aid);
+                if ($answer) {
+                    if (isset($_POST['status'])) {
+                            $arr['status'] = intval($_POST['status']);
+                        Transaction_Answer::update_status_by_admin($aid, $arr);
+                        $success = true; //for this submission, it's always successful.
+                    } else {
+                        Zx_Message::set_error_message('请选择status。');
+                    }
+                } else {
+                    //invalid record
+                    $success = true; //for this submission, it's successful.
+                    Zx_Message::set_error_message('无效记录。');
+                }
+            } else {
+                //invalid record
+                $success = true; //for this submission, it's successful.
+                Zx_Message::set_error_message('无效记录。');
+            }
+        } else {
+            $aid = (isset($params[0])) ? intval($params[0]) : 0;
+            $answer = Model_Answer::get_one($aid);
+            if ($answer) {
+                //prepare for update
+            } else {
+                $success = true; //for this submission, it's successful.
+                Zx_Message::set_error_message('无效记录。');
+            }
+        }
+        if ($success) {
+            Transaction_Html::goto_previous_admin_page();
+        } else {
+            $statuses = Model_Answer::get_statuses();
+            View::set_view_file($this->view_path . 'update.php');
+            View::set_action_var('answer', $answer);
+            View::set_action_var('statuses', $statuses);
+        }
+    }    
 }

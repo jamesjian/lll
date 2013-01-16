@@ -75,17 +75,16 @@ class Question extends Base {
             $qid = (isset($_POST['qid'])) ? intval($_POST['qid']) : 0;
             if ($qid > 0) {
                 $question = Model_Question::get_one($qid);
-                if ($question && $question['uid'] == $this->uid &&
-                        ($question['status'] == Model_Question::S_ACTIVE ||
-                        $question['status'] == Model_Question::S_CORRECT)) {
+                if ($question && $question['uid'] == $this->uid) {
                     //must be the owner of the question and correct status
                     if (isset($_POST['title']) && !empty($_POST['title']) &&
                             isset($_POST['content']) && !empty($_POST['content']) &&
                             (!empty($_POST['tname1']) || !empty($_POST['tname2']) ||
                             !empty($_POST['tname3']) || !empty($_POST['tname4']) ||
                             !empty($_POST['tname5']))) {
-                        $title = trim($_POST['title']);
-                        $region = isset($_POST['region']) ? trim($_POST['region']) : 'AU';
+                        if (isset($_POST['title'])) { $arr['title'] = trim($_POST['title']);}                        
+                        if (isset($_POST['region'])) { $arr['region'] = trim($_POST['region']);}                        
+                        if (isset($_POST['content'])) { $arr['content'] = trim($_POST['content']);}                        
                         $tnames = array();
                         for ($i = 1; $i <= NUM_OF_TNAMES_PER_ITEM; $i++) {
                             $index = 'tname' . $i;
@@ -97,37 +96,38 @@ class Question extends Base {
                                 }
                             }
                         }
-                        $content = trim($_POST['content']);
-                        $arr = array('title' => $title,
-                            'tnames' => $tnames,
-                            'content' => $content,
-                            'region' => $region,
-                        );
-                        if (Transaction_Question::update($qid, $arr)) {
-                            $success = true;
-                        } else {
-                            //system error?
+                        if (count($tnames)>0) {
+                            $arr['tnames'] = $tnames;
                         }
+                        Transaction_Question::update($qid, $arr);
+                        $success = true;
                     } else {
                         Zx_Message::set_error_message('标题， 内容和关键词请填写完整。');
                     }
                 } else {
                     Zx_Message::set_error_message('该问题目前不允许更新， 请登录您的账户查看原因');
+                    $success = true; //for this submission, it's successful.
                 }
             } else {
-                Zx_Message::set_error_message('无效的问题。');
+                $success = true; //for this submission, it's successful.
+                Zx_Message::set_error_message('无效记录。');
             }
-            Transaction_Html::goto_previous_user_page();
         } else {
             $qid = (isset($params[0])) ? intval($params[0]) : 0;
             $question = Model_Question::get_one($qid);
-            if ($question) {
-                View::set_view_file($this->view_path . 'update.php');
-                View::set_action_var('question', $question);
+            if ($question &&
+                    ($question['status'] == Model_Question::S_ACTIVE ||
+                    $question['status'] == Model_Question::S_CORRECT)) {
+                
             } else {
-                Zx_Message::set_error_message('无效的问题。');
-                Transaction_Html::goto_previous_user_page();
+                Zx_Message::set_error_message('无效记录或该回答被举报或被删除或被禁止显示， 目前无法更新。');
             }
+        }
+        if ($success) {
+            Transaction_Html::goto_previous_user_page();
+        } else {
+            View::set_view_file($this->view_path . 'update.php');
+            View::set_action_var('question', $question);
         }
     }
 
@@ -142,7 +142,7 @@ class Question extends Base {
         )) {
             Transaction_Question::delete_question($qid);
         } else {
-            Message::set_error_message('该问题不能被删除。');
+            Zx_Message::set_error_message('该问题不能被删除。');
         }
         Transaction_Html::goto_previous_user_page();
     }

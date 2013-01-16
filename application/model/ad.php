@@ -8,6 +8,17 @@ use \App\Model\Base\Ad as Base_Ad;
 use \Zx\Model\Mysql;
 
 class Ad extends Base_Ad {
+    public static function get_statuses()
+    {
+        return array(
+          parent::S_ACTIVE=>'active',  
+          parent::S_CLAIMED=>'claimed',  
+          parent::S_CORRECT=>'correct',  
+          parent::S_DELETED=>'deleted',  
+          parent::S_DISABLED=>'disabled',  
+          parent::S_INACTIVE=>'inactive', //by user, not deleted but not displayed
+        );
+    }    
     /**
      * ,1,2,3,4,5,
      * ,aaa,bbb,ccc,ddd,eee,

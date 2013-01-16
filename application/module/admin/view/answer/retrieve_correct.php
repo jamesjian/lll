@@ -4,16 +4,15 @@ include 'search.php';
 //no create link in this page, create link is in retrieve_by_uid page, must have valid user id
 ?>
 <?php
-if ($ad_list) {
-$link_prefix = ADMIN_HTML_ROOT . "ad/retrieve_deleted/$current_page/";
+if ($answer_list) {
+$link_prefix = ADMIN_HTML_ROOT . "answer/retrieve_correct/$current_page/";
 $next_direction = ($direction == 'ASC') ? 'DESC' : 'ASC';  //change direction
 $link_postfix =  "/$next_direction/$search";
 $link_id = $link_prefix . 'id' . $link_postfix;
 $link_title = $link_prefix . 'title' . $link_postfix;
 $link_tnames = $link_prefix . 'tnames' . $link_postfix;
 $link_uname = $link_prefix . 'uname' . $link_postfix;
-$link_num_of_views = $link_prefix . 'num_of_views' . $link_postfix;
-$link_score = $link_prefix . 'score' . $link_postfix;
+$link_num_of_votes = $link_prefix . 'num_of_votes' . $link_postfix;
 $link_status = $link_prefix . 'status' . $link_postfix;
 $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' : 
                                          HTML_ROOT . 'image/icon/down.png'; 
@@ -25,8 +24,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <th><a href='<?php echo $link_title;?>'>title</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_tnames;?>'>tags</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_uname;?>'>category</a><img src="<?php echo $direction_img;?>" /></th>
-<th><a href='<?php echo $link_num_of_views;?>'>view</a><img src="<?php echo $direction_img;?>" /></th>
-<th><a href='<?php echo $link_score;?>'>Score</a></th>
+<th><a href='<?php echo $link_num_of_votes;?>'>Votes</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_status;?>'>status</a><img src="<?php echo $direction_img;?>" /></th>
 <th>delete</th>
 <th>update</th>
@@ -34,33 +32,29 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 </tr>
 
 <?php
-    foreach ($ad_list as $ad) {
-	$ad_id = $ad['id'];
-	$link_purge = ADMIN_HTML_ROOT . 'ad/purge/' . $ad_id;
-	$link_answers = ADMIN_HTML_ROOT . 'answer/retrive_by_ad_id/' . $ad_id;
-	$link_update = ADMIN_HTML_ROOT . 'ad/update/' . $ad_id;
-        $link_update_status = ADMIN_HTML_ROOT . 'ad/update_status/' . $ad_id;
+    foreach ($answer_list as $answer) {
+	$aid = $answer['id'];
+	$link_delete = ADMIN_HTML_ROOT . 'answer/delete/' . $aid;
+	$link_update = ADMIN_HTML_ROOT . 'answer/update/' . $aid;
+	$link_update_status = ADMIN_HTML_ROOT . 'answer/update_status/' . $aid;
 ?>
 <tr>
-	<td><?php echo $ad['id'];?></td>
-	<td><?php echo $ad['title'];?></td>
-	<td><?php echo $ad['tnames'];?></td>
-	<td><?php echo $ad['uname'];?></td>
-	<td><?php echo $ad['num_of_views'];?></td>
-        <td><?php echo $user['score'];?></a></td>
-        <td><?php echo $ad['status'];?></td>
-	<td><a href='<?php echo $link_purge;?>' class="delete_ad">Purge</a></td>
-	<td><a href='<?php echo $link_answers;?>'>Answers</a></td>
+	<td><?php echo $answer['id'];?></td>
+	<td><?php echo $answer['title'];?></td>
+	<td><?php echo $answer['tnames'];?></td>
+	<td><?php echo $answer['uname'];?></td>
+	<td><?php echo $answer['num_of_votes'];?></td>
+        <td><?php echo $answer['status'];?></td>
+	<td><a href='<?php echo $link_delete;?>' class="delete_answer">delete</a></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
 	<td><a href='<?php echo $link_update_status;?>'>change status</a></td>
-        
 </tr>
 <?php
     }
 	?>
 	</table>
 <?php
-$link_prefix = ADMIN_HTML_ROOT . 'ad/retrieve_deleted/';	
+$link_prefix = ADMIN_HTML_ROOT . 'answer/retrieve_correct/';	
 $link_postfix = "/$order_by/$direction/$search";
 include ADMIN_VIEW_PATH . 'templates/pagination.php';
 } else {
