@@ -7,6 +7,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 
 /*
+ * claim can be made anyone
   status: 0: created(when report an claim), 2. confirmed(the item is bad), 3. cancelled(the item is good)
   item type //1. question, 2. answer, 3. ad
   cat id   //1. 造谣诽谤（扣一分）， 2. 种族歧视（扣一分）， 3.色情 4. 暴力， 虐待（人或动物）（扣一分） 5. 违禁物品（毒品， 武器, 人体器官等）（扣一分） 6. 误导欺诈（扣一分）

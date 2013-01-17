@@ -74,7 +74,10 @@ class Question {
         $arr['num_of_views'] = 0;
         $arr['num_of_votes'] = 0;
         Model_Question::create($arr);
-        Model_User::increase_num_of_questions($uid);
+        $arr = array('num_of_questions'=>$user['num_of_questions']+1,
+            'score'=>$user['score']+SCORE_OF_QUESTION,
+            );
+        Model_User::update($uid, $arr);
         return true;
     }
 
@@ -208,8 +211,17 @@ class Question {
             return false;
         }
     }
-
     /**
+     * 
+     * @param int $id
+     * @param int $status
+     */
+public static function update_status($id, $status)
+{
+    
+}
+    /**
+     * status is not involved
      * if a question status is S_CLAIMED, S_DISABLED or S_DELETED, it cannot be updated
      * 
      * tag names change, tag ids change, and num_of_questions of tags change
@@ -226,7 +238,8 @@ class Question {
      */
     public static function update($id = 0, $arr = array()) {
         //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
+        $question = Model_Question::get_one($id);
+        if ($question['status'] == Model_Question::S_CLAIMED)
         if (count($arr) > 0) {
             /*             * **
              * prepare tag ids
@@ -299,8 +312,7 @@ class Question {
     }
 
     /**
-     * usually a question cannot be deleted
-     * user who submit this question and admin can delete it when no answer for it
+     * can_be_deleted() is checked in controller
      * after deletion, 
      * 1. user table num_of_questions and score will be decreased
      * 2. tag table num_of_questions will be decreased
@@ -308,12 +320,13 @@ class Question {
      * @return boolean
      */
     public static function delete_question($id) {
-
         $question = Model_Question::get_one($id);
+        $user = Model_User::get_one($question['uid']);
         $arr = array('status' => Model_Question::S_DELETED);
         if (Model_Question::update($id, $arr)) {
-            Model_User::decrease_num_of_questions($question['uid']);
-            Model_User::decrease_score($question['uid'], SCORE_OF_QUESTION);
+            $arr = array('num_of_questions'=>$user['num_of_questions'] - 1,
+                'score'=>$user['score'] -  SCORE_OF_QUESTION);
+            Model_User::update($uid, $arr);
             $tids = explode(TNAME_SEPERATOR, substr($question['tids'], 1, -1)); //remove prefix and trailing seperator
             Model_Tag::decrease_num_of_questions_by_tids($tids);
             Zx_Message::set_success_message('问题已被删除。');

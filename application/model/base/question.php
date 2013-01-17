@@ -5,7 +5,7 @@ namespace App\Model\Base;
 use \Zx\Model\Mysql;
 
 /*
- * question can be created anonymously, but only be updated by author
+ * question can be created anonymously, but only be updated by author or admin
  * if anonymously, only be updated by admin 
  *  #AU means australia
   CREATE TABLE question (
@@ -38,22 +38,27 @@ class Question {
      * 2. if  a question has an answer or voted or claimed or correct, it can not be deleted
      *    if claimed, have to wait for admin to check it
      *    if has vote, it's valuable  
-     *    if not claimed and no answer (num_of_answers=0) it can be deleted(not purge)  -> S_DELETED
-     * 3. only S_ACTIVE and S_CORRECT(will change to S_ACTIVE) can be updated by user
+     *    if not claimed and no answer (num_of_answers=0) it can be deleted by author(not purge)  -> S_DELETED
+     * 3. only S_ACTIVE and S_CORRECT(will change to S_ACTIVE) can be updated by author
      *    when somebody claim it, it's S_CLAIMED, it cannot be updated, deleted  by user
      *    when somebody claim it and it's checked by admin and not wrong, it's S_CORRECT, 
      *     can be updated (status will change to S_ACTIVE), 
      *     but cannot be claimed and deleted
      *    when somebody claim it and it's checked by admin and it's really bad, it's S_DISABLED,  
-     *       cannot be claimed,  updated and deleted
+     *       cannot be claimed,  updated,
+     *      can be deleted
      * 4.  S_ACTIVE->S_CLAIMED->S_CORRECT->            (if updated) S_ACTIVE
      *    (created)       (claimed)       completely correct    
      *     S_ACTIVE->S_CLAIMED->S_DISABLED  
      *    (created)       (claimed)       completely wrong   
-     * 5. only purged by admin
-     * 
-     * S_DISABLED can only be changed to S_DELETED by front user, but can be changed to other status by admin when mistake happened
-     * in the front end, only S_DISABLED and S_DELETED will not display, others will display
+     * 5. if disabled, it can be deleted by author even if it has answer or vote
+     * 6. admin cannot "delete" a question, but can purge a question
+     * 7. author only create and delete a question (if can be deleted), with score change
+     *    claim only made by logged user
+     *    S_DISABLED, S_CORRECT only by admin (with score change)
+     *    S_DISABLED can be deleted by author, 
+     *    admin can change status between S_DISABLED,S_CORRECT and S_ACTIVE
+     * 8. in the front end, only S_DISABLED and S_DELETED will not display, others will display
      * 
     */
     const S_DISABLED=0; //if this question is disabled by admin

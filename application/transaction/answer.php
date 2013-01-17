@@ -52,7 +52,9 @@ class Answer {
             $arr['num_of_votes'] = 0;
             if (Model_Answer::create($arr)) {
                 Model_Question::increase_num_of_answers($arr['qid']);
-                Model_User::increase_num_of_answers($arr['uid']);
+                $arr = array('score'=>$user['score']+SCORE_OF_ANSWER,
+                    'num_of_answers'=>$user['num_of_answers']+1,);
+                Model_User::update($uid, $arr);
                 Zx_Message::set_success_message('感谢您回答问题。');
                 return true;
             } else {
@@ -83,7 +85,7 @@ class Answer {
      * @return boolean
      */
     public static function update_by_user($id, $arr) {
-        //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+//\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $answer = Model_Answer::get_one($id);
         if (
                 $answer['status'] != Model_Answer::S_CLAIMED &&
@@ -117,7 +119,7 @@ class Answer {
      * @return boolean
      */
     public static function update_by_admin($id, $arr) {
-        //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+//\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $answer = Model_Answer::get_one($id);
         if (count($arr) > 0 && Model_Answer::update($id, $arr)) {
             Zx_Message::set_success_message('回答更新成功');
@@ -132,17 +134,28 @@ class Answer {
      * status cannot be changed by user
      * status can be changed only by admin, but it's different from claim process
      * this method only adds score, never decreases score
+     * 1. so when  change S_DELETED / S_DISABLED to S_ACTIVE / S_CORRECT, will add score
+     * 2. others just update 
+     * 3. if new status is S_CLAIMED, ignore it, because 
+     *   admin no need to set status to claimed
+     * 
      * @param type $id
      * @param type $arr  only has arr['status'] 
      * @return boolean
      */
     public static function update_status_by_admin($id, $arr) {
-        //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+//\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $answer = Model_Answer::get_one($id);
-        if (isset($arr['status']) && $arr['status'] <> $answer['status']) {
-            //if status changed
-            
-
+        if ($answer && isset($arr['status']) && $arr['status'] <> $answer['status']
+                && $arr['status'] <> Model_Answer::S_CLAIMED) {
+            //if change
+            if (($answer['status'] == Model_Answer::S_DELETED || $answer['status'] == Model_Answer::S_DISABLED)
+                    && $arr['status'] <> Model_Answer::S_DELETED && $arr['status'] <> Model_Answer::S_DISABLED) {
+                //if add score
+                $uid = $answer['uid'];
+                Model_User::increase_num_of_answers($uid);
+                Model_User::increase_score($uid, SCORE_OF_ANSWER);
+            }
             if (Model_Answer::update($id, $arr)) {
                 Zx_Message::set_success_message('回答更新成功');
                 return true;
@@ -151,7 +164,7 @@ class Answer {
                 return false;
             }
         } else {
-            //nothing to do 
+                //nothing to do 
         }
     }
 
@@ -207,7 +220,7 @@ class Answer {
             }
             $str = substr($str, 0, -1); //remove last ','
             return $str;
-            //Transaction_Swiftmail::send_string_to_admin($str);
+//Transaction_Swiftmail::send_string_to_admin($str);
         }
     }
 
@@ -255,7 +268,7 @@ class Answer {
             $update = substr($update, 0, -4) . ')'; //remove last 'OR', and ')' 
         }
         Mysql::exec($update);
-        //when link, the ad display date will be extended
+//when link, the ad display date will be extended
         $arr = array('date_start' => date('Y-m-d h:i:s'),
             'date_end' => date * 'Y-m-d h:i:s', strtotime('+' . DAYS_OF_AD . ' days'),
         );

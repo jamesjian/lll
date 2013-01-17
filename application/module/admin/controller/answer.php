@@ -265,7 +265,7 @@ class Answer extends Base {
             Transaction_Html::goto_previous_admin_page();
         } else {
             $statuses = Model_Answer::get_statuses();
-            View::set_view_file($this->view_path . 'update.php');
+            View::set_view_file($this->view_path . 'update_status.php');
             View::set_action_var('answer', $answer);
             View::set_action_var('statuses', $statuses);
         }

@@ -105,7 +105,7 @@ class Question extends Base {
                         Zx_Message::set_error_message('标题， 内容和关键词请填写完整。');
                     }
                 } else {
-                    Zx_Message::set_error_message('该问题目前不允许更新， 请登录您的账户查看原因');
+                    Zx_Message::set_error_message('您没有权限更新该问题。');
                     $success = true; //for this submission, it's successful.
                 }
             } else {

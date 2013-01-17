@@ -75,24 +75,100 @@ class Ad extends Base {
     }
 
     /**
+     * only change score
+     * others are changed in update() method
+     */
+    public function adjust_score() {
+        $success = false;
+        $posted = array();
+        if (isset($_POST['submit']) &&
+                isset($_POST['ad_id']) && !empty($_POST['ad_id']) &&
+                isset($_POST['score']) && !empty($_POST['score'])) {
+            $ad_id = intval($_POST['ad_id']);
+            $score = intval($_POST['score']);
+
+            $arr = array('ad_id' => $ad_id,
+                'score' => $score,
+            );
+            if (Transaction_Ad::adjust_score($arr)) {
+                $success = true;
+            }
+        } else {
+            Zx_Message::set_error_message('无效的操作。');
+            Transaction_Html::goto_previous_user_page();
+        }
+        if ($success) {
+            Transaction_Html::goto_previous_user_page();
+        } else {
+            $ad = Model_Ad::get_one($ad);
+            View::set_view_file($this->view_path . 'adjust_score.php');
+            View::set_action_var('posted', $posted);
+            View::set_action_var('ad', $ad);
+            View::set_action_var('user', $user);
+        }
+    }
+
+    /**
      * 
      */
     public function update() {
+        $success = false;
+        if (isset($_POST['title']) && !empty($_POST['title']) &&
+                isset($_POST['content']) && !empty($_POST['content']) &&
+                (!empty($_POST['tname1']) || !empty($_POST['tname2']) ||
+                !empty($_POST['tname3']) || !empty($_POST['tname4']) ||
+                !empty($_POST['tname5']))) {
+            if (isset($_POST['title'])) {
+                $arr['title'] = trim($_POST['title']);
+            }
+            if (isset($_POST['region'])) {
+                $arr['region'] = trim($_POST['region']);
+            }
+            if (isset($_POST['content'])) {
+                $arr['content'] = trim($_POST['content']);
+            }
+            $tnames = array();
+            for ($i = 1; $i <= NUM_OF_TNAMES_PER_ITEM; $i++) {
+                $index = 'tname' . $i;
+                if (isset($_POST[$index])) {
+                    $tag = Transaction_Tool::get_clear_string($_POST[$index]);
+                    if ($tag <> '') {
+                        //only contain valid tag
+                        $tnames[] = $tag;
+                    }
+                }
+            }
+            if (count($tnames) > 0) {
+                $arr['tnames'] = $tnames;
+            }
+            if (Transaction_Ad::update_ad($id, $arr)) {
+                $success = true;
+            } else {
+                Zx_Message::set_error_message('标题， 内容和关键词请填写完整。');
+            }
+        } else {
+            $id = $this->params[0];
+        }
+        if ($success) {
+            header('Location: ' . $this->list_page);
+        } else {
+            $ad = Model_Ad::get_one($id);
+            //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
+            View::set_view_file($this->view_path . 'update.php');
+            View::set_action_var('ad', $ad);
+        }
+    }
+
+    public function update_status() {
         $success = false;
         if (isset($_POST['submit']) && isset($_POST['id'])) {
             $id = isset($_POST['id']) ? intval($_POST['id']) : 0;
             \Zx\Test\Test::object_log('id', $id, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $arr = array();
             if ($id <> 0) {
-                if (isset($_POST['title']))
-                    $arr['title'] = trim($_POST['title']);
-                if (isset($_POST['content']))
-                    $arr['content'] = trim($_POST['content']);
-                if (isset($_POST['tnames']))
-                    $arr['tnames'] = trim($_POST['tnames']);
                 if (isset($_POST['status']))
                     $arr['status'] = intval($_POST['status']);
-                if (Transaction_Ad::update_ad($id, $arr)) {
+                if (Transaction_Ad::update_status($id, $arr)) {
                     $success = true;
                 }
             }

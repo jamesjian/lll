@@ -15,5 +15,4 @@ echo '------------';
 //echo phpversion();
 define('PHP_ROOT', dirname(dirname(dirname(dirname(__FILE__)))) . DIRECTORY_SEPARATOR);  
 echo PHP_ROOT;
-echo '============';
-  
+echo '============'; 

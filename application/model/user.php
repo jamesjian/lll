@@ -148,14 +148,25 @@ class User extends Base_User {
      * @param int $score can be any number
      * @return type 
      */
-    public static function decrease_score($uid, $score = SCORE_OF_QUESTION) {
+    public static function decrease_score($uid, $score = 0) {
         $sql = "UPDATE " . parent::$table . " SET score=score-$score WHERE id=:id";
+        $params = array(':id' => $uid);
+        return Mysql::exec($sql, $params);
+    }
+    /**
+     *
+     * @param int $uid
+     * @param int $score can be any number
+     * @return type 
+     */
+    public static function increase_score($uid, $score = 0) {
+        $sql = "UPDATE " . parent::$table . " SET score=score+$score WHERE id=:id";
         $params = array(':id' => $uid);
         return Mysql::exec($sql, $params);
     }
 
     public static function disable_user($uid) {
-        $arr['status'] = 0;
+        $arr['status'] = parent::S_DISABLED;
         return parent::update($uid, $arr);
     }
 

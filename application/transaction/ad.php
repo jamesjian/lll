@@ -37,46 +37,35 @@ class Ad {
     }
 
     /**
-     * available num of ads>weight>=1
      * 
-     * not only create, score of an ad can be adjusted
+     * ad_score of this user needs to be adjusted simultaneously
      * 
-     * score of this user needs to be adjusted simultaneously
-     * 
-     * new user score = current user score + original ad score - new ad score  
-     * new user ad score = current user ad score - original ad score + new ad score, it's for effeciency
+     * new ad_score = current ad_score - original ad score + new ad score, it's for effeciency
      * 
      * @param int $ad_id
      * @param int $weight
      */
     public static function adjust_score($ad_id, $score) {
         $success = false;
-        $user = Transaction_User::get_user();
-        //1. valid user
-        if ($user) {
-            //2. valid ad
-            if (Model_Ad::ad_belong_to_user($ad_id, $user['id'])) {
-                $ad = Model_Ad::get_one($ad_id);
-                $score_restored = $user['score'] - $user['invalid_score'] - $user['ad_score'] + $ad['score'];
-                $score_left = $score_restored - $score;
-                if ($score_left >= 0) {
-                    $ad_arr = array('score' => $score);
-                    $user_arr = array('ad_score' => $user['ad_score'] - $ad['score'] + $score);
-                    $success = true;
-                } elseif ($score_restored >= 0) {
-                    $ad_arr = array('score' => $score_restored);
-                    $user_arr = array('ad_score' => $user['score'] - $user['invalid_score']);
-                    $message = "仍有积分， 但积分不足";
-                } else {
-                    $message = "可用积分为0";
-                }
+        $ad = Model_Ad::get_one($ad_id);
+        if ($ad) {
+            $user = Model_User::get_one($ad['uid']);
+            //check score is enough for new score
+            $score_restored = $user['score'] - $user['invalid_score'] - $user['ad_score'] + $ad['score'];
+            $score_left = $score_restored - $score;
+            if ($score_left >= 0) {
+                $ad_arr = array('score' => $score);
+                $user_arr = array('ad_score' => $user['ad_score'] - $ad['score'] + $score);
                 Model_Ad::update($ad_id, $ad_arr);
                 Model_User::update($uid, $user_arr);
+                $success = true;
+            } elseif ($score_restored >= 0) {
+                $message = "仍有积分， 但积分不足";
             } else {
-                $message = "无效的广告序号";
+                $message = "可用积分为0";
             }
         } else {
-            $message = "用户未登录";
+            $message = "无效的广告";
         }
         if (!$success) {
             Zx_Message::set_error_message($message);
@@ -97,53 +86,79 @@ class Ad {
      */
     public static function create_by_user($arr = array()) {
         $uid = $_SESSION['user']['uid'];
-        $uname = $_SESSION['user']['uname'];
-        $status = 1;
-        if (count($arr) > 0 && isset($arr['title'])) {
-            $tids = TNAME_SEPERATOR;
-            $tnames = TNAME_SEPERATOR;
-            $arr['tnames'] = array_unique($arr['tnames']); //remove duplicate entry
-            foreach ($arr['tnames'] as $tag) {
-                $tnames .= $tag . TNAME_SEPERATOR;
-                if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
-                    if (Model_Tag::is_active_tag($tag)) {
-                        $tid = $existing_tag['id'];
-                        Model_Tag::increase_num_of_ads($tid);
-                        $tids .= $tid . TNAME_SEPERATOR;
-                    } else {
-                        //disabled tag cannot be added into column
-                    }
-                } else {
-                    $tag_arr = array('name' => $tag, 'num_of_ads' => 1);  //have one already
-                    $tid = Model_Tag::create($tag_arr);
-                    $tids .= $tid . TNAME_SEPERATOR;
-                }
+        $user = Model_User::get_one($uid);
+        $remaining_score = $user['score'] - $user['invalid_score'] - $user['ad_score'];
+        if ($remaining_score > 0) {
+            //must have score
+            if ($remaining_score < $arr['score']) {
+                //if socre higher than remaining score, use remaining score
+                $arr['score'] = $remaining_score;
             }
-            $arr['tids'] = $tids;
-            $arr['tnames'] = $tnames;
-            $arr['uid'] = $uid;
-            $arr['uname'] = $uname;
-            $arr['status'] = $status;
-            $arr['num_of_views'] = 0;
-            // \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            $user = Model_User::get_one($uid);
-            if ($user['score'])
+            if (count($arr) > 0 && isset($arr['title'])) {
+                //prepare for tags
+                $tids = TNAME_SEPERATOR;
+                $tnames = TNAME_SEPERATOR;
+                $arr['tnames'] = array_unique($arr['tnames']); //remove duplicate entry
+                foreach ($arr['tnames'] as $tag) {
+                    $tnames .= $tag . TNAME_SEPERATOR;
+                    if ($existing_tag = Model_Tag::exist_tag_by_tag_name($tag)) {
+                        if (Model_Tag::is_active_tag($tag)) {
+                            $tid = $existing_tag['id'];
+                            Model_Tag::increase_num_of_ads($tid);
+                            $tids .= $tid . TNAME_SEPERATOR;
+                        } else {
+                            //disabled tag cannot be added into column
+                        }
+                    } else {
+                        $tag_arr = array('name' => $tag, 'num_of_ads' => 1);  //have one already
+                        $tid = Model_Tag::create($tag_arr);
+                        $tids .= $tid . TNAME_SEPERATOR;
+                    }
+                }
+                $arr['tids'] = $tids;
+                $arr['tnames'] = $tnames;
+                $arr['uid'] = $uid;
+                $arr['uname'] = $_SESSION['user']['uname'];
+                $arr['status'] = Model_Ad::S_ACTIVE;
+                $arr['num_of_views'] = 0;
+                // \Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
                 if ($ad_id = Model_Ad::create($arr)) {
                     //self::adjust_score($ad_id, $arr['score']);
-
+                    $arr = array(
+                        'num_of_ads' => $user['num_of_ads'] + 1,
+                        'ad_score' => $user['ad_score'] + $arr['score'],
+                    );
+                    Model_User::update($uid, $arr);
                     Zx_Message::set_success_message('新广告添加成功');
                     return true;
                 } else {
-                    Zx_Message::set_error_message('新广告添加失败');
+                    Zx_Message::set_error_message('系统错误， 请重试或与网站管理员联络');
                     return false;
                 }
+            } else {
+                Zx_Message::set_error_message('新广告信息不完整');
+                return false;
+            }
         } else {
-            Zx_Message::set_error_message('新广告信息不完整');
-            return false;
+            Zx_Message::set_error_message('您的积分为0， 不能发布新的广告。 发布新问题和回答别人的提问可以获得积分。');
         }
     }
 
     /**
+     * when change status:
+     * 1. status of ad
+     * 2. if change to S_DELETED or S_DISABLED, will reset ad_id in answer table to 0
+     * 3. score
+     * @param int $id
+     * @param int $status
+     */
+    public static function update_status($id, $status) {
+        
+    }
+
+    /**
+     * status is not involved
      * tag names change, tag ids change, and num_of_questions of tags change
 
      * @param type $id
