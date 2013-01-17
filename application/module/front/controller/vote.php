@@ -40,7 +40,8 @@ class Vote extends Base {
     }
 
     /**
-     * ajax
+      check logged in first, 
+     * if not logged in, verify user name and password,
      * vote a question or an answer (no ad) , the item must be active
      * create/1/5: first 1 is item type, 1: question, 2: answer,  second 5 is item id
      */
@@ -81,8 +82,7 @@ class Vote extends Base {
                 }
             } 
         } 
-        View::set_view_file($this->view_path . 'vote_result');
-        View::set_action_var('message', $message);
+        View::set_view_file($this->view_path . 'vote_result.php');
     }
 
 }

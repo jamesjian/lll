@@ -158,7 +158,9 @@ class Ad extends Base {
             View::set_action_var('ad', $ad);
         }
     }
-
+    /**
+     * make sure you understand the effects of status change
+     */
     public function update_status() {
         $success = false;
         if (isset($_POST['submit']) && isset($_POST['id'])) {

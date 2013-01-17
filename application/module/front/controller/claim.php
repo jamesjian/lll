@@ -55,9 +55,7 @@ class Claim extends Base {
     }
 
     /**
-     * check logged in first, 
-     * if not logged in, verify user name and password,
-     * then claim
+     *anybody can claim without login
      * create/1/5: first 1 is item type, 1: question, 2: answer, 3:ad,  second 5 is item id
      * 
      */
@@ -67,30 +65,11 @@ class Claim extends Base {
         $posted = array();
 
         //App_Test::objectLog('Session',  App_Session::get_all_session(), __FILE__, __LINE__, __CLASS__, __METHOD__);        
-        if (Transaction_User::user_has_loggedin()) {
-            $loggedin=true;
-        } else {
-            if (isset($_POST['uname']) && !empty($_POST['uname']) &&
-                    isset($_POST['password']) && !empty($_POST['password'])
-            ) {
-                $uname = $_POST['uname'];
-                $password = $_POST['password'];
-
-                if (Transaction_User::verify_user($uname, $password)) {
-                    //Transaction_Html::goto_user_home_page();
-                    $loggedin = true;
-                } else {
-                    Zx_Message::set_error_message("登录失败. 请检查您的用户名和密码, 如果您输入的用户名尚未激活， 请检查您的邮箱并激活用户后， 重新登录。");
-                }
-            } 
-        } 
-        if ($loggedin) {
-            $user = $_SESSION['user'];
             if (isset($_POST['cat_id']) && !empty($_POST['cat_id'])){
                 $cat_id = intval($_POST['cat_id']);
                 $item_type = $this->params[0];
                 $item_id = $this->params[1];
-                if (Transaction_Claim::claim($item_type, $item_id, $cat_id, $user)) {
+                if (Transaction_Claim::claim($item_type, $item_id, $cat_id)) {
                      Zx_Message::set_error_message("感谢您的举报， 我们会尽快核实并作出处理。");
 
                 } else {
@@ -98,9 +77,7 @@ class Claim extends Base {
                    //Zx_Message::set_error_message("您提交的信息有误， 请重新操作。");
                 }
             } 
-        } 
         View::set_view_file($this->view_path . 'claim_result');
-        View::set_action_var('message', $message);
     }
 
 }

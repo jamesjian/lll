@@ -10,7 +10,7 @@ use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answer;
 use \App\Model\Ad as Model_Ad;
 use \App\Model\Score as Model_Score;
-use \Zx\Message\Message;
+use \Zx\Message\Message as Zx_Message;
 use \Zx\Model\Mysql;
 use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
@@ -23,7 +23,7 @@ class Claim {
      * 2. create a claim in claim table (status is S_CREATED)
      * 3. change status of item to S_CLAIMED
      * 
-     * when an item is updated, status is set to S_ACTIVE, the user can claim it again,
+     * when an item is S_CORRECT and then updated , status is set to S_ACTIVE, the user can claim it again,
      * so get claimant from table use "order by date_created DESC limit 0,1 
      * 
      * @param int $item_type
@@ -32,7 +32,15 @@ class Claim {
      * @param int $cat_id
      * @return boolean
      */
-    public static function claim($item_type, $item_id, $cat_id, $user) {
+    public static function claim($item_type, $item_id, $cat_id) {
+        if (isset($_SESSION['user'])) {
+            $uid = $_SESSION['user']['uid'];
+            $uname = $_SESSION['user']['uname'];
+        } else {
+            $user = Model_User::get_default_question_user();
+            $uid = $user['id'];
+            $uname = $user['uname'];
+        }        
         switch ($item_type) {
             case '1': //question:
                 $item = Model_Question::get_one($item_id);
@@ -54,11 +62,11 @@ class Claim {
                 break;
         }
         if (!$can_be_claimed) {
-            Message::set_error_message('感谢您的支持， 该' . $item_name . '无效或已被他人举报。');
+            Zx_Message::set_error_message('感谢您的支持， 该' . $item_name . '无效或已被他人举报。');
         } else {
             $arr = array('item_type' => $item_type,
                 'item_id' => $item_id,
-                'claimant_id' => $user['id'],
+                'claimant_id' => $uid,
                 'cat_id' => $cat_id,
                 'status' => Model_Claim::S_CREATED, //new claim
             );
@@ -76,13 +84,13 @@ class Claim {
                         break;
                 }
                 //to do: score table record transactions
-                $arr = array('uid' => $claimant['id'], 'operation' => 'claimant', 'previous_score' => $score,
-                    'difference' => $score, 'current_score' => $score);
-                Model_Score::create($arr);                
-                Message::set_success_message('您的举报已经转发给网站管理员， 我们会尽快处理');
+                //$arr = array('uid' => $claimant['id'], 'operation' => 'claimant', 'previous_score' => $score,
+                //    'difference' => $score, 'current_score' => $score);
+                //Model_Score::create($arr);                
+                Zx_Message::set_success_message('您的举报已经转发给网站管理员， 我们会尽快处理');
                 return true;
             } else {
-                Message::set_error_message('对不起， 系统出错， 请稍后再试。');
+                Zx_Message::set_error_message('对不起， 系统出错， 请稍后再试。');
                 return false;
             }
         }
@@ -110,11 +118,15 @@ class Claim {
         //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $claim = Model_Claim::get_one($id);
         $original_status = $claim['status'];
+        if ($original_status == $status) {
+            //nothing to do
+        } else {
         if ($original_status == Model_Claim::S_CREATED) {
             $item_id = $claim['item_id'];
 
-            if ($status == 1) {
+            if ($status == Model_Claim::S_CORRECT_CLAIM) {
                 //correct claim
+                //update claim table
                 $arr = array('status' => Model_Claim::S_CORRECT_CLAIM);
                 Model_Claim::update($id, $arr);
                 switch ($claim['item_type']) {
@@ -132,20 +144,24 @@ class Claim {
                         $item = Model_Ad::get_one($item_id);
                         $arr = array('status' => Model_Ad::S_DISABLED);
                         Model_Ad::update($item_id, $arr);
+                        Model_Answer::reset_ad_id($item_id);
                         break;
                 }
+                //update claimant and defendant scores
                 $claimant = Model_User::get_one($claim['uid']);
                 $defendant = Model_User::get_one($item['uid']);
                 $score = Model_Claimcategory::get_score_by_cat_id($claim['cat_id']);
                 $arr = array('score' => $claimant['score'] + $score);
                 Model_User::update($claimant['id'], $arr);
-                $arr = array('score' => $defendant['score'] - $score);
+                $arr = array('invalid_score' => $defendant['invalid_score'] + $score);
                 Model_User::update($defendant['id'], $arr);
                 // score table record transactions
-                $arr = array('uid' => $claimant['id'], 'operation' => 'claimant', 'previous_score' => $score,
-                    'difference' => $score, 'current_score' => $score);
-                Model_Score::create($arr);
+                //$arr = array('uid' => $claimant['id'], 'operation' => 'claimant', 'previous_score' => $score,
+                //    'difference' => $score, 'current_score' => $score);
+                //Model_Score::create($arr);
+                
             } else {
+                //$status = Model_Claim::S_WRONG_CLAIM
                 $arr = array('status' => Model_Claim::S_WRONG_CLAIM);
                 Model_Claim::update($id, $arr);
                 switch ($claim['item_type']) {
@@ -164,21 +180,102 @@ class Claim {
                 }
             }
         } else {
-            $new_status = ($status == 1) ? Model_Claim::S_CORRECT_CLAIM : Model_Claim::S_WRONG_CLAIM;
-            if ($original_status <> $new_status) {
-                Message::set_error_message('success');
+            if ($original_status == Model_Claim::S_CORRECT_CLAIM) {
+                //new status =S_WRONG_CLAIM
+                //compensate defendant, decrease claimant
+                $arr = array('status' => Model_Claim::S_WRONG_CLAIM);
+                Model_Claim::update($id, $arr);
+                switch ($claim['item_type']) {
+                    case '1':
+                        $item = Model_Question::get_one($item_id);
+                        $arr = array('status' => Model_Question::S_CORRECT);
+                        Model_Question::update($item_id, $arr);
+                        break;
+                    case '2':
+                        $item = Model_Answer::get_one($item_id);
+                        $arr = array('status' => Model_Answer::S_CORRECT);
+                        Model_Answer::update($item_id, $arr);
+                        break;
+                    case '3':
+                        $item = Model_Ad::get_one($item_id);
+                        $arr = array('status' => Model_Ad::S_CORRECT);
+                        Model_Ad::update($item_id, $arr);
+                        //ad id in answer cannot be restored
+                        break;
+                }
+                //update claimant and defendant scores
+                $claimant = Model_User::get_one($claim['uid']);
+                $defendant = Model_User::get_one($item['uid']);
+                $score = Model_Claimcategory::get_score_by_cat_id($claim['cat_id']);
+                $arr = array('score' => $claimant['score'] - $score);
+                Model_User::update($claimant['id'], $arr);
+                $arr = array('invalid_score' => $defendant['invalid_score'] - $score);
+                Model_User::update($defendant['id'], $arr);                  
             } else {
-                //no change, nothing to do
+                //$original_status == Model_Claim::S_WRONG_CLAIM
+                //new status =S_CORRECT_CLAIM
+                //same as $original_status=Model_Claim::S_CREATED
+                $arr = array('status' => Model_Claim::S_CORRECT_CLAIM);
+                Model_Claim::update($id, $arr);
+                switch ($claim['item_type']) {
+                    case '1':
+                        $item = Model_Question::get_one($item_id);
+                        $arr = array('status' => Model_Question::S_DISABLED);
+                        Model_Question::update($item_id, $arr);
+                        break;
+                    case '2':
+                        $item = Model_Answer::get_one($item_id);
+                        $arr = array('status' => Model_Answer::S_DISABLED);
+                        Model_Answer::update($item_id, $arr);
+                        break;
+                    case '3':
+                        $item = Model_Ad::get_one($item_id);
+                        $arr = array('status' => Model_Ad::S_DISABLED);
+                        Model_Ad::update($item_id, $arr);
+                        Model_Answer::reset_ad_id($item_id);
+                        break;
+                }
+                //update claimant and defendant scores
+                $claimant = Model_User::get_one($claim['uid']);
+                $defendant = Model_User::get_one($item['uid']);
+                $score = Model_Claimcategory::get_score_by_cat_id($claim['cat_id']);
+                $arr = array('score' => $claimant['score'] + $score);
+                Model_User::update($claimant['id'], $arr);
+                $arr = array('invalid_score' => $defendant['invalid_score'] + $score);
+                Model_User::update($defendant['id'], $arr);                
             }
+        }
         }
     }
 
+    /**
+     * usually don't delete any claim
+     * if delete it, 
+     * set status of item to S_ACTIVE
+     * @param int $id  claim id
+     * @return boolean
+     */
     public static function delete_claim($id) {
-        if (Model_Claim::delete($id)) {
-            Message::set_success_message('success');
+        $claim = Model_Claim::get_one($id);
+        if ($claim && Model_Claim::delete($id)) {
+            switch ($claim['item_type']) {
+                case '1':
+                    $arr = array('status'=>Model_Question::S_ACTIVE);
+                    Model_Question::update($claim['item_id'], $arr);
+                    break;
+                case '2':
+                    $arr = array('status'=>Model_Answer::S_ACTIVE);
+                    Model_Answer::update($claim['item_id'], $arr);                    
+                    break;
+                case '3':
+                    $arr = array('status'=>Model_Ad::S_ACTIVE);
+                    Model_Ad::update($claim['item_id'], $arr);                    
+                    break;
+            }
+            Zx_Message::set_success_message('success');
             return true;
         } else {
-            Message::set_error_message('fail');
+            Zx_Message::set_error_message('fail');
             return false;
         }
     }

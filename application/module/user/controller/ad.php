@@ -40,7 +40,7 @@ class Ad extends Base {
         $ad_id = (isset($this->params[0])) ? intval($this->params[0]) : 0;
         $result = false;
         if ($ad_id > 0) {
-            if (Transaction_Ad::extend_ad($ad_id)) {
+            if (Transaction_Ad::extend($ad_id)) {
                 $ad = Model_Ad::get_one($ad_id);
                 $result = true;
                 View::set_view_file($this->view_path . 'extend_result.php');

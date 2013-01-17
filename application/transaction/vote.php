@@ -8,12 +8,13 @@ use \App\Model\Answer as Model_Answer;
 use \App\Model\Ad as Model_Ad;
 use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answer;
-use \Zx\Message\Message;
+use \Zx\Message\Message as Zx_Message;
 use \Zx\Model\Mysql;
 
 class Vote {
 
     /**
+     * vote is only made by loggedin user
      * no vote on ad
      * vote is different from claim, it's confirmed immediately
      * claim needs to be confirmed by admin
@@ -30,25 +31,30 @@ class Vote {
      * @return boolean
      */
     public static function create($item_type, $item_id) {
+            $uid = $_SESSION['user']['uid'];
+            $uname = $_SESSION['user']['uname'];        
         switch ($item_type) {
             case '1': //question:
                 $item = Model_Question::get_one($item_id);
+                $can_be_voted_status = $item['status'] == Model_Question::S_ACTIVE ||
+                        $item['status'] == Model_Question::S_CORRECT;
                 $item_name = "问题";
                 break;
             case '2': //answer
                 $item = Model_Answer::get_one($item_id);
                 $item_name = "回答";
+                $can_be_voted_status = $item['status'] == Model_Answer::S_ACTIVE ||
+                        $item['status'] == Model_Answer::S_CORRECT;                
                 break;
         }
 
-        if ($item['status'] == 'inactive') {
-            Message::set_error_message('感谢您的支持， 该' . $item_name . '已被删除。');
+        if (!$can_be_voted_status) {
+            Zx_Message::set_error_message('感谢您的支持， 该' . $item_name . '已无效。');
             return false;
         } else {
-            $uid = $item['uid'];
             $vote = Model_Vote::get_one($uid, $item_type, $item_id);
             if ($vote) {
-                Message::set_error_message('感谢您的支持，您只能对同一' . $item_name . '投一次票。');
+                Zx_Message::set_error_message('感谢您的支持，您只能对同一' . $item_name . '投一次票。');
                 return false;
             } else {
                 $arr = array('uid' => $uid,
@@ -56,12 +62,12 @@ class Vote {
                     'item_id' => $item_id,
                 );
                 if (Model_Vote::create($arr)) {
-                    $user = Model_User::get_one($item['user_id']);
+                    $user = Model_User::get_one($item['uid']);
                     //add score to user
-                    $arr = array('score' => $user['score'] + 1);
-                    Model_User::update($item['user_id'], $arr);
+                    $arr = array('score' => $user['score'] + SCORE_OF_VOTE);
+                    Model_User::update($item['uid'], $arr);
                     //add number to item
-                    $arr = array('num_of_votes' => $item['vote'] + 1);
+                    $arr = array('num_of_votes' => $item['num_of_votes'] + 1);
                     switch ($item_type) {
                         case 1:  //question
                             Model_Question::update($item_id, $arr);
@@ -70,10 +76,10 @@ class Vote {
                             Model_Answer::update($item_id, $arr);
                             break;
                     }
-                    Message::set_success_message('您的投票已被记录， 感谢您的支持。');
+                    Zx_Message::set_success_message('您的投票已被记录， 感谢您的支持。');
                     return true;
                 } else {
-                    Message::set_error_message('对不起， 系统出错， 请稍后再试。');
+                    Zx_Message::set_error_message('对不起， 系统出错， 请稍后再试。');
                     return false;
                 }
             }

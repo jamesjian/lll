@@ -110,6 +110,78 @@ class Answer {
         } else {
             Zx_Message::set_error_message('该回答被举报或被删除或被禁止显示， 目前无法更新。');
         }
+//\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        $question = Model_Question::get_one($id);
+        if ($question['status'] == Model_Question::S_CLAIMED)
+        if (count($arr) > 0) {
+            /*             * **
+             * prepare tag ids
+             * 1.compare original tags and current tags
+             *   if no difference, ignore them
+             *   if has new tags, 
+             *     if brand new, insert tag record
+             *      else increase num_of_questions of this tag
+             *  if remove old tags, 
+             *     decrease num_of_questions of this tag
+             * 
+             * 
+             */
+            $question = Model_Question::get_one($id);
+            $old_tags = explode(TNAME_SEPERATOR, substr($question['tnames'], 1, -1)); //remove first and last TNAME_SEPERATOR
+            //$new_tnames = $arr['tnames'];
+            $arr['tnames'] = array_unique($arr['tnames']); //remove duplicate
+            $new_tags = $arr['tnames']; //it's an array already
+
+            $new_difference = array_diff($new_tags, $old_tags);
+            $old_difference = array_diff($old_tags, $new_tags);
+            //new tags, increase num of questions of tag or insert new tag record
+            if (count($new_difference) > 0) {
+                //has new tags
+                foreach ($new_difference as $tag) {
+                    if ($tag_id = Model_Tag::exist($tag)) {
+                        //$tids .= $tag_id . TNAME_SEPERATOR;
+                        Model_Tag::increase_num_of_questions($tag_id);
+                    } else {
+                        //brand new tag will be inserted into tag table
+                        $tag_arr = array('name' => $tag, 'num_of_questions' => 1);
+                        $tag_id = Model_Tag::create($tag_arr);
+                        //$tids .= $tag_id . TNAME_SEPERATOR;
+                    }
+                }
+            }
+            //old tags, decrease num of questions of tag
+            if (count($old_difference) > 0) {
+                //has new tags
+                foreach ($new_difference as $tag) {
+                    if ($tag_id = Model_Tag::exist($tag)) {
+                        //must exist
+                        Model_Tag::decrease_num_of_questions($tag_id);
+                    }
+                }
+            }
+            if (count($new_difference) > 0 || count($old_difference) > 0) {
+                //means different from the original, update tag ids column
+                foreach ($new_tags as $tag) {
+                    if ($tag_id = Model_Tag::exist($tag)) {
+                        //must exist
+                        $tids .= $tag_id . TNAME_SEPERATOR;
+                        $arr['tids'] = $tids;
+                    }
+                }
+            }
+            $arr['tnames'] = TNAME_SEPERATOR . implode(TNAME_SEPERATOR, $arr['tnames']) . TNAME_SEPERATOR; //array to string
+            $arr['status'] = Model_Question::S_ACTIVE; //anytime updated, the status will be reset to S_ACTIVE, can be claimed
+            if (Model_Question::update($id, $arr)) {
+                Zx_Message::set_success_message('更新问题成功');
+                return true;
+            } else {
+                Zx_Message::set_error_message(SYSTEM_ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            Zx_Message::set_error_message('问题信息不完整。');
+            return false;
+        }        
     }
 
     /**

@@ -218,7 +218,25 @@ class Question {
      */
 public static function update_status($id, $status)
 {
-    
+    $question = Model_Question::get_one($id);
+        if ($ad) {
+             $arr = array('status'=>$status);
+            switch ($status) {
+                case Model_Question::S_ACTIVE: 
+                    break;
+                case Model_Question::S_CLAIMED: 
+                    break;
+                case Model_Question::S_CORRECT: 
+                    break;
+                case Model_Question::S_DELETED: 
+                    break;                
+                case Model_Question::S_DISABLED: 
+                    break;                
+            }
+            Model_Question::update($id, $arr);
+        } else {
+            Zx_Message::set_error_message('无效记录。');
+        }
 }
     /**
      * status is not involved

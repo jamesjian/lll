@@ -129,6 +129,13 @@ class Session {
     public static function set_admin_current_l1_menu($menu) {
         $_SESSION['admin_l1_menu'] = $menu;
     }
+    /**
+     * level 2 menu
+     * @param string $menu such as "Blog Category"
+     */
+    public static function set_admin_current_l2_menu($menu) {
+        $_SESSION['admin_l2_menu'] = $menu;
+    }
 
     /**
      * 
@@ -137,6 +144,16 @@ class Session {
     public static function get_admin_current_l1_menu() {
         if (isset($_SESSION['admin_l1_menu']))
             return $_SESSION['admin_l1_menu'];
+        else
+            return '';
+    }
+    /**
+     * 
+     * @return string level 2 menu
+     */
+    public static function get_admin_current_l2_menu() {
+        if (isset($_SESSION['admin_l2_menu']))
+            return $_SESSION['admin_l2_menu'];
         else
             return '';
     }
