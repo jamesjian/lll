@@ -26,7 +26,7 @@ class Answer extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/front/view/answer/';
+        $this->view_path = FRONT_VIEW_PATH . 'answer/';
     }
 
     /*     * one answer
@@ -170,10 +170,8 @@ class Answer extends Base {
     }
 
     /**
-     * must have  title, content and tag
+     * must have content 
      * this create() is in front module, in the transaction, it will check if a user has logged in, 
-     * if yes, status is 1(active), if not, status is 0 (inactive), user is default questiong user,
-     *  waiting for approval
      */
     public function reply() {
         $success = false;

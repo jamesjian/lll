@@ -36,6 +36,10 @@ class Answer extends Base {
      */
     public function vote() {
         $uid = $this->uid;
+        $aid = (isset($params[0])) ? intval($params[0]) : 0;  
+        if ($aid<>0 && Model_Answer::exist_answer_under_cat($cat_id)) {
+            
+        }
     }
 
     /**

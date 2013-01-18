@@ -45,7 +45,7 @@ class Answer {
         }
         $arr['uid'] = $uid;
         $arr['uname'] = $uname;
-        $status = Model_Answer::S_ACTIVE;
+        $arr['status'] = Model_Answer::S_ACTIVE;
         if (count($arr) > 0 &&
                 isset($arr['content']) && trim($arr['content']) != ''
         ) {
@@ -62,16 +62,40 @@ class Answer {
                 return false;
             }
         } else {
-            Zx_Message::set_error_message('请填写内容。');
+            Zx_Message::set_error_message('内容不完整， 请重新填写。');
             return false;
         }
     }
 
     /**
-     * user id is not from session, it's from form
+     * similar to self::reply_question()
+     * user is from user table randomly
+     * 
      */
     public static function create_answer_by_admin($arr = array()) {
-        
+        $user = Model_User::get_random_user();
+        $arr['uid'] = $user['id'];
+        $arr['uname'] = $user['uname'];
+        $arr['status'] = Model_Answer::S_ACTIVE;
+        if (count($arr) > 0 &&
+                isset($arr['content']) && trim($arr['content']) != ''
+        ) {
+            $arr['num_of_votes'] = 0;
+            if (Model_Answer::create($arr)) {
+                Model_Question::increase_num_of_answers($arr['qid']);
+                $arr = array('score'=>$user['score']+SCORE_OF_ANSWER,
+                    'num_of_answers'=>$user['num_of_answers']+1,);
+                Model_User::update($user['id'], $arr);
+                Zx_Message::set_success_message('感谢您回答问题。');
+                return true;
+            } else {
+                Zx_Message::set_error_message(SYSTEM_ERROR_MESSAGE);
+                return false;
+            }
+        } else {
+            Zx_Message::set_error_message('内容不完整， 请重新填写。');
+            return false;
+        }
     }
 
     /**

@@ -21,7 +21,7 @@ Zx_Message::show_message();
                     <?php
                     if (!\App\Transaction\User::user_has_loggedin()) {
                         ?>
-                        ( 注册用户登录后发布新问题可以获得积分。
+                        ( 注册用户登录后发布新问题及回答问题可以获得积分。
                         <a href="<?php echo FRONT_HTML_ROOT; ?>user/register">注册新用户</a> 或 <a href="<?php echo FRONT_HTML_ROOT; ?>user/login">现在登录</a> )
                         <?php
                     }

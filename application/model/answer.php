@@ -135,6 +135,19 @@ class Answer extends Base_Answer {
         else
             return false;
     }
+    /**
+     *
+     * @param intval $aid  answer id
+     * @return boolean
+     */
+    public static function exist_answer($aid) {
+        $where = 'b.cat_id=' . $cat_id;
+        $num = parent::get_num($where);
+        if ($num > 0)
+            return true;
+        else
+            return false;
+    }
 
     /**
       according to category or keyword
