@@ -127,7 +127,7 @@ site = {
             data : {},
             dataType : 'html',
             success : function(data) {
-                site.open_message_dialog(data, title)
+                site.open_claim_dialog(data, title)
             }
         });
         return false;
@@ -223,7 +223,7 @@ site = {
         }, message.get_vote_dialog);        
         $('.zx-front-claim-link').bind('click', {
             title : '举报'
-        }, message.get_claim_dialog);           
+        }, site.get_claim_dialog);           
         $('#zx-front-dialog').dialog({
             autoOpen: false,
             height: 300,

@@ -1,5 +1,7 @@
 <?php
-$link_search = ADMIN_HTML_ROOT . 'claim/search/' . $type_id;
+//item_type: question 1, answer 2, ad 3
+if (!isset($item_type)) $item_type = ''; 
+$link_search = ADMIN_HTML_ROOT . 'claim/search/' . $item_type;
 ?>
 <form action="<?php echo $link_search;?>" method="post">
 Keyword:<input type="text" name="search" value="<?php echo $search;?>" />

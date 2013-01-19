@@ -9,6 +9,7 @@ use \App\Model\Claimcategory as Model_Claimcategory;
 use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answer;
 use \App\Model\Ad as Model_Ad;
+use \App\Model\User as Model_User;
 use \App\Model\Score as Model_Score;
 use \Zx\Message\Message as Zx_Message;
 use \Zx\Model\Mysql;
@@ -33,11 +34,14 @@ class Claim {
      * @return boolean
      */
     public static function claim($item_type, $item_id, $cat_id) {
+        \Zx\Test\Test::object_log('$item_type', $item_type, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        \Zx\Test\Test::object_log('$item_id', $item_id, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        \Zx\Test\Test::object_log('$cat_id', $cat_id, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if (isset($_SESSION['user'])) {
             $uid = $_SESSION['user']['uid'];
             $uname = $_SESSION['user']['uname'];
         } else {
-            $user = Model_User::get_default_question_user();
+            $user = Model_User::get_default_claim_user();
             $uid = $user['id'];
             $uname = $user['uname'];
         }        
@@ -46,6 +50,8 @@ class Claim {
                 $item = Model_Question::get_one($item_id);
                 $item_name = "问题";
                 $can_be_claimed = $item['status'] == Model_Question::S_ACTIVE;
+                \Zx\Test\Test::object_log('$item', $item, __FILE__, __LINE__, __CLASS__, __METHOD__);
+                \Zx\Test\Test::object_log('Model_Question::S_ACTIVE;', Model_Question::S_ACTIVE, __FILE__, __LINE__, __CLASS__, __METHOD__);
                 $new_status = Model_Question::S_CLAIMED;
                 break;
             case '2': //answer
@@ -62,14 +68,18 @@ class Claim {
                 break;
         }
         if (!$can_be_claimed) {
+                     \Zx\Test\Test::object_log('$can_be_claimed', 'false', __FILE__, __LINE__, __CLASS__, __METHOD__);
+
             Zx_Message::set_error_message('感谢您的支持， 该' . $item_name . '无效或已被他人举报。');
         } else {
+             \Zx\Test\Test::object_log('$can_be_claimed', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
             $arr = array('item_type' => $item_type,
                 'item_id' => $item_id,
                 'claimant_id' => $uid,
                 'cat_id' => $cat_id,
                 'status' => Model_Claim::S_CREATED, //new claim
             );
+             \Zx\Test\Test::object_log('claimed array', '$arr', __FILE__, __LINE__, __CLASS__, __METHOD__);
             if (Model_Claim::create($arr)) {
                 $arr = array('status' => $new_status);
                 switch ($item_type) {
@@ -117,22 +127,25 @@ class Claim {
     public static function update_claim($id, $status) {
         //\Zx\Test\Test::object_log('arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $claim = Model_Claim::get_one($id);
+        $item_id = $claim['item_id'];
         $original_status = $claim['status'];
+        \Zx\Test\Test::object_log('new_status', $status, __FILE__, __LINE__, __CLASS__, __METHOD__);      
+        \Zx\Test\Test::object_log('$original_status', $original_status, __FILE__, __LINE__, __CLASS__, __METHOD__);      
         if ($original_status == $status) {
             //nothing to do
         } else {
         if ($original_status == Model_Claim::S_CREATED) {
-            $item_id = $claim['item_id'];
-
             if ($status == Model_Claim::S_CORRECT_CLAIM) {
                 //correct claim
                 //update claim table
                 $arr = array('status' => Model_Claim::S_CORRECT_CLAIM);
+                 \Zx\Test\Test::object_log('Model_Claim', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);        
                 Model_Claim::update($id, $arr);
                 switch ($claim['item_type']) {
                     case '1':
                         $item = Model_Question::get_one($item_id);
                         $arr = array('status' => Model_Question::S_DISABLED);
+                        \Zx\Test\Test::object_log('Model_Question', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);  
                         Model_Question::update($item_id, $arr);
                         break;
                     case '2':
@@ -148,12 +161,14 @@ class Claim {
                         break;
                 }
                 //update claimant and defendant scores
-                $claimant = Model_User::get_one($claim['uid']);
+                $claimant = Model_User::get_one($claim['claimant_id']);
                 $defendant = Model_User::get_one($item['uid']);
                 $score = Model_Claimcategory::get_score_by_cat_id($claim['cat_id']);
                 $arr = array('score' => $claimant['score'] + $score);
+                \Zx\Test\Test::object_log('$claimant', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);  
                 Model_User::update($claimant['id'], $arr);
-                $arr = array('invalid_score' => $defendant['invalid_score'] + $score);
+                $arr = array('invalid_score' => $defendant['invalid_score'] + $score); //don't change number_of_questions/answers/ads
+                \Zx\Test\Test::object_log('$defendant', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);  
                 Model_User::update($defendant['id'], $arr);
                 // score table record transactions
                 //$arr = array('uid' => $claimant['id'], 'operation' => 'claimant', 'previous_score' => $score,
@@ -204,7 +219,7 @@ class Claim {
                         break;
                 }
                 //update claimant and defendant scores
-                $claimant = Model_User::get_one($claim['uid']);
+                $claimant = Model_User::get_one($claim['claimant_id']);
                 $defendant = Model_User::get_one($item['uid']);
                 $score = Model_Claimcategory::get_score_by_cat_id($claim['cat_id']);
                 $arr = array('score' => $claimant['score'] - $score);
@@ -236,7 +251,7 @@ class Claim {
                         break;
                 }
                 //update claimant and defendant scores
-                $claimant = Model_User::get_one($claim['uid']);
+                $claimant = Model_User::get_one($claim['claimant_id']);
                 $defendant = Model_User::get_one($item['uid']);
                 $score = Model_Claimcategory::get_score_by_cat_id($claim['cat_id']);
                 $arr = array('score' => $claimant['score'] + $score);
@@ -246,6 +261,7 @@ class Claim {
             }
         }
         }
+        return true; //always return true currently
     }
 
     /**

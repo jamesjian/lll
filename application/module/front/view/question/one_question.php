@@ -44,21 +44,15 @@
                                 </span>                                
                                 <span class="zx-front-claim">已有<?php echo $question['num_of_votes']; ?>人投票支持</span>
                                                               
-                                    <a href="<?php echo $vote_link; ?>" class="zx-front-vote-link" title="如果这个问题值得关注， 请投票支持">投票支持</a>
+                                    <a href="<?php echo $vote_link; ?>" class="zx-front-vote-link" title="如果这个问题值得关注， 请投票支持">支持</a>
                                     <?php
                                     if ($question['valid'] == 0) {
-                                        $claim_link = FRONT_HTML_ROOT . 'claim/question' . $question['id'];
+                                        $claim_link = FRONT_HTML_ROOT . 'claim/claim_popup_form/1/' . $question['id'];  //item type is 1 for question
                                         //not sure it's valid or not, has report claim button
                                         ?>
-                                        <a href = "<?php echo $claim_link; ?>" class = "zx-front-claim-link" title = "如果这个问题有违法或违规嫌疑， 请举报。">我要举报</a>
+                                        <a href = "<?php echo $claim_link; ?>" class = "zx-front-claim-link" title = "如果这个问题有违法或违规嫌疑， 请举报。">举报</a>
                                         <?php
                                     }
-                                if (!\App\Transaction\User::user_has_loggedin()) {
-                                    //remind user to login  (ajax)
-                                    ?>
-                                    (<a href="<?php echo FRONT_HTML_ROOT . 'user/login_form_popup'; ?>" class="zx-front-login-popup">登录</a>后才可以投票支持该问题或举报该问题)
-                                    <?php
-                                }
                                 ?>
                             </h1>
                         </header>

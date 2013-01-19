@@ -53,5 +53,5 @@
         </dl>
     </fieldset>
 </form>
-<a href="<?php echo \App\Transaction\Session::get_previous_admin_page(); ?>" />Cancel</a>
+<a href="<?php echo \App\Transaction\Html::get_previous_admin_page(); ?>" />Cancel</a>
 

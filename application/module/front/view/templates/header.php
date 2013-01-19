@@ -18,9 +18,9 @@
         </script>              
         <link rel="shortcut icon" href="<?php echo HTML_ROOT . 'image/icon/favicon.ico?v3'; ?>" />
 
-        <link rel="stylesheet" href="<?php echo HTML_ROOT . 'js/jquery/jquery-ui-1.9.2.custom/css/trontastic/jquery-ui-1.9.2.custom.min.css';?>" />
-        <script type="text/javascript" src="<?php echo HTML_ROOT . 'js/jquery/jquery-1.8.3.min.js'; ?>"></script>
-        <script type="text/javascript" src="<?php echo HTML_ROOT . 'js/jquery/jquery-ui-1.9.2.custom/js/jquery-ui-1.9.2.custom.min.js'; ?>"></script>
+        <link rel="stylesheet" href="<?php echo HTML_ROOT . 'js/jquery/jquery-ui-1.10.0.custom/css/smoothness/jquery-ui-1.10.0.custom.min.css';?>" />
+        <script type="text/javascript" src="<?php echo HTML_ROOT . 'js/jquery/jquery-1.9.0.min.js'; ?>"></script>
+        <script type="text/javascript" src="<?php echo HTML_ROOT . 'js/jquery/jquery-ui-1.10.0.custom/js/jquery-ui-1.10.0.custom.min.js'; ?>"></script>
     </head>
     <body>
         <div class='zx-front-body'>	

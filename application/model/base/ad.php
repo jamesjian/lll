@@ -60,8 +60,8 @@ class Ad {
      * 
     */
     const S_DISABLED=0; //if this ad is wrong and disabled by admin
-    const S_CORRECT=1;   //if this ad completely correct, cannot be claimed
-    const S_ACTIVE=2;  //if this ad is active and can be claimed
+    const S_ACTIVE=1;  //if this ad is active and can be claimed
+    const S_CORRECT=2;   //if this ad completely correct, cannot be claimed
     const S_CLAIMED=3; //when it's claimed by user
     const S_DELETED=4; //when it's deleted by user, num of ads will be decreased, 
                        // keep record, can be purged by admin

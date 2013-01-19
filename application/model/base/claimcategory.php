@@ -22,7 +22,7 @@ use \Zx\Model\Mysql;
 class Claimcategory {
     public static $fields = array('id','title', 'description', 'claimant_score',
        'defendant_score',  'status', 'date_created');
-    public static $table = TABLE_ABUSE_CATEGORY;
+    public static $table = TABLE_CLAIM_CATEGORY;
     
     public static function get_one($id) {
         $sql = "SELECT *

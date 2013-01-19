@@ -27,7 +27,7 @@ class Claim {
 
     public static $fields = array('id', 'item_type', 'item_id', 'claimant_id',
         'cat_id', 'result', 'status', 'date_created');
-    public static $table = TABLE_ABUSE;
+    public static $table = TABLE_CLAIM;
     //for status
     const S_CREATED = 0;  //when a claim is created
     const S_CORRECT_CLAIM = 1; //if this claim is correct

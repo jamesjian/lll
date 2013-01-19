@@ -28,8 +28,8 @@ $link =  FRONT_HTML_ROOT . "claim/create/$item_type/$item_id";
                 <td class=""> 
                     <select name="cat_id">
                         <?php 
-                        foreach ($cats as $cat) {
-                            echo "<option value='{$cat['id']}'>{$cat['name']}</option>";
+                        foreach ($cats as $cat_id=>$cat_name) {
+                            echo "<option value='$cat_id'>$cat_name</option>";
                         }
                         ?>
                     </select>    
@@ -50,9 +50,7 @@ $link =  FRONT_HTML_ROOT . "claim/create/$item_type/$item_id";
             }
             ?>
             <tr>
-                <td>
-                    <input type='hidden' name='sess' value="<?php //echo $sess; ?>" />
-                </td>
+                <td></td>
                 <td>
                     <button type='submit' name='submit' value="submit"><?php echo CLAIM_TITLE;?></button>
                 </td>

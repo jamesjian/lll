@@ -2,6 +2,7 @@
 /**
  * only content, no content1 (for num_of_answers>0)
  */
+\Zx\Test\Test::object_log('$posted', $posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
 ?>
 <div class="clear-both"></div>
 <?php

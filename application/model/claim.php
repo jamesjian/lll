@@ -13,6 +13,14 @@ use \Zx\Model\Mysql;
 
 class Claim extends Base_Claim {
 
+    /**
+     * 
+     * @return array('1'=>'question', '2'=>'answer','3'=>'ad');
+     */
+    public static function get_item_types()
+    {
+        return array('1'=>'question', '2'=>'answer','3'=>'ad');
+    }
     public static function get_num_of_active_claims($where = 1) {
         $where = " status=1 AND ($where)";
         return parent::get_num($where);
@@ -46,15 +54,17 @@ class Claim extends Base_Claim {
                 $table = Base_Ad::$table;
                 break;
         }
+        $page_num = intval($page_num);
+        $page_num = ($page_num > 0) ? $page_num : 1;
+        $start = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;        
         //use content rather than title, because answer doesn't have a title
         $sql = "SELECT a.*, i.content as item_content, u.uname
             FROM " . parent::$table . " a
             LEFT JOIN " . $table . " i ON i.id=a.item_id
-            LEFT JOIN " . Base_User::$table . " u ON u.id=a.uid
+            LEFT JOIN " . Base_User::$table . " u ON u.id=i.uid
             WHERE item_type=$item_type AND ($where)
             ORDER BY $order_by $direction
-            LIMIT $offset, $row_count
-        ";
+            LIMIT $start, " . NUM_OF_ITEMS_IN_ONE_PAGE;
 //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         return Mysql::select_all($sql);

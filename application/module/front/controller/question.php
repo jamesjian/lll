@@ -292,30 +292,31 @@ class Question extends Base {
      * if yes, status is 1(active), if not, status is 0 (inactive), user is default questiong user, waiting for approval
      */
     public function create() {
+                \Zx\Test\Test::object_log('$_POST', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
         $success = false;
         $posted = array();
         $errors = array();
         if (isset($_POST['submit'])) {
-            if (isset($_POST['title']) && !empty($_POST['title']) &&
-                    isset($_POST['content']) && !empty($_POST['content']) &&
-                    (!empty($_POST['tname1']) || !empty($_POST['tname2']) ||
-                    !empty($_POST['tname3']) || !empty($_POST['tname4']) ||
-                    !empty($_POST['tname5']))) {
-                $title = trim($_POST['title']);
-                $region = isset($_POST['region']) ? trim($_POST['region']) : 'AU';
-                $tnames = array();
-                for ($i = 1; $i <= NUM_OF_TNAMES_PER_ITEM; $i++) {
-                    $index = 'tname' . $i;
-                    if (isset($_POST[$index])) {
-                        $tag = Transaction_Tool::get_clear_string($_POST[$index]);
-                        if ($tag <> '') {
-                            //only contain valid tag
-                            $tnames[] = $tag;
-                        }
+            $title =isset($_POST['title']) ?  trim($_POST['title']) : '';  
+            $posted['title'] = $title;
+            $region = isset($_POST['region']) ? trim($_POST['region']) : 'AU';
+            $posted['region'] = $region;
+            $tnames = array();
+            for ($i = 1; $i <= NUM_OF_TNAMES_PER_ITEM; $i++) {
+                $index = 'tname' . $i;
+                if (isset($_POST[$index])) {
+                    $posted[$index] = $_POST[$index];
+                    $tag = Transaction_Tool::get_clear_string($_POST[$index]);
+                    if ($tag <> '') {
+                        //only contain valid tag
+                        $tnames[] = $tag;
                     }
                 }
-                $content = trim($_POST['content']);
-
+            }
+            $content = isset($_POST['content']) ? trim($_POST['content']) : '';
+            $posted['content'] = $content;            
+            if ($title <> '' && $content<>'' && count($tnames)>0) {
                 $arr = array('title' => $title,
                     'tnames' => $tnames,
                     'content' => $content,
@@ -328,6 +329,7 @@ class Question extends Base {
                 Zx_Message::set_error_message('标题， 内容和关键词请填写完整。');
             }
         }
+        //\Zx\Test\Test::object_log('$_POST', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
         if ($success) {
             header('Location: ' . $this->list_page);
         } else {

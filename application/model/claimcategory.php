@@ -4,7 +4,7 @@ namespace App\Model;
 
 defined('SYSTEM_PATH') or die('No direct script access.');
 
-use \App\Model\Base\Abcategory as Base_Claimcategory;
+use \App\Model\Base\Claimcategory as Base_Claimcategory;
 use \Zx\Model\Mysql;
 
 /**

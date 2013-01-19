@@ -16,20 +16,18 @@
                     ?>
                 </select>
             </dd>            
-            <tr>
-                <td class="zx-front-table-title zx-front-required">关键词: </td>
-                <td>您可以输入最多5个关键词。 <a href="<?php echo FRONT_HTML_ROOT . 'tag/usage'; ?>" class="zx-front-tag-usage">( 点击此处查看关键词使用规则 )</a></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td class="table_input">  
-                    <input type="text" name="tname1"  class="form_element" value="<?php if (isset($posted['tname1'])) echo $posted['tname1']; else echo $question['tname1']; ?>"/>
-                    <input type="text" name="tname2"  class="form_element" value="<?php if (isset($posted['tname2'])) echo $posted['tname2']; else echo $question['tname2']; ?>"/>
-                    <input type="text" name="tname3"  class="form_element" value="<?php if (isset($posted['tname3'])) echo $posted['tname3']; else echo $question['tname3']; ?>"/>
-                    <br />
-                    <input type="text" name="tname4"  class="form_element" value="<?php if (isset($posted['tname4'])) echo $posted['tname4']; else echo $question['tname4']; ?>"/>
-                    <input type="text" name="tname5"  class="form_element" value="<?php if (isset($posted['tname5'])) echo $posted['tname5']; else echo $question['tname5']; ?>"/>
-                </td>
+            <dt>
+                关键词: </dt>
+                <dd>您可以输入最多5个关键词。 <a href="<?php echo FRONT_HTML_ROOT . 'tag/usage'; ?>" class="zx-front-tag-usage">( 点击此处查看关键词使用规则 )</a></dd>
+                <?php 
+                $tnames = explode(TNAME_SEPERATOR, substr($question['tnames'], 1, -1));
+                
+                ?>
+                   <dt></dt><dd> <input type="text" name="tname1"  class="form_element" value="<?php if (isset($posted['tname1'])) echo $posted['tname1']; elseif (isset($tnames[0])) echo $tnames[0]; ?>"/></dd>
+                  <dt></dt> <dd> <input type="text" name="tname2"  class="form_element" value="<?php if (isset($posted['tname2'])) echo $posted['tname2']; elseif (isset($tnames[1])) echo $tnames[1]; ?>"/></dd>
+                   <dt></dt><dd> <input type="text" name="tname3"  class="form_element" value="<?php if (isset($posted['tname3'])) echo $posted['tname3']; elseif (isset($tnames[2])) echo $tnames[2]; ?>"/></dd>
+                   <dt></dt><dd> <input type="text" name="tname4"  class="form_element" value="<?php if (isset($posted['tname4'])) echo $posted['tname4']; elseif (isset($tnames[3])) echo $tnames[3]; ?>"/></dd>
+                   <dt></dt> <dd><input type="text" name="tname5"  class="form_element" value="<?php if (isset($posted['tname5'])) echo $posted['tname5']; elseif (isset($tnames[4])) echo $tnames[4]; ?>"/></dd>
             </tr>            
             <dt>Votes:</dt><dd><input type="text" name="num_of_votes" size="50"  value="<?php if (isset($_POST['num_of_votes'])) echo $_POST['num_of_votes']; else echo $question['num_of_votes']; ?>"/>        </dd>
             <dt>Views:</dt><dd><input type="text" name="num_of_votes" size="50"  value="<?php if (isset($_POST['num_of_views'])) echo $_POST['num_of_views']; else echo $question['num_of_views']; ?>"/>        </dd>

@@ -19,7 +19,7 @@ use \App\Model\Claim as Model_Claim;
 use \App\Model\Claimcategory as Model_Claimcategory;
 use \App\Transaction\Claim as Transaction_Claim;
 use App\Transaction\User as Transaction_User;
-
+use \Zx\Message\Message as Zx_Message;
 /**
   only user can claim and vote
  */
@@ -27,7 +27,7 @@ class Claim extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = FRONT_VIEW_PATH . 'vote/';
+        $this->view_path = FRONT_VIEW_PATH . 'claim/';
         //$this->list_page = FRONT_HTML_ROOT . 'vote/all/';
     }
 
@@ -64,7 +64,7 @@ class Claim extends Base {
         $success = false;
         $posted = array();
 
-        //App_Test::objectLog('Session',  App_Session::get_all_session(), __FILE__, __LINE__, __CLASS__, __METHOD__);        
+         \Zx\Test\Test::object_log('$_POST', $_POST, __FILE__, __LINE__, __CLASS__, __METHOD__);
             if (isset($_POST['cat_id']) && !empty($_POST['cat_id'])){
                 $cat_id = intval($_POST['cat_id']);
                 $item_type = $this->params[0];
@@ -77,7 +77,7 @@ class Claim extends Base {
                    //Zx_Message::set_error_message("您提交的信息有误， 请重新操作。");
                 }
             } 
-        View::set_view_file($this->view_path . 'claim_result');
+        View::set_view_file($this->view_path . 'claim_result.php');
     }
 
 }

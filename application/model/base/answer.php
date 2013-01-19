@@ -53,8 +53,8 @@ class Answer {
      */
 
     const S_DISABLED = 0; //if this answer is disabled by admin
-    const S_CORRECT = 1;   //if this answer completely correct, cannot be claimed
-    const S_ACTIVE = 2;  //if this answer is active and can be claimed
+    const S_ACTIVE = 1;  //if this answer is active and can be claimed
+    const S_CORRECT = 2;   //if this answer completely correct, cannot be claimed
     const S_CLAIMED = 3; //when it's claimed by user
     const S_DELETED = 4; //when it's deleted by user
 
@@ -104,7 +104,7 @@ class Answer {
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-        \Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
+        //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         return Mysql::select_all($sql);
     }
