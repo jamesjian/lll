@@ -14,8 +14,8 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <table>
 <tr>
 <th><a href='<?php echo $link_state;?>'>previous</a><img src="<?php echo $direction_img;?>" /></th>
-<th><a href='<?php echo $link_num_of_questions;?>'>operation</a><img src="<?php echo $direction_img;?>" /></th>
-<th><a href='<?php echo $link_num_of_ads;?>'>difference</a><img src="<?php echo $direction_img;?>" /></th>
+<th><a href='<?php echo $link_num_of_questions;?>'>questions</a><img src="<?php echo $direction_img;?>" /></th>
+<th><a href='<?php echo $link_num_of_ads;?>'>ads</a><img src="<?php echo $direction_img;?>" /></th>
 </tr>
 
 <?php

@@ -11,7 +11,7 @@ use \Zx\Test\Test;
 
 /**
  */
-class Body extends Base {
+class Region extends Base {
 
     public $list_page = '';
 
@@ -35,13 +35,14 @@ class Body extends Base {
         $direction = isset($this->params[2]) ? $this->params[2] : 'ASC';
         $search = isset($this->params[3]) ? $this->params[3] : '';
         $where = '1';
-        $region_list = Model_Body::get_regions($where, $order_by, $direction);
+        Model_Region::calculate();
+        $region_list = Model_Region::get_states($where, $order_by, $direction);
         //\Zx\Test\Test::object_log('body_list', $body_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve.php');
-        View::set_action_var('region_list', $region_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('region_list', $region_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
     }
    }

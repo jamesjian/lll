@@ -8,6 +8,8 @@ defined('SYSTEM_PATH') or die('No direct script access.');
  * most of region method will not from database
  */
 use \App\Model\Base\Region as Base_Region;
+use \App\Model\Question as Model_Question;
+use \App\Model\Ad as Model_Ad;
 use \Zx\Model\Mysql;
 
 class Region extends Base_Region{
@@ -50,5 +52,31 @@ class Region extends Base_Region{
     public static function get_states($where, $order_by, $direction)
     {
         return parent::get_all($where, 0, 100, 'date_created', 'DESC');
+    }
+    /** 
+     * calculate num_of_questions and num_of_ads
+     */
+    public static function calculate()
+    {
+        //num_of_questions
+        $q = "SELECT region, COUNT(id) AS num_of_questions FROM " . Model_Question::$table . " GROUP BY region";
+        $result = Mysql::select_all($q);
+        if ($result){
+            foreach ($result as $row) {
+                $region = $row['region']; $num_of_questions = $row['num_of_questions'];
+                $q = "UPDATE " . parent::$table . " SET num_of_questions=$num_of_questions WHERE state='$region'"; 
+                Mysql::exec($q);
+            }
+        }
+        //num_of_ads
+        $q = "SELECT region, COUNT(id) AS num_of_ads FROM " . Model_Ad::$table . " GROUP BY region";
+        $result = Mysql::select_all($q);
+        if ($result){
+            foreach ($result as $row) {
+                $region = $row['region']; $num_of_ads = $row['num_of_ads'];
+                $q = "UPDATE " . parent::$table . " SET num_of_ads=$num_of_ads WHERE state='$region'"; 
+                Mysql::exec($q);
+            }
+        }        
     }
 }

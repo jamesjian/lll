@@ -3,8 +3,8 @@
 $question_link = USER_HTML_ROOT . 'question/user/' . $user['id'];
 $answer_link = USER_HTML_ROOT . 'answer/user/' . $user['id'];
 $ad_link = USER_HTML_ROOT . 'ad/myad/' . $user['id'];
-$password_link = USER_HTML_ROOT . 'user/password/' . $user['id'];
-$image_link = USER_HTML_ROOT . 'user/image/' . $user['id'];
+$password_link = USER_HTML_ROOT . 'user/change_password/' . $user['id'];
+$image_link = USER_HTML_ROOT . 'user/change_portrait/' . $user['id'];
 ?>
     用户名:<?php echo $user['uname']; ?><br />电子邮箱:<?php echo $user['email']; ?><br />
     总分:<?php echo $user['score']; ?>

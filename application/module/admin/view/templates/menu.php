@@ -18,7 +18,7 @@ if (Transaction_Staff::staff_has_loggedin()) {
         array('menu_name' => 'Article Category', 'link' => 'articlecategory/retrieve'),
         array('menu_name' => 'Page', 'link' => 'page/retrieve'),
         array('menu_name' => 'Page Category', 'link' => 'pagecategory/retrieve'),
-        array('menu_name' => 'Region', 'link' => 'region/'),
+        array('menu_name' => 'Region', 'link' => 'region/retrieve'),
         array('menu_name' => 'User', 'link' => 'user/retrieve'),
         array('menu_name' => 'Question', 'link' => 'question/retrieve'),
         array('menu_name' => 'Answer', 'link' => 'answer/retrieve'),
