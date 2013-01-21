@@ -11,11 +11,12 @@ use \Zx\Model\Mysql;
   active ads means not disabled by admin
  * including completely correct, claimed or acitve (not claimed)
  * 
+ * ad use id only (no id1) because not necessary.
+ * 
  * 
   update ts8wl_answer set id1=concat(convert(2*id, char(11)), md5(id))
   CREATE TABLE ad (
   id  MEDIUMINT(8) unsigned  AUTO_INCREMENT PRIMARY KEY,
-  id1 varchar(44) not null unique,
   title varchar(255) NOT NULL DEFAULT '',
   uid  MEDIUMINT(7) unsigned  not null default 0,
   uname varchar(255) not null default '',  #user name is fixed
@@ -34,7 +35,7 @@ use \Zx\Model\Mysql;
 
 class Ad {
 
-    public static $fields = array('id', 'id1', 'title', 'uid', 'uname',
+    public static $fields = array('id', 'title', 'uid', 'uname',
         'tids', 'tnames', 'content', 'score', 'num_of_views', 
         'status', 'date_created', 'date_start', 'date_end');
     public static $table = TABLE_AD;
@@ -88,10 +89,7 @@ class Ad {
      * @return 1D array or boolean when false 
      */
     public static function get_one_by_where($where) {
-        $sql = "SELECT *
-            FROM " . self::$table .
-                " WHERE $where
-        ";
+        $sql = "SELECT * FROM " . self::$table . " WHERE $where";
         return Mysql::select_one($sql);
     }
 
@@ -129,8 +127,8 @@ class Ad {
         $insert_str = implode(',', $insert_arr);
         $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
         $id = Mysql::insert($sql, $params);
-        $arr = array('id1' => 2 * $id . md5($id));  //generate id1
-        self::update($id, $arr);
+        //$arr = array('id1' => 2 * $id . md5($id));  //generate id1
+        //self::update($id, $arr);
         return $id;
     }
 

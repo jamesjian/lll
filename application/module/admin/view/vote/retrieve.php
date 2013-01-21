@@ -9,6 +9,7 @@ if ($vote_list) {
     $link_uid = $link_prefix . 'uid' . $link_postfix;
     $link_item_type = $link_prefix . 'item_type' . $link_postfix;
     $link_item_id = $link_prefix . 'item_id' . $link_postfix;
+    $link_id1 = $link_prefix . 'id1' . $link_postfix;
     $link_date_created = $link_prefix . 'date_created' . $link_postfix;
     ?>
     <table>
@@ -16,6 +17,7 @@ if ($vote_list) {
             <th><a href='<?php echo $link_uid; ?>'>user id</a></th>
             <th><a href='<?php echo $link_item_type; ?>'>item_type</a></th>
             <th><a href='<?php echo $link_item_id; ?>'>item_id</a></th>
+            <th><a href='<?php echo $link_id1; ?>'>id1</a></th>
             <th><a href='<?php echo $link_date_created; ?>'>Date</a></th>
         </tr>
 
@@ -37,6 +39,7 @@ if ($vote_list) {
                 <td><a href="<?php echo $link_user; ?>"><?php echo $vote['uid']; ?></a></td>
                 <td><?php echo $item_type; ?></td>
                 <td><a href="<?php echo $link_item; ?>"><?php echo $vote['item_id']; ?></a></td>
+                <td><?php echo $vote['id1']; ?></td>
                 <td><?php echo $vote['date_created']; ?></td>
             </tr>
             <?php

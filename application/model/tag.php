@@ -288,6 +288,17 @@ class Tag extends Base_Tag {
         Mysql::exec($sql, $params);
         return true;
     }
+    /**
+     * multiple tag ids 
+     * @param array $tids 
+     * @return boolean
+     */
+    public static function increase_num_of_views_by_tids($tids) {
+        $sql = 'UPDATE ' . parent::$table . ' SET num_of_views=num_of_views+1 
+            WHERE id IN (' . implode(',', $tids) . ')';
+        Mysql::exec($sql, $params);
+        return true;
+    }
 
     /**
      * multiple tag ids 

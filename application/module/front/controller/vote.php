@@ -73,8 +73,8 @@ class Vote extends Base {
             if (isset($_POST['confirm']) && !empty($_POST['confirm'])){
                 //$_POST['confirm']  is a checkbox, if $_POST['confirm'] is not empty, it's valid
                 $item_type = $this->params[0];
-                $item_id = $this->params[1];
-                if (Transaction_Vote::vote($item_type, $item_id)) {
+                $item_id = $this->params[1];   //for question and answer it's id1
+                if (Transaction_Vote::create($item_type, $item_id)) {
                      Zx_Message::set_error_message("感谢您的关注。");
 
                 } else {

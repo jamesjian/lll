@@ -13,7 +13,7 @@ $link_id = $link_prefix . 'id' . $link_postfix;
 $link_name = $link_prefix . 'name' . $link_postfix;
 $link_num_of_questions = $link_prefix . 'num_of_questions' . $link_postfix;
 $link_num_of_ads = $link_prefix . 'num_of_ads' . $link_postfix;
-$link_rank = $link_prefix . 'rank' . $link_postfix;
+$link_num_of_views = $link_prefix . 'num_of_views' . $link_postfix;
 $link_status = $link_prefix . 'status' . $link_postfix;
 $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' : 
                                          HTML_ROOT . 'image/icon/down.png'; 
@@ -25,7 +25,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <th><a href='<?php echo $link_name;?>'>name</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_num_of_questions;?>'>Questions</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_num_of_ads;?>'>Ads</a><img src="<?php echo $direction_img;?>" /></th>
-<th><a href='<?php echo $link_rank;?>'>rank</a><img src="<?php echo $direction_img;?>" /></th>
+<th><a href='<?php echo $link_num_of_views;?>'>Views</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_status;?>'>status</a><img src="<?php echo $direction_img;?>" /></th>
 <th>delete</th>
 <th>update</th>
@@ -45,7 +45,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	<td><a href='<?php echo $link_questions;?>'><?php echo $tag['num_of_questions'];?></a></td>
 	<td><a href='<?php echo $link_ads;?>'><?php echo $tag['num_of_ads'];?></a></td>
 	<td><?php echo $tag['num_of_ads'];?></td>
-	<td><?php echo $tag['rank'];?></td>
+	<td><?php echo $tag['num_of_views'];?></td>
         <td><?php echo $tag['status'];?></td>
 	<td><a href='<?php echo $link_delete;?>' class="delete_tag">delete</a></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>

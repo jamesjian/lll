@@ -7,9 +7,10 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 /**
  * most of region method will not from database
  */
+use \App\Model\Base\Region as Base_Region;
 use \Zx\Model\Mysql;
 
-class Region {
+class Region extends Base_Region{
 
     public static function get_states_abbr() {
         return array('ACT', 'NSW', 'VIC', 'QLD', 'NT', 'TAS', 'WA', 'SA');
@@ -40,5 +41,14 @@ class Region {
             'TAS' => 'Tasmania',
             'WA' => 'Western Australia', 'SA' => 'South Australia');
     }
-
+    /** 
+     * from database
+     * @param type $where
+     * @param type $order_by
+     * @param type $direction
+     */
+    public static function get_states($where, $order_by, $direction)
+    {
+        return parent::get_all($where, 0, 100, 'date_created', 'DESC');
+    }
 }

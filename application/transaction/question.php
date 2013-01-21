@@ -13,16 +13,19 @@ use \Zx\Model\Mysql;
 //use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Question {
-
     /**
-     * mainly for front end
-     * @param array $question  record
-     * @return string 
+     * increase num of views in question and tag table
+     * @param int $id
      */
-    public static function get_link($question) {
-        $link = FRONT_HTML_ROOT . 'question/content/' . $question['id1'];
-        return $link;
+    public static function increase_num_of_views($id)
+    {
+        Model_Question::increase_num_of_views($id);
+        $question = Model_Question::get_one($id);
+        $tids = substr($question['tids'],1,-1);
+        Model_Tag::increase_num_of_views_by_tids($tids);
+        return true;
     }
+
 
     /**
      * in controller, it must have title, content and tnames

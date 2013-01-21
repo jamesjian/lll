@@ -17,6 +17,7 @@ use \Zx\Model\Mysql;
  */
 
 class Tag {
+    //num_of_views is only for questions currently
     public static $fields = array('id','name','num_of_questions','num_of_ads',
         'num_of_views','transfer_to', 'status', 'date_created');
     public static $table = TABLE_TAG;

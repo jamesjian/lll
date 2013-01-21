@@ -28,7 +28,7 @@ class Claim {
      * so get claimant from table use "order by date_created DESC limit 0,1 
      * 
      * @param int $item_type
-     * @param int $item_id
+     * @param int $item_id  for question and answer it's id1, for ad it's id
      * @param array $user  from $_SESSION['user']
      * @param int $cat_id
      * @return boolean
@@ -47,7 +47,8 @@ class Claim {
         }        
         switch ($item_type) {
             case '1': //question:
-                $item = Model_Question::get_one($item_id);
+                $item = Model_Question::get_one_by_id1($item_id);  //it's id1
+                $item_id = $item['id'];
                 $item_name = "问题";
                 $can_be_claimed = $item['status'] == Model_Question::S_ACTIVE;
                 \Zx\Test\Test::object_log('$item', $item, __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -55,7 +56,8 @@ class Claim {
                 $new_status = Model_Question::S_CLAIMED;
                 break;
             case '2': //answer
-                $item = Model_Answer::get_one($item_id);
+                $item = Model_Answer::get_one_by_id1($item_id);  //it's id1
+                $item_id = $item['id'];
                 $item_name = "回答";
                 $can_be_claimed = $item['status'] == Model_Answer::S_ACTIVE;
                 $new_status = Model_Answer::S_CLAIMED;
@@ -74,7 +76,7 @@ class Claim {
         } else {
              \Zx\Test\Test::object_log('$can_be_claimed', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
             $arr = array('item_type' => $item_type,
-                'item_id' => $item_id,
+                'item_id' => $item_id,   //all id now
                 'claimant_id' => $uid,
                 'cat_id' => $cat_id,
                 'status' => Model_Claim::S_CREATED, //new claim

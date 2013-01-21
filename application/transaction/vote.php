@@ -27,7 +27,7 @@ class Vote {
      * 
      * 
      * @param int $item_type
-     * @param int $item_id
+     * @param int $item_id  for question and answer it's id1
      * @return boolean
      */
     public static function create($item_type, $item_id) {
@@ -35,13 +35,13 @@ class Vote {
             $uname = $_SESSION['user']['uname'];        
         switch ($item_type) {
             case '1': //question:
-                $item = Model_Question::get_one($item_id);
+                $item = Model_Question::get_one_by_id1($item_id);
                 $can_be_voted_status = $item['status'] == Model_Question::S_ACTIVE ||
                         $item['status'] == Model_Question::S_CORRECT;
                 $item_name = "问题";
                 break;
             case '2': //answer
-                $item = Model_Answer::get_one($item_id);
+                $item = Model_Answer::get_one_by_id1($item_id);
                 $item_name = "回答";
                 $can_be_voted_status = $item['status'] == Model_Answer::S_ACTIVE ||
                         $item['status'] == Model_Answer::S_CORRECT;                

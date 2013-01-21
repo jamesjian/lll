@@ -176,6 +176,7 @@ class Answer extends Base {
     }
     /**
      * no status involved
+     * but if status is S_DELETED, the content cannot be updated 
      */
     public function update() {
         $success = false;
@@ -186,7 +187,7 @@ class Answer extends Base {
             if ($aid > 0) {
                 //must be the owner of the question and correct status
                 $answer = Model_Answer::get_one($aid);
-                if ($answer) {
+                if ($answer && $answer['status'] <> Model_Answer::S_DELETED) {
                     if (isset($_POST['content']) && !empty($_POST['content'])) {
                         $arr['content'] = trim($_POST['content']);
                         Transaction_Answer::update_by_admin($aid, $arr);

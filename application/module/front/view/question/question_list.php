@@ -27,7 +27,7 @@
     if ($questions) {
         $regions = \App\Model\Region::get_au_states_abbr();
         foreach ($questions as $question) {
-            $read_more_link = \App\Transaction\Question::get_link($question);
+            $read_more_link = FRONT_HTML_ROOT . 'question/content/' . $question['id1'];
             $link_user = \App\Transaction\User::get_link($question['uid']);
             ?>
     <div class='zx-front-one-question'>

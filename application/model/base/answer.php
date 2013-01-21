@@ -9,6 +9,8 @@ use App\Model\Question as Model_Question;
 use App\Model\Ad as Model_Ad;
 
 /*
+ * 
+ * ad_id is id (ad doesn't have id1)
   CREATE TABLE answer (
   id unsigned MEDIUMINT(8) AUTO_INCREMENT PRIMARY KEY,
   id1 varchar(44) not null unique,

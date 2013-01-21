@@ -10,7 +10,7 @@
         </dl>
     </fieldset>
 </form>
-<a href="<?php echo \App\Transaction\Session::get_previous_admin_page(); ?>" />Cancel</a>
+<a href="<?php echo \App\Transaction\Html::get_previous_admin_page(); ?>" />Cancel</a>
 <?php
 include_once(PHP_CKEDITOR_PATH . 'j_ckedit.class.php');
 echo CKEDITOR::ckHeader();

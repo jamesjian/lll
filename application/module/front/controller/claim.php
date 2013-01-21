@@ -68,7 +68,7 @@ class Claim extends Base {
             if (isset($_POST['cat_id']) && !empty($_POST['cat_id'])){
                 $cat_id = intval($_POST['cat_id']);
                 $item_type = $this->params[0];
-                $item_id = $this->params[1];
+                $item_id = $this->params[1]; //for question and answer it's id1, for ad it's id
                 if (Transaction_Claim::claim($item_type, $item_id, $cat_id)) {
                      Zx_Message::set_error_message("感谢您的举报， 我们会尽快核实并作出处理。");
 

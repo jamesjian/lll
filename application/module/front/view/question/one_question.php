@@ -32,7 +32,7 @@
                 <div class='zx-front-left2'>
                     <?php
                     $regions = \App\Model\Region::get_au_states_abbr();
-                    $vote_link = FRONT_HTML_ROOT . 'vote/question' . $question['id'];
+                    $vote_link = FRONT_HTML_ROOT . 'vote/question' . $question['id1'];
                     ?>
                     <article class="zx-front-question">
                         <header>
@@ -47,7 +47,7 @@
                                     <a href="<?php echo $vote_link; ?>" class="zx-front-vote-link" title="如果这个问题值得关注， 请投票支持">支持</a>
                                     <?php
                                     if ($question['valid'] == 0) {
-                                        $claim_link = FRONT_HTML_ROOT . 'claim/claim_popup_form/1/' . $question['id'];  //item type is 1 for question
+                                        $claim_link = FRONT_HTML_ROOT . 'claim/claim_popup_form/1/' . $question['id1'];  //item type is 1 for question
                                         //not sure it's valid or not, has report claim button
                                         ?>
                                         <a href = "<?php echo $claim_link; ?>" class = "zx-front-claim-link" title = "如果这个问题有违法或违规嫌疑， 请举报。">举报</a>
@@ -76,7 +76,7 @@
                         foreach ($answers as $answer) {
                             if ($answer['status']) {
                                 +
-                                        $vote_link = FRONT_HTML_ROOT . 'vote/answer' . $answer['id'];
+                                        $vote_link = FRONT_HTML_ROOT . 'vote/answer' . $answer['id1'];
                                 ?>
                                 <article class="zx-front-one-answer">
                                     <section>
@@ -90,7 +90,7 @@
                                             <a href="<?php echo $vote_link; ?>" class="zx-front-vote-link" title="如果这个回答很有帮助， 请投票">很有帮助</a>
                                             <?php
                                             if ($answer['valid'] == 0) {
-                                                $claim_link = FRONT_HTML_ROOT . 'claim/answer' . $answer['id'];
+                                                $claim_link = FRONT_HTML_ROOT . 'claim/answer' . $answer['id1'];
                                                 //not sure it's valid or not, has report claim button
                                                 ?>
                                                 <a href = "<?php echo $claim_link; ?>" class = "zx-front-claim-link" title = "如果这个回答有违法或违规嫌疑， 请举报。">我要举报</a>
@@ -124,7 +124,7 @@
                         }
                         //pagination of answers
                         if ($num_of_answers > NUM_OF_ITEMS_IN_ONE_PAGE) {
-                            $link_prefix = HTML_ROOT . 'front/question/content/' . $question['id'] . '/page/';
+                            $link_prefix = HTML_ROOT . 'front/question/content/' . $question['id1'] . '/page/';
                             $link_postfix = "/$order_by/$direction";
                             include FRONT_VIEW_PATH . 'templates/pagination.php';
                         }
@@ -169,10 +169,10 @@ if ($related_questions) {
                         <nav>
                             <ul>
     <?php
-    $current_qid = $question['id'];
+    $current_qid = $question['id1'];
     foreach ($related_questions as $question) {
-        if (!($question['id'] == $current_qid)) {
-            $read_more_link = HTML_ROOT . 'front/question/content/' . $question['id'];
+        if (!($question['id1'] == $current_qid)) {
+            $read_more_link = FRONT_HTML_ROOT . 'question/content/' . $question['id1'];
             ?>		
                                                                 <li><?php echo "<a href='$read_more_link' class='zx-front-related-question'>" . $question['title'] . "</a>";
             ?>

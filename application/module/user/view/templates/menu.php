@@ -2,7 +2,7 @@
 //this is splash page of the account
 $question_link = USER_HTML_ROOT . 'question/user/' . $user['id'];
 $answer_link = USER_HTML_ROOT . 'answer/user/' . $user['id'];
-$ad_link = USER_HTML_ROOT . 'ad/user/' . $user['id'];
+$ad_link = USER_HTML_ROOT . 'ad/myad/' . $user['id'];
 $password_link = USER_HTML_ROOT . 'user/password/' . $user['id'];
 $image_link = USER_HTML_ROOT . 'user/image/' . $user['id'];
 ?>

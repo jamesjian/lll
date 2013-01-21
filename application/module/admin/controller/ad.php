@@ -8,6 +8,7 @@ use \Zx\Message\Message as Zx_Message;
 use \App\Model\User as Model_User;
 use \App\Model\Ad as Model_Ad;
 use \App\Transaction\Ad as Transaction_Ad;
+use \App\Transaction\Html as Transaction_Html;
 use \Zx\View\View;
 use \Zx\Test\Test;
 
@@ -109,55 +110,71 @@ class Ad extends Base {
     }
 
     /**
-     * 
+     * status is not involved
      */
     public function update() {
         $success = false;
-        if (isset($_POST['title']) && !empty($_POST['title']) &&
-                isset($_POST['content']) && !empty($_POST['content']) &&
-                (!empty($_POST['tname1']) || !empty($_POST['tname2']) ||
-                !empty($_POST['tname3']) || !empty($_POST['tname4']) ||
-                !empty($_POST['tname5']))) {
-            if (isset($_POST['title'])) {
-                $arr['title'] = trim($_POST['title']);
-            }
-            if (isset($_POST['region'])) {
-                $arr['region'] = trim($_POST['region']);
-            }
-            if (isset($_POST['content'])) {
-                $arr['content'] = trim($_POST['content']);
-            }
-            $tnames = array();
-            for ($i = 1; $i <= NUM_OF_TNAMES_PER_ITEM; $i++) {
-                $index = 'tname' . $i;
-                if (isset($_POST[$index])) {
-                    $tag = Transaction_Tool::get_clear_string($_POST[$index]);
-                    if ($tag <> '') {
-                        //only contain valid tag
-                        $tnames[] = $tag;
+        $posted = array();
+        if (isset($_POST['submit'])) {
+            if (isset($_POST['title']) && !empty($_POST['title']) &&
+                    isset($_POST['content']) && !empty($_POST['content']) &&
+                    (!empty($_POST['tname1']) || !empty($_POST['tname2']) ||
+                    !empty($_POST['tname3']) || !empty($_POST['tname4']) ||
+                    !empty($_POST['tname5']))) {
+                if (isset($_POST['title'])) {
+                    $arr['title'] = trim($_POST['title']);
+                    $posted['title'] = $arr['title'] ;
+                }
+                if (isset($_POST['region'])) {
+                    $arr['region'] = trim($_POST['region']);
+                    $posted['region'] = $arr['region'];
+                }
+                if (isset($_POST['content'])) {
+                    $arr['content'] = trim($_POST['content']);
+                    $posted['content'] = $arr['content'];
+                }
+                $tnames = array();
+                for ($i = 1; $i <= NUM_OF_TNAMES_PER_ITEM; $i++) {
+                    $index = 'tname' . $i;
+                    if (isset($_POST[$index])) {
+                        $tag = Transaction_Tool::get_clear_string($_POST[$index]);
+                        if ($tag <> '') {
+                            //only contain valid tag
+                            $tnames[] = $tag;
+                            $posted[$index] = $_POST[$index];
+                        }
                     }
                 }
-            }
-            if (count($tnames) > 0) {
-                $arr['tnames'] = $tnames;
-            }
-            if (Transaction_Ad::update_ad($id, $arr)) {
-                $success = true;
+                if (count($tnames) > 0) {
+                    $arr['tnames'] = $tnames;
+                }
+                if (Transaction_Ad::update_ad($id, $arr)) {
+                    $success = true;
+                } else {
+                    Zx_Message::set_error_message(SYSTEM_ERROR_MESSAGE);
+                }
             } else {
                 Zx_Message::set_error_message('标题， 内容和关键词请填写完整。');
             }
         } else {
-            $id = $this->params[0];
+            $ad_id = isset($this->params[0]) ? intval($this->params[0]) : 0;
+            $ad = Model_Ad::get_one($id);
         }
         if ($success) {
-            header('Location: ' . $this->list_page);
+            Transaction_Html::goto_previous_admin_page();
         } else {
-            $ad = Model_Ad::get_one($id);
             //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('ad', $ad);
+            if ($ad) {
+                View::set_view_file($this->view_path . 'update.php');
+                View::set_action_var('ad', $ad);
+                View::set_action_var('posted', $posted);
+            } else {
+                Zx_Message::set_error_message('无效记录。');
+                Transaction_Html::goto_previous_admin_page();
+            }
         }
     }
+
     /**
      * make sure you understand the effects of status change
      */
@@ -197,6 +214,7 @@ class Ad extends Base {
             \App\Transaction\Html::remember_current_admin_page();
         }
         \App\Transaction\Session::set_admin_current_l1_menu('Ad');
+        \App\Transaction\Session::set_admin_current_l2_menu('All');
         $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
         $order_by = isset($this->params[1]) ? $this->params[1] : 'id';
         $direction = isset($this->params[2]) ? $this->params[2] : 'ASC';

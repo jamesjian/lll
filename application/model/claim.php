@@ -40,31 +40,45 @@ class Claim extends Base_Claim {
      * @return records
      */
     public static function get_claims_by_item_type_and_page_num($item_type, $where = 1, $page_num = 1, $order_by = 'a.id', $direction = 'ASC') {
-        switch ($item_type) {
-            case 1:
-                //question
-                $table = Base_Question::$table;
-                break;
-            case 2:
-                //answer
-                $table = Base_Answer::$table;
-                break;
-            case 3:
-                //ad
-                $table = Base_Ad::$table;
-                break;
-        }
         $page_num = intval($page_num);
         $page_num = ($page_num > 0) ? $page_num : 1;
-        $start = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;        
-        //use content rather than title, because answer doesn't have a title
-        $sql = "SELECT a.*, i.content as item_content, u.uname
+        $start = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;      
+        switch ($item_type) {
+            case 1:
+                //question  has id1 and title
+                $table = Base_Question::$table;
+            $sql = "SELECT a.*, i.id1, i.title, i.content as item_content, u.uname
             FROM " . parent::$table . " a
             LEFT JOIN " . $table . " i ON i.id=a.item_id
             LEFT JOIN " . Base_User::$table . " u ON u.id=i.uid
             WHERE item_type=$item_type AND ($where)
             ORDER BY $order_by $direction
-            LIMIT $start, " . NUM_OF_ITEMS_IN_ONE_PAGE;
+            LIMIT $start, " . NUM_OF_ITEMS_IN_ONE_PAGE;                
+                break;
+            case 2:
+                //answer  has id1, but no title
+                $table = Base_Answer::$table;
+            $sql = "SELECT a.*, i.id1,i.content as item_content, u.uname
+            FROM " . parent::$table . " a
+            LEFT JOIN " . $table . " i ON i.id=a.item_id
+            LEFT JOIN " . Base_User::$table . " u ON u.id=i.uid
+            WHERE item_type=$item_type AND ($where)
+            ORDER BY $order_by $direction
+            LIMIT $start, " . NUM_OF_ITEMS_IN_ONE_PAGE;                       
+                break;
+            case 3:
+                //ad  no id1, but has title
+                $table = Base_Ad::$table;
+            $sql = "SELECT a.*, i.title,  i.content as item_content, u.uname
+            FROM " . parent::$table . " a
+            LEFT JOIN " . $table . " i ON i.id=a.item_id
+            LEFT JOIN " . Base_User::$table . " u ON u.id=i.uid
+            WHERE item_type=$item_type AND ($where)
+            ORDER BY $order_by $direction
+            LIMIT $start, " . NUM_OF_ITEMS_IN_ONE_PAGE;                       
+                break;
+        }
+  
 //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
         return Mysql::select_all($sql);

@@ -17,16 +17,6 @@ use \App\Transaction\Staff as Transaction_Staff;
 class Answer {
 
     /**
-     * mainly for front end
-     * @param array $answer  record
-     * @return string 
-     */
-    public static function get_link($answer) {
-        $link = FRONT_HTML_ROOT . 'answer/content/' . $answer['id1'];
-        return $link;
-    }
-
-    /**
      * answer question
      * 1. num of answer for question 
      * 1. num of answer and score for user

@@ -52,7 +52,7 @@ class Question extends Base {
             Transaction_Html::set_title($question['title']);
             Transaction_Html::set_keyword($question['title'] . str_replace('#', ',', $question['tnames']));
             Transaction_Html::set_description($question['title']);
-            Model_Question::increase_num_of_views($qid);
+            Transaction_Question::increase_num_of_views($qid);
 
             View::set_view_file($this->view_path . 'one_question.php');
             $answers = Model_Answer::get_active_answers_by_qid_and_page_num($qid, $current_page_num);
