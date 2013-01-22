@@ -160,6 +160,27 @@ admin = {
         $('.delete_user').bind('click', {
             name: 'user'
         }, admin.confirm_delete_template);
+        $('.delete_question').bind('click', {
+            name: 'question'
+        }, admin.confirm_delete_template);
+        $('.delete_answer').bind('click', {
+            name: 'answer'
+        }, admin.confirm_delete_template);
+        $('.delete_ad').bind('click', {
+            name: 'ad'
+        }, admin.confirm_delete_template);
+        $('.delete_claim').bind('click', {
+            name: 'claim'
+        }, admin.confirm_delete_template);
+        $('.delete_claim_cat').bind('click', {
+            name: 'claim_category'
+        }, admin.confirm_delete_template);
+        $('.delete_vote').bind('click', {
+            name: 'vote'
+        }, admin.confirm_delete_template);
+        $('.delete_tag').bind('click', {
+            name: 'tag'
+        }, admin.confirm_delete_template);
     },    
     init_change_status_links: function(){
         $('.category_status').bind('change', {

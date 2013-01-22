@@ -59,7 +59,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	?>
 	</table>
 <?php
-$link_prefix = ADMIN_HTML_ROOT . 'ad/retrieve_by_uid/' . $uid;	
+$link_prefix = ADMIN_HTML_ROOT . 'ad/retrieve_by_uid/' . $uid . '/';	
 $link_postfix = "/$order_by/$direction/$search";
 include ADMIN_VIEW_PATH . 'templates/pagination.php';
 } else {

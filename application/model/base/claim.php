@@ -41,12 +41,8 @@ class Claim {
      * @return 1D array or boolean when false 
      */
     public static function get_one($id) {
-        $sql = "SELECT *
-            FROM " . self::$table .
-                " WHERE id=:id";
+        $sql = "SELECT * FROM " . self::$table . " WHERE id=:id";
         $params = array(':id' => $id);
-
-
         return Mysql::select_one($sql, $params);
     }
 

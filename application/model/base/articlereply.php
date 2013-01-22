@@ -2,19 +2,34 @@
 
 namespace App\Model\Base;
 
+use \App\Model\Article as Model_Article;
 use \Zx\Model\Mysql;
 
-class Blogreply {
-
+/*
+ * articles are only created by admin as an official blog/notice
+  CREATE TABLE article_reply (id mediumint(8) unsigned AUTO_INCREMENT PRIMARY KEY,
+  article_id mediumint(8) unsigned default 0,
+  uid mediumint(8) unsigned default 0,
+  content text,
+  status tinyint(1) not null default 1,
+  date_created datetime) engine=innodb default charset=utf8
+  
+ */
+class Articlereply {
+    public static $fields = array('id','article_id','uid', 'content', 'status', 'date_created');
+    public static $table = TABLE_ARTICLE_CATEGORY;
+    const S_ACTIVE = 1;  
+    const S_INACTIVE = 2;  
     /**
      *
      * @param int $id
      * @return 1D array or boolean when false 
      */
     public static function get_one($id) {
-        $sql = "SELECT a.*, ac.title as cat_name,
-            FROM " . self::$table . " a
-            LEFT JOIN article_category ac ON a.cat_id=ac.id
+        $sql = "SELECT ar.*, ac.title as article_name,
+            FROM " . self::$table . " ar
+            LEFT JOIN " . Model_Article::$table . " a ON ar.article_id=a.id
+            LEFT JOIN " . Model_User::$table . " u ON ar.uid=u.id
             WHERE a.id=:id
         ";
 		$params = array(':id'=>$id);
@@ -26,9 +41,10 @@ class Blogreply {
      * @return 1D array or boolean when false 
      */
     public static function get_one_by_where($where) {
-        $sql = "SELECT a.*, ac.title as cat_name,
-            FROM " . self::$table . " a
-            LEFT JOIN article_category ac ON a.cat_id=ac.id
+        $sql = "SELECT ar.*, ac.title as article_name,
+            FROM " . self::$table . " ar
+            LEFT JOIN " . Model_Article::$table . " a ON ar.article_id=a.id
+            LEFT JOIN " . Model_User::$table . " u ON ar.uid=u.id
             WHERE :where
         ";
 		$params = array(':where'=>$where);
@@ -37,9 +53,10 @@ class Blogreply {
 
 	
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'a.display_order', $direction = 'ASC') {
-        $sql = "SELECT a.*, ac.title as cat_name,
-            FROM " . self::$table . " a
-            LEFT JOIN article_category ac ON a.cat_id=ac.id
+        $sql = "SELECT ar.*, ac.title as article_name,
+            FROM " . self::$table . " ar
+            LEFT JOIN " . Model_Article::$table . " a ON ar.article_id=a.id
+            LEFT JOIN " . Model_User::$table . " u ON ar.uid=u.id
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count

@@ -3,12 +3,9 @@
         <legend>Create article</legend>
         <dl>
             <dt>Title:</dt><dd><input type="text" name="title" size="50" /></dd>
-            <dt>Title(En):</dt><dd><input type="text" name="title_en" size="50" /></dd>
-            <dt> URL:</dt><dd><input type="text" name="url" size="50" /></dd>
             <dt> Abstract:</dt><dd><input type="text" name="abstract" size="50" /></dd>
             <dt> Keyword:</dt><dd><input type="text" name="keyword" size="50" /></dd>
-            <dt> Keyword(En):</dt><dd><input type="text" name="keyword_en" size="50" />    </dd>
-            <dt> Rank:</dt><dd><input type="text" name="rank" size="50" />    </dd>
+            <dt> Views:</dt><dd><input type="text" name="num_of_views" size="50" />    </dd>
             <dt> Status:</dt><dd><input type="radio" name="status" value="1" />Active    
                 <input type="radio" name="status" value="0" />Inactive    </dd>
             <dt> Content: </dt><dd><textarea cols="10" rows="30" name="content"></textarea></dd>
@@ -23,7 +20,7 @@
         </dl>
     </fieldset>    
 </form>
-<a href="<?php echo \App\Transaction\Session::get_previous_admin_page(); ?>" />Cancel</a>
+<a href="<?php echo \App\Transaction\Html::get_previous_admin_page(); ?>" />Cancel</a>
 <?php
 include_once(PHP_CKEDITOR_PATH . 'j_ckedit.class.php');
 echo CKEDITOR::ckHeader();

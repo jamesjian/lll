@@ -70,9 +70,13 @@ class Ad extends Base {
 
     /** only admin has permission to purge an ad */
     public function purge() {
-        $id = $this->params[0];
-        Transaction_Ad::purge_ad($id);
-        header('Location: ' . $this->list_page);
+        $id = isset($this->params[0]) ? intval($this->params[0]) : 0;
+        if ($id>0) {
+            Transaction_Ad::purge_ad($id);
+        } else {
+            Zx_Message::set_error_message('无效记录。');
+        }
+        Transaction_Html::goto_previous_admin_page();
     }
 
     /**
@@ -96,10 +100,10 @@ class Ad extends Base {
             }
         } else {
             Zx_Message::set_error_message('无效的操作。');
-            Transaction_Html::goto_previous_user_page();
+            Transaction_Html::goto_previous_admin_page();
         }
         if ($success) {
-            Transaction_Html::goto_previous_user_page();
+            Transaction_Html::goto_previous_admin_page();
         } else {
             $ad = Model_Ad::get_one($ad);
             View::set_view_file($this->view_path . 'adjust_score.php');

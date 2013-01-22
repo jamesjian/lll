@@ -33,9 +33,6 @@ class Articlecategory extends Base_Articlecategory{
         switch ($order_by) {
             case 'id':
             case 'title':
-            case 'title_en':
-            case 'url':
-            case 'display_order':
             case 'status':
                 $order_by = $order_by;
                 break;

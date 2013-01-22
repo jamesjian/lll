@@ -41,7 +41,6 @@ class Base {
             $link = $this->list_page . trim($_POST['search']);
         } else {
             $keyword = \App\Transaction\Html::get_previous_admin_search_keyword();
-
             if ($keyword && $keyword != '') {
                 $link = $this->list_page . $keyword;
             } else {

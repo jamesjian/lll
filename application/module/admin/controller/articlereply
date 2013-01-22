@@ -3,50 +3,31 @@ namespace App\Module\Admin\Controller;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Article as Model_Article;
+use \App\Model\Articlereply as Model_Articlereply;
 use \App\Model\Articlecategory as Model_Articlecategory;
 use \App\Transaction\Article as Transaction_Article;
+use \App\Transaction\Articlereply as Transaction_Articlereply;
 
-class Article extends Admin {
+/**
+ * only created by user
+ */
+class Articlereply extends Admin {
 
     public $view_path;
 
     public function init() {
         parent::init();
-        $this->view_path = ADMIN_VIEW_PATH . 'article/';
-    }
-
-    public function create() {
-        $success = false;
-        if (isset($_POST['submit'])) {
-            $title = isset($_POST['title']) ? trim($_POST['title']) : '';
-            $description = isset($_POST['description']) ? trim($_POST['description']) : '';
-            $article_cat_id = isset($_POST['description']) ? intval($_POST['article_cat_id']) : 1;
-
-            if ($title <> '') {
-                $arr = array('title' => $title, 'description' => $description, 'article_cat_id' => $article_cat_id);
-                if (Transaction_Article::create_article($arr)) {
-                    $success = true;
-                }
-            }
-        }
-        if ($success) {
-            header('Location: ' . HTML_ROOT . 'admin/article/list_article');
-        } else {
-            $article_cats = Model_Articlecategory::get_cats();
-            View::set_view_file($this->view_path . 'create.php');
-            View::set_action_var('$article_cats', $article_cats);
-        }
+        $this->view_path = ADMIN_VIEW_PATH . 'articlereply/';
     }
 
     public function delete() {
-        $params = Route::get_params();
-        if (isset($params[0])) {
-            $id = $params[0];
-            Transaction_Article::delete_article();
+        $id = isset($this->params[0]) ? intval($this->params[0]) : 0;
+        if ($id>0) {
+            Transaction_Articlereply::delete($id);
         } else {
-            Message::set_error_message('no article');
+            Zx_Message::set_error_message('无效记录。');
         }
-        header('Location:' . HTML_ROOT . 'admin/article/list_article');
+        Transaction_Html::goto_previous_admin_page();
     }
 
     public function update() {
@@ -62,27 +43,83 @@ class Article extends Admin {
                     $success = true;
                 }
             }
+        }else {
+            $id = (isset($this->params[0])) ?  intval($this->params[0]) : 0;
         }
         if ($success) {
-            header('Location: ' . HTML_ROOT . 'admin/article/list_article');
+            Transaction_Html::goto_previous_admin_page();
         } else {
-            if (!isset($id)) {
-                $params = Route::get_params();
-                $id = $params[0];
-            }
-            $article = Model_Article::get_one($id);
-            $article_cats = Model_Articlecategory::get_cats();
+            $reply = Model_Articlereply::get_one($id);
+            $article = Model_Article::get_one($reply['article_id']);
             View::set_view_file($this->view_path . 'update.php');
+            View::set_action_var('reply', $reply);
             View::set_action_var('article', $article);
-            View::set_action_var('article_cats', $article_cats);
         }
     }
 
-    public function list_article() {
-        $page = 1;
-        $article_list = Model_Article::get_articles();
-        View::set_view_file($this->view_path . 'list.php');
-        View::set_action_var('article_list', $article_list);
+/**
+      /page/orderby/direction/search
+     * page, orderby, direction, search can be empty
+     */
+    public function retrieve() {
+       if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
+            \App\Transaction\Html::remember_current_admin_page();
+        }
+        \App\Transaction\Session::set_admin_current_l1_menu('Article');
+        $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
+        $order_by = isset($this->params[1]) ? $this->params[1] : 'id';
+        $direction = isset($this->params[2]) ? $this->params[2] : 'ASC';
+        $search = isset($this->params[3]) ? $this->params[3]: '';
+        if ($search != '') {
+            $where = " b.title LIKE '%$search%' OR bc.title LIKE '%$search%'";
+        } else {
+            $where = '1';
+        }
+        $article_list = Model_Article::get_articles_by_page_num($where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Article::get_num_of_articles($where);
+        $num_of_pages = ceil($num_of_records / NUM_OF_RECORDS_IN_ADMIN_PAGE);
+        //\Zx\Test\Test::object_log('article_list', $article_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
+        Zx_Veiw::set_view_file($this->view_path . 'retrieve.php');
+        Zx_Veiw::set_action_var('article_list', $article_list);
+        Zx_Veiw::set_action_var('search', $search);
+        Zx_Veiw::set_action_var('order_by', $order_by);
+        Zx_Veiw::set_action_var('direction', $direction);
+        Zx_Veiw::set_action_var('current_page', $current_page);
+        Zx_Veiw::set_action_var('num_of_pages', $num_of_pages);
+    }
+    /**
+     * under one category
+      retrieve_by_cat_id/cat_id/page/orderby/direction
+     */
+    public function retrieve_by_article_id() {
+       if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
+            \App\Transaction\Html::remember_current_admin_page();
+        }
+        \App\Transaction\Session::set_current_l1_menu('Article');
+        $article_id = isset($this->params[0]) ? intval($this->params[0]) :0;
+        $current_page = isset($this->params[1]) ? intval($this->params[1]) : 1;
+        $order_by = isset($this->params[2]) ? $this->params[2] : 'id';
+        $direction = isset($this->params[3]) ? $this->params[3] : 'ASC';
+        $search = isset($this->params[4]) ? $this->params[4]: '';
+        if ($search != '') {
+            $where = " b.title LIKE '%$search%' OR bc.title LIKE '%$search%'";
+        } else {
+            $where = '1';
+        }
+        $replys = Model_Article::get_replys_by_article_id_and_page_num($article_id, $where, $current_page, $order_by, $direction);
+        $num_of_records = Model_Article::get_num_of_replys_by_article_id($article_id,$where);
+        $num_of_pages = ceil($num_of_records / NUM_OF_ARTICLES_IN_CAT_PAGE);
+        //\Zx\Test\Test::object_log('article_list', $article_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
+        Zx_Veiw::set_view_file($this->view_path . 'retrieve_by_article_id.php');
+        Zx_Veiw::set_action_var('article_id', $article_id);
+        Zx_Veiw::set_action_var('replys', $replys);
+        Zx_Veiw::set_action_var('search', $search);
+        Zx_Veiw::set_action_var('order_by', $order_by);
+        Zx_Veiw::set_action_var('direction', $direction);
+        Zx_Veiw::set_action_var('current_page', $current_page);
+        Zx_Veiw::set_action_var('num_of_pages', $num_of_pages);
     }
 
 }

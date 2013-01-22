@@ -4,7 +4,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \Zx\Model\Mysql;
 
 /*
-  id=0, australia
+  primary key is not an integer
   CREATE TABLE IF NOT EXISTS `ts8wl_region` (
   `state` varchar(3) NOT NULL PRIMARY KEY,
   num_of_questions int(11) unsigned not null default 0,
@@ -64,17 +64,7 @@ class Region {
      * we will never create new record
      */ 
     public static function create($arr) {
-        $insert_arr = array();
-        $params = array();
-        foreach (self::$fields as $field) {
-            if (array_key_exists($field, $arr)) {
-                $insert_arr[] = "$field=:$field";
-                $params[":$field"] = $arr[$field];
-            }
-        }
-        $insert_str = implode(',', $insert_arr);
-        $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
-        return Mysql::insert($sql, $params);
+        
     }
 
 

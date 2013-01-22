@@ -4,12 +4,6 @@
         <dl>
             <dt>    
             Title:<input type="text" name="title" size="50" value="<?php echo $cat['title']; ?>"/></dd>
-            <dt>Title(En):</dt><dd><input type="text" name="title_en" size="50" value="<?php echo $cat['title_en']; ?>"/></dd>
-            <dt>URL:</dt><dd><input type="text" name="url" size="50" value="<?php echo $cat['url']; ?>"/></dd>
-            <dt>Keyword:</dt><dd><input type="text" name="keyword" size="50" value="<?php echo $cat['keyword']; ?>"/></dd>
-            <dt>Keyword(En):</dt><dd><input type="text" name="keyword_en" size="50" value="<?php echo $cat['keyword_en']; ?>"/></dd>
-            <dt>Display Order(smaller, more important):</dt><dd><input type="text" name="display_order" size="50"  value="<?php echo $cat['display_order']; ?>"/></dd>
-            
             <dt>Status:
             <?php
             if ($cat['status'] == '1') {
@@ -28,7 +22,7 @@
                 <input type="submit" name="submit" value="update" /></dd>
         </dl></fieldset>
 </form>
-<a href="<?php echo \App\Transaction\Session::get_previous_admin_page(); ?>" />Cancel</a>
+<a href="<?php echo \App\Transaction\Html::get_previous_admin_page(); ?>" />Cancel</a>
 <?php
 include_once(PHP_CKEDITOR_PATH . 'j_ckedit.class.php');
 echo CKEDITOR::ckHeader();

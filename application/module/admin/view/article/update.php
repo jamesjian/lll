@@ -4,12 +4,9 @@
         <dl>
             <dt>    
             Title:</dt><dd><input type="text" name="title" size="50" value="<?php echo $article['title']; ?>"/></dd>
-            <dt>Title(En):</dt><dd><input type="text" name="title_en" size="50" value="<?php echo $article['title_en']; ?>"/></dd>
-            <dt>URL:</dt><dd><input type="text" name="url" size="50" value="<?php echo $article['url']; ?>"/></dd>
             <dt>Abstract:</dt><dd><input type="text" name="abstract" size="50" value="<?php echo $article['abstract']; ?>"/></dd>
             <dt>Keyword:</dt><dd><input type="text" name="keyword" size="50" value="<?php echo $article['keyword']; ?>"/></dd>
-            <dt>Keyword(En):</dt><dd><input type="text" name="keyword_en" size="50" value="<?php echo $article['keyword_en']; ?>"/></dd>
-            <dt>Rank:</dt><dd><input type="text" name="rank" size="50"  value="<?php echo $article['rank']; ?>"/>        </dd>
+            <dt>Views:</dt><dd><input type="text" name="num_of_views" size="50"  value="<?php echo $article['num_of_views']; ?>"/>        </dd>
             <dt>    Content: </dt><dd><textarea cols="10" rows="30" name="content"><?php echo $article['content']; ?></textarea></dd>
             <dt>    Category:</dt><dd><select name='cat_id'>
                     <?php
@@ -42,7 +39,7 @@
         </dl>
     </fieldset>
 </form>
-<a href="<?php echo \App\Transaction\Session::get_previous_admin_page(); ?>" />Cancel</a>
+<a href="<?php echo \App\Transaction\Html::get_previous_admin_page(); ?>" />Cancel</a>
 <?php
 include_once(PHP_CKEDITOR_PATH . 'j_ckedit.class.php');
 echo CKEDITOR::ckHeader();

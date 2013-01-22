@@ -10,8 +10,7 @@ $next_direction = ($direction == 'ASC') ? 'DESC' : 'ASC';  //change direction
 $link_postfix =  "/$next_direction/$search";
 $link_id = $link_prefix . 'id' . $link_postfix;
 $link_title = $link_prefix . 'title' . $link_postfix;
-$link_title_en = $link_prefix . 'title_en' . $link_postfix;
-$link_rank = $link_prefix . 'rank' . $link_postfix;
+$link_num_of_views = $link_prefix . 'num_of_views' . $link_postfix;
 $link_cat_name = $link_prefix . 'cat_name' . $link_postfix;
 $link_status = $link_prefix . 'status' . $link_postfix;
 $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' : 
@@ -22,8 +21,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <tr>
 <th><a href='<?php echo $link_id;?>'>id</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_title;?>'>title</a><img src="<?php echo $direction_img;?>" /></th>
-<th><a href='<?php echo $link_title_en;?>'>title(En)</a><img src="<?php echo $direction_img;?>" /></th>
-<th><a href='<?php echo $link_rank;?>'>rank</a><img src="<?php echo $direction_img;?>" /></th>
+<th><a href='<?php echo $link_num_of_views;?>'>Views</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_cat_name;?>'>category</a><img src="<?php echo $direction_img;?>" /></th>
 <th><a href='<?php echo $link_status;?>'>status</a><img src="<?php echo $direction_img;?>" /></th>
 <th>delete</th>
@@ -39,8 +37,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 <tr>
 	<td><?php echo $article['id'];?></td>
 	<td><?php echo $article['title'];?></td>
-	<td><?php echo $article['title_en'];?></td>
-	<td><?php echo $article['rank'];?></td>
+	<td><?php echo $article['num_of_views'];?></td>
 	<td><?php echo $article['cat_name'];?></td>
         <td><?php echo $article['status'];?></td>
 	<td><a href='<?php echo $link_delete;?>' class="delete_article">delete</a></td>
@@ -51,7 +48,7 @@ $direction_img = ($direction == 'ASC') ? HTML_ROOT . 'image/icon/up.png' :
 	?>
 	</table>
 <?php
-$link_prefix = ADMIN_HTML_ROOT . 'article/retrieve_by_cat_id/' . $cat_id;	
+$link_prefix = ADMIN_HTML_ROOT . 'article/retrieve_by_cat_id/' . $cat_id . '/';	
 $link_postfix = "/$order_by/$direction/$search";
 include ADMIN_VIEW_PATH . 'templates/pagination.php';
 } else {

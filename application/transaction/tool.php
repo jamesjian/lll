@@ -28,6 +28,8 @@ class Tool {
      * @param string $card_num Credit card number
      * @param string $type Either American express, Diners Club, Discover, MasterCard or Visa card
      * @return boolean
+
+     * 
      */
     public static function is_credit_card($card_num, $type) {
 

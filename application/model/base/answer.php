@@ -12,15 +12,15 @@ use App\Model\Ad as Model_Ad;
  * 
  * ad_id is id (ad doesn't have id1)
   CREATE TABLE answer (
-  id unsigned MEDIUMINT(8) AUTO_INCREMENT PRIMARY KEY,
+  id  MEDIUMINT(8) unsigned AUTO_INCREMENT PRIMARY KEY,
   id1 varchar(44) not null unique,
-  qid unsigned MEDIUMINT(8) not null default 0,
-  uid unsigned MEDIUMINT(7) not null default 0,
+  qid  MEDIUMINT(8) unsigned not null default 0,
+  uid  MEDIUMINT(7) unsigned not null default 0,
   uname varchar(30) not null '',  #user name is fixed
-  ad_id unsigned MEDIUMINT(8) not null default 0,
+  ad_id  MEDIUMINT(8) unsigned not null default 0,
   content text,
-  num_of_votes unsigned mediumint(7) default 0,
-  status unsigned tinyint(1) not null default 1,
+  num_of_votes mediumint(7) unsigned default 0,
+  status tinyint(1) unsigned not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  * 
  * todo: answer_history table to record all answers when updated

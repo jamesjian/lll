@@ -5,7 +5,7 @@ namespace App\Model\Base;
 use \Zx\Model\Mysql;
 
 /*
-  CREATE TABLE article_category (id int(11) AUTO_INCREMENT PRIMARY KEY,
+  CREATE TABLE article_category (id tinyint(3) unsigned AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
   description text,
   status tinyint(1) not null default 1,
@@ -13,10 +13,10 @@ use \Zx\Model\Mysql;
  */
 
 class Articlecategory {
-    public static $fields = array('id','title','title_en', 'cat_id',
-        'keyword','keyword_en', 'url',
-        'description', 'display_order', 'status', 'date_created');
-    public static $table = 'article_category';
+    public static $fields = array('id','title', 'description', 'status', 'date_created');
+    public static $table = TABLE_ARTICLE_CATEGORY;
+    const S_ACTIVE = 1;  
+    const S_INACTIVE = 2;  
     
     public static function get_one($id) {
         $sql = "SELECT *
