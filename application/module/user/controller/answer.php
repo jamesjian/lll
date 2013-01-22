@@ -4,8 +4,8 @@ namespace App\Module\User\Controller;
 
 defined('SYSTEM_PATH') or die('No direct script access.');
 
-use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
+use \Zx\View\Message as Zx_Message;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
 use App\Transaction\User as Transaction_User;
@@ -27,7 +27,7 @@ class Answer extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/user/view/answer/';
+        $this->view_path = USER_VIEW_PATH . 'answer/';
         $this->list_page = USER_HTML_ROOT . 'answer/user/' . $this->user['id'];
     }
 
@@ -65,12 +65,12 @@ class Answer extends Base {
         //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $num_of_questions = Model_Answer::get_num_of_active_answers_by_uid($this->uid, $where);
         $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'my_answers.php');
-        View::set_action_var('answers', $answers);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'my_answers.php');
+        Zx_View::set_action_var('answers', $answers);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     public function answer() {
@@ -99,16 +99,16 @@ class Answer extends Base {
         } else {
             $qid = isset($this->params[0]) ? intval($this->params[0]) : 0;
             if (!Model_Question::exist_qid($qid)) {
-                Message::set_error_message('无效问题。');
+                Zx_Message::set_error_message('无效问题。');
                 header('Location: ' . $this->list_page);
             } else {
-                Message::set_error_message('user id,qid and content not be empty。');
+                Zx_Message::set_error_message('user id,qid and content not be empty。');
             }
         }
         if ($success) {
-            header('Location: ' . $this->list_page);
+            Transaction_Html::goto_previous_user_page();
         } else {
-            View::set_view_file($this->view_path . 'create.php');
+            Zx_View::set_view_file($this->view_path . 'create.php');
         }
         header('Location: ' . Transaction_Session::get_previous_page());
     }
@@ -142,14 +142,14 @@ class Answer extends Base {
                 //Message::set_error_message('无效问题。');
                 //header('Location: ' . $this->list_page);
             } else {
-                Message::set_error_message('user id,qid and content not be empty。');
+                Zx_Message::set_error_message('user id,qid and content not be empty。');
             }
         }
         if ($success) {
-            header('Location: ' . $this->list_page);
+            Transaction_Html::goto_previous_user_page();
         } else {
-            View::set_view_file($this->view_path . 'link.php');
-            View::set_action_var('ad_id', $ad_id);
+            Zx_View::set_view_file($this->view_path . 'link.php');
+            Zx_View::set_action_var('ad_id', $ad_id);
         }
         //header('Location: ' . Transaction_Session::get_previous_page());
     }
@@ -196,8 +196,8 @@ class Answer extends Base {
         if ($success) {
             Transaction_Html::goto_previous_user_page();
         } else {
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('answer', $answer);
+            Zx_View::set_view_file($this->view_path . 'update.php');
+            Zx_View::set_action_var('answer', $answer);
         }
     }
 

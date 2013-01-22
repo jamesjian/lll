@@ -1,70 +1,39 @@
 <?php
 
 namespace App\Model;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
+
+use \App\Model\Base\Articlereply as Base_Articlereply;
 use \Zx\Model\Mysql;
 
-class Article {
+class Articlereply extends Base_Articlereply {
 
-    /**
-     *
-     * @param int $id
-     * @return 1D array or boolean when false 
-     */
-    public static function get_one($id) {
-        $sql = "SELECT a.*, ac.title as cat_name,
-            FROM article a
-            LEFT JOIN article_category ac ON a.cat_id=ac.id
-            WHERE a.id=:id
-        ";
-		$params = array(':id'=>$id);
-        return Mysql::select_one($sql, $params);
-    }    
-	/**
-     *
-     * @param string $where
-     * @return 1D array or boolean when false 
-     */
-    public static function get_one_by_where($where) {
-        $sql = "SELECT a.*, ac.title as cat_name,
-            FROM article a
-            LEFT JOIN article_category ac ON a.cat_id=ac.id
-            WHERE :where
-        ";
-		$params = array(':where'=>$where);
-        return Mysql::select_one($sql, $params);
+   public static function get_replies_by_page_num($where = '1', $page_num = 1, $order_by = 'id', $direction = 'ASC') {
+        $page_num = intval($page_num);
+        $page_num = ($page_num > 0) ? $page_num : 1;
+        switch ($order_by) {
+            case 'id':
+            case 'date_created':
+            case 'cat_id':
+                $order_by = 'ar.' . $order_by;
+                break;
+            case 'title':
+                $order_by = 'a.' . $order_by;
+                break;
+            case 'uname':
+                $order_by = 'u.' . $order_by;
+                break;
+            default:
+                $order_by = 'b.date_created';
+        }
+        $direction = ($direction == 'ASC') ? 'ASC' : 'DESC';
+        //$where = '1';
+        $start = ($page_num - 1) * NUM_OF_RECORDS_IN_ADMIN_PAGE;
+        return parent::get_all($where, $start, NUM_OF_RECORDS_IN_ADMIN_PAGE, $order_by, $direction);
     }
 
-	
-    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'a.display_order', $direction = 'ASC') {
-        $sql = "SELECT a.*, ac.title as cat_name,
-            FROM article a
-            LEFT JOIN article_category ac ON a.cat_id=ac.id
-            WHERE :where
-            LIMIT :offset, :row_count
-            ORDER BY :order_by :direction
-        ";
-		$params = array(':where'=>$where, ':offset'=>$offset, ':row_count'=>$row_count, 
-		                ':order_by'=>$order_by, ':direction'=>$direction);
-        return Mysql::select_all($sql, $params);
+    public static function get_num_of_articles($where = '1') {
+        return parent::get_num($where);
     }
-
-    public static function create($arr) {
-        $sql = "INSERT INTO article SET " . Mysql::concat_field_name_and_value($arr);
-        return Mysql::insert($sql);
-    }
-
-    public static function update($id, $arr) {
-        $sql = "UPDATE article SET " . Mysql::concat_field_name_and_value($arr) .
-                ' WHERE id=:id';
-		$params = array(':id'=>$id);
-        return Mysql::exec($sql, $params);
-    }
-
-    public static function delete($id) {
-        $sql = "Delete FROM article WHERE id=:id";
-		$params = array(':id'=>$id);
-        return Mysql::exec($sql, $params);
-    }
-
 }

@@ -14,8 +14,9 @@ if (Transaction_Staff::staff_has_loggedin()) {
 
     $menu_arr = array(
         array('menu_name' => 'Home', 'link' => 'staff/home'),
-        array('menu_name' => 'Article', 'link' => 'article/retrieve'),
         array('menu_name' => 'Article Category', 'link' => 'articlecategory/retrieve'),
+        array('menu_name' => 'Article', 'link' => 'article/retrieve'),
+        array('menu_name' => 'Article Reply', 'link' => 'articlereply/retrieve'),
         array('menu_name' => 'Page', 'link' => 'page/retrieve'),
         array('menu_name' => 'Page Category', 'link' => 'pagecategory/retrieve'),
         array('menu_name' => 'Region', 'link' => 'region/retrieve'),

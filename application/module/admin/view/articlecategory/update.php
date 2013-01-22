@@ -1,12 +1,11 @@
-<form action="<?php echo ADMIN_HTML_ROOT . 'articlecategory/update'; ?>" method="post">
+<form action="<?php echo ADMIN_HTML_ROOT . 'articlereply/update'; ?>" method="post">
     <fieldset>
         <legend>Create an article category</legend>
         <dl>
-            <dt>    
-            Title:<input type="text" name="title" size="50" value="<?php echo $cat['title']; ?>"/></dd>
+            <dt>Article:</dt><dd><?php echo $article['title']; ?>"</dd>
             <dt>Status:
             <?php
-            if ($cat['status'] == '1') {
+            if ($reply['status'] == \App\Model\Base\Articlereply::S_ACTIVE) {
                 $active_checked = ' checked';
                 $inactive_checked = '';
             } else {
@@ -14,9 +13,9 @@
                 $active_checked = '';
             }
             ?></dt><dd>
-                <input type="radio" name="status" value="1" <?php echo $active_checked; ?>/>Active    
-                <input type="radio" name="status" value="0"  <?php echo $inactive_checked; ?>/>Inactive      </dd>  
-            <dt>Description: </dt><dd><textarea cols="20" rows="10" name="description"><?php echo $cat['description']; ?></textarea></dd>
+                <input type="radio" name="status" value="<?php echo \App\Model\Base\Articlereply::S_ACTIVE;?>" <?php echo $active_checked; ?>/>Active    
+                <input type="radio" name="status" value="<?php echo \App\Model\Base\Articlereply::S_INACTIVE;?>"  <?php echo $inactive_checked; ?>/>Inactive      </dd>  
+            <dt>Content: </dt><dd><textarea cols="20" rows="10" name="content"><?php echo $reply['content']; ?></textarea></dd>
 
             <dt><input type="hidden" name="id" value="<?php echo $cat['id']; ?>" /></dt><dd>
                 <input type="submit" name="submit" value="update" /></dd>
@@ -26,4 +25,4 @@
 <?php
 include_once(PHP_CKEDITOR_PATH . 'j_ckedit.class.php');
 echo CKEDITOR::ckHeader();
-echo CKEDITOR::ckReplaceEditor_Full('description');
+echo CKEDITOR::ckReplaceEditor_Full('contents');

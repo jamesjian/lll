@@ -10,7 +10,7 @@ use App\Model\Ad as Model_Ad;
 
 /*
  * 
- * ad_id is id (ad doesn't have id1)
+ * ad_id is id (ad doesn't have id1), this answer will be connected to this ad
   CREATE TABLE answer (
   id  MEDIUMINT(8) unsigned AUTO_INCREMENT PRIMARY KEY,
   id1 varchar(44) not null unique,

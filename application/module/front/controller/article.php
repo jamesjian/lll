@@ -23,7 +23,7 @@ class Article extends Base {
 
     public function init() {
         parent::init();
-        $this->view_path = APPLICATION_PATH . 'module/front/view/article/';
+        $this->view_path = FRONT_VIEW_PATH . 'article/';
     }
 
     /*     * one article
