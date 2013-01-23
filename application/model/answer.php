@@ -232,13 +232,15 @@ class Answer extends Base_Answer {
     }
 
     public static function get_active_answers_by_qid_and_page_num($qid, $where = 1, $page_num = 1, $order_by = 'a.date_created', $direction = 'ASC') {
-        $where = " a.status=1 AND a.qid=$qid AND ($where)";
+        $active_status = implode(',',array(parent::S_ACTIVE, parent::S_CLAIMED, parent::S_CORRECT)); // similar to '(1,2,3)'
+        $where = " a.status IN (" .$active_status. ") AND a.qid=$qid AND ($where)";
         $offset = ($page_num - 1) * NUM_OF_ITEMS_IN_ONE_PAGE;
         return parent::get_all($where, $offset, NUM_OF_ITEMS_IN_ONE_PAGE, $order_by, $direction);
     }
 
     public static function get_num_of_active_answers_by_qid($qid, $where = 1) {
-        $where = " a.status=1 AND a.qid=$qid AND ($where)";
+        $active_status = implode(',',array(parent::S_ACTIVE, parent::S_CLAIMED, parent::S_CORRECT)); // similar to '(1,2,3)'
+        $where = " a.status IN (" .$active_status. ")  AND a.qid=$qid AND ($where)";
         return parent::get_num($where);
     }
 

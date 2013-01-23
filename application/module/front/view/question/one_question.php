@@ -46,7 +46,7 @@
                                                               
                                     <a href="<?php echo $vote_link; ?>" class="zx-front-vote-link" title="如果这个问题值得关注， 请投票支持">支持</a>
                                     <?php
-                                    if ($question['valid'] == 0) {
+                                    if ($question['status'] != App\Model\Question::S_CLAIMED) {
                                         $claim_link = FRONT_HTML_ROOT . 'claim/claim_popup_form/1/' . $question['id1'];  //item type is 1 for question
                                         //not sure it's valid or not, has report claim button
                                         ?>
@@ -89,7 +89,7 @@
                                             <?php echo $answer['uname']; ?>
                                             <a href="<?php echo $vote_link; ?>" class="zx-front-vote-link" title="如果这个回答很有帮助， 请投票">很有帮助</a>
                                             <?php
-                                            if ($answer['valid'] == 0) {
+                                            if ($answer['status'] == App\Model\Answer::S_CLAIMED) {
                                                 $claim_link = FRONT_HTML_ROOT . 'claim/answer' . $answer['id1'];
                                                 //not sure it's valid or not, has report claim button
                                                 ?>
