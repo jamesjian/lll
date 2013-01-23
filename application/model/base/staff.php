@@ -12,38 +12,32 @@ class Staff {
     public static $fields = array('name','password');
     public static $table = TABLE_STAFF;
     public static function get_one($id) {
-        $sql = "SELECT *
-            FROM " . self::$table . " 
-            WHERE id=$id
-        ";
-        return Mysql::select_one($sql);
+        return Zx_Model::get_one(self::$table, $id);
     }
 
-    public static function get_all($where = '1', $offset = 0, $row_count = 999999, $order_by = 'a.id', $direction = 'ASC') {
-        $sql = "SELECT *
-            FROM " . self::$table . " 
-            WHERE $where
-            ORDER BY $order_by $direction
-            LIMIT $offset, $row_count
-        ";
-        return Mysql::select_all($sql);
+    public static function get_one_by_where($where) {
+        return Zx_Model::get_one_by_where(self::$table, $where);
+    }
+
+    public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
+        return Zx_Model::get_all(self::$table, $where, $offset, $row_count, $order_by, $direction);
+    }
+
+    public static function get_num($where = '1') {
+        return Zx_Model::get_num(self::$table, $where);
     }
 
     public static function create($arr) {
-        $sql = "INSERT INTO  " . self::$table . " SET " . Mysql::concat_field_name_and_value($arr);
-        return Mysql::insert($sql);
+        $arr['date_created'] = date('Y-m-d h:i:s');
+        return Zx_Model::create(self::$table, self::$fields, $arr);
     }
 
     public static function update($id, $arr) {
-        $sql = "UPDATE " . self::$table . Mysql::concat_field_name_and_value($arr) .
-                ' WHERE id=$id';
-        return Mysql::exec($sql);
+        return Zx_Model::update(self::$table, $id, self::$fields, $arr);
     }
 
     public static function delete($id) {
-        $sql = "Delete FROM " . self::$table . " WHERE id=:id";
-		$params = array(':id'=>$id);
-        return Mysql::exec($sql, $params);
+        return Zx_Model::delete(self::$table, $id);
     }
 
 }

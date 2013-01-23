@@ -49,7 +49,7 @@ class Answer {
      *     S_ACTIVE->S_CLAIMED->S_DISABLED  
      *    (created)       (claimed)       completely wrong   
      * 5. only purged by admin
-      * 
+     * 
      * S_DISABLED can only be changed to S_DELETED by front user, but can be changed to other status by admin when mistake happened
      * in the front end, only S_DISABLED and S_DELETED will not display, others will display
      */
@@ -124,49 +124,25 @@ class Answer {
         }
     }
 
+    /**
+     * generate id1 after record creation
+     * @param array $arr
+     * @return int
+     */
     public static function create($arr) {
-        //\Zx\Test\Test::object_log('$arr', $arr, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $arr['date_created'] = date('Y-m-d h:i:s');
-        $insert_arr = array();
-        $params = array();
-        foreach (self::$fields as $field) {
-            if (array_key_exists($field, $arr)) {
-                $insert_arr[] = "$field=:$field";
-                $params[":$field"] = $arr[$field];
-            }
-        }
-        $insert_str = implode(',', $insert_arr);
-        $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
-        $id = Mysql::insert($sql, $params);
+        $id = Zx_Model::create(self::$table, self::$fields, $arr);
         $arr = array('id1' => 2 * $id . md5($id));  //generate id1
         self::update($id, $arr);
         return $id;
     }
 
     public static function update($id, $arr) {
-        $update_arr = array();
-        $params = array();
-        foreach (self::$fields as $field) {
-            if (array_key_exists($field, $arr)) {
-                $update_arr[] = "$field=:$field";
-                $params[":$field"] = $arr[$field];
-            }
-        }
-
-        $update_str = implode(',', $update_arr);
-        $sql = 'UPDATE ' . self::$table . ' SET ' . $update_str . ' WHERE id=:id';
-        //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $params[':id'] = $id;
-        //$query = Mysql::interpolateQuery($sql, $params);
-        //\Zx\Test\Test::object_log('query', $query, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
-        return Mysql::exec($sql, $params);
+        return Zx_Model::update(self::$table, $id, self::$fields, $arr);
     }
 
     public static function delete($id) {
-        $sql = "Delete FROM " . self::$table . " WHERE id=:id";
-        $params = array(':id' => $id);
-        return Mysql::exec($sql, $params);
+        return Zx_Model::delete(self::$table, $id);
     }
 
 }

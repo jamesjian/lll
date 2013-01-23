@@ -64,10 +64,8 @@ class Region {
      * we will never create new record
      */ 
     public static function create($arr) {
-        
+        return true;
     }
-
-
     public static function update($state, $arr) {
         $update_arr = array();
         $params = array();

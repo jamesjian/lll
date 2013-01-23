@@ -32,7 +32,6 @@ class Vote {
      */
     public static function create($item_type, $item_id) {
             $uid = $_SESSION['user']['uid'];
-            $uname = $_SESSION['user']['uname'];        
         switch ($item_type) {
             case '1': //question:
                 $item = Model_Question::get_one_by_id1($item_id);
@@ -60,6 +59,7 @@ class Vote {
                 $arr = array('uid' => $uid,
                     'item_type' => $item_type,
                     'item_id' => $item_id,
+                    'id1' => $id1,  //redundant field
                 );
                 if (Model_Vote::create($arr)) {
                     $user = Model_User::get_one($item['uid']);

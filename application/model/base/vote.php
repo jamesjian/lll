@@ -4,6 +4,7 @@ namespace App\Model\Base;
 use \Zx\Model\Mysql;
 
 /*
+ * primary key is a composite primary key (uid, item_type, item_id)
  * only logged in user can vote because it generates "most popular" order
 this one is for user vote question/answer/ad, when user vote them, it will be recorded here
 prevent one user from voting one item multiple times
@@ -11,12 +12,13 @@ prevent one user from voting one item multiple times
   uid mediumint(8) unsigned not null default 0,
  item_type tinyint(1) unsigned NOT NULL DEFAULT '1', 
  item_id mediumint(8) unsigned not null default 0, 
+ * id1 varchar(44) not null ,
  date_created datetime,
    primary key (uid, item_type, item_id)
  ) engine=innodb default charset=utf8
 */
 class Vote {
-    public static $fields = array('uid','item_type', 'item_id','date_created');
+    public static $fields = array('uid','item_type', 'item_id','id1', 'date_created');
     public static $table = TABLE_VOTE;
      /**
      *
@@ -55,8 +57,7 @@ class Vote {
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-//\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
+        //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         return Mysql::select_all($sql);
     }
 
@@ -71,36 +72,15 @@ class Vote {
     }
 
     public static function create($arr) {
-        $insert_arr = array(); $params = array();
         $arr['date_created'] = date('Y-m-d h:i:s');
-        foreach (self::$fields as $field) {
-            if (array_key_exists($field, $arr)) {
-                $insert_arr[] = "$field=:$field";
-                $params[":$field"] = $arr[$field];
-            }
-        }
-        $insert_str = implode(',', $insert_arr);
-        $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
-        return Mysql::insert($sql, $params);
+        return Zx_Model::create(self::$table, self::$fields, $arr);
     }
 
-    public static function update($id, $arr) {
-        $update_arr = array();$params = array();
-        foreach (self::$fields as $field) {
-            if (array_key_exists($field, $arr)) {
-                $update_arr[] = "$field=:$field";
-                $params[":$field"] = $arr[$field];
-            }
-        }        
-        
-        $update_str = implode(',', $update_arr);
-        $sql = 'UPDATE ' .self::$table . ' SET '. $update_str . ' WHERE id=:id';
-        //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $params[':id'] = $id;
-        //$query = Mysql::interpolateQuery($sql, $params);
-        //\Zx\Test\Test::object_log('query', $query, __FILE__, __LINE__, __CLASS__, __METHOD__);
-
-        return Mysql::exec($sql, $params);
+    /**
+     * usually no update
+     */
+    public static function update() {
+        return true;
     }
 
     public static function delete($uid, $item_type, $item_id) {

@@ -1,11 +1,15 @@
 <?php
+
 namespace App\Module\Admin\Controller;
+
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\User as Model_User;
 use \App\Transaction\User as Transaction_User;
-use \Zx\View\View;
+use \App\Transaction\Html as Transaction_Html;
+use \Zx\View\View as Zx_View;
 use \Zx\Test\Test;
+
 /**
  * question/retrieve_by_uid
  * question/retrieve_by_tid
@@ -34,6 +38,28 @@ class User extends Base {
     }
 
     /**
+     * login in as a normal user without password
+     * go directly to user home page
+     */
+    public function login_as() {
+        $id = (isset($this->params[0])) ? intval($id = $this->params[0]) : 0;
+        if ($id > 0) {
+            $user = Model_User::get_one($id);
+            if ($user) {
+                //if user exists
+                $session_array = array(
+                    'uid' => $user['id'],
+                    'uname' => $uname,
+                );
+                session_regenerate_id();
+                $_SESSION['user'] = $session_array;
+                Transaction_Html::goto_user_home_page();
+            }
+        }
+        Transaction_Html::goto_previous_admin_page();
+    }
+
+    /**
      * for ajax
      */
     public function change_status() {
@@ -47,9 +73,9 @@ class User extends Base {
                 $changed = true;
             }
         }
-        View::set_view_file($this->view_path . 'change_status.php');
-        View::set_action_var('changed', $changed);
-        View::do_not_use_template();
+        Zx_View::set_view_file($this->view_path . 'change_status.php');
+        Zx_View::set_action_var('changed', $changed);
+        Zx_View::do_not_use_template();
     }
 
     /**
@@ -77,14 +103,16 @@ class User extends Base {
         if ($success) {
             header('Location: ' . $this->list_page);
         } else {
-            View::set_view_file($this->view_path . 'create.php');
+            Zx_View::set_view_file($this->view_path . 'create.php');
         }
     }
 
     public function delete() {
-        $id = $this->params[0];
-        Transaction_User::delete_user($id);
-        header('Location: ' . $this->list_page);
+        $id = (isset($this->params[0])) ? intval($id = $this->params[0]) : 0;
+        if ($id > 0) {
+            Transaction_User::delete_user($id);
+        }
+        Transaction_Html::goto_previous_admin_page();
     }
 
     public function update() {
@@ -115,8 +143,8 @@ class User extends Base {
             }
         }
         if ($success) {
-        \Zx\Test\Test::object_log('cats3333', $_SESSION, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            
+            \Zx\Test\Test::object_log('cats3333', $_SESSION, __FILE__, __LINE__, __CLASS__, __METHOD__);
+
             \App\Transaction\Html::goto_previous_admin_page();
         } else {
             if (!isset($id)) {
@@ -125,23 +153,21 @@ class User extends Base {
             $user = Model_User::get_one($id);
             //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('user', $user);
+            Zx_View::set_view_file($this->view_path . 'update.php');
+            Zx_View::set_action_var('user', $user);
         }
     }
-
-
 
     /**
       /page/orderby/direction/search
      * page, orderby, direction, search can be empty
      */
     public function retrieve() {
-       if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
+        if (!\App\Transaction\Html::previous_admin_page_is_search_page()) {
             \App\Transaction\Html::remember_current_admin_page();
         }
         \Zx\Test\Test::object_log('cats2222', $_SESSION, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        
+
         //\App\Transaction\HTML::set_admin_current_l1_menu('User');
         $current_page = isset($this->params[0]) ? intval($this->params[0]) : 1;
         $order_by = isset($this->params[1]) ? $this->params[1] : 'id';
@@ -157,13 +183,13 @@ class User extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('user_list', $user_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve.php');
-        View::set_action_var('user_list', $user_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('user_list', $user_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
 }
