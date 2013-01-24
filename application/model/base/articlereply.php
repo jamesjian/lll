@@ -61,7 +61,7 @@ class Articlereply {
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'a.display_order', $direction = 'ASC') {
-        $sql = "SELECT ar.*, ac.title
+        $sql = "SELECT ar.*, a.title as article_name
             FROM " . self::$table . " ar
             LEFT JOIN " . Model_Article::$table . " a ON ar.article_id=a.id
             WHERE $where
@@ -70,7 +70,17 @@ class Articlereply {
         ";
         return Zx_Mysql::select_all($sql);
     }
+    public static function get_num($where = '1') {
+        $sql = "SELECT COUNT(ar.id) AS num FROM " . self::$table . " ar
+            LEFT JOIN " . Model_Article::$table . " a ON ar.article_id=a.id WHERE $where";
 
+        $result = Zx_Mysql::select_one($sql);
+        if ($result) {
+            return $result['num'];
+        } else {
+            return false;
+        }
+    }
     public static function create($arr) {
         $arr['date_created'] = date('Y-m-d h:i:s');
         return Zx_Mysql::create(self::$table, self::$fields, $arr);

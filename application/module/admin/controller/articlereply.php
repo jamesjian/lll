@@ -7,13 +7,12 @@ use \App\Model\Articlereply as Model_Articlereply;
 use \App\Model\Articlecategory as Model_Articlecategory;
 use \App\Transaction\Article as Transaction_Article;
 use \App\Transaction\Articlereply as Transaction_Articlereply;
-
+use \Zx\View\View as Zx_View;
 /**
  * only created by user
+ * can be updated by admin
  */
-class Articlereply extends Admin {
-
-    public $view_path;
+class Articlereply extends Base {
 
     public function init() {
         parent::init();
@@ -82,13 +81,13 @@ class Articlereply extends Admin {
         $num_of_pages = ceil($num_of_records / NUM_OF_RECORDS_IN_ADMIN_PAGE);
         //\Zx\Test\Test::object_log('article_list', $article_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        Zx_Veiw::set_view_file($this->view_path . 'retrieve.php');
-        Zx_Veiw::set_action_var('article_list', $article_list);
-        Zx_Veiw::set_action_var('search', $search);
-        Zx_Veiw::set_action_var('order_by', $order_by);
-        Zx_Veiw::set_action_var('direction', $direction);
-        Zx_Veiw::set_action_var('current_page', $current_page);
-        Zx_Veiw::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('article_list', $article_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
     /**
      * under one category
@@ -110,14 +109,14 @@ class Articlereply extends Admin {
         $num_of_pages = ceil($num_of_records / NUM_OF_ARTICLES_IN_CAT_PAGE);
         //\Zx\Test\Test::object_log('article_list', $article_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        Zx_Veiw::set_view_file($this->view_path . 'retrieve_by_article_id.php');
-        Zx_Veiw::set_action_var('article_id', $article_id);
-        Zx_Veiw::set_action_var('replys', $replys);
-        Zx_Veiw::set_action_var('search', $search);
-        Zx_Veiw::set_action_var('order_by', $order_by);
-        Zx_Veiw::set_action_var('direction', $direction);
-        Zx_Veiw::set_action_var('current_page', $current_page);
-        Zx_Veiw::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_by_article_id.php');
+        Zx_View::set_action_var('article_id', $article_id);
+        Zx_View::set_action_var('replys', $replys);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
 }

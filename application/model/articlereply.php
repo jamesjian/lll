@@ -33,7 +33,7 @@ class Articlereply extends Base_Articlereply {
         return parent::get_all($where, $start, NUM_OF_RECORDS_IN_ADMIN_PAGE, $order_by, $direction);
     }
 
-    public static function get_num_of_articles($where = '1') {
+    public static function get_num_of_replies($where = '1') {
         return parent::get_num($where);
     }
 }

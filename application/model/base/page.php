@@ -2,6 +2,7 @@
 namespace App\Model\Base;
 
 use \Zx\Model\Mysql as Zx_Mysql;
+use \App\Model\Pagecategory as Model_Pagecategory;
 
 /*
 
@@ -62,7 +63,7 @@ class Page {
         return Zx_Mysql::select_all($sql);
     }
     public static function get_num($where = '1') {
-        $sql = "SELECT a.*, c.title as cat_name
+        $sql = "SELECT COUNT(a.id) as num
             FROM " . self::$table . " a
             LEFT JOIN " . Model_Pagecategory::$table . " c ON a.cat_id=c.id
             WHERE $where

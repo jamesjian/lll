@@ -46,7 +46,7 @@ use \Zx\Model\Mysql as Zx_Mysql;
  * 
  * 
   CREATE TABLE ts8wl_user (
-  id unsigned mediumint(7) AUTO_INCREMENT primary key,
+  id mediumint(7) unsigned AUTO_INCREMENT primary key,
   id1 varchar(44) not null unique,
   uname varchar(30) not null default '',
   password varchar(255) NOT NULL DEFAULT '',
@@ -55,10 +55,10 @@ use \Zx\Model\Mysql as Zx_Mysql;
   num_of_questions unsigned mediumint(6) not null default 0,
   num_of_answers unsigned mediumint(6) not null default 0,
   num_of_ads unsigned 30(6) not null default 0,
-  score unsigned mediumint(6) not null default 0,
-  invalid_score unsigned MEDIUMINT(6) not null default 0,
-  ad_score unsigned MEDIUMINT(6) not null default 0,
-  status unsigned tinyint(1) not null default 1,
+  score mediumint(6) unsigned  not null default 0,
+  invalid_score MEDIUMINT(6) unsigned not null default 0,
+  ad_score MEDIUMINT(6) unsigned not null default 0,
+  status tinyint(1) unsigned not null default 1,
   date_created datetime) engine=innodb default charset=utf8
   alter table  ts8wl_user add index num_of_questions (num_of_questions); 
   alter table  ts8wl_user add index num_of_answers (num_of_answers); 

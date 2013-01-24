@@ -17,6 +17,7 @@ $link_num_of_answers = $link_prefix . 'num_of_answers' . $link_postfix;
 $link_num_of_ads = $link_prefix . 'num_of_ads' . $link_postfix;
 $link_score = $link_prefix . 'score' . $link_postfix;
 $link_invalid_score = $link_prefix . 'invalid_score' . $link_postfix;
+$link_ad_score = $link_prefix . 'ad_score' . $link_postfix;
 $link_date_created = $link_prefix . 'date_created' . $link_postfix;
 ?>
 <table>
@@ -31,6 +32,7 @@ $link_date_created = $link_prefix . 'date_created' . $link_postfix;
 <th><a href='<?php echo $link_num_of_ads;?>'>Ads</a></th>
 <th><a href='<?php echo $link_score;?>'>Score</a></th>
 <th><a href='<?php echo $link_invalid_score;?>'>Invalid Score</a></th>
+<th><a href='<?php echo $link_ad_score;?>'>Invalid Score</a></th>
 <th><a href='<?php echo $link_date_created;?>'>Date</a></th>
 <th>update</th>
 <th>login as</th>
@@ -74,7 +76,8 @@ $link_date_created = $link_prefix . 'date_created' . $link_postfix;
 	<td><a href='<?php echo $link_answers;?>'><?php echo $user['num_of_answers'];?></a></td>
 	<td><a href='<?php echo $link_ads;?>'><?php echo $user['num_of_ads'];?></a></td>
 	<td><?php echo $user['score'];?></a></td>
-	<td><?php echo $user['invalid score'];?></a></td>
+	<td><?php echo $user['invalid_score'];?></a></td>
+	<td><?php echo $user['ad_score'];?></a></td>
 	<td><?php echo $user['date_created'];?></td>
 	<td><a href='<?php echo $link_update;?>'>update</a></td>
 	<td><a href='<?php echo $link_login_as;?>' class="">login as</a></td>

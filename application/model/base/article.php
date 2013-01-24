@@ -79,8 +79,8 @@ class Article {
     }
 
     public static function get_num($where = '1') {
-        $sql = "SELECT COUNT(id) AS num
-            FROM " . self::$table . " 
+        $sql = "SELECT COUNT(bc.id) AS num
+            FROM " . self::$table . "  b
             LEFT JOIN " . Model_Articlecategory::$table . " bc ON b.cat_id=bc.id
             WHERE $where
         ";
