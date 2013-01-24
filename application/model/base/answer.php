@@ -11,7 +11,7 @@ use App\Model\Ad as Model_Ad;
 /*
  * 
  * ad_id is id (ad doesn't have id1), this answer will be connected to this ad
-  CREATE TABLE answer (
+  CREATE TABLE ts8wl_answer (
   id  MEDIUMINT(8) unsigned AUTO_INCREMENT PRIMARY KEY,
   id1 varchar(44) not null unique,
   qid  MEDIUMINT(8) unsigned not null default 0,
@@ -22,8 +22,10 @@ use App\Model\Ad as Model_Ad;
   num_of_votes mediumint(7) unsigned default 0,
   status tinyint(1) unsigned not null default 1,
   date_created datetime) engine=innodb default charset=utf8
- * 
- * todo: answer_history table to record all answers when updated
+ alter table  ts8wl_answer add index qid (qid);
+ alter table  ts8wl_answer add index uid (uid);
+ alter table  ts8wl_answer add index num_of_votes (num_of_votes);
+ * todo: answer_history table to record all answers when updated (revision)
  */
 
 class Answer {

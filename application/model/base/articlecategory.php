@@ -5,11 +5,14 @@ namespace App\Model\Base;
 use \Zx\Model\Mysql;
 
 /*
-  CREATE TABLE article_category (id tinyint(3) unsigned AUTO_INCREMENT PRIMARY KEY,
-  title varchar(255) NOT NULL DEFAULT '',
-  description text,
-  status tinyint(1) not null default 1,
-  date_created datetime) engine=innodb default charset=utf8
+CREATE TABLE IF NOT EXISTS `ts8wl_article_category` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `description` text,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `date_created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
  */
 
 class Articlecategory {

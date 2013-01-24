@@ -24,6 +24,8 @@ use \App\Model\Claimcategory as Model_Claimcategory;
   result text,
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
+ alter table  ts8wl_claim add index cat_id (cat_id); 
+ alter table  ts8wl_claim add index claimant_id (claimant_id); 
  */
 
 class Claim {

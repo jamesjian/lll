@@ -8,7 +8,7 @@ use \Zx\Model\Mysql;
 
 /*
  * if a tag is disabled, they will be removed from tids and tnames field in question table  
-  CREATE TABLE tag (
+  CREATE TABLE ts8wl_tag (
   id unsigned smallint(4) AUTO_INCREMENT PRIMARY KEY,
   name varchar(255) NOT NULL DEFAULT '',
   num_of_questions unsigned mediumint(8) default 0,
@@ -17,6 +17,10 @@ use \Zx\Model\Mysql;
   transfer_to varchar(255) not null default '',
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
+ alter table  ts8wl_tag add index num_of_questions (num_of_questions); 
+ alter table  ts8wl_tag add index num_of_ads (num_of_ads); 
+ alter table  ts8wl_tag add index name (name); 
+
  */
 
 class Tag {

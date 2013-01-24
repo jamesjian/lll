@@ -13,8 +13,13 @@ use \Zx\Model\Mysql as Zx_Model;
  * 
  * ad use id only (no id1) because not necessary.
  * 
+ * when creat an ad, score will be decreased by SCORE_OF_CREATE_AD
  * 
-  update ts8wl_answer set id1=concat(convert(2*id, char(11)), md5(id))
+ * when extend date, score will be decreased by SCORE_OF_CREATE_AD
+ * 
+ * when updating an ad, date_start and date_end will not be changed
+ * 
+  update ad set id1=concat(convert(2*id, char(11)), md5(id))
   CREATE TABLE ad (
   id  MEDIUMINT(8) unsigned  AUTO_INCREMENT PRIMARY KEY,
   title varchar(255) NOT NULL DEFAULT '',
@@ -23,13 +28,15 @@ use \Zx\Model\Mysql as Zx_Model;
   tids varchar(255) NOT NULL DEFAULT '',
   tnames varchar(255) not null default '', #tag names are fixed
   content text,
-  score  unsigned MEDIUMINT(6)  not null default 0, #assigned by user according to num of ads
+  score   MEDIUMINT(6) unsigned not null default 0, #assigned by user according to num of ads
   num_of_views unsigned MEDIUMINT(8) not null default 0,
   status unsigned tinyint(1) not null default 1,
   date_created datetime,
   date_start datetime,
   date_end datetime
   ) engine=innodb default charset=utf8
+ alter table  ts8wl_ad add index uid (uid);
+ alter table  ts8wl_ad add index score (score);
 
  */
 

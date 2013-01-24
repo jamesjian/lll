@@ -14,6 +14,8 @@ en varchar( 255 ) NOT NULL DEFAULT '',
 cn varchar( 255 ) NOT NULL DEFAULT '',
 cid tinyint( 2 ) NOT NULL default 1
 ) ENGINE = innodb default CHARSET = utf8
+ alter table  body add index en (en);
+
 */
 
 class Body {

@@ -8,13 +8,17 @@ use \Zx\Model\Mysql;
 /*
  * article replies are only created by user
  * admin can update its content
-  CREATE TABLE article_reply (id mediumint(8) unsigned AUTO_INCREMENT PRIMARY KEY,
-  article_id mediumint(8) unsigned default 0,
-  uid mediumint(8) unsigned default 0,
-  uname varchar(255) not null default '',  #user name is fixed
-  content text,
-  status tinyint(1) not null default 1,
-  date_created datetime) engine=innodb default charset=utf8
+CREATE TABLE ts8wl_article_reply(
+id MEDIUMINT( 8 ) UNSIGNED AUTO_INCREMENT PRIMARY KEY ,
+article_id MEDIUMINT( 8 ) UNSIGNED DEFAULT 0,
+uid MEDIUMINT( 8 ) UNSIGNED DEFAULT 0,
+uname VARCHAR( 255 ) NOT NULL DEFAULT  '',
+#user name is fixed
+content TEXT,
+STATUS TINYINT( 1 ) NOT NULL DEFAULT 1,
+date_created DATETIME
+) ENGINE = INNODB DEFAULT CHARSET = utf8
+ alter table  ts8wl_article_reply add index article_id (article_id);
 
  */
 

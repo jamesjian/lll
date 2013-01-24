@@ -1,4 +1,9 @@
 <?php
+namespace App\Model\Base;
+
+defined('SYSTEM_PATH') or die('No direct script access.');
+
+use \Zx\Model\Mysql as Zx_Model;
 /**
  * todo: next step
  * this is a transaction table of score
@@ -13,35 +18,54 @@
  *  if the ad is only for this answer, the ad is disabled)
  *   
  * sum of score of ads = score 
+ * old_score and new_score are no less than 0, if less than 0, it's set to 0
+ * "change " can be negative
+
  * 
- * operation:
- * 1. create question   +
- * 2. create answer   +
- * 3. delete question       -
- * 4. delete answer     -
- * 5. vote question        +
- * 6. vote answer         +
- * 7. disable question        -
- * 8. disable answer         -
- * 9. 
- * 
- * 
+ * item_type: 1: question, 2: answer, 3: ad
  * CREATE TABLE score (
  id  INT(11) unsigned  AUTO_INCREMENT PRIMARY KEY,
  uid MEDIUMINT(8) unsigned, 
+ item_type  tinyint(1) unsigned  not null default 1, 
  item_id  MEDIUMINT(8) unsigned  not null default 0, 
- operation varchar(255) notT NULL DEFAULT '',  
-  previous_score MEDIUMINT(8) unsigned,
-  difference tinyint(3) unsigned,
-  current_score MEDIUMINT(8) unsigned,
+ claim_id MEDIUMINT(8) unsigned  not null default 0, 
+ type  tinyint(2) unsigned  not null default 1, 
+ description varchar(255) not NULL DEFAULT '',  
+  old_score MEDIUMINT(8) unsigned,
+  change tinyint(3),
+  new_score MEDIUMINT(8) unsigned,
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  * 
  */
 class Score {
-    public static $fields = array('id','uid','item_id','operation', 'previous_score','difference',
-        'current_score','status','date_created');
+    public static $fields = array('id','uid','item_id','claim_id','type',  
+        'description', 'old_score','change', 'new_score','status','date_created');
     public static $table = TABLE_SCORE;
+    //status
+    const S_ACTIVE = 1;  //
+    //type of operation
+    const T_CREATE_QUESTION = 1;  // increase score
+    const T_CREATE_ANSWER = 2;// increase score
+    const T_CREATE_AD = 3; //decrease score
+    
+    const T_CORRECT_CLAIM_QUESTION = 4;// increase score
+    const T_CORRECT_CLAIM_ANSWER = 5;// increase score
+    const T_CORRECT_CLAIM_AD = 6;    // increase score
+    
+    const T_DISABLE_QUESTION = 7;//decrease score
+    const T_DISABLE_ANSWER = 8;//decrease score
+    const T_DISABLE_AD = 9;    //decrease score
+    
+    const T_DELETE_QUESTION = 10;//decrease score
+    const T_DELETE_ANSWER = 11;//decrease score
+    
+    const T_VOTE_QUESTION = 12;// increase score
+    const T_VOTE_ANSWER = 13;// increase score
+    
+    const T_EXTEND_AD = 14; //decrease score
+
+
     /**
      *
      * @param int $id

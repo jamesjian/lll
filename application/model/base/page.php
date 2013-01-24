@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS `page` (
   `date_created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+ alter table  ts8wl_page add index cat_id (cat_id); 
+
 */
 class Page {
     public static $fields = array('id','title', 'cat_id',

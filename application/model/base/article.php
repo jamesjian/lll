@@ -8,15 +8,20 @@ use \Zx\Model\Mysql;
 use App\Model\Articlecategory as Model_Articlecategory;
 
 /*
-  CREATE TABLE article (id MEDIUMINT(8) unsigned AUTO_INCREMENT PRIMARY KEY,
-  title varchar(255) NOT NULL DEFAULT '',
-  cat_id int(11) NOT NULL DEFAULT 1,
-  keyword varchar(255) not null default '',
-  abstract text,
-  content text,
-  num_of_views MEDIUMINT(8) default 0,
-  status tinyint(1) not null default 1,
-  date_created datetime) engine=innodb default charset=utf8
+CREATE TABLE ts8wl_article(
+id MEDIUMINT( 8 ) UNSIGNED AUTO_INCREMENT PRIMARY KEY ,
+title VARCHAR( 255 ) NOT NULL DEFAULT  '',
+cat_id TINYINT( 3 ) UNSIGNED NOT NULL DEFAULT 1,
+keyword VARCHAR( 255 ) NOT NULL DEFAULT  '',
+abstract TEXT,
+content TEXT,
+num_of_views MEDIUMINT( 8 ) DEFAULT 0,
+STATUS TINYINT( 1 ) NOT NULL DEFAULT 1,
+date_created DATETIME
+) ENGINE = INNODB DEFAULT CHARSET = utf8
+ 
+ alter table  ts8wl_article add index cat_id (cat_id);
+ 
  * 
  * alter table article add index cat_id (cat_id);
  * show index from article;

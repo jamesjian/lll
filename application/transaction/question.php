@@ -76,11 +76,12 @@ class Question {
         $arr['num_of_answers'] = 0;
         $arr['num_of_views'] = 0;
         $arr['num_of_votes'] = 0;
-        Model_Question::create($arr);
+        $qid = Model_Question::create($arr);
         $arr = array('num_of_questions'=>$user['num_of_questions']+1,
-            'score'=>$user['score']+SCORE_OF_QUESTION,
+            'score'=>$user['score'] + SCORE_OF_CREATE_QUESTION,
             );
         Model_User::update($uid, $arr);
+        Model_Score::create_question($uid, $qid, $user['score'], SCORE_OF_CREATE_QUESTION);
         return true;
     }
 

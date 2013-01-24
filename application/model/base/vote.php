@@ -8,7 +8,7 @@ use \Zx\Model\Mysql;
  * only logged in user can vote because it generates "most popular" order
 this one is for user vote question/answer/ad, when user vote them, it will be recorded here
 prevent one user from voting one item multiple times
-  CREATE TABLE vote (
+  CREATE TABLE ts8wl_vote (
   uid mediumint(8) unsigned not null default 0,
  item_type tinyint(1) unsigned NOT NULL DEFAULT '1', 
  item_id mediumint(8) unsigned not null default 0, 
@@ -16,6 +16,7 @@ prevent one user from voting one item multiple times
  date_created datetime,
    primary key (uid, item_type, item_id)
  ) engine=innodb default charset=utf8
+* 
 */
 class Vote {
     public static $fields = array('uid','item_type', 'item_id','id1', 'date_created');

@@ -8,7 +8,7 @@ use \Zx\Model\Mysql;
  * question can be created anonymously, but only be updated by author or admin
  * if anonymously, only be updated by admin 
  *  #AU means australia
-  CREATE TABLE question (
+  CREATE TABLE ts8wl_question (
   id unsigned mediumint(8) AUTO_INCREMENT PRIMARY KEY,
   id1 varchar(44) not null unique,
   title varchar(255) NOT NULL DEFAULT '',
@@ -24,6 +24,12 @@ use \Zx\Model\Mysql;
   num_of_votes unsigned mediumint(7) default 0,
   status unsigned tinyint(1) not null default 1,  //1: active, 2.
   date_created datetime) engine=innodb default charset=utf8
+ alter table  ts8wl_question add index title (title); 
+ alter table  ts8wl_question add index region (region); 
+ alter table  ts8wl_question add index uid (uid); 
+ alter table  ts8wl_question add index num_of_votes (num_of_votes); 
+ alter table  ts8wl_question add index num_of_views (num_of_views); 
+* 
  *  * todo: answer_history table to record all answers when updated
  */
 

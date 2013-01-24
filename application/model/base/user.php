@@ -45,7 +45,7 @@ use \Zx\Model\Mysql;
  * 
  * 
  * 
-  CREATE TABLE user (
+  CREATE TABLE ts8wl_user (
   id unsigned mediumint(7) AUTO_INCREMENT primary key,
   id1 varchar(44) not null unique,
   uname varchar(30) not null default '',
@@ -60,6 +60,10 @@ use \Zx\Model\Mysql;
   ad_score unsigned MEDIUMINT(6) not null default 0,
   status unsigned tinyint(1) not null default 1,
   date_created datetime) engine=innodb default charset=utf8
+  alter table  ts8wl_user add index num_of_questions (num_of_questions); 
+  alter table  ts8wl_user add index num_of_answers (num_of_answers); 
+  alter table  ts8wl_user add index score (score); 
+
  */
 
 class User {
