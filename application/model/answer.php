@@ -5,7 +5,7 @@ namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\Answer as Base_Answer;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Answer extends Base_Answer {
     public static function get_statuses()
@@ -38,7 +38,7 @@ class Answer extends Base_Answer {
             tnames=REPLACE(tnames, '$tag_name','$seperator') 
             WHERE tids LIKE '%$tag_id%";
         $params = array();
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     /**
@@ -49,7 +49,7 @@ class Answer extends Base_Answer {
     public static function reset_ad_id($ad_id) {
         $q = "UPDATE " . parent::$table . 'SET ad_id=0 WHERE ad_id=:ad_id';
         $params = array(':ad_id' => $ad_id);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     /**
@@ -61,7 +61,7 @@ class Answer extends Base_Answer {
 
         $sql = "SELECT *  FROM " . parent::$table . " WHERE id1=:id1";
         $params = array(':id1' => $id1);
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
     /**
@@ -85,7 +85,7 @@ class Answer extends Base_Answer {
 
     public static function get_all_keywords() {
         $sql = "SELECT keyword, keyword_en FROM answer WHERE status=1";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         $arr = array();
         if ($r) {
             foreach ($r as $record) {
@@ -117,9 +117,9 @@ class Answer extends Base_Answer {
             WHERE b.url='$url'
         ";
         //$params = array(':url'=>$url);
-//		$query = Mysql::interpolateQuery($sql, $params);
+//		$query = Zx_Mysql::interpolateQuery($sql, $params);
         //\Zx\Test\Test::object_log('query', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);        
-        return Mysql::select_one($sql);
+        return Zx_Mysql::select_one($sql);
     }
 
     /**
@@ -281,7 +281,7 @@ class Answer extends Base_Answer {
     public static function increase_rank($aid) {
         $sql = 'UPDATE answer SET rank=rank+1 WHERE id=:id';
         $params = array(':id' => $aid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function get_top10() {

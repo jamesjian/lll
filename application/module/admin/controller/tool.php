@@ -5,7 +5,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Blog as Model_Blog;
 use \App\Model\Blogcategory as Model_Blogcategory;
 use \App\Transaction\Tool as Transaction_Tool;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Test\Test;
 
 class Tool extends Base {
@@ -17,7 +17,7 @@ class Tool extends Base {
 
     public function sitemap() {
         Transaction_Tool::generate_sitemap();
-        View::set_view_file($this->view_path . 'sitemap_result.php');
+        Zx_View::set_view_file($this->view_path . 'sitemap_result.php');
     }
 /**
  *copy from jumba server to backup database 

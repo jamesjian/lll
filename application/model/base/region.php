@@ -1,7 +1,7 @@
 <?php
 namespace App\Model\Base;
 defined('SYSTEM_PATH') or die('No direct script access.');
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 /*
   primary key is not an integer
@@ -26,7 +26,7 @@ class Region {
     public static function get_one($state) {
         $sql = "SELECT * FROM " . self::$table . " WHERE state=:state";
         $params = array(':state' => $state);
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
     /**
@@ -37,7 +37,7 @@ class Region {
     public static function get_one_by_where($where) {
         $sql = "SELECT * FROM " . self::$table . " WHERE  $where";
         $params = array();
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'state', $direction = 'ASC') {
@@ -45,7 +45,7 @@ class Region {
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-        return Mysql::select_all($sql);
+        return Zx_Mysql::select_all($sql);
     }
 
     public static function get_num($where = '1') {
@@ -53,7 +53,7 @@ class Region {
             FROM " . self::$table . " 
             WHERE $where
         ";
-        $result = Mysql::select_one($sql);
+        $result = Zx_Mysql::select_one($sql);
         if ($result) {
             return $result['num'];
         } else {
@@ -78,7 +78,7 @@ class Region {
         $update_str = implode(',', $update_arr);
         $sql = 'UPDATE ' . self::$table . ' SET ' . $update_str . ' WHERE state=:state';
         $params[':state'] = $state;
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
     /**
      * we will never delete record in region table
@@ -86,7 +86,7 @@ class Region {
     public static function delete($state) {
         $sql = "Delete FROM page WHERE state=:state";
         $params = array(':state' => $state);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
 }

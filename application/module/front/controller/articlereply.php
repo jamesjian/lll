@@ -3,7 +3,7 @@
 namespace App\Module\Front\Controller;
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Model\Articlereply as Model_Articlereply;
 
 class Articlereply extends Base {
@@ -52,9 +52,9 @@ class Articlereply extends Base {
         if ($success) {
             header('Location: ' . $this->list_page);
         } else {
-            View::set_view_file($this->view_path . 'create.php');
-            View::set_action_var('posted', $posted);
-            View::set_action_var('errors', $errors);
+            Zx_View::set_view_file($this->view_path . 'create.php');
+            Zx_View::set_action_var('posted', $posted);
+            Zx_View::set_action_var('errors', $errors);
              * 
         }
              */

@@ -53,12 +53,12 @@ class Articlereply extends Base {
         //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $num_of_questions = Model_Answer::get_num_of_active_answers_by_uid($this->uid, $where);
         $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'my_answers.php');
-        View::set_action_var('answers', $answers);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'my_answers.php');
+        Zx_View::set_action_var('answers', $answers);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     public function reply() {

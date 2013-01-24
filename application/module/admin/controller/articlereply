@@ -53,9 +53,9 @@ class Articlereply extends Admin {
         } else {
             $reply = Model_Articlereply::get_one($id);
             $article = Model_Article::get_one($reply['article_id']);
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('reply', $reply);
-            View::set_action_var('article', $article);
+            Zx_View::set_view_file($this->view_path . 'update.php');
+            Zx_View::set_action_var('reply', $reply);
+            Zx_View::set_action_var('article', $article);
         }
     }
 

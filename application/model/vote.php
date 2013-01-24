@@ -5,7 +5,7 @@ namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\Vote as Base_Vote;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Vote extends Base_Vote {
 

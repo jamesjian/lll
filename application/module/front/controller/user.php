@@ -4,7 +4,7 @@ namespace App\Module\Front\Controller;
 
 defined('SYSTEM_PATH') or die('No direct script access.');
 
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Test\Test;
 use \App\Model\User as Model_User;
 use \App\Model\Question as Model_Question;
@@ -45,7 +45,7 @@ class User extends Base {
             //redirect to admin home page
             header('Location: ' . USER_HTML_ROOT . 'user/home');
         } else {
-            View::set_view_file($this->view_path . 'login.php');
+            Zx_View::set_view_file($this->view_path . 'login.php');
         }
     }
 
@@ -57,7 +57,7 @@ class User extends Base {
     }
 
     public function test() {
-        //              $view = View::factory($this->view_path . 'validation_message');
+        //              $view = Zx_View::factory($this->view_path . 'validation_message');
         //    $this->view($view);
     }
 
@@ -84,10 +84,10 @@ class User extends Base {
             $message = "账户中含有无效字符， 请重新输入";
         }
         //\Zx\Test\Test::object_log('$message', $message, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        View::set_view_file($this->view_path . 'check_account_result.php');
-        View::set_action_var('result', $result);
-        View::set_action_var('message', $message);
-        View::do_not_use_template(); //ajax
+        Zx_View::set_view_file($this->view_path . 'check_account_result.php');
+        Zx_View::set_action_var('result', $result);
+        Zx_View::set_action_var('message', $message);
+        Zx_View::do_not_use_template(); //ajax
     }
 
     public function register() {
@@ -121,16 +121,16 @@ class User extends Base {
             if (Transaction_User::register_user($posted)) {
                 $success = true;
                 $message = Model_User::M_SUCCESSFUL_REGISTRATION;
-                View::set_view_file($this->view_path . 'validation_message.php');
-                View::set_action_var('message', $message);
+                Zx_View::set_view_file($this->view_path . 'validation_message.php');
+                Zx_View::set_action_var('message', $message);
             }
         } elseif (isset($_POST['vcode'])) {
             Zx_Message::set_error_message(Model_User::M_WRONG_VCODE);
         }
         if (!$success) {
-            View::set_view_file($this->view_path . 'register.php');
-            View::set_action_var('posted', $posted);
-            View::set_action_var('errors', $errors);
+            Zx_View::set_view_file($this->view_path . 'register.php');
+            Zx_View::set_action_var('posted', $posted);
+            Zx_View::set_action_var('errors', $errors);
         }
     }
 
@@ -146,7 +146,7 @@ class User extends Base {
             Transaction_Html::goto_user_home_page();
         } else {
             Zx_Message::set_error_message("对不起， 您的账户未激活成功， 请重新激活， 或点击链接获取新的激活邮件， 或注册一个新账户");
-            View::set_view_file($this->view_path . 'activation_error.php');
+            Zx_View::set_view_file($this->view_path . 'activation_error.php');
         }
     }
 
@@ -168,12 +168,12 @@ class User extends Base {
         }
         if (!$success) {
             //$right_ads = Model_Servicecatrightad::get_right_ads($channel_id); //for right vertical ads
-            View::set_view_file($this->view_path . 'activation_link_form.php');
-            View::set_action_var('posted', $posted);
-            View::set_action_var('errors', $errors);
+            Zx_View::set_view_file($this->view_path . 'activation_link_form.php');
+            Zx_View::set_action_var('posted', $posted);
+            Zx_View::set_action_var('errors', $errors);
         } else {
-            View::set_view_file($this->view_path . 'validation_message.php');
-            View::set_action_var('message', $message);
+            Zx_View::set_view_file($this->view_path . 'validation_message.php');
+            Zx_View::set_action_var('message', $message);
         }
     }
 
@@ -184,8 +184,8 @@ class User extends Base {
      */
     public function login_popup_form() {
         //Zx_Message::set_new_SESSID();
-        View::set_view_file($this->view_path . 'login_form_popup.php');
-        View::do_not_use_template(); //ajax
+        Zx_View::set_view_file($this->view_path . 'login_form_popup.php');
+        Zx_View::do_not_use_template(); //ajax
     }
     /**
      * for ajax
@@ -218,9 +218,9 @@ class User extends Base {
                 $errors = array();
             }
         }
-        View::set_view_file($this->view_path . 'login_result_pop');
-        View::set_action_var('message', $message);
-        View::do_not_use_template(); //ajax        
+        Zx_View::set_view_file($this->view_path . 'login_result_pop');
+        Zx_View::set_action_var('message', $message);
+        Zx_View::do_not_use_template(); //ajax        
     }
 
     /**
@@ -259,11 +259,11 @@ class User extends Base {
         if (!$success) {
             //if invalid form or have not displayed, display form 
 //            $right_ads = Model_Servicecatrightad::get_right_ads($channel_id); //for right vertical ads
-            View::set_view_file($this->view_path . 'login.php');
-            View::set_action_var('posted', $posted);
-            View::set_action_var('errors', $errors);
+            Zx_View::set_view_file($this->view_path . 'login.php');
+            Zx_View::set_action_var('posted', $posted);
+            Zx_View::set_action_var('errors', $errors);
         } else {
-            View::set_view_file($this->view_path . 'login_result.php');
+            Zx_View::set_view_file($this->view_path . 'login_result.php');
         }
     }
 
@@ -284,26 +284,26 @@ class User extends Base {
             $errors = array();
         }
         //$right_ads = Model_Homepagerightad::get_right_ads();  //for right vertical ads
-        View::set_view_file($this->view_path . 'forgotten_password.php');
-        View::set_action_var('posted', $posted);
-        View::set_action_var('errors', $errors);
+        Zx_View::set_view_file($this->view_path . 'forgotten_password.php');
+        Zx_View::set_action_var('posted', $posted);
+        Zx_View::set_action_var('errors', $errors);
     }
 
     public function password_sent() {
         //$right_ads = Model_Homepagerightad::get_right_ads();  //for right vertical ads
-        View::set_view_file($this->view_path . 'password_sent.php');
+        Zx_View::set_view_file($this->view_path . 'password_sent.php');
     }
 
     public function no_permission() {
-        View::set_view_file($this->view_path . 'templates/no_permission');
-        View::set_action_var('homepage', 'home/index');
-        View::set_action_var('logout', 'user/logout');
+        Zx_View::set_view_file($this->view_path . 'templates/no_permission');
+        Zx_View::set_action_var('homepage', 'home/index');
+        Zx_View::set_action_var('logout', 'user/logout');
     }
 
     public function error_404() {
-        View::set_view_file($this->view_path . 'templates/404');
-        View::set_action_var('homepage', 'home/index');
-        View::set_action_var('logout', 'user/logout');
+        Zx_View::set_view_file($this->view_path . 'templates/404');
+        Zx_View::set_action_var('homepage', 'home/index');
+        Zx_View::set_action_var('logout', 'user/logout');
     }
 
     /**
@@ -311,13 +311,13 @@ class User extends Base {
      * 
      */
     public function vcode() {
-        View::set_view_file($this->view_path . 'vcode.php');
-        View::do_not_use_template(); //ajax
+        Zx_View::set_view_file($this->view_path . 'vcode.php');
+        Zx_View::do_not_use_template(); //ajax
     }
 
     public function vcode_ajax() {
-        View::set_view_file($this->view_path . 'vcode.php');
-        View::do_not_use_template(); //ajax
+        Zx_View::set_view_file($this->view_path . 'vcode.php');
+        Zx_View::do_not_use_template(); //ajax
     }
 
     /**
@@ -334,9 +334,9 @@ class User extends Base {
                 $message = '';
             }
         }
-        View::set_view_file($this->view_path . 'suburb_name_exist_ajax.php');
-        View::set_action_var('message', $message);
-        View::do_not_use_template(); //ajax        
+        Zx_View::set_view_file($this->view_path . 'suburb_name_exist_ajax.php');
+        Zx_View::set_action_var('message', $message);
+        Zx_View::do_not_use_template(); //ajax        
     }
 
     /**
@@ -370,10 +370,10 @@ class User extends Base {
         $users = Model_User::get_active_users_by_page_num($where, $current_page, $order_by, $direction);
         $num_of_articles = Model_User::get_num_of_active_users($where);
         $num_of_pages = ceil($num_of_articles / NUM_OF_USERS_IN_FRONT_PAGE);
-        View::set_view_file($this->view_path . 'retrieve.php');
-        View::set_action_var('users', $users);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('users', $users);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     public function detail() {
@@ -393,11 +393,11 @@ class User extends Base {
             $recent_questions = Model_Question::get_recent_questions_by_uid($uid);
             $recent_answers = Model_Answer::get_recent_answers_by_uid($uid);
             $recent_ads = Model_Ad::get_recent_ads_by_uid($uid);
-            View::set_view_file($this->view_path . 'one_user.php');
-            View::set_action_var('user', $user);
-            View::set_action_var('recent_questions', $recent_questions);
-            View::set_action_var('recent_answers', $recent_answers);
-            View::set_action_var('recent_ads', $recent_ads);
+            Zx_View::set_view_file($this->view_path . 'one_user.php');
+            Zx_View::set_action_var('user', $user);
+            Zx_View::set_action_var('recent_questions', $recent_questions);
+            Zx_View::set_action_var('recent_answers', $recent_answers);
+            Zx_View::set_action_var('recent_ads', $recent_ads);
         } else {
             //if no article, goto homepage
             Transaction_Html::goto_home_page();

@@ -3,7 +3,7 @@
 namespace App\Module\Front\Controller;
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
 use \App\Model\Tag as Model_Tag;
@@ -49,10 +49,10 @@ class Tag extends Base {
             Transaction_Html::set_description($tag['title'] . ' ' . $tag['title_en']);
             Model_Tag::increase_rank($tag_id);
 
-            View::set_view_file($this->view_path . 'one_tag.php');
+            Zx_View::set_view_file($this->view_path . 'one_tag.php');
             $relate_tags = Model_Tag::get_10_active_related_tags($tag_id);
-            View::set_action_var('tag', $tag);
-            View::set_action_var('related_tags', $relate_tags);
+            Zx_View::set_action_var('tag', $tag);
+            Zx_View::set_action_var('related_tags', $relate_tags);
         } else {
             //if no tag, goto homepage
             Transaction_Html::goto_home_page();
@@ -75,13 +75,13 @@ class Tag extends Base {
             //\Zx\Test\Test::object_log('$tags', $tags, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_tags = Model_Tag::get_num_of_active_tags_by_keyword($keyword);
             $num_of_pages = ceil($num_of_tags / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'retrieve_by_keyword.php');
-            View::set_action_var('keyword', $keyword);
-            View::set_action_var('tags', $tags);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_view_file($this->view_path . 'retrieve_by_keyword.php');
+            Zx_View::set_action_var('keyword', $keyword);
+            Zx_View::set_action_var('tags', $tags);
+            Zx_View::set_action_var('order_by', $order_by);
+            Zx_View::set_action_var('direction', $direction);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
         }
     }
 
@@ -109,13 +109,13 @@ class Tag extends Base {
             //\Zx\Test\Test::object_log('$tags', $tags, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_tags = Model_Tag::get_num_of_active_tags_by_cat_id($cat['id']);
             $num_of_pages = ceil($num_of_tags / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'retrieve_by_cat_id.php');
-            View::set_action_var('cat', $cat);
-            View::set_action_var('tags', $tags);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_view_file($this->view_path . 'retrieve_by_cat_id.php');
+            Zx_View::set_action_var('cat', $cat);
+            Zx_View::set_action_var('tags', $tags);
+            Zx_View::set_action_var('order_by', $order_by);
+            Zx_View::set_action_var('direction', $direction);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
         } else {
             //if invalid category
             // \Zx\Test\Test::object_log('$cat_title', 'no', __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -145,10 +145,10 @@ class Tag extends Base {
         $tags = Model_Tag::get_active_ad_tags_by_page_num($current_page, $order_by, $direction);
         $num_of_tags = Model_Tag::get_num_of_active_ad_tags();
         $num_of_pages = ceil($num_of_tags / NUM_OF_TAGS_IN_FRONT_PAGE);
-        View::set_view_file($this->view_path . 'apinyin_list.php');
-        View::set_action_var('tags', $tags);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'apinyin_list.php');
+        Zx_View::set_action_var('tags', $tags);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -166,10 +166,10 @@ class Tag extends Base {
         $tags = Model_Tag::get_active_ad_tags_by_page_num($current_page, $order_by, $direction);
         $num_of_tags = Model_Tag::get_num_of_active_ad_tags();
         $num_of_pages = ceil($num_of_tags / NUM_OF_TAGS_IN_FRONT_PAGE);
-        View::set_view_file($this->view_path . 'apopular_list.php');
-        View::set_action_var('tags', $tags);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'apopular_list.php');
+        Zx_View::set_action_var('tags', $tags);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     public function qpinyin() {
@@ -184,17 +184,17 @@ class Tag extends Base {
         $tags = Model_Tag::get_active_question_tags_by_page_num($current_page, $order_by, $direction);
         $num_of_tags = Model_Tag::get_num_of_active_question_tags();
         $num_of_pages = ceil($num_of_tags / NUM_OF_TAGS_IN_FRONT_PAGE);
-        View::set_view_file($this->view_path . 'qpinyin_list.php');
-        View::set_action_var('tags', $tags);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'qpinyin_list.php');
+        Zx_View::set_action_var('tags', $tags);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
 
      */
     public function qpopular() {
-        View::set_template_file($this->template_path . 'template.php');
+        Zx_View::set_template_file($this->template_path . 'template.php');
         Transaction_Html::set_title('最受关注问题类别');
         Transaction_Html::set_keyword('最受关注问题类别');
         Transaction_Html::set_description('最受关注问题类别');
@@ -206,10 +206,10 @@ class Tag extends Base {
         $tags = Model_Tag::get_active_question_tags_by_page_num($current_page, $order_by, $direction);
         $num_of_tags = Model_Tag::get_num_of_active_question_tags();
         $num_of_pages = ceil($num_of_tags / NUM_OF_TAGS_IN_FRONT_PAGE);
-        View::set_view_file($this->view_path . 'qpopular_list.php');
-        View::set_action_var('tags', $tags);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'qpopular_list.php');
+        Zx_View::set_action_var('tags', $tags);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     public function ad() {
@@ -231,10 +231,10 @@ class Tag extends Base {
         $tags = Model_Tag::get_active_ad_tags_by_page_num($where, $current_page, $order_by, $direction);
         $num_of_tags = Model_Tag::get_num_of_active_ad_tags();
         $num_of_pages = ceil($num_of_tags / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'ad_tag_list.php');
-        View::set_action_var('tags', $tags);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'ad_tag_list.php');
+        Zx_View::set_action_var('tags', $tags);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -245,8 +245,8 @@ class Tag extends Base {
     }
 
     public function usage() {
-        View::set_view_file($this->view_path . 'usage.php');
-        View::do_not_use_template();
+        Zx_View::set_view_file($this->view_path . 'usage.php');
+        Zx_View::do_not_use_template();
     }
 
 }

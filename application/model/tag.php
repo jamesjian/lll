@@ -5,7 +5,7 @@ namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\Tag as Base_Tag;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Tag extends Base_Tag {
 
@@ -25,7 +25,7 @@ class Tag extends Base_Tag {
 
     public static function get_all_keywords() {
         $sql = "SELECT keyword, keyword_en FROM " . parent::$table . " WHERE status=1";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         $arr = array();
         if ($r) {
             foreach ($r as $record) {
@@ -59,9 +59,9 @@ class Tag extends Base_Tag {
             WHERE b.url='$url'
         ";
         //$params = array(':url'=>$url);
-//		$query = Mysql::interpolateQuery($sql, $params);
+//		$query = Zx_Mysql::interpolateQuery($sql, $params);
         //\Zx\Test\Test::object_log('query', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);        
-        return Mysql::select_one($sql);
+        return Zx_Mysql::select_one($sql);
     }
 
     /**
@@ -238,31 +238,31 @@ class Tag extends Base_Tag {
     public static function increase_rank($tag_id) {
         $sql = 'UPDATE ' . parent::$table . ' SET rank=rank+1 WHERE id=:id';
         $params = array(':id' => $tag_id);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function increase_num_of_questions($tid) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions+1 WHERE id=:id';
         $params = array(':id' => $tid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function increase_num_of_ads($tag_id) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads+1 WHERE id=:id';
         $params = array(':id' => $tag_id);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function decrease_num_of_questions($tid) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions-1 WHERE id=:id';
         $params = array(':id' => $tid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function decrease_num_of_ads($tag_id) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads-1 WHERE id=:id';
         $params = array(':id' => $tag_id);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     /**
@@ -273,7 +273,7 @@ class Tag extends Base_Tag {
     public static function increase_num_of_questions_by_tids($tids) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions+1
             WHERE id IN (' . implode(',', $tids) . ')';
-        Mysql::exec($sql, $params);
+        Zx_Mysql::exec($sql, $params);
         return true;
     }
 
@@ -285,7 +285,7 @@ class Tag extends Base_Tag {
     public static function increase_num_of_ads_by_tids($tids) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads+1 
             WHERE id IN (' . implode(',', $tids) . ')';
-        Mysql::exec($sql, $params);
+        Zx_Mysql::exec($sql, $params);
         return true;
     }
     /**
@@ -296,7 +296,7 @@ class Tag extends Base_Tag {
     public static function increase_num_of_views_by_tids($tids) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_views=num_of_views+1 
             WHERE id IN (' . implode(',', $tids) . ')';
-        Mysql::exec($sql, $params);
+        Zx_Mysql::exec($sql, $params);
         return true;
     }
 
@@ -308,7 +308,7 @@ class Tag extends Base_Tag {
     public static function decrease_num_of_questions_by_tids($tids) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_questions=num_of_questions-1 
             WHERE id IN (' . implode(',', $tids) . ')';
-        Mysql::exec($sql, $params);
+        Zx_Mysql::exec($sql, $params);
         return true;
     }
 
@@ -321,7 +321,7 @@ class Tag extends Base_Tag {
 
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_ads=num_of_ads-1 
             WHERE id IN (' . implode(',', $tids) . ')';
-        Mysql::exec($sql, $params);
+        Zx_Mysql::exec($sql, $params);
         return true;
     }
 

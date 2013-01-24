@@ -9,7 +9,7 @@ use \App\Model\Base\Answer as Base_Answer;
 use \App\Model\Base\Ad as Base_Ad;
 use \App\Model\Base\User as Base_User;
 use \App\Model\Base\Claim as Base_Claim;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Claim extends Base_Claim {
 
@@ -81,7 +81,7 @@ class Claim extends Base_Claim {
   
 //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        return Mysql::select_all($sql);
+        return Zx_Mysql::select_all($sql);
     }
 
     /**
@@ -130,7 +130,7 @@ class Claim extends Base_Claim {
         ";
 //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        return Mysql::select_all($sql);
+        return Zx_Mysql::select_all($sql);
     }
 
     /**
@@ -165,7 +165,7 @@ class Claim extends Base_Claim {
         ";
 //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        return Mysql::select_all($sql);
+        return Zx_Mysql::select_all($sql);
     }
 
     /**
@@ -200,7 +200,7 @@ class Claim extends Base_Claim {
         ";
 //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        return Mysql::select_all($sql);
+        return Zx_Mysql::select_all($sql);
     }
 
     /**
@@ -235,7 +235,7 @@ class Claim extends Base_Claim {
         ";
 //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        return Mysql::select_all($sql);
+        return Zx_Mysql::select_all($sql);
     }
 
     /**

@@ -102,12 +102,12 @@ class Articlecategory extends Base {
         $cat_list = Model_Articlecategory::get_cats_by_page_num($where, $current_page, $order_by, $direction);
         $num_of_records = Model_Articlecategory::get_num_of_cats($where);
         $num_of_pages = ceil($num_of_records / NUM_OF_RECORDS_IN_ADMIN_PAGE);
-        View::set_view_file($this->view_path . 'retrieve.php');
-        View::set_action_var('cat_list', $cat_list);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('cat_list', $cat_list);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
 }

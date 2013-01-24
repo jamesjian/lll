@@ -7,7 +7,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answser;
 use \App\Model\Vote as Model_Vote;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Test\Test;
 
 //must have item type (1: question, 2: answer, 3: ad)
@@ -98,13 +98,13 @@ class Vote extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('user_list', $user_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve.php');
-        View::set_action_var('vote_list', $vote_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('vote_list', $vote_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**

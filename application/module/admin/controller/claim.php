@@ -10,7 +10,7 @@ use \App\Model\Ad as Model_Ad;
 use \App\Model\Claim as Model_Claim;
 use \App\Model\Claimcategory as Model_Claimcategory;
 use \App\Transaction\Claim as Transaction_Claim;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Test\Test;
 
 //must have item type (1: question, 2: answer, 3: ad)
@@ -77,10 +77,10 @@ class Claim extends Base {
             }
             //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('claim', $claim);
-            View::set_action_var('cats', $cats);
-            View::set_action_var('item', $item);
+            Zx_View::set_view_file($this->view_path . 'update.php');
+            Zx_View::set_action_var('claim', $claim);
+            Zx_View::set_action_var('cats', $cats);
+            Zx_View::set_action_var('item', $item);
         } else {
             header('Location: ' . $this->list_page);
         }
@@ -106,13 +106,13 @@ class Claim extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('user_list', $user_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve.php');
-        View::set_action_var('claim_list', $claim_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('claim_list', $claim_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
     /** 
      * different types of items are listed seperately
@@ -139,14 +139,14 @@ class Claim extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('claim_list', $claim_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_by_item_type.php');
-        View::set_action_var('item_type', $item_type);
-        View::set_action_var('claim_list', $claim_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_by_item_type.php');
+        Zx_View::set_action_var('item_type', $item_type);
+        Zx_View::set_action_var('claim_list', $claim_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
     /**
      * for user
@@ -173,14 +173,14 @@ class Claim extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('claim_list', $claim_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_active_by_uid.php');
-        View::set_action_var('uid', $uid);
-        View::set_action_var('claim_list', $claim_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);        
+        Zx_View::set_view_file($this->view_path . 'retrieve_active_by_uid.php');
+        Zx_View::set_action_var('uid', $uid);
+        Zx_View::set_action_var('claim_list', $claim_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);        
     }
     /**
      * for question
@@ -207,14 +207,14 @@ class Claim extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('claim_list', $claim_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_active_by_qid.php');
-        View::set_action_var('qid', $qid);
-        View::set_action_var('claim_list', $claim_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);              
+        Zx_View::set_view_file($this->view_path . 'retrieve_active_by_qid.php');
+        Zx_View::set_action_var('qid', $qid);
+        Zx_View::set_action_var('claim_list', $claim_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);              
     }
     /**
      * for answer
@@ -241,14 +241,14 @@ class Claim extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('claim_list', $claim_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_active_by_aid.php');
-        View::set_action_var('aid', $aid);
-        View::set_action_var('claim_list', $claim_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);            
+        Zx_View::set_view_file($this->view_path . 'retrieve_active_by_aid.php');
+        Zx_View::set_action_var('aid', $aid);
+        Zx_View::set_action_var('claim_list', $claim_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);            
     }
     /**
      * for ad
@@ -275,14 +275,14 @@ class Claim extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('claim_list', $claim_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_active_by_ad_id.php');
-        View::set_action_var('ad_id', $ad_id);
-        View::set_action_var('claim_list', $claim_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);            
+        Zx_View::set_view_file($this->view_path . 'retrieve_active_by_ad_id.php');
+        Zx_View::set_action_var('ad_id', $ad_id);
+        Zx_View::set_action_var('claim_list', $claim_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);            
     }
 
 }

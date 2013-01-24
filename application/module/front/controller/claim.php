@@ -11,7 +11,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
  * 
  */
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Question as Transaction_Question;
 use App\Transaction\Html as Transaction_Html;
@@ -46,12 +46,12 @@ class Claim extends Base {
             $loggedin = false;
         }
         $cats = Model_Claimcategory::get_cats();
-        View::set_view_file($this->view_path . 'claim_popup_form.php');
-        View::set_action_var('item_type', $item_type);
-        View::set_action_var('item_id', $item_id);
-        View::set_action_var('loggedin', $loggedin);
-        View::set_action_var('cats', $cats);
-        View::do_not_use_template(); //ajax
+        Zx_View::set_view_file($this->view_path . 'claim_popup_form.php');
+        Zx_View::set_action_var('item_type', $item_type);
+        Zx_View::set_action_var('item_id', $item_id);
+        Zx_View::set_action_var('loggedin', $loggedin);
+        Zx_View::set_action_var('cats', $cats);
+        Zx_View::do_not_use_template(); //ajax
     }
 
     /**
@@ -77,7 +77,7 @@ class Claim extends Base {
                    //Zx_Message::set_error_message("您提交的信息有误， 请重新操作。");
                 }
             } 
-        View::set_view_file($this->view_path . 'claim_result.php');
+        Zx_View::set_view_file($this->view_path . 'claim_result.php');
     }
 
 }

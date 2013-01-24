@@ -3,7 +3,7 @@
 namespace App\Module\User\Controller;
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
 use \App\Model\Ad as Model_Ad;
@@ -60,8 +60,8 @@ class Claim extends Base {
         } else {
             $message = '对不起， 只有注册用户登录后才可以举报。';
         }
-        View::set_view_file($this->view_path . 'result.php');
-        View::set_action_var('message', $message);
-        View::do_not_use_template();
+        Zx_View::set_view_file($this->view_path . 'result.php');
+        Zx_View::set_action_var('message', $message);
+        Zx_View::do_not_use_template();
     }
 }

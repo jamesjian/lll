@@ -2,7 +2,7 @@
 namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Base\Articlecategory as Base_Articlecategory;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 class Articlecategory extends Base_Articlecategory{
     /**
      * get active cats order by category name
@@ -60,6 +60,6 @@ class Articlecategory extends Base_Articlecategory{
         $sql = "SELECT * FROM article_category WHERE title='$title'";
                 \Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        return Mysql::select_one($sql);
+        return Zx_Mysql::select_one($sql);
     }
 }

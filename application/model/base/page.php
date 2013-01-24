@@ -1,7 +1,7 @@
 <?php
 namespace App\Model\Base;
 
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 /*
 
@@ -33,7 +33,7 @@ class Page {
             WHERE a.id=:id
         ";
 		$params = array(':id'=>$id);
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }    
 	/**
      *
@@ -47,7 +47,7 @@ class Page {
             WHERE $where
         ";
 		$params = array();
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
 	
@@ -59,7 +59,7 @@ class Page {
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-        return Mysql::select_all($sql);
+        return Zx_Mysql::select_all($sql);
     }
     public static function get_num($where = '1') {
         $sql = "SELECT a.*, c.title as cat_name
@@ -67,7 +67,7 @@ class Page {
             LEFT JOIN " . Model_Pagecategory::$table . " c ON a.cat_id=c.id
             WHERE $where
         ";
-        $result = Mysql::select_one($sql);
+        $result = Zx_Mysql::select_one($sql);
 		if ($result) {
 			return $result['num'];
 		} else {
@@ -76,15 +76,15 @@ class Page {
     }
        public static function create($arr) {
         $arr['date_created'] = date('Y-m-d h:i:s');
-        return Zx_Model::create(self::$table, self::$fields, $arr);
+        return Zx_Mysql::create(self::$table, self::$fields, $arr);
     }
 
     public static function update($id, $arr) {
-        return Zx_Model::update(self::$table, $id, self::$fields, $arr);
+        return Zx_Mysql::update(self::$table, $id, self::$fields, $arr);
     }
 
     public static function delete($id) {
-        return Zx_Model::delete(self::$table, $id);
+        return Zx_Mysql::delete(self::$table, $id);
     }
 
 }

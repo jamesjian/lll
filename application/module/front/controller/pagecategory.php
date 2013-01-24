@@ -3,7 +3,7 @@
 namespace App\Module\Front\Controller;
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Model\Pagecategory as Model_Pagecategory;
 
 class Pagecategory extends Base {
@@ -19,7 +19,7 @@ class Pagecategory extends Base {
     public function show() {
 		$cat_id = $params[0];
         $cat = Model_Pagecategory::get_one($cat_id);
-        View::set_view_file($this->view_path . 'show.php');
-        View::set_action_var('cat', $cat);
+        Zx_View::set_view_file($this->view_path . 'show.php');
+        Zx_View::set_action_var('cat', $cat);
     }
 }

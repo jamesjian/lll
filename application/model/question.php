@@ -5,7 +5,7 @@ namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\Question as Base_Question;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Question extends Base_Question {
 
@@ -28,7 +28,7 @@ class Question extends Base_Question {
 
         $sql = "SELECT *  FROM " . parent::$table . " WHERE id1=:id1";
         $params = array(':id1' => $id1);
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
     /**
@@ -90,9 +90,9 @@ class Question extends Base_Question {
             WHERE b.url='$url'
         ";
         //$params = array(':url'=>$url);
-//		$query = Mysql::interpolateQuery($sql, $params);
+//		$query = Zx_Mysql::interpolateQuery($sql, $params);
         //\Zx\Test\Test::object_log('query', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);        
-        return Mysql::select_one($sql);
+        return Zx_Mysql::select_one($sql);
     }
 
     /**
@@ -278,7 +278,7 @@ class Question extends Base_Question {
     public static function increase_num_of_views($qid) {
         $sql = 'UPDATE ' . parent::$table . ' SET num_of_views=num_of_views+1 WHERE id=:id';
         $params = array(':id' => $qid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function decrease_num_of_answers($qid) {
@@ -286,13 +286,13 @@ class Question extends Base_Question {
         \Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         \Zx\Test\Test::object_log('$qid', $qid, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $params = array(':id' => $qid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function increase_num_of_answers($qid) {
         $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers+1 WHERE id=:id";
         $params = array(':id' => $qid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function get_latest10() {

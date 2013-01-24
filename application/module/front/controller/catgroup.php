@@ -3,7 +3,7 @@
 namespace App\Module\Front\Controller;
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
 use \App\Model\Catgroup as Model_Catgroup;
@@ -38,10 +38,10 @@ class Catgroup {
             Model_Catgroup::increase_rank($group_id);
             $cats = Model_Category::get_cats_by_catgroup_id($group_id);
             $infos = Model_Info::get_infos_by_catgroup_id($group_id);
-            View::set_view_file($this->view_path . 'one_catgroup.php');
-            View::set_action_var('cats', $cats);
-            View::set_action_var('group', $group);
-            View::set_action_var('infos', $infos);
+            Zx_View::set_view_file($this->view_path . 'one_catgroup.php');
+            Zx_View::set_action_var('cats', $cats);
+            Zx_View::set_action_var('group', $group);
+            Zx_View::set_action_var('infos', $infos);
         } else {
             //if no article, goto homepage
             Transaction_Html::goto_home_page();

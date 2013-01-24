@@ -4,7 +4,7 @@ namespace App\Transaction;
 
 use \App\Model\Article as Model_Article;
 use \Zx\Message\Message;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Article {
@@ -59,7 +59,7 @@ class Article {
      */
     public static function backup_sql() {
         $sql = "SELECT * FROM article";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         if ($r) {
             $str = 'INSERT INTO article VALUES ';
             foreach ($r as $row) {

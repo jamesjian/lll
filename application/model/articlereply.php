@@ -5,7 +5,7 @@ namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\Articlereply as Base_Articlereply;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Articlereply extends Base_Articlereply {
 

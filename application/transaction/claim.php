@@ -12,7 +12,7 @@ use \App\Model\Ad as Model_Ad;
 use \App\Model\User as Model_User;
 use \App\Model\Score as Model_Score;
 use \Zx\Message\Message as Zx_Message;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Claim {
@@ -304,7 +304,7 @@ class Claim {
      */
     public static function backup_sql() {
         $sql = "SELECT * FROM claim";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         if ($r) {
             $str = 'INSERT INTO claim VALUES ';
             foreach ($r as $row) {

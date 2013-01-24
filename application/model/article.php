@@ -3,13 +3,13 @@
 namespace App\Model;
 
 use \App\Model\Base\Article as Base_Article;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Article extends Base_Article {
     public static function get_all_keywords()
     {
         $sql = "SELECT keyword, keyword_en FROM " . parent::$table . " WHERE status=1";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         $arr = array();
         if ($r) {
             foreach ($r as $record) {
@@ -41,9 +41,9 @@ class Article extends Base_Article {
             WHERE b.url='$url'
         ";
         //$params = array(':url'=>$url);
-//		$query = Mysql::interpolateQuery($sql, $params);
+//		$query = Zx_Mysql::interpolateQuery($sql, $params);
       //\Zx\Test\Test::object_log('query', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);        
-       return Mysql::select_one($sql);
+       return Zx_Mysql::select_one($sql);
     }
     /**
      *
@@ -192,7 +192,7 @@ class Article extends Base_Article {
     public static function increase_rank($article_id) {
         $sql = 'UPDATE article SET rank=rank+1 WHERE id=:id';
         $params = array(':id' => $article_id);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function get_top10() {

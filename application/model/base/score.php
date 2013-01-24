@@ -23,7 +23,7 @@ use \Zx\Model\Mysql as Zx_Model;
 
  * 
  * item_type: 1: question, 2: answer, 3: ad
- * CREATE TABLE score (
+ * CREATE TABLE ts8wl_score (
  id  INT(11) unsigned  AUTO_INCREMENT PRIMARY KEY,
  uid MEDIUMINT(8) unsigned, 
  item_type  tinyint(1) unsigned  not null default 1, 
@@ -31,16 +31,16 @@ use \Zx\Model\Mysql as Zx_Model;
  claim_id MEDIUMINT(8) unsigned  not null default 0, 
  type  tinyint(2) unsigned  not null default 1, 
  description varchar(255) not NULL DEFAULT '',  
-  old_score MEDIUMINT(8) unsigned,
-  change tinyint(3),
-  new_score MEDIUMINT(8) unsigned,
-  status unsigned tinyint(1) not null default 1,
+  old_score MEDIUMINT(8) unsigned default 0,
+  difference tinyint(3),
+  new_score MEDIUMINT(8) unsigned default 0,
+  status  tinyint(1) unsigned not null default 1,
   date_created datetime) engine=innodb default charset=utf8
  * 
  */
 class Score {
     public static $fields = array('id','uid','item_id','claim_id','type',  
-        'description', 'old_score','change', 'new_score','status','date_created');
+        'description', 'old_score','difference', 'new_score','status','date_created');
     public static $table = TABLE_SCORE;
     //status
     const S_ACTIVE = 1;  //
@@ -76,7 +76,7 @@ class Score {
         $params = array(':id' => $id);
 
 
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
     /**
@@ -87,7 +87,7 @@ class Score {
     public static function get_one_by_where($where) {
         $sql = "SELECT *  FROM " . self::$table .  " WHERE $where
         ";
-        return Mysql::select_one($sql);
+        return Zx_Mysql::select_one($sql);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
@@ -98,13 +98,13 @@ class Score {
         ";
 \Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        return Mysql::select_all($sql);
+        return Zx_Mysql::select_all($sql);
     }
 
     public static function get_num($where = '1') {
         $sql = "SELECT COUNT(id) AS num FROM " . self::$table . " WHERE $where";
 
-        $result = Mysql::select_one($sql);
+        $result = Zx_Mysql::select_one($sql);
         if ($result) {
             return $result['num'];
         } else {
@@ -127,7 +127,7 @@ class Score {
         $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
         //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         
-        $id = Mysql::insert($sql, $params);
+        $id = Zx_Mysql::insert($sql, $params);
         $arr = array('id1'=>2*$id . md5($id));  //generate id1
         self::update($id, $arr);
         return $id;
@@ -145,16 +145,16 @@ class Score {
         $sql = 'UPDATE ' .self::$table . ' SET '. $update_str . ' WHERE id=:id';
         //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $params[':id'] = $id;
-        //$query = Mysql::interpolateQuery($sql, $params);
+        //$query = Zx_Mysql::interpolateQuery($sql, $params);
         //\Zx\Test\Test::object_log('query', $query, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function delete($id) {
         $sql = "Delete FROM " . self::$table ." WHERE id=:id";
         $params = array(':id' => $id);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
 }

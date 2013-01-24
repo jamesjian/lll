@@ -4,7 +4,7 @@ namespace App\Model\Base;
 
 defined('SYSTEM_PATH') or die('No direct script access.');
 
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 /*
  * score:  total got (when create question/answer, vote), always increase
@@ -89,19 +89,19 @@ class User {
     const M_WRONG_USERNAME = "对不起， 您的用户名或邮箱不正确， 请重新输入.";
 
     public static function get_one($id) {
-        return Zx_Model::get_one(self::$table, $id);
+        return Zx_Mysql::get_one(self::$table, $id);
     }
 
     public static function get_one_by_where($where) {
-        return Zx_Model::get_one_by_where(self::$table, $where);
+        return Zx_Mysql::get_one_by_where(self::$table, $where);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
-        return Zx_Model::get_all(self::$table, $where, $offset, $row_count, $order_by, $direction);
+        return Zx_Mysql::get_all(self::$table, $where, $offset, $row_count, $order_by, $direction);
     }
 
     public static function get_num($where = '1') {
-        return Zx_Model::get_num(self::$table, $where);
+        return Zx_Mysql::get_num(self::$table, $where);
     }
 
     /**
@@ -117,18 +117,18 @@ class User {
     public static function create($arr) {
         $arr['date_created'] = date('Y-m-d h:i:s');
         $arr['password'] = crypt($arr['password']);
-        $id = Zx_Model::create(self::$table, self::$fields, $arr);
+        $id = Zx_Mysql::create(self::$table, self::$fields, $arr);
         $arr = array('id1' => 2 * $id . md5($id));  //generate id1
         self::update($id, $arr);
     }
 
     public static function update($id, $arr) {
         $arr['password'] = crypt($arr['password']);
-        return Zx_Model::update(self::$table, $id, self::$fields, $arr);
+        return Zx_Mysql::update(self::$table, $id, self::$fields, $arr);
     }
 
     public static function delete($id) {
-        return Zx_Model::delete(self::$table, $id);
+        return Zx_Mysql::delete(self::$table, $id);
     }
 
 }

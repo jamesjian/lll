@@ -8,7 +8,7 @@ use \App\Model\User as Model_User;
 use \App\Model\Tag as Model_Tag;
 use App\Transaction\Tool as Transaction_Tool;
 use \Zx\Message\Message as Zx_Message;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 //use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
@@ -365,7 +365,7 @@ public static function update_status($id, $status)
      */
     public static function backup_sql() {
         $sql = "SELECT * FROM question";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         if ($r) {
             $str = 'INSERT INTO question VALUES ';
             foreach ($r as $row) {

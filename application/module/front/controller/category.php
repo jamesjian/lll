@@ -2,7 +2,7 @@
 
 namespace App\Model\Base;
 
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 /*
   CREATE TABLE article_category (id int(11) AUTO_INCREMENT PRIMARY KEY,
@@ -23,7 +23,7 @@ class Articlecategory {
             FROM article_category
             WHERE id=$id
         ";
-        return Mysql::select_one($sql);
+        return Zx_Mysql::select_one($sql);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'title', $direction = 'ASC') {
@@ -33,7 +33,7 @@ class Articlecategory {
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         return $r;
     }
 
@@ -42,7 +42,7 @@ class Articlecategory {
             FROM article_category
             WHERE $where
         ";
-        $result = Mysql::select_one($sql);
+        $result = Zx_Mysql::select_one($sql);
         if ($result) {
             return $result['num'];
         } else {
@@ -60,7 +60,7 @@ class Articlecategory {
         }
         $insert_str = implode(',', $insert_arr);
         $sql = 'INSERT INTO ' . self::$table . ' SET ' . $insert_str;
-        return Mysql::insert($sql, $params);
+        return Zx_Mysql::insert($sql, $params);
     }
 
     public static function update($id, $arr) {
@@ -74,13 +74,13 @@ class Articlecategory {
         $update_str = implode(',', $update_arr);
         $sql = 'UPDATE ' .self::$table . ' SET '. $update_str . ' WHERE id=:id';
         $params[':id'] = $id;
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function delete($id) {
         $sql = "Delete FROM article_category WHERE id=:id";
         $params = array(':id' => $id);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
 }
