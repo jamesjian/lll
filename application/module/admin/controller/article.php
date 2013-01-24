@@ -46,8 +46,8 @@ class Article extends Base {
             Transaction_Html::goto_previous_admin_page();
         } else {
             $cats = Model_Articlecategory::get_all_cats();
-            Zx_Veiw::set_view_file($this->view_path . 'create.php');
-            Zx_Veiw::set_action_var('cats', $cats);
+            Zx_View::set_view_file($this->view_path . 'create.php');
+            Zx_View::set_action_var('cats', $cats);
         }
     }
 
@@ -94,9 +94,9 @@ class Article extends Base {
             $article = Model_Article::get_one($id);
             $cats = Model_Articlecategory::get_cats();
             //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            Zx_Veiw::set_view_file($this->view_path . 'update.php');
-            Zx_Veiw::set_action_var('article', $article);
-            Zx_Veiw::set_action_var('cats', $cats);
+            Zx_View::set_view_file($this->view_path . 'update.php');
+            Zx_View::set_action_var('article', $article);
+            Zx_View::set_action_var('cats', $cats);
         }
     }
 
@@ -123,13 +123,13 @@ class Article extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_RECORDS_IN_ADMIN_PAGE);
         //\Zx\Test\Test::object_log('article_list', $article_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        Zx_Veiw::set_view_file($this->view_path . 'retrieve.php');
-        Zx_Veiw::set_action_var('article_list', $article_list);
-        Zx_Veiw::set_action_var('search', $search);
-        Zx_Veiw::set_action_var('order_by', $order_by);
-        Zx_Veiw::set_action_var('direction', $direction);
-        Zx_Veiw::set_action_var('current_page', $current_page);
-        Zx_Veiw::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('article_list', $article_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
     /**
      * under one category
@@ -155,14 +155,14 @@ class Article extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ARTICLES_IN_CAT_PAGE);
         //\Zx\Test\Test::object_log('article_list', $article_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        Zx_Veiw::set_view_file($this->view_path . 'retrieve_by_cat_id.php');
-        Zx_Veiw::set_action_var('cat_id', $cat_id);
-        Zx_Veiw::set_action_var('article_list', $article_list);
-        Zx_Veiw::set_action_var('search', $search);
-        Zx_Veiw::set_action_var('order_by', $order_by);
-        Zx_Veiw::set_action_var('direction', $direction);
-        Zx_Veiw::set_action_var('current_page', $current_page);
-        Zx_Veiw::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_by_cat_id.php');
+        Zx_View::set_action_var('cat_id', $cat_id);
+        Zx_View::set_action_var('article_list', $article_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
 }

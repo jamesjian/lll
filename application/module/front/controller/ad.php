@@ -3,7 +3,7 @@ namespace App\Module\Front\Controller;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Message\Message as Zx_Message;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Ad as Transaction_Ad;
@@ -26,9 +26,9 @@ class Ad extends Base {
         $this->list_page =  FRONT_HTML_ROOT . 'ad/all/';
         $popular_tags = Model_Tag::get_most_popular_ad_tags();
         $latest_ads = Model_Ad::get_latest_ads();        
-        View::set_template_file($this->template_path . 'template_ad_tags_ads.php');
-        View::set_template_var('popular_tags', $popular_tags);
-        View::set_template_var('latest_ads', $latest_ads);        
+        Zx_View::set_template_file($this->template_path . 'template_ad_tags_ads.php');
+        Zx_View::set_template_var('popular_tags', $popular_tags);
+        Zx_View::set_template_var('latest_ads', $latest_ads);        
     }
 
     
@@ -50,17 +50,17 @@ class Ad extends Base {
             Transaction_Html::set_description($ad['title']);
             Model_Ad::increase_num_of_views($ad_id);
             
-            View::set_view_file($this->view_path . 'one_ad.php');
+            Zx_View::set_view_file($this->view_path . 'one_ad.php');
             $answers = Model_Answer::get_active_answers_by_ad_id_and_page_num($ad_id, $current_page_num);
             $num_of_answers = Model_Answer::get_num_of_active_answers_by_ad_id($ad_id);
             //$related_ads = Model_Ad::get_10_active_related_ads($ad_id);
             $related_ads = array();
             $latest_ads = array();
-            View::set_action_var('ad', $ad);
-            View::set_action_var('answers', $answers);
-            View::set_action_var('num_of_answers', $num_of_answers);
-            View::set_action_var('related_ads', $related_ads);
-            View::set_action_var('latest10', $latest_ads);
+            Zx_View::set_action_var('ad', $ad);
+            Zx_View::set_action_var('answers', $answers);
+            Zx_View::set_action_var('num_of_answers', $num_of_answers);
+            Zx_View::set_action_var('related_ads', $related_ads);
+            Zx_View::set_action_var('latest10', $latest_ads);
         } else {
             //if no ad, goto homepage
             Transaction_Html::goto_home_page();
@@ -79,12 +79,12 @@ class Ad extends Base {
             //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_ads = Model_Ad::get_num_of_active_ads();
             $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'ad_list.php');
-            View::set_action_var('ads', $ads);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_view_file($this->view_path . 'ad_list.php');
+            Zx_View::set_action_var('ads', $ads);
+            Zx_View::set_action_var('order_by', $order_by);
+            Zx_View::set_action_var('direction', $direction);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
     */
     /**
@@ -110,13 +110,13 @@ class Ad extends Base {
             //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_ads = Model_Ad::get_num_of_active_ads_by_uid($uid);
             $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'ad_list_by_uid.php');
-            View::set_action_var('user', $user);
-            View::set_action_var('ads', $ads);
+            Zx_View::set_view_file($this->view_path . 'ad_list_by_uid.php');
+            Zx_View::set_action_var('user', $user);
+            Zx_View::set_action_var('ads', $ads);
             //View::set_action_var('order_by', $order_by);
             //View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
         } else {
             //if invalid category
             // \Zx\Test\Test::object_log('$cat_title', 'no', __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -148,13 +148,13 @@ class Ad extends Base {
             //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_ads = Model_Ad::get_num_of_active_ads_by_tag_id($tag_id);
             $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'tag_list.php');
-            View::set_action_var('tag', $tag);
-            View::set_action_var('ads', $ads);
+            Zx_View::set_view_file($this->view_path . 'tag_list.php');
+            Zx_View::set_action_var('tag', $tag);
+            Zx_View::set_action_var('ads', $ads);
             //View::set_action_var('order_by', $order_by);
             //View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
         } else {
             //if invalid category
             // \Zx\Test\Test::object_log('$cat_title', 'no', __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -185,13 +185,13 @@ class Ad extends Base {
             //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_ads = Model_Ad::get_num_of_active_ads_by_tat_id($tag_id);
             $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'ad_list_by_tag_id.php');
-            View::set_action_var('tag', $tag);
-            View::set_action_var('ads', $ads);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_view_file($this->view_path . 'ad_list_by_tag_id.php');
+            Zx_View::set_action_var('tag', $tag);
+            Zx_View::set_action_var('ads', $ads);
+            Zx_View::set_action_var('order_by', $order_by);
+            Zx_View::set_action_var('direction', $direction);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
         } else {
             //if invalid category
             // \Zx\Test\Test::object_log('$cat_title', 'no', __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -217,10 +217,10 @@ class Ad extends Base {
         $ads = Model_Ad::get_active_ads_by_page_num($current_page, $order_by, $direction);
         $num_of_ads = Model_Ad::get_num_of_active_ads();
         $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'retrieve_latest.php');
-        View::set_action_var('ads', $ads);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_latest.php');
+        Zx_View::set_action_var('ads', $ads);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -238,10 +238,10 @@ class Ad extends Base {
         $ads = Model_Ad::get_active_ads_by_page_num($current_page, $order_by, $direction);
         $num_of_ads = Model_Ad::get_num_of_active_ads();
         $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'retrieve_hottest.php');
-        View::set_action_var('ads', $ads);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_hottest.php');
+        Zx_View::set_action_var('ads', $ads);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
  
     

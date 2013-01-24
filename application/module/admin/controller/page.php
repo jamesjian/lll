@@ -35,8 +35,8 @@ class Page extends Base {
             $cats = Model_Pagecategory::get_all_cats();
             //                 \Zx\Test\Test::object_log('$cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-            View::set_view_file($this->view_path . 'create.php');
-            View::set_action_var('cats', $cats);
+            Zx_View::set_view_file($this->view_path . 'create.php');
+            Zx_View::set_action_var('cats', $cats);
         }
     }
 
@@ -101,12 +101,12 @@ class Page extends Base {
         $page_list = Model_Page::get_pages_by_page_num($current_page, $order_by, $direction);
         $num_of_page = Model_Page::get_num_of_pages();  //page table stores pages
         $num_of_pages = ceil($num_of_page / NUM_OF_RECORDS_IN_ADMIN_PAGE); //pagination
-        View::set_view_file($this->view_path . 'retrieve.php');
-        View::set_action_var('page_list', $page_list);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('page_list', $page_list);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
 }

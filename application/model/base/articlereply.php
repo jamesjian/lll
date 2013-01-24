@@ -3,7 +3,7 @@
 namespace App\Model\Base;
 
 use \App\Model\Article as Model_Article;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 /*
  * article replies are only created by user
@@ -42,7 +42,7 @@ class Articlereply {
             WHERE a.id=:id
         ";
         $params = array(':id' => $id);
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
     /**
@@ -57,31 +57,41 @@ class Articlereply {
             WHERE :where
         ";
         $params = array(':where' => $where);
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'a.display_order', $direction = 'ASC') {
-        $sql = "SELECT ar.*, ac.title
+        $sql = "SELECT ar.*, a.title as article_name
             FROM " . self::$table . " ar
             LEFT JOIN " . Model_Article::$table . " a ON ar.article_id=a.id
             WHERE $where
             ORDER BY $order_by $direction
             LIMIT $offset, $row_count
         ";
-        return Mysql::select_all($sql);
+        return Zx_Mysql::select_all($sql);
     }
+    public static function get_num($where = '1') {
+        $sql = "SELECT COUNT(ar.id) AS num FROM " . self::$table . " ar
+            LEFT JOIN " . Model_Article::$table . " a ON ar.article_id=a.id WHERE $where";
 
+        $result = Zx_Mysql::select_one($sql);
+        if ($result) {
+            return $result['num'];
+        } else {
+            return false;
+        }
+    }
     public static function create($arr) {
         $arr['date_created'] = date('Y-m-d h:i:s');
-        return Zx_Model::create(self::$table, self::$fields, $arr);
+        return Zx_Mysql::create(self::$table, self::$fields, $arr);
     }
 
     public static function update($id, $arr) {
-        return Zx_Model::update(self::$table, $id, self::$fields, $arr);
+        return Zx_Mysql::update(self::$table, $id, self::$fields, $arr);
     }
 
     public static function delete($id) {
-        return Zx_Model::delete(self::$table, $id);
+        return Zx_Mysql::delete(self::$table, $id);
     }
 
 }

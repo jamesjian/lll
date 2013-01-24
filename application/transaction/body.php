@@ -5,7 +5,7 @@ namespace App\Transaction;
 use \App\Model\Body as Model_Body;
 use \App\Transaction\Tool as Transaction_Tool;
 use \Zx\Message\Message as Zx_Message;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Body {
 
@@ -69,7 +69,7 @@ class Body {
 
     function backup_sql() {
         $sql = "SELECT * FROM body";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         if ($r) {
             $str = 'INSERT INTO body VALUES ';
             foreach ($r as $row) {

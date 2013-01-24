@@ -4,7 +4,7 @@ namespace App\Model\Base;
 
 defined('SYSTEM_PATH') or die('No direct script access.');
 
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 /*
  * score:  total got (when create question/answer, vote), always increase
@@ -46,7 +46,7 @@ use \Zx\Model\Mysql;
  * 
  * 
   CREATE TABLE ts8wl_user (
-  id unsigned mediumint(7) AUTO_INCREMENT primary key,
+  id mediumint(7) unsigned AUTO_INCREMENT primary key,
   id1 varchar(44) not null unique,
   uname varchar(30) not null default '',
   password varchar(255) NOT NULL DEFAULT '',
@@ -55,10 +55,10 @@ use \Zx\Model\Mysql;
   num_of_questions unsigned mediumint(6) not null default 0,
   num_of_answers unsigned mediumint(6) not null default 0,
   num_of_ads unsigned 30(6) not null default 0,
-  score unsigned mediumint(6) not null default 0,
-  invalid_score unsigned MEDIUMINT(6) not null default 0,
-  ad_score unsigned MEDIUMINT(6) not null default 0,
-  status unsigned tinyint(1) not null default 1,
+  score mediumint(6) unsigned  not null default 0,
+  invalid_score MEDIUMINT(6) unsigned not null default 0,
+  ad_score MEDIUMINT(6) unsigned not null default 0,
+  status tinyint(1) unsigned not null default 1,
   date_created datetime) engine=innodb default charset=utf8
   alter table  ts8wl_user add index num_of_questions (num_of_questions); 
   alter table  ts8wl_user add index num_of_answers (num_of_answers); 
@@ -89,19 +89,19 @@ class User {
     const M_WRONG_USERNAME = "对不起， 您的用户名或邮箱不正确， 请重新输入.";
 
     public static function get_one($id) {
-        return Zx_Model::get_one(self::$table, $id);
+        return Zx_Mysql::get_one(self::$table, $id);
     }
 
     public static function get_one_by_where($where) {
-        return Zx_Model::get_one_by_where(self::$table, $where);
+        return Zx_Mysql::get_one_by_where(self::$table, $where);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
-        return Zx_Model::get_all(self::$table, $where, $offset, $row_count, $order_by, $direction);
+        return Zx_Mysql::get_all(self::$table, $where, $offset, $row_count, $order_by, $direction);
     }
 
     public static function get_num($where = '1') {
-        return Zx_Model::get_num(self::$table, $where);
+        return Zx_Mysql::get_num(self::$table, $where);
     }
 
     /**
@@ -117,18 +117,18 @@ class User {
     public static function create($arr) {
         $arr['date_created'] = date('Y-m-d h:i:s');
         $arr['password'] = crypt($arr['password']);
-        $id = Zx_Model::create(self::$table, self::$fields, $arr);
+        $id = Zx_Mysql::create(self::$table, self::$fields, $arr);
         $arr = array('id1' => 2 * $id . md5($id));  //generate id1
         self::update($id, $arr);
     }
 
     public static function update($id, $arr) {
         $arr['password'] = crypt($arr['password']);
-        return Zx_Model::update(self::$table, $id, self::$fields, $arr);
+        return Zx_Mysql::update(self::$table, $id, self::$fields, $arr);
     }
 
     public static function delete($id) {
-        return Zx_Model::delete(self::$table, $id);
+        return Zx_Mysql::delete(self::$table, $id);
     }
 
 }

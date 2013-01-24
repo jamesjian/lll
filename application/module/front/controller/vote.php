@@ -5,7 +5,7 @@ namespace App\Module\Front\Controller;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Question as Transaction_Question;
 use App\Transaction\Html as Transaction_Html;
@@ -32,11 +32,11 @@ class Vote extends Base {
         } else {
             $loggedin = false;
         }
-        View::set_view_file($this->view_path . 'vote_popup_form.php');
-        View::set_action_var('item_type', $item_type);
-        View::set_action_var('item_id', $item_id);
-        View::set_action_var('loggedin', $loggedin);
-        View::do_not_use_template(); //ajax        
+        Zx_View::set_view_file($this->view_path . 'vote_popup_form.php');
+        Zx_View::set_action_var('item_type', $item_type);
+        Zx_View::set_action_var('item_id', $item_id);
+        Zx_View::set_action_var('loggedin', $loggedin);
+        Zx_View::do_not_use_template(); //ajax        
     }
 
     /**
@@ -82,7 +82,7 @@ class Vote extends Base {
                 }
             } 
         } 
-        View::set_view_file($this->view_path . 'vote_result.php');
+        Zx_View::set_view_file($this->view_path . 'vote_result.php');
     }
 
 }

@@ -1,7 +1,7 @@
 <?php
 namespace App\Model\Base;
 
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 /*
  * primary key is a composite primary key (uid, item_type, item_id)
@@ -35,7 +35,7 @@ class Vote {
             ':item_type'=> $item_type,
             ':item_id'=> $item_id
             );
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
     /**
@@ -48,7 +48,7 @@ class Vote {
             FROM " . self::$table . " 
             WHERE $where
         ";
-        return Mysql::select_one($sql);
+        return Zx_Mysql::select_one($sql);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
@@ -59,12 +59,12 @@ class Vote {
             LIMIT $offset, $row_count
         ";
         //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        return Mysql::select_all($sql);
+        return Zx_Mysql::select_all($sql);
     }
 
     public static function get_num($where = '1') {
         $sql = "SELECT COUNT(id) AS num FROM " . self::$table . " WHERE $where";
-        $result = Mysql::select_one($sql);
+        $result = Zx_Mysql::select_one($sql);
         if ($result) {
             return $result['num'];
         } else {
@@ -74,7 +74,7 @@ class Vote {
 
     public static function create($arr) {
         $arr['date_created'] = date('Y-m-d h:i:s');
-        return Zx_Model::create(self::$table, self::$fields, $arr);
+        return Zx_Mysql::create(self::$table, self::$fields, $arr);
     }
 
     /**
@@ -92,7 +92,7 @@ class Vote {
             ':item_type'=> $item_type,
             ':item_id'=> $item_id
             );
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
 }

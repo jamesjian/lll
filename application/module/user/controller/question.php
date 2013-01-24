@@ -5,7 +5,7 @@ namespace App\Module\User\Controller;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use App\Transaction\Session as Transaction_Session;
 use \Zx\Message\Message as Zx_Message;
 use App\Transaction\Html as Transaction_Html;
@@ -56,12 +56,12 @@ class Question extends Base {
         //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $num_of_questions = Model_Question::get_num_of_active_questions_by_uid($uid);
         $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'my_questions.php');
-        View::set_action_var('questions', $questions);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'my_questions.php');
+        Zx_View::set_action_var('questions', $questions);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -126,8 +126,8 @@ class Question extends Base {
         if ($success) {
             Transaction_Html::goto_previous_user_page();
         } else {
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('question', $question);
+            Zx_View::set_view_file($this->view_path . 'update.php');
+            Zx_View::set_action_var('question', $question);
         }
     }
 

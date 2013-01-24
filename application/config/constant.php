@@ -14,7 +14,7 @@ define('LIBRARY_PATH', dirname(PHP_ROOT) . DIRECTORY_SEPARATOR . 'library' . DIR
 define('SYSTEM_PATH', LIBRARY_PATH . 'zx' . DIRECTORY_SEPARATOR);
 define('APPLICATION_PATH', PHP_ROOT . 'application' . DIRECTORY_SEPARATOR);
 //cache and session table is controlled by library, they don't have TABLE_PREFIX
-$tables = array('ad','answer', 'article', 'article_category', 'claim',
+$tables = array('ad','answer', 'article', 'article_category','article_reply' ,'claim',
                 'claim_category','page', 'page_category','question', 'region', 
     'score',
                 'staff','tag','user','vote',);

@@ -4,7 +4,7 @@ namespace App\Transaction;
 defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Articlereply as Model_Articlereply;
 use \Zx\Message\Message as Zx_Message;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 use \App\Transaction\Swiftmail as Transaction_Swiftmail;
 
 class Articlereply {
@@ -74,7 +74,7 @@ class Articlereply {
      */
     public static function backup_sql() {
         $sql = "SELECT * FROM article";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         if ($r) {
             $str = 'INSERT INTO article VALUES ';
             foreach ($r as $row) {

@@ -10,7 +10,7 @@ use \App\Model\Tag as Model_Tag;
 use \App\Model\Answer as Model_Answer;
 use \Zx\Message\Message as Zx_Message;
 use App\Transaction\User as Transaction_User;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Ad {
 
@@ -322,7 +322,7 @@ class Ad {
      */
     public static function backup_sql() {
         $sql = "SELECT * FROM ad";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         if ($r) {
             $str = 'INSERT INTO ad VALUES ';
             foreach ($r as $row) {

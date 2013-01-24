@@ -4,7 +4,7 @@ namespace App\Module\User\Controller;
 
 //this is the base class of admin classes
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \App\Transaction\User as Transaction_User;
 use \App\Model\User as Model_User;
 use \App\Model\Question as Model_Question;
@@ -22,9 +22,9 @@ class Base {
     public function init() {
         $this->params = Route::get_params();
         $this->template_path = APPLICATION_PATH . 'module/user/view/templates/';
-        View::set_template_file($this->template_path . 'template.php');
-        View::set_template_var('title', 'this is user title');
-        View::set_template_var('keyword', 'this is user keyword');
+        Zx_View::set_template_file($this->template_path . 'template.php');
+        Zx_View::set_template_var('title', 'this is user title');
+        Zx_View::set_template_var('keyword', 'this is user keyword');
         $action = Route::get_action();
         if ($action == 'login' || $action == 'logout') {
             
@@ -36,10 +36,10 @@ class Base {
                 $num_of_questions = Model_Question::get_num_of_active_questions_by_uid($this->uid);
                 $num_of_answers = Model_Answer::get_num_of_active_answers_by_uid($this->uid);
                 $num_of_ads = Model_Ad::get_num_of_active_ads_by_uid($this->uid);
-                View::set_template_var('user', $this->user);
-                View::set_template_var('num_of_questions', $num_of_questions);
-                View::set_template_var('num_of_answers', $num_of_answers);
-                View::set_template_var('num_of_ads', $num_of_ads);
+                Zx_View::set_template_var('user', $this->user);
+                Zx_View::set_template_var('num_of_questions', $num_of_questions);
+                Zx_View::set_template_var('num_of_answers', $num_of_answers);
+                Zx_View::set_template_var('num_of_ads', $num_of_ads);
                 
             } else {
                 header('Location: ' . HTML_ROOT . 'user/user/login');

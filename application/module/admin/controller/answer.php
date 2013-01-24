@@ -8,7 +8,7 @@ use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answer;
 use \App\Transaction\Answer as Transaction_Answer;
 use \App\Transaction\Html as Transaction_Html;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Test\Test;
 
 class Answer extends Base {
@@ -61,7 +61,7 @@ class Answer extends Base {
         if ($success) {
             header('Location: ' . $this->list_page);
         } else {
-            View::set_view_file($this->view_path . 'create.php');
+            Zx_View::set_view_file($this->view_path . 'create.php');
         }
     }
 
@@ -96,13 +96,13 @@ class Answer extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('answer_list', $answer_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve.php');
-        View::set_action_var('answer_list', $answer_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('answer_list', $answer_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
     
     /**
@@ -131,14 +131,14 @@ class Answer extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('answer_list', $answer_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_by_uid.php');
-        View::set_action_var('uid', $uid);
-        View::set_action_var('answer_list', $answer_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_by_uid.php');
+        Zx_View::set_action_var('uid', $uid);
+        Zx_View::set_action_var('answer_list', $answer_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
     /**
      * under one question
@@ -165,14 +165,14 @@ class Answer extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('answer_list', $answer_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_by_qid.php');
-        View::set_action_var('qid', $qid);
-        View::set_action_var('answer_list', $answer_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_by_qid.php');
+        Zx_View::set_action_var('qid', $qid);
+        Zx_View::set_action_var('answer_list', $answer_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
     /**
      * no status involved
@@ -218,8 +218,8 @@ class Answer extends Base {
         if ($success) {
             Transaction_Html::goto_previous_admin_page();
         } else {
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('answer', $answer);
+            Zx_View::set_view_file($this->view_path . 'update.php');
+            Zx_View::set_action_var('answer', $answer);
         }
     }
     /**
@@ -266,9 +266,9 @@ class Answer extends Base {
             Transaction_Html::goto_previous_admin_page();
         } else {
             $statuses = Model_Answer::get_statuses();
-            View::set_view_file($this->view_path . 'update_status.php');
-            View::set_action_var('answer', $answer);
-            View::set_action_var('statuses', $statuses);
+            Zx_View::set_view_file($this->view_path . 'update_status.php');
+            Zx_View::set_action_var('answer', $answer);
+            Zx_View::set_action_var('statuses', $statuses);
         }
     }    
 }

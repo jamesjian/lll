@@ -14,7 +14,7 @@ class Article {
      */
     public static function backup_sql() {
         $sql = "SELECT * FROM article";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         //Test::object_log('$description', $r, __FILE__, __LINE__, __CLASS__, __METHOD__);
         
         if ($r) {

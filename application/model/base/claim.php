@@ -4,7 +4,7 @@ namespace App\Model\Base;
 
 defined('SYSTEM_PATH') or die('No direct script access.');
 
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 use \App\Model\Claimcategory as Model_Claimcategory;
 
 /*
@@ -51,7 +51,7 @@ class Claim {
                 " LEFT JOIN " . Model_Claimcategory::$table . ' cc ON c.cat_id=cc.id ' .
                 " WHERE id=:id";
         $params = array(':id' => $id);
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
     /**
@@ -64,7 +64,7 @@ class Claim {
                 " LEFT JOIN " . Model_Claimcategory::$table . ' cc ON c.cat_id=cc.id ' .
                 " WHERE $where
         ";
-        return Mysql::select_one($sql);
+        return Zx_Mysql::select_one($sql);
     }
 
     public static function get_all($where = '1', $offset = 0, $row_count = MAXIMUM_ROWS, $order_by = 'date_created', $direction = 'DESC') {
@@ -76,14 +76,14 @@ class Claim {
         ";
 //\Zx\Test\Test::object_log('sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        return Mysql::select_all($sql);
+        return Zx_Mysql::select_all($sql);
     }
 
     public static function get_num($where = '1') {
         $sql = "SELECT * FROM " . self::$table . ' c' .
                 " LEFT JOIN " . Model_Claimcategory::$table . ' cc ON c.cat_id=cc.id ' .
                 " WHERE $where";
-        $result = Mysql::select_one($sql);
+        $result = Zx_Mysql::select_one($sql);
         if ($result) {
             return $result['num'];
         } else {
@@ -93,15 +93,15 @@ class Claim {
 
     public static function create($arr) {
         $arr['date_created'] = date('Y-m-d h:i:s');
-        return Zx_Model::create(self::$table, self::$fields, $arr);
+        return Zx_Mysql::create(self::$table, self::$fields, $arr);
     }
 
     public static function update($id, $arr) {
-        return Zx_Model::update(self::$table, $id, self::$fields, $arr);
+        return Zx_Mysql::update(self::$table, $id, self::$fields, $arr);
     }
 
     public static function delete($id) {
-        return Zx_Model::delete(self::$table, $id);
+        return Zx_Mysql::delete(self::$table, $id);
     }
 
 }

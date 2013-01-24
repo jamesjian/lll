@@ -7,7 +7,7 @@ use \App\Model\Article as Model_Article;
 use \App\Model\Question as Model_Question;
 use \App\Model\Articlecategory as Model_Articlecategory;
 use App\Transaction\Html as Transaction_Html;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 
 class Common extends Base {
 
@@ -24,7 +24,7 @@ class Common extends Base {
         Transaction_Html::set_description('');
         //$cats = Model_Articlecategory::get_all_active_cats();
         //$articles = Model_Article::get_all_active_articles();
-        View::set_view_file($this->view_path . 'sitemap.php');
+        Zx_View::set_view_file($this->view_path . 'sitemap.php');
         //View::set_action_var('cats', $cats);
         //View::set_action_var('articles', $articles);
     }
@@ -42,9 +42,9 @@ class Common extends Base {
             }
         }
         if ($submitted) {
-            View::set_view_file($this->view_path . 'contact_us_result.php');
+            Zx_View::set_view_file($this->view_path . 'contact_us_result.php');
         } else {
-            View::set_view_file($this->view_path . 'contact_us.php');
+            Zx_View::set_view_file($this->view_path . 'contact_us.php');
         }
     }
 
@@ -58,8 +58,8 @@ class Common extends Base {
         $direction = 'DESC';
         $where = ' status=1 ';
         $questions = Model_Question::get_all($where, 0, NUM_OF_QUESTIONS_IN_FRONT_PAGE, $order_by, $direction);
-        View::set_view_file($this->view_path . 'home.php');
-        View::set_action_var('questions', $questions);
+        Zx_View::set_view_file($this->view_path . 'home.php');
+        Zx_View::set_action_var('questions', $questions);
     }
 
     public function home1() {
@@ -73,13 +73,13 @@ class Common extends Base {
         $related_articles = Model_Article::get_10_active_related_articles(1);
         $num_of_articles = Model_Article::get_num_of_active_articles();
         $num_of_pages = ceil($num_of_articles / NUM_OF_ARTICLES_IN_CAT_PAGE);
-        View::set_view_file($this->view_path . 'home.php');
-        View::set_action_var('articles', $articles);
-        View::set_action_var('related_articles', $related_articles);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'home.php');
+        Zx_View::set_action_var('articles', $articles);
+        Zx_View::set_action_var('related_articles', $related_articles);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
 }

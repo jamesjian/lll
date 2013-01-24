@@ -3,7 +3,7 @@
 if ($region_list) {
     $link_prefix = ADMIN_HTML_ROOT . "region/retrieve/";
     $next_direction = ($direction == 'ASC') ? 'DESC' : 'ASC';  //change direction
-    $link_postfix = "/$next_direction/$search";
+    $link_postfix = "/$next_direction/";
     $link_state = $link_prefix . 'state' . $link_postfix;
     $link_num_of_questions = $link_prefix . 'num_of_questions' . $link_postfix;
     $link_num_of_ads = $link_prefix . 'num_of_ads' . $link_postfix;

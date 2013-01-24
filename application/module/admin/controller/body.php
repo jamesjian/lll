@@ -6,7 +6,7 @@ use \Zx\Message\Message as Zx_Message;
 use \App\Model\Body as Model_Body;
 use \App\Transaction\Body as Transaction_Body;
 use \App\Transaction\Html as Transaction_Html;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Test\Test;
 
 /**
@@ -49,9 +49,9 @@ class Body extends Base {
         if ($success) {
              Transaction_Html::goto_previous_admin_page();
         } else {
-            View::set_view_file($this->view_path . 'create.php');
-            View::set_action_var('posted', $posted);
-            View::set_action_var('errors', $errors);
+            Zx_View::set_view_file($this->view_path . 'create.php');
+            Zx_View::set_action_var('posted', $posted);
+            Zx_View::set_action_var('errors', $errors);
         }
     }
     /**
@@ -84,8 +84,8 @@ class Body extends Base {
             if ($id>0) {
             $body = Model_Body::get_one($id);
             //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('body', $body);
+            Zx_View::set_view_file($this->view_path . 'update.php');
+            Zx_View::set_action_var('body', $body);
             } else {
                 header('Location: ' . $this->list_page);
             }
@@ -120,12 +120,12 @@ class Body extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('body_list', $body_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve.php');
-        View::set_action_var('body_list', $body_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('body_list', $body_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
    }

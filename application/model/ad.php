@@ -5,7 +5,7 @@ namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\Ad as Base_Ad;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Ad extends Base_Ad {
     public static function get_statuses()
@@ -39,7 +39,7 @@ class Ad extends Base_Ad {
             tnames=REPLACE(tnames, '$tag_name','$seperator') 
             WHERE tids LIKE '%$tag_id%";
         $params = array();
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
     /**
      * make sure id1 is valid
@@ -50,7 +50,7 @@ class Ad extends Base_Ad {
 
         $sql = "SELECT *  FROM " . parent::$table . " WHERE id1=:id1";
         $params = array(':id1' => $id1);
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
     /**
@@ -86,7 +86,7 @@ class Ad extends Base_Ad {
     public static function disable_by_uid($uid) {
         $q = 'UPDATE ' . parent::$table . ' SET status=' . parent::S_DISABLED . ' WHERE uid=:uid';
         $params = array(':uid' => $uid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     /**
@@ -118,7 +118,7 @@ class Ad extends Base_Ad {
     public static function increase_num_of_views($ad_id) {
         $sql = 'UPDATE ads SET increase_num_of_views=increase_num_of_views+1 WHERE id=:id';
         $params = array(':id' => $ad_id);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function ad_belong_to_user($ad_id, $uid) {

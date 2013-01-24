@@ -5,7 +5,7 @@ namespace App\Module\Front\Controller;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Message\Message as Zx_Message;
 use App\Transaction\Tool as Transaction_Tool;
 use App\Transaction\Session as Transaction_Session;
@@ -54,7 +54,7 @@ class Question extends Base {
             Transaction_Html::set_description($question['title']);
             Transaction_Question::increase_num_of_views($qid);
 
-            View::set_view_file($this->view_path . 'one_question.php');
+            Zx_View::set_view_file($this->view_path . 'one_question.php');
             $answers = Model_Answer::get_active_answers_by_qid_and_page_num($qid, $current_page_num);
             $num_of_answers = Model_Answer::get_num_of_active_answers_by_qid($qid);
             //$related_questions = Model_Question::get_10_active_related_questions($qid);
@@ -62,12 +62,12 @@ class Question extends Base {
             $selected_ads = Model_Ad::get_selected_ads($n);
             $related_questions = array();
             $latest_questions = array();
-            View::set_action_var('question', $question);
-            View::set_action_var('answers', $answers);
-            View::set_action_var('num_of_answers', $num_of_answers);
-            View::set_action_var('related_questions', $related_questions);
-            View::set_action_var('latest10', $latest_questions);
-            View::set_action_var('selected_ads', $selected_ads);
+            Zx_View::set_action_var('question', $question);
+            Zx_View::set_action_var('answers', $answers);
+            Zx_View::set_action_var('num_of_answers', $num_of_answers);
+            Zx_View::set_action_var('related_questions', $related_questions);
+            Zx_View::set_action_var('latest10', $latest_questions);
+            Zx_View::set_action_var('selected_ads', $selected_ads);
         } else {
             //if no question, goto homepage
             Transaction_Html::goto_home_page();
@@ -88,12 +88,12 @@ class Question extends Base {
       //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
       $num_of_questions = Model_Question::get_num_of_active_questions();
       $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
-      View::set_view_file($this->view_path . 'question_list.php');
-      View::set_action_var('questions', $questions);
-      View::set_action_var('order_by', $order_by);
-      View::set_action_var('direction', $direction);
-      View::set_action_var('current_page', $current_page);
-      View::set_action_var('num_of_pages', $num_of_pages);
+      Zx_View::set_view_file($this->view_path . 'question_list.php');
+      Zx_View::set_action_var('questions', $questions);
+      Zx_View::set_action_var('order_by', $order_by);
+      Zx_View::set_action_var('direction', $direction);
+      Zx_View::set_action_var('current_page', $current_page);
+      Zx_View::set_action_var('num_of_pages', $num_of_pages);
       }
      */
 
@@ -121,13 +121,13 @@ class Question extends Base {
             //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_questions = Model_Question::get_num_of_active_questions_by_uid($uid);
             $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'user_list.php');
-            View::set_action_var('user', $user);
-            View::set_action_var('questions', $questions);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_view_file($this->view_path . 'user_list.php');
+            Zx_View::set_action_var('user', $user);
+            Zx_View::set_action_var('questions', $questions);
+            Zx_View::set_action_var('order_by', $order_by);
+            Zx_View::set_action_var('direction', $direction);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
         } else {
             //if invalid category
             // \Zx\Test\Test::object_log('$cat_title', 'no', __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -181,13 +181,13 @@ class Question extends Base {
             //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_questions = Model_Question::get_num_of_active_questions_by_tag_id($tag_id);
             $num_of_pages = ceil($num_of_questions / NUM_OF_QUESTIONS_IN_FRONT_PAGE);
-            View::set_view_file($this->view_path . 'tag_list.php');
-            View::set_action_var('tag', $tag);
-            View::set_action_var('questions', $questions);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_view_file($this->view_path . 'tag_list.php');
+            Zx_View::set_action_var('tag', $tag);
+            Zx_View::set_action_var('questions', $questions);
+            Zx_View::set_action_var('order_by', $order_by);
+            Zx_View::set_action_var('direction', $direction);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
         } else {
             //if invalid category
             // \Zx\Test\Test::object_log('$cat_title', 'no', __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -213,10 +213,10 @@ class Question extends Base {
         $questions = Model_Question::get_active_questions_by_page_num($current_page, $order_by, $direction);
         $num_of_questions = Model_Question::get_num_of_active_questions();
         $num_of_pages = ceil($num_of_questions / NUM_OF_QUESTIONS_IN_FRONT_PAGE);
-        View::set_view_file($this->view_path . 'latest_list.php');
-        View::set_action_var('questions', $questions);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'latest_list.php');
+        Zx_View::set_action_var('questions', $questions);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -236,10 +236,10 @@ class Question extends Base {
         $questions = Model_Question::get_active_answered_questions_by_page_num($current_page, $order_by, $direction);
         $num_of_questions = Model_Question::get_num_of_active_answered_questions();
         $num_of_pages = ceil($num_of_questions / NUM_OF_QUESTIONS_IN_FRONT_PAGE);
-        View::set_view_file($this->view_path . 'answered_list.php');
-        View::set_action_var('questions', $questions);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'answered_list.php');
+        Zx_View::set_action_var('questions', $questions);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -259,10 +259,10 @@ class Question extends Base {
         $questions = Model_Question::get_active_unanswered_questions_by_page_num($current_page, $order_by, $direction);
         $num_of_questions = Model_Question::get_num_of_active_unanswered_questions();
         $num_of_pages = ceil($num_of_questions / NUM_OF_QUESTIONS_IN_FRONT_PAGE);
-        View::set_view_file($this->view_path . 'unanswered_list.php');
-        View::set_action_var('questions', $questions);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'unanswered_list.php');
+        Zx_View::set_action_var('questions', $questions);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -280,10 +280,10 @@ class Question extends Base {
         $questions = Model_Question::get_active_questions_by_page_num($current_page, $order_by, $direction);
         $num_of_questions = Model_Question::get_num_of_active_questions();
         $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'popular_list.php');
-        View::set_action_var('questions', $questions);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'popular_list.php');
+        Zx_View::set_action_var('questions', $questions);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -333,9 +333,9 @@ class Question extends Base {
         if ($success) {
             header('Location: ' . $this->list_page);
         } else {
-            View::set_view_file($this->view_path . 'create.php');
-            View::set_action_var('posted', $posted);
-            View::set_action_var('errors', $errors);
+            Zx_View::set_view_file($this->view_path . 'create.php');
+            Zx_View::set_action_var('posted', $posted);
+            Zx_View::set_action_var('errors', $errors);
         }
     }
 

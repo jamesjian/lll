@@ -3,7 +3,7 @@
 namespace App\Module\User\Controller;
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Message\Message as Zx_Message;
 use App\Transaction\Tool as Transaction_Tool;
 use App\Transaction\Session as Transaction_Session;
@@ -43,9 +43,9 @@ class Ad extends Base {
             if (Transaction_Ad::extend($ad_id)) {
                 $ad = Model_Ad::get_one($ad_id);
                 $result = true;
-                View::set_view_file($this->view_path . 'extend_result.php');
-                View::set_action_var('ad', $ad);
-                View::do_not_use_template();
+                Zx_View::set_view_file($this->view_path . 'extend_result.php');
+                Zx_View::set_action_var('ad', $ad);
+                Zx_View::do_not_use_template();
             }
         } else {
             //todo
@@ -85,10 +85,10 @@ class Ad extends Base {
         } else {
             $ad = Model_Ad::get_one($ad);
             if ($ad['uid'] == $this->uid) {
-                View::set_view_file($this->view_path . 'adjust_score.php');
-                View::set_action_var('posted', $posted);
-                View::set_action_var('ad', $ad);
-                View::set_action_var('user', $user);
+                Zx_View::set_view_file($this->view_path . 'adjust_score.php');
+                Zx_View::set_action_var('posted', $posted);
+                Zx_View::set_action_var('ad', $ad);
+                Zx_View::set_action_var('user', $user);
             } else {
                 Zx_Message::set_error_message('您没有权限更改该广告。');
                 Transaction_Html::goto_previous_user_page();
@@ -117,13 +117,13 @@ class Ad extends Base {
         //\Zx\Test\Test::object_log('$ads', $ads, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $num_of_ads = Model_Ad::get_num_of_undeleted_ads_by_uid($uid);
         $num_of_pages = ceil($num_of_ads / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'my_ads.php');
-        View::set_action_var('user', $this->user);
-        View::set_action_var('ads', $ads);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'my_ads.php');
+        Zx_View::set_action_var('user', $this->user);
+        Zx_View::set_action_var('ads', $ads);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -187,9 +187,9 @@ class Ad extends Base {
             if ($success) {
                 header('Location: ' . $this->list_page);
             } else {
-                View::set_view_file($this->view_path . 'create.php');
-                View::set_action_var('posted', $posted);
-                View::set_action_var('errors', $errors);
+                Zx_View::set_view_file($this->view_path . 'create.php');
+                Zx_View::set_action_var('posted', $posted);
+                Zx_View::set_action_var('errors', $errors);
             }
         } else {
             //error message is from transaction
@@ -243,11 +243,11 @@ class Ad extends Base {
         $ad = Model_Ad::get_one($id);
         //must have a valid ad
         if ($ad) {
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('id', $id);
-            View::set_action_var('ad', $ad);
-            View::set_action_var('posted', $posted);
-            View::set_action_var('errors', $errors);
+            Zx_View::set_view_file($this->view_path . 'update.php');
+            Zx_View::set_action_var('id', $id);
+            Zx_View::set_action_var('ad', $ad);
+            Zx_View::set_action_var('posted', $posted);
+            Zx_View::set_action_var('errors', $errors);
         } else {
             header('Location: ' . $this->list_page);
         }

@@ -5,7 +5,7 @@ namespace App\Module\Front\Controller;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
 use \App\Model\Answer as Model_Answer;
@@ -51,10 +51,10 @@ class Answer extends Base {
             Transaction_Html::set_description($answer['title'] . ' ' . $answer['title_en']);
             Model_Answer::increase_rank($aid);
 
-            View::set_view_file($this->view_path . 'one_answer.php');
+            Zx_View::set_view_file($this->view_path . 'one_answer.php');
             $relate_answers = Model_Answer::get_10_active_related_answers($aid);
-            View::set_action_var('answer', $answer);
-            View::set_action_var('related_answers', $relate_answers);
+            Zx_View::set_action_var('answer', $answer);
+            Zx_View::set_action_var('related_answers', $relate_answers);
         } else {
             //if no answer, goto homepage
             Transaction_Html::goto_home_page();
@@ -77,13 +77,13 @@ class Answer extends Base {
             //\Zx\Test\Test::object_log('$answers', $answers, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_answers = Model_Answer::get_num_of_active_answers_by_keyword($keyword);
             $num_of_pages = ceil($num_of_answers / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'retrieve_by_keyword.php');
-            View::set_action_var('keyword', $keyword);
-            View::set_action_var('answers', $answers);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_view_file($this->view_path . 'retrieve_by_keyword.php');
+            Zx_View::set_action_var('keyword', $keyword);
+            Zx_View::set_action_var('answers', $answers);
+            Zx_View::set_action_var('order_by', $order_by);
+            Zx_View::set_action_var('direction', $direction);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
         }
     }
 
@@ -110,13 +110,13 @@ class Answer extends Base {
             //\Zx\Test\Test::object_log('$questions', $questions, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_questions = Model_Answer::get_num_of_active_answers_by_uid($uid);
             $num_of_pages = ceil($num_of_questions / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'answer_list_by_uid.php');
-            View::set_action_var('user', $user);
-            View::set_action_var('questions', $questions);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_view_file($this->view_path . 'answer_list_by_uid.php');
+            Zx_View::set_action_var('user', $user);
+            Zx_View::set_action_var('questions', $questions);
+            Zx_View::set_action_var('order_by', $order_by);
+            Zx_View::set_action_var('direction', $direction);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
         } else {
             //if invalid category
             // \Zx\Test\Test::object_log('$cat_title', 'no', __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -142,10 +142,10 @@ class Answer extends Base {
         $answers = Model_Answer::get_active_answers_by_page_num($current_page, $order_by, $direction);
         $num_of_answers = Model_Answer::get_num_of_active_answers();
         $num_of_pages = ceil($num_of_answers / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'retrieve_latest.php');
-        View::set_action_var('answers', $answers);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_latest.php');
+        Zx_View::set_action_var('answers', $answers);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -163,10 +163,10 @@ class Answer extends Base {
         $answers = Model_Answer::get_active_answers_by_page_num($current_page, $order_by, $direction);
         $num_of_answers = Model_Answer::get_num_of_active_answers();
         $num_of_pages = ceil($num_of_answers / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'retrieve_hottest.php');
-        View::set_action_var('answers', $answers);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_hottest.php');
+        Zx_View::set_action_var('answers', $answers);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -206,9 +206,9 @@ class Answer extends Base {
         if ($success) {
             header('Location: ' . $this->list_page);
         } else {
-            View::set_view_file($this->view_path . 'create.php');
-            View::set_action_var('posted', $posted);
-            View::set_action_var('errors', $errors);
+            Zx_View::set_view_file($this->view_path . 'create.php');
+            Zx_View::set_action_var('posted', $posted);
+            Zx_View::set_action_var('errors', $errors);
              * 
         }
              */

@@ -3,101 +3,21 @@
          xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd"
          xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 		<url>
-      <loc>http://www.baoxian.com.au/</loc>
-      <lastmod>2012-10-14</lastmod>
+      <loc>http://localhost</loc>
+      <lastmod>2013-01-24</lastmod>
       <changefreq>daily</changefreq>
       <priority>1</priority>
    </url>
 		<url>
-      <loc>http://www.baoxian.com.au/about-us.php</loc>
-      <lastmod>2012-10-14</lastmod>
+      <loc>http://localhost/about-us.php</loc>
+      <lastmod>2013-01-24</lastmod>
       <changefreq>daily</changefreq>
       <priority>1</priority>
    </url>
 		<url>
-      <loc>http://www.baoxian.com.au/contact-us.php</loc>
-      <lastmod>2012-10-14</lastmod>
+      <loc>http://localhost/contact-us.php</loc>
+      <lastmod>2013-01-24</lastmod>
       <changefreq>daily</changefreq>
       <priority>1</priority>
    </url>
-		<url>
-      <loc>http://www.baoxian.com.au/front/article/category/澳洲保险常识</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/category/澳洲保险教育</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/category/澳洲保险机构</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/category/澳洲保险法规</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/category/澳洲保险消息</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/content/niba-member</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/content/australia-insurance</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/content/private-health-insurance-ombudsman</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/content/insurance-contracts-act-1984</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/content/insurancecouncil</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/content/australia-prudential-regulation-authority</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/content/australian-government-rebate-private-health-insurance</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/content/niba-college</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/content/rugby-union-insurance</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/content/ANZIIF</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url><url>
-      <loc>http://www.baoxian.com.au/front/article/content/aila</loc>
-      <lastmod>2012-10-14</lastmod>
-      <changefreq>weekly</changefreq>
-      <priority>0.8</priority>
-   </url></urlset>
+		</urlset>

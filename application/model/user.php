@@ -5,7 +5,7 @@ namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \App\Model\Base\User as Base_User;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 use \Zx\Test\Test;
 
 class User extends Base_User {
@@ -19,14 +19,14 @@ class User extends Base_User {
 
         $sql = "SELECT *  FROM " . parent::$table . " WHERE id1=:id1";
         $params = array(':id1' => $id1);
-        return Mysql::select_one($sql, $params);
+        return Zx_Mysql::select_one($sql, $params);
     }
 
     public static function decrease_one_answer_score($uid, $score) {
         $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers-1, 
                     score=score-$score WHERE id=:id";
         $params = array(':id'=>$uid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function has_score($uid) {
@@ -47,7 +47,7 @@ class User extends Base_User {
     public static function get_random_user() {
         $n = rand(4, 30000); //the maximum must be less than the lenth of user table
         $q = "SELECT * FROM " . parent::$table . " WHERE 1 LIMIT $n , 1";
-        $user = Mysql::select_one($q);
+        $user = Zx_Mysql::select_one($q);
         return $user;
     }
 
@@ -83,7 +83,7 @@ class User extends Base_User {
         $sql = "UPDATE " . parent::$table . " SET num_of_questions=num_of_questions+1,
              score=score+" . SCORE_OF_QUESTION . " WHERE id=:id";
         $params = array(':id' => $uid);
-        Mysql::exec($sql, $params);
+        Zx_Mysql::exec($sql, $params);
     }
 
     /**
@@ -94,7 +94,7 @@ class User extends Base_User {
         $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers+1,
              score=score+" . SCORE_OF_ANSWER . " WHERE id=:id";
         $params = array(':id' => $uid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     /**
@@ -105,7 +105,7 @@ class User extends Base_User {
         $sql = "UPDATE " . parent::$table . " SET num_of_ads=num_of_ads+1,
              ad_score=ad_score+" . SCORE_OF_AD . " WHERE id=:id";
         $params = array(':id' => $uid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     /**
@@ -117,7 +117,7 @@ class User extends Base_User {
              score=score-" . SCORE_OF_QUESTION . " WHERE id=:id";
         //\Zx\Test\Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
         $params = array(':id' => $uid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     /**
@@ -128,7 +128,7 @@ class User extends Base_User {
         $sql = "UPDATE " . parent::$table . " SET num_of_answers=num_of_answers-1,
              score=score-" . SCORE_OF_ANSWER . " WHERE id=:id";
         $params = array(':id' => $uid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     /**
@@ -139,7 +139,7 @@ class User extends Base_User {
         $sql = "UPDATE " . parent::$table . " SET num_of_ads=num_of_ads-1,
              ad_score=ad_score-" . SCORE_OF_AD . " WHERE id=:id";
         $params = array(':id' => $uid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     /**
@@ -151,7 +151,7 @@ class User extends Base_User {
     public static function decrease_score($uid, $score = 0) {
         $sql = "UPDATE " . parent::$table . " SET score=score-$score WHERE id=:id";
         $params = array(':id' => $uid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
     /**
      *
@@ -162,7 +162,7 @@ class User extends Base_User {
     public static function increase_score($uid, $score = 0) {
         $sql = "UPDATE " . parent::$table . " SET score=score+$score WHERE id=:id";
         $params = array(':id' => $uid);
-        return Mysql::exec($sql, $params);
+        return Zx_Mysql::exec($sql, $params);
     }
 
     public static function disable_user($uid) {
@@ -180,7 +180,7 @@ class User extends Base_User {
         $sql = "SELECT * FROM " . parent::$table . " WHERE name=:name";
         $params = array(':name' => $uname);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $user = Mysql::select_one($sql, $params);
+        $user = Zx_Mysql::select_one($sql, $params);
         if ($user) {
             return $user;
         } else {
@@ -196,7 +196,7 @@ class User extends Base_User {
         $sql = "SELECT * FROM " . parent::$table . " WHERE email=:email";
         $params = array(':email' => $email);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $user = Mysql::select_one($sql, $params);
+        $user = Zx_Mysql::select_one($sql, $params);
         if ($user) {
             return $user;
         } else {
@@ -224,7 +224,7 @@ class User extends Base_User {
     public static function exist_uname($uname) {
         $sql = "SELECT * FROM " . parent::$table . " WHERE uname=:name";
         $params = array(':name' => $uname);
-        $user = Mysql::select_one($sql, $params);
+        $user = Zx_Mysql::select_one($sql, $params);
         if ($user) {
             return $user['id'];
         } else {
@@ -239,7 +239,7 @@ class User extends Base_User {
     public static function exist_email($email) {
         $sql = "SELECT * FROM " . parent::$table . " WHERE email=:email";
         $params = array(':email' => $email);
-        $user = Mysql::select_one($sql, $params);
+        $user = Zx_Mysql::select_one($sql, $params);
         if ($user) {
             return $user['id'];
         } else {
@@ -254,7 +254,7 @@ class User extends Base_User {
     public static function exist_uname_or_email($name) {
         $sql = "SELECT * FROM " . parent::$table . " WHERE uname=:name OR email=:email";
         $params = array(':name' => $name, ':email' => $name);
-        $user = Mysql::select_one($sql, $params);
+        $user = Zx_Mysql::select_one($sql, $params);
         if ($user) {
             return $user['id'];
         } else {
@@ -301,7 +301,7 @@ class User extends Base_User {
             WHERE (uname=:name OR email=:name)  AND status=1";
         $params = array(':name' => $uname);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $user = Mysql::select_one($sql, $params);
+        $user = Zx_Mysql::select_one($sql, $params);
         if ($user) {
             if (crypt($password, $user['password']) == $user['password']) {
                 return $user;
@@ -368,7 +368,7 @@ class User extends Base_User {
             WHERE (uname=:name OR email=:email) ";
         $params = array(':name' => $name, ':email' => $name);
         //Test::object_log('$sql', $sql, __FILE__, __LINE__, __CLASS__, __METHOD__);
-        $user = Mysql::select_one($sql, $params);
+        $user = Zx_Mysql::select_one($sql, $params);
         if ($user && $user['id'] <> $uid) {
             return true;
         } else {

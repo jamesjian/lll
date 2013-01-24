@@ -8,7 +8,7 @@ use \App\Model\Answer as Model_Answer;
 use \App\Model\Question as Model_Question;
 use \App\Model\User as Model_User;
 use \Zx\Message\Message as Zx_Message;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 use \App\Transaction\User as Transaction_User;
 use \App\Transaction\Staff as Transaction_Staff;
 
@@ -293,7 +293,7 @@ class Answer {
      */
     public static function backup_sql() {
         $sql = "SELECT * FROM answer";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         if ($r) {
             $str = 'INSERT INTO answer VALUES ';
             foreach ($r as $row) {
@@ -353,7 +353,7 @@ class Answer {
             }
             $update = substr($update, 0, -4) . ')'; //remove last 'OR', and ')' 
         }
-        Mysql::exec($update);
+        Zx_Mysql::exec($update);
 //when link, the ad display date will be extended
         $arr = array('date_start' => date('Y-m-d h:i:s'),
             'date_end' => date * 'Y-m-d h:i:s', strtotime('+' . DAYS_OF_AD . ' days'),

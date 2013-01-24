@@ -5,7 +5,7 @@ namespace App\Transaction;
 use \App\Model\Tag as Model_Tag;
 use \App\Transaction\Tool as Transaction_Tool;
 use \Zx\Message\Message;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Tag {
     /**
@@ -164,13 +164,13 @@ class Tag {
                         tids=REPLACE(tids, '@{$id_source}@', '@{$id_dest}@'),
                         tnames=REPLACE(tnames, '@{$s_tag_name}@', '@{$d_tag_name}@'),                        
                      WHERE tids LIKE '%@{$id_source}@%";
-            Mysql::exec($q);
+            Zx_Mysql::exec($q);
             //ad
             $q = "UPDATE ad SET 
                         tids=REPLACE(tids, '@{$id_source}@', '@{$id_dest}@'),
                         tnames=REPLACE(tnames, '@{$s_tag_name}@', '@{$d_tag_name}@'),                        
                      WHERE tids LIKE '%@{$id_source}@%";
-            Mysql::exec($q);
+            Zx_Mysql::exec($q);
             //tag
             Model_Tag::delete($id_source);
         } else {
@@ -181,7 +181,7 @@ class Tag {
 
     function backup_sql() {
         $sql = "SELECT * FROM tag";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         if ($r) {
             $str = 'INSERT INTO tag VALUES ';
             foreach ($r as $row) {

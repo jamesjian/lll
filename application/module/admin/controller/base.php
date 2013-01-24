@@ -6,7 +6,7 @@ defined('SYSTEM_PATH') or die('No direct script access.');
 
 //this is the base class of admin classes
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \App\Transaction\Staff as Transaction_Staff;
 
 class Base {
@@ -18,9 +18,9 @@ class Base {
     public function init() {
         $this->params = Route::get_params();
         $this->template_path = APPLICATION_PATH . 'module/admin/view/templates/';
-        View::set_template_file($this->template_path . 'template.php');
-        View::set_template_var('title', 'this is admin title');
-        View::set_template_var('keyword', 'this is admin keyword');
+        Zx_View::set_template_file($this->template_path . 'template.php');
+        Zx_View::set_template_var('title', 'this is admin title');
+        Zx_View::set_template_var('keyword', 'this is admin keyword');
         $action = Route::get_action();
         if ($action == 'login' || $action == 'logout') {
             

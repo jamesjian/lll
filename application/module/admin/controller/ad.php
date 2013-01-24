@@ -9,7 +9,7 @@ use \App\Model\User as Model_User;
 use \App\Model\Ad as Model_Ad;
 use \App\Transaction\Ad as Transaction_Ad;
 use \App\Transaction\Html as Transaction_Html;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Test\Test;
 
 class Ad extends Base {
@@ -63,8 +63,8 @@ class Ad extends Base {
         if ($success) {
             header('Location: ' . $this->list_page);
         } else {
-            View::set_view_file($this->view_path . 'create.php');
-            View::set_action_var('uid', $uid);
+            Zx_View::set_view_file($this->view_path . 'create.php');
+            Zx_View::set_action_var('uid', $uid);
         }
     }
 
@@ -106,10 +106,10 @@ class Ad extends Base {
             Transaction_Html::goto_previous_admin_page();
         } else {
             $ad = Model_Ad::get_one($ad);
-            View::set_view_file($this->view_path . 'adjust_score.php');
-            View::set_action_var('posted', $posted);
-            View::set_action_var('ad', $ad);
-            View::set_action_var('user', $user);
+            Zx_View::set_view_file($this->view_path . 'adjust_score.php');
+            Zx_View::set_action_var('posted', $posted);
+            Zx_View::set_action_var('ad', $ad);
+            Zx_View::set_action_var('user', $user);
         }
     }
 
@@ -169,9 +169,9 @@ class Ad extends Base {
         } else {
             //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
             if ($ad) {
-                View::set_view_file($this->view_path . 'update.php');
-                View::set_action_var('ad', $ad);
-                View::set_action_var('posted', $posted);
+                Zx_View::set_view_file($this->view_path . 'update.php');
+                Zx_View::set_action_var('ad', $ad);
+                Zx_View::set_action_var('posted', $posted);
             } else {
                 Zx_Message::set_error_message('无效记录。');
                 Transaction_Html::goto_previous_admin_page();
@@ -203,8 +203,8 @@ class Ad extends Base {
         } else {
             $ad = Model_Ad::get_one($id);
             //\Zx\Test\Test::object_log('cats', $cats, __FILE__, __LINE__, __CLASS__, __METHOD__);
-            View::set_view_file($this->view_path . 'update.php');
-            View::set_action_var('ad', $ad);
+            Zx_View::set_view_file($this->view_path . 'update.php');
+            Zx_View::set_action_var('ad', $ad);
         }
     }
 
@@ -233,13 +233,13 @@ class Ad extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve.php');
-        View::set_action_var('ad_list', $ad_list);
-        View::set_action_var('search', $search);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve.php');
+        Zx_View::set_action_var('ad_list', $ad_list);
+        Zx_View::set_action_var('search', $search);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -259,13 +259,13 @@ class Ad extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_by_uid.php');
-        View::set_action_var('uid', $uid);
-        View::set_action_var('ad_list', $ad_list);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_by_uid.php');
+        Zx_View::set_action_var('uid', $uid);
+        Zx_View::set_action_var('ad_list', $ad_list);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -281,12 +281,12 @@ class Ad extends Base {
         $ad_list = Model_Ad::get_ads_by_page_num($where, $current_page, $order_by, $direction);
         $num_of_records = Model_Ad::get_num_of_ads($where);
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'retrieve_disabled.php');
-        View::set_action_var('ad_list', $ad_list);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_disabled.php');
+        Zx_View::set_action_var('ad_list', $ad_list);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -305,12 +305,12 @@ class Ad extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_deleted.php');
-        View::set_action_var('ad_list', $ad_list);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_deleted.php');
+        Zx_View::set_action_var('ad_list', $ad_list);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     public function retrieve_claimed() {
@@ -325,12 +325,12 @@ class Ad extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_claimed.php');
-        View::set_action_var('ad_list', $ad_list);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_claimed.php');
+        Zx_View::set_action_var('ad_list', $ad_list);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     public function retrieve_correct() {
@@ -345,12 +345,12 @@ class Ad extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_correct.php');
-        View::set_action_var('ad_list', $ad_list);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_correct.php');
+        Zx_View::set_action_var('ad_list', $ad_list);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -369,12 +369,12 @@ class Ad extends Base {
         $num_of_pages = ceil($num_of_records / NUM_OF_ITEMS_IN_ONE_PAGE);
         //\Zx\Test\Test::object_log('ad_list', $ad_list, __FILE__, __LINE__, __CLASS__, __METHOD__);
 
-        View::set_view_file($this->view_path . 'retrieve_active.php');
-        View::set_action_var('ad_list', $ad_list);
-        View::set_action_var('order_by', $order_by);
-        View::set_action_var('direction', $direction);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_active.php');
+        Zx_View::set_action_var('ad_list', $ad_list);
+        Zx_View::set_action_var('order_by', $order_by);
+        Zx_View::set_action_var('direction', $direction);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
 }

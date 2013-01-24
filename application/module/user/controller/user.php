@@ -5,7 +5,7 @@ namespace App\Module\User\Controller;
 defined('SYSTEM_PATH') or die('No direct script access.');
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Message\Message as Zx_Message;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
@@ -38,7 +38,7 @@ class User extends Base {
      */
     public function home() {
         Transaction_Html::remember_current_page();
-        View::set_view_file($this->view_path . 'home.php');
+        Zx_View::set_view_file($this->view_path . 'home.php');
     }
 
     /**
@@ -98,7 +98,7 @@ class User extends Base {
                 $current_suburb = '';
             }
             $suburb_list = Model_Region::get_suburbs_by_state($current_state);
-            $view = View::factory($this->view_path . 'update_profile');
+            $view = Zx_View::factory($this->view_path . 'update_profile');
             $view->set('posted', $posted);
             $view->set('errors', $errors);
             $view->set('user', $user);
@@ -158,7 +158,7 @@ class User extends Base {
                 $current_suburb = '';
             }
             $suburb_list = Model_Region::get_suburbs_by_state($current_state);
-            $view = View::factory($this->view_path . 'update_profile');
+            $view = Zx_View::factory($this->view_path . 'update_profile');
             $view->set('posted', $posted);
             $view->set('errors', $errors);
             $view->set('sess', App_Session::set_new_form_session());
@@ -224,7 +224,7 @@ class User extends Base {
                 $current_suburb = '';
             }
             $suburb_list = Model_Region::get_suburbs_by_state($current_state);
-            $view = View::factory($this->view_path . 'change_profile');
+            $view = Zx_View::factory($this->view_path . 'change_profile');
             $view->set('posted', $posted);
             $view->set('errors', $errors);
             $view->set('user', $user);
@@ -257,15 +257,15 @@ class User extends Base {
             //\Zx\Test\Test::object_log('settingt',$posted, __FILE__, __LINE__, __CLASS__, __METHOD__);
             if (Transaction_User::change_password($this->uid, $posted)) {
                 $success = true;
-                View::set_view_file($this->view_path . 'change_password_result.php');
+                Zx_View::set_view_file($this->view_path . 'change_password_result.php');
             }
         } else {
             Zx_Message::set_success_message('请输入正确的旧密码和新密码。');
         }
         if (!$success) {
-            View::set_view_file($this->view_path . 'change_password.php');
-            View::set_action_var('user', $user);
-            View::set_action_var('$posted', $posted);
+            Zx_View::set_view_file($this->view_path . 'change_password.php');
+            Zx_View::set_action_var('user', $user);
+            Zx_View::set_action_var('$posted', $posted);
         }
     }
 
@@ -282,7 +282,7 @@ class User extends Base {
                 $this->request->redirect(MEMHTMLROOT . 'user/change_portrait');
             }
         }
-        $view = View::factory($this->view_path . 'change_portrait');
+        $view = Zx_View::factory($this->view_path . 'change_portrait');
         $view->set('user', $user);
         $view->set('sess', App_Session::set_new_form_session());
         $this->view($view);

@@ -2,7 +2,7 @@
 namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Base\Page as Base_Page;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Page extends Base_Page{
     /**

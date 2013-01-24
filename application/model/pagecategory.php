@@ -2,7 +2,7 @@
 namespace App\Model;
 defined('SYSTEM_PATH') or die('No direct script access.');
 use \App\Model\Base\Pagecategory as Base_Pagecategory;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 class Pagecategory extends Base_Pagecategory{
     /**
      * get active cats order by category name

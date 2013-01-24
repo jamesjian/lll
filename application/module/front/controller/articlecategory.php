@@ -31,11 +31,11 @@ class Articlecategory extends Base {
         $articles = Model_Article::get_active_articles_by_cat_id_and_page_number($cat_id, $page_number);
         $num_of_articles = Model_Article::get_num_of_active_articles_by_cat_id($cat_id);
         $num_of_pages = ceil($num_of_articles / NUM_OF_BLOGS_IN_CAT_PAGE);
-        View::set_view_file($this->view_path . 'show.php');
-        View::set_action_var('cat', $cat);
-        View::set_action_var('articles', $articles);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'show.php');
+        Zx_View::set_action_var('cat', $cat);
+        Zx_View::set_action_var('articles', $articles);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
 }

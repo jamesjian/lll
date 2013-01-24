@@ -9,7 +9,7 @@ use \App\Model\Ad as Model_Ad;
 use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answer;
 use \Zx\Message\Message as Zx_Message;
-use \Zx\Model\Mysql;
+use \Zx\Model\Mysql as Zx_Mysql;
 
 class Vote {
 
@@ -88,7 +88,7 @@ class Vote {
 
     function backup_sql() {
         $sql = "SELECT * FROM vote";
-        $r = Mysql::select_all($sql);
+        $r = Zx_Mysql::select_all($sql);
         if ($r) {
             $str = 'INSERT INTO tag VALUES ';
             foreach ($r as $row) {

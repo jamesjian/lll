@@ -1,7 +1,7 @@
 <?php
 namespace App\Module\Admin\Controller;
 defined('SYSTEM_PATH') or die('No direct script access.');
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use \Zx\Test\Test;
 use \App\Transaction\Staff as Transaction_Staff;
 class Staff extends Base {
@@ -35,12 +35,12 @@ class Staff extends Base {
             header('Location: '.HTML_ROOT . 'admin/staff/home');
         } else {
                          //\Zx\Test\Test::object_log('login', 'true', __FILE__, __LINE__, __CLASS__, __METHOD__);
-            View::set_view_file($this->view_path . 'login.php');
+            Zx_View::set_view_file($this->view_path . 'login.php');
         }
     }
     public function home()
     {
-        View::set_view_file($this->view_path . 'home.php');
+        Zx_View::set_view_file($this->view_path . 'home.php');
     }
     public function logout()
     {

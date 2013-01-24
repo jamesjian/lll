@@ -3,7 +3,7 @@
 namespace App\Module\Front\Controller;
 
 use \Zx\Controller\Route;
-use \Zx\View\View;
+use \Zx\View\View as Zx_View;
 use App\Transaction\Session as Transaction_Session;
 use App\Transaction\Html as Transaction_Html;
 use \App\Model\Article as Model_Article;
@@ -49,10 +49,10 @@ class Article extends Base {
             Transaction_Html::set_description($article['title']. ' ' . $article['title_en']);
             Model_Article::increase_rank($article_id);
 
-            View::set_view_file($this->view_path . 'one_article.php');
+            Zx_View::set_view_file($this->view_path . 'one_article.php');
             $relate_articles = Model_Article::get_10_active_related_articles($article_id);
-            View::set_action_var('article', $article);
-            View::set_action_var('related_articles', $relate_articles);
+            Zx_View::set_action_var('article', $article);
+            Zx_View::set_action_var('related_articles', $relate_articles);
         } else {
             //if no article, goto homepage
             Transaction_Html::goto_home_page();
@@ -75,13 +75,13 @@ class Article extends Base {
             //\Zx\Test\Test::object_log('$articles', $articles, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_articles = Model_Article::get_num_of_active_articles_by_keyword($keyword);
             $num_of_pages = ceil($num_of_articles / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'retrieve_by_keyword.php');
-            View::set_action_var('keyword', $keyword);
-            View::set_action_var('articles', $articles);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_view_file($this->view_path . 'retrieve_by_keyword.php');
+            Zx_View::set_action_var('keyword', $keyword);
+            Zx_View::set_action_var('articles', $articles);
+            Zx_View::set_action_var('order_by', $order_by);
+            Zx_View::set_action_var('direction', $direction);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
         }
     }
 
@@ -109,13 +109,13 @@ class Article extends Base {
             //\Zx\Test\Test::object_log('$articles', $articles, __FILE__, __LINE__, __CLASS__, __METHOD__);
             $num_of_articles = Model_Article::get_num_of_active_articles_by_cat_id($cat['id']);
             $num_of_pages = ceil($num_of_articles / NUM_OF_ITEMS_IN_ONE_PAGE);
-            View::set_view_file($this->view_path . 'retrieve_by_cat_id.php');
-            View::set_action_var('cat', $cat);
-            View::set_action_var('articles', $articles);
-            View::set_action_var('order_by', $order_by);
-            View::set_action_var('direction', $direction);
-            View::set_action_var('current_page', $current_page);
-            View::set_action_var('num_of_pages', $num_of_pages);
+            Zx_View::set_view_file($this->view_path . 'retrieve_by_cat_id.php');
+            Zx_View::set_action_var('cat', $cat);
+            Zx_View::set_action_var('articles', $articles);
+            Zx_View::set_action_var('order_by', $order_by);
+            Zx_View::set_action_var('direction', $direction);
+            Zx_View::set_action_var('current_page', $current_page);
+            Zx_View::set_action_var('num_of_pages', $num_of_pages);
         } else {
             //if invalid category
             // \Zx\Test\Test::object_log('$cat_title', 'no', __FILE__, __LINE__, __CLASS__, __METHOD__);
@@ -141,10 +141,10 @@ class Article extends Base {
         $articles = Model_Article::get_active_articles_by_page_num($current_page, $order_by, $direction);
         $num_of_articles = Model_Article::get_num_of_active_articles();
         $num_of_pages = ceil($num_of_articles / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'retrieve_latest.php');
-        View::set_action_var('articles', $articles);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_latest.php');
+        Zx_View::set_action_var('articles', $articles);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
     /**
@@ -162,10 +162,10 @@ class Article extends Base {
         $articles = Model_Article::get_active_articles_by_page_num($current_page, $order_by, $direction);
         $num_of_articles = Model_Article::get_num_of_active_articles();
         $num_of_pages = ceil($num_of_articles / NUM_OF_ITEMS_IN_ONE_PAGE);
-        View::set_view_file($this->view_path . 'retrieve_hottest.php');
-        View::set_action_var('articles', $articles);
-        View::set_action_var('current_page', $current_page);
-        View::set_action_var('num_of_pages', $num_of_pages);
+        Zx_View::set_view_file($this->view_path . 'retrieve_hottest.php');
+        Zx_View::set_action_var('articles', $articles);
+        Zx_View::set_action_var('current_page', $current_page);
+        Zx_View::set_action_var('num_of_pages', $num_of_pages);
     }
 
 }
