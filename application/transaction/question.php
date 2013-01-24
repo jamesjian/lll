@@ -6,7 +6,7 @@ use \App\Model\Question as Model_Question;
 use \App\Model\Answer as Model_Answer;
 use \App\Model\User as Model_User;
 use \App\Model\Tag as Model_Tag;
-use App\Transaction\Tool as Transaction_Tool;
+use \App\Model\Score as Model_Score;
 use \Zx\Message\Message as Zx_Message;
 use \Zx\Model\Mysql as Zx_Mysql;
 
